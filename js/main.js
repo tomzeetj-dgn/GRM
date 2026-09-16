@@ -9,7 +9,7 @@
    - scroll reveals
    - work rail: drag-to-scroll + arrow keys
    - studio gallery: perspective horizontal scrub
-   - hero: three-panel division index (hover / keyboard / touch)
+   - hero: GRM division zones (logo stack ↔ engaged fan-out)
    All motion respects prefers-reduced-motion.
    ============================================================ */
 (function () {
@@ -261,28 +261,35 @@
     window.addEventListener("resize", function () { if (enabled()) init(); });
   });
 
-  /* ---------- HERO PANELS: division index ----------
-     One mechanism (the .is-expanded class) drives pointer, touch
-     and keyboard states. Clicking or Enter/Space toggles a panel;
-     Arrow keys move focus between panels; leaving the section
-     (mouse or focus) settles back to the equal "three doors"
-     layout. */
+  /* ---------- HERO: GRM division zones ----------
+     The same .is-expanded class drives pointer, touch and keyboard
+     states. An expanded zone carries the hero out of "stack" and
+     into "engaged" (.hero.is-engaged on #top) so the logo plates
+     fan out and the services reveal. Clicking or Enter/Space toggles
+     a zone; Arrow keys move focus between zones; leaving the section
+     (mouse or focus) settles back to the quiet rest state. */
   onReady(function () {
     var root = document.getElementById("heroPanels");
     if (!root) return;
 
+    var hero = document.getElementById("top");
     var panels = Array.prototype.slice.call(root.querySelectorAll(".panel"));
-    var delayTimer = null;
 
-    function setExpanded(panel, expanded, opts) {
-      opts = opts || {};
+    function syncEngaged() {
+      var open = panels.some(function (p) {
+        return p.classList.contains("is-expanded");
+      });
+      hero.classList.toggle("is-engaged", open);
+    }
+
+    function setExpanded(panel, expanded, silent) {
       var was = panel.classList.contains("is-expanded");
       if (was === expanded) return;
 
       panel.classList.toggle("is-expanded", expanded);
       panel.setAttribute("aria-expanded", String(expanded));
 
-      // keep only one panel open at a time (accordion semantics)
+      // keep only one zone open at a time (accordion semantics)
       if (expanded) {
         panels.forEach(function (p) {
           if (p !== panel && p.classList.contains("is-expanded")) {
@@ -291,15 +298,7 @@
           }
         });
       }
-
-      var time = reduced() ? 0 : 12;
-      clearTimeout(delayTimer);
-      if (expanded && opts.focusFirst) {
-        delayTimer = setTimeout(function () {
-          var link = panel.querySelector(".panel__cta");
-          if (link) link.focus({ preventScroll: true });
-        }, time);
-      }
+      if (!silent) syncEngaged();
     }
 
     function expand(panel) { setExpanded(panel, true); }

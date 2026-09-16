@@ -397,45 +397,45 @@ body.menu-open .mobile-menu__link:nth-child(6) { transition-delay: 440ms; }
 .mobile-menu__foot .is-mail { color: var(--text); font-size: var(--f-small); letter-spacing: 0; text-transform: none; }
 
 /* ============================================================
-   HERO — three-part division index
-   Three equal panels expand on hover / keyboard activation.
-   Expanded panel grows to ~61.5% via flex-grow, siblings
-   shrink to ~19.2%. State is driven by the .is-expanded class
-   (set in JS) so pointer, touch and keyboard stay consistent.
+   HERO — three GRM divisions, one quiet canvas
+   Rest: only the three coloured GRM logo plates stacked around
+   the visual centre. The hero is three full-height interactive
+   zones; hovering a zone widens it (~62%) while that division's
+   logo travels out of the stack into its zone and its services
+   reveal. State comes from JS classes: .panel.is-expanded plus
+   .hero.is-engaged (any panel open). On mobile (<768px) the same
+   panels become a vertical accordion.
    ============================================================ */
 .hero {
   position: relative;
-  display: flex;
   height: 100vh;
   height: 100svh;
   max-height: 100vh;
   max-height: 100svh;
   overflow: hidden;
   contain: layout paint;
-  background: #000;
-}
-.hero__kicker {
-  position: absolute;
-  top: calc(var(--header-h) + clamp(18px, 3vh, 34px));
-  left: 50%;
-  transform: translateX(-50%);
-  z-index: 4;
-  margin: 0;
-  padding: 8px 18px;
-  border: 1px solid rgba(236, 233, 226, 0.16);
-  border-radius: 999px;
-  background: rgba(5, 5, 5, 0.55);
-  -webkit-backdrop-filter: blur(8px);
-  backdrop-filter: blur(8px);
-  font-size: var(--f-label);
-  font-weight: 500;
-  letter-spacing: 0.32em;
-  text-transform: uppercase;
-  color: rgba(236, 233, 226, 0.72);
-  white-space: nowrap;
-  pointer-events: none;
-}
+  background: var(--bg);
 
+  /* logo plate geometry (shared by the three panels) */
+  --logo: clamp(84px, 16vh, 150px);
+  --logo-gap: clamp(48px, 10vh, 88px);
+  --zone-y: clamp(92px, 16vh, 168px);
+
+  /* rest = vertical stack centred on the visual middle.
+     --sx/--sy park each plate in that stack from its own
+     panel's origin (panels are equal thirds at rest). */
+  --sx-prod: calc(50vw - var(--logo) / 2);
+  --sx-live: calc(16.6667vw - var(--logo) / 2);
+  --sx-house: calc(-16.6667vw - var(--logo) / 2);
+  --sy-mid: calc(50vh - var(--logo) / 2);
+  --sy-step: calc(var(--logo) + var(--logo-gap));
+
+  /* engaged = each plate settles into the top of its own zone
+     (relative to the panel origin, which tracks the zone edges) */
+  --tx: var(--gutter);
+  --tx-sm: clamp(16px, 2.4vw, 30px);
+  --ty: var(--zone-y);
+}
 .hero__panels {
   display: flex;
   align-items: stretch;
@@ -443,194 +443,164 @@ body.menu-open .mobile-menu__link:nth-child(6) { transition-delay: 440ms; }
   height: 100%;
 }
 
+/* zone / panel — a full-height hover target. flex-grow mirrors
+   the widening (3.2 : 1 : 1) so anything parked inside a panel
+   glides with its edges while the zone animates. */
 .panel {
   position: relative;
-  display: flex;
-  flex-direction: column;
-  justify-content: flex-end;
   flex: 1 1 0%;
   flex-grow: 1;
   min-width: 0;
-  overflow: hidden;
   cursor: pointer;
   outline: none;
-  container-type: inline-size;
   transition: flex-grow var(--ease-panel) var(--ease-hero);
   -webkit-tap-highlight-color: transparent;
 }
 .panel.is-expanded { flex-grow: 3.2; }
-.hero__panels:not(:hover) .panel:not(:focus-visible) { outline: none; }
 .panel:focus-visible {
-  box-shadow: inset 0 0 0 2px var(--accent-lite);
+  box-shadow: inset 0 0 0 2px rgba(27, 166, 154, 0.55);
   z-index: 3;
 }
 .hero__panels .panel + .panel { border-left: 1px solid var(--border); }
 
+/* faint colour identity of the expanded division */
 .panel__bg {
   position: absolute;
   inset: 0;
   overflow: hidden;
+  opacity: 0;
+  transition: opacity 800ms var(--ease-hero);
+  pointer-events: none;
 }
-.panel__img {
+.panel__wash {
   position: absolute;
   inset: 0;
   width: 100%;
   height: 100%;
   object-fit: cover;
-  will-change: transform;
-  transition: transform calc(var(--ease-panel) + 150ms) var(--ease-hero);
+  opacity: 0.16;
+  filter: saturate(0.85);
 }
-.panel.is-expanded .panel__img { transform: scale(1.05); }
+.panel.is-expanded .panel__bg { opacity: 1; }
+.hero.is-engaged .panel:not(.is-expanded) .panel__bg { opacity: 0.5; }
 
-.panel__shade {
+/* ---------- logo plates ----------
+   Each panel carries its plate absolutely at the panel origin.
+   Rest: plates are offset (per-panel --sx/--sy) into a single
+   vertical stack around the visual centre. Engaged: they fan out
+   to the tops of their zones — the active plate full strength,
+   the others quiet and slightly smaller so they stay inside the
+   narrowed zones. */
+.panel__logo {
   position: absolute;
-  inset: 0;
-  background:
-    linear-gradient(180deg,
-      rgba(5, 5, 5, 0.42) 0%,
-      rgba(5, 5, 5, 0.08) 38%,
-      rgba(5, 5, 5, 0.18) 72%,
-      rgba(5, 5, 5, 0.86) 100%);
-  transition: opacity var(--ease-panel) var(--ease-hero);
+  top: 0;
+  left: 0;
+  width: var(--logo);
+  height: var(--logo);
+  z-index: 3;
   pointer-events: none;
 }
-.panel.is-expanded .panel__shade { opacity: 0.62; }
-/* dim inactive panels on desktop only */
-@media (min-width: 768px) {
-  .hero__panels:has(.panel.is-expanded) .panel:not(.is-expanded) {
-    filter: saturate(0.55) brightness(0.7);
-  }
+html.js .panel__logo { animation: heroLogoIn 1000ms var(--ease-out) both; }
+.panel--live .panel__logo { animation-delay: 110ms; }
+.panel--house .panel__logo { animation-delay: 220ms; }
+@keyframes heroLogoIn {
+  from { opacity: 0; }
+  to   { opacity: 1; }
+}
+.panel__logo-img {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: var(--logo);
+  height: var(--logo);
+  object-fit: contain;
+  transform: translate(var(--sx), var(--sy)) scale(0.92);
+  transition: transform var(--ease-panel) var(--ease-hero),
+              opacity var(--ease-panel) var(--ease-hero),
+              filter var(--ease-panel) var(--ease-hero);
+  will-change: transform;
+}
+.panel--prod .panel__logo-img { --sx: var(--sx-prod); --sy: calc(var(--sy-mid) - var(--sy-step)); }
+.panel--live .panel__logo-img { --sx: var(--sx-live); --sy: var(--sy-mid); }
+.panel--house .panel__logo-img { --sx: var(--sx-house); --sy: calc(var(--sy-mid) + var(--sy-step)); }
+
+.hero.is-engaged .panel__logo-img {
+  transform: translate(var(--tx), var(--ty)) scale(1);
+}
+.hero.is-engaged .panel:not(.is-expanded) .panel__logo-img {
+  transform: translate(var(--tx-sm), var(--ty)) scale(0.86);
+  opacity: 0.85;
+  filter: saturate(0.6) brightness(0.9);
 }
 
-.panel__content {
-  position: relative;
+/* ---------- division content ----------
+   Hidden at rest; the active division's services enter after the
+   logo settles, as a quiet rise + fade — no cards, no dropdowns. */
+.panel__body {
+  position: absolute;
+  left: var(--gutter);
+  top: calc(var(--zone-y) + var(--logo) + clamp(44px, 7vh, 72px));
+  max-width: clamp(300px, 34vw, 440px);
   z-index: 2;
-  display: flex;
-  flex-direction: column;
-  gap: clamp(6px, 1.4cqw, 18px);
-  padding: 0 var(--gutter);
-  padding-top: clamp(90px, 13vh, 150px);
-  padding-bottom: clamp(40px, 6.5vh, 74px);
-  min-width: 0;
+  opacity: 0;
+  transform: translateY(16px);
+  visibility: hidden;
+  transition: opacity 460ms ease, transform 460ms ease,
+              visibility 0s linear 460ms;
+  pointer-events: none;
 }
-.panel__no {
-  flex: none;
-  align-self: flex-end;
-  font-family: var(--font-display);
-  font-size: clamp(0.8rem, 3.2vh, 1.1rem);
-  letter-spacing: 0.24em;
-  color: var(--accent-lite);
+.panel.is-expanded .panel__body {
+  opacity: 1;
+  transform: none;
+  visibility: visible;
+  pointer-events: auto;
+  transition: opacity 520ms ease 140ms, transform 520ms ease 140ms,
+              visibility 0s linear 140ms;
 }
-.panel__brand {
+.panel__eyebrow {
+  margin: 0 0 10px;
   font-family: var(--font-display);
-  font-size: clamp(0.9rem, 3vh, 1.15rem);
-  letter-spacing: 0.5em;
   font-stretch: 62.5%;
-  font-weight: 900;
+  font-weight: 800;
+  font-size: var(--f-label);
+  letter-spacing: 0.34em;
+  text-transform: uppercase;
   color: var(--accent-lite);
 }
 .panel__name {
+  margin: 0 0 30px;
   font-family: var(--font-display);
   font-stretch: 62.5%;
   font-weight: 900;
-  font-size: clamp(2.4rem, 18vw, 11rem);
-  font-size: clamp(2.4rem, 18cqw, 11rem);
+  font-size: clamp(1.9rem, 3.4vw, 3rem);
   line-height: var(--lh-display);
-  letter-spacing: 0.005em;
-  color: var(--text);
+  letter-spacing: 0.01em;
   text-transform: uppercase;
-  white-space: nowrap;
-}
-.panel__tag {
-  margin: 0;
-  font-size: clamp(0.72rem, 2.6vw, 1rem);
-  font-size: clamp(0.72rem, 2.6cqw, 1rem);
-  letter-spacing: 0.06em;
-  color: rgba(236, 233, 226, 0.62);
-}
-.panel__plus {
-  position: absolute;
-  top: clamp(20px, 4vh, 40px);
-  right: clamp(20px, 4vw, 40px);
-  width: clamp(34px, 5.4vh, 48px);
-  height: clamp(34px, 5.4vh, 48px);
-  display: grid;
-  place-items: center;
-  border: 1px solid rgba(236, 233, 226, 0.26);
-  border-radius: 50%;
   color: var(--text);
-  transition: transform var(--ease-panel) var(--ease-hero),
-              background var(--ease-panel) var(--ease-hero);
-}
-.panel__plus span {
-  position: absolute;
-  width: 12px;
-  height: 1px;
-  background: currentColor;
-}
-.panel__plus span:last-child { transform: rotate(90deg); }
-.panel.is-expanded .panel__plus {
-  background: var(--accent-lite);
-  color: #03110f;
-  transform: rotate(135deg);
-}
-
-/* detail list + CTA — clipped to zero rows while collapsed so the
-   link is not tabbable until the panel is active */
-.panel__detail {
-  position: absolute;
-  left: 0;
-  right: 0;
-  bottom: 0;
-  z-index: 2;
-  display: grid;
-  grid-template-rows: 1fr;
-  opacity: 1;
-  padding-left: var(--gutter);
-  padding-right: var(--gutter);
-  padding-bottom: var(--gutter);
-  visibility: visible;
-  transition: grid-template-rows var(--ease-panel) var(--ease-hero),
-              opacity calc(var(--ease-panel) * 0.5) var(--ease-out),
-              visibility 0s;
-}
-.panel:not(.is-expanded) .panel__detail {
-  grid-template-rows: 0fr;
-  opacity: 0;
-  visibility: hidden;
-  transition: grid-template-rows var(--ease-panel) var(--ease-hero),
-              opacity calc(var(--ease-panel) * 0.5) var(--ease-out),
-              visibility 0s var(--ease-panel);
-}
-.panel__detail-in {
-  overflow: hidden;
-  min-height: 0;
 }
 .panel__list {
-  margin: 0 0 clamp(18px, 3vh, 30px);
+  margin: 0 0 clamp(24px, 4vh, 36px);
   padding: 0;
   list-style: none;
   display: flex;
   flex-wrap: wrap;
-  gap: 8px 14px;
-  font-size: clamp(0.78rem, 2.6vw, 1rem);
-  font-size: clamp(0.78rem, 2.6cqw, 1rem);
+  gap: 10px 18px;
+  font-size: clamp(0.8rem, 1.4vw, 1.02rem);
   letter-spacing: 0.04em;
-  color: rgba(236, 233, 226, 0.72);
+  color: var(--text-muted);
 }
 .panel__list li::before {
   content: "◦";
   color: var(--accent-lite);
-  margin-right: 8px;
+  margin-right: 10px;
 }
 .panel__cta {
   display: inline-flex;
   align-items: center;
   gap: 10px;
-  font-size: clamp(0.7rem, 2.2vw, 0.85rem);
-  font-size: clamp(0.7rem, 2.2cqw, 0.85rem);
+  font-size: clamp(0.68rem, 1.3vw, 0.8rem);
   font-weight: 600;
-  letter-spacing: 0.26em;
+  letter-spacing: 0.24em;
   text-transform: uppercase;
   color: var(--text);
   border-bottom: 1px solid var(--accent-lite);
@@ -1347,7 +1317,6 @@ body.menu-open .mobile-menu__link:nth-child(6) { transition-delay: 440ms; }
     height: auto;
     max-height: none;
   }
-  .hero__kicker { display: none; }
 
   .hero__panels {
     flex-direction: column;
@@ -1356,49 +1325,86 @@ body.menu-open .mobile-menu__link:nth-child(6) { transition-delay: 440ms; }
     padding-top: calc(var(--header-h) + 1px);
   }
 
+  /* accordion row: logo plate + identity always visible,
+     services list collapses/expands below the header row */
   .panel {
-    flex: auto;
-    min-height: 76px;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    min-height: 84px;
+    cursor: pointer;
   }
-  .panel.is-expanded { flex-grow: 1; }
   .hero__panels .panel + .panel { border-left: none; border-top: 1px solid var(--border); }
 
   .panel__bg { opacity: 0.3; }
-  .panel__img { transition: transform 800ms ease; }
+  .panel.is-expanded .panel__bg { opacity: 0.45; }
 
-  .panel__content {
-    flex-direction: row;
+  .panel__logo {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    display: flex;
     align-items: center;
-    gap: 12px;
-    padding: 0 var(--gutter);
-    padding-top: 0;
-    padding-bottom: 0;
-    min-height: 76px;
+    padding-left: var(--gutter);
+    z-index: 3;
+    width: auto;
+    animation: none !important;
   }
-  .panel__no { align-self: auto; font-size: 0.78rem; color: var(--text-faint); }
-  .panel__brand { font-size: 0.72rem; letter-spacing: 0.34em; }
-  .panel__name { font-size: clamp(1.25rem, 6vw, 2rem); flex: none; }
-  .panel__tag { margin-left: auto; font-size: 0.68rem; line-height: 1.3; text-align: right; }
-  .panel__tag br { display: none; }
-  .panel__plus {
+  .panel__logo-img {
     position: static;
-    flex: none;
-    width: 40px;
-    height: 40px;
+    width: 46px;
+    height: 46px;
+    transform: none !important;
+    opacity: 1 !important;
+    filter: none !important;
   }
+  .hero.is-engaged .panel:not(.is-expanded) .panel__logo-img,
+  .hero.is-engaged .panel__logo-img { opacity: 1; }
 
-  /* expanded row shows the detail block below the header row;
-     the panel grows because .panel__detail turns static */
-  .panel__detail {
-    position: static;
-    padding: 0 var(--gutter) clamp(26px, 7vw, 40px);
+  .panel__body {
+    position: relative;
+    left: auto;
+    top: auto;
+    max-width: none;
+    width: 100%;
+    padding: 16px var(--gutter);
+    padding-left: calc(var(--gutter) + 46px + 16px);
+    opacity: 1;
+    transform: none;
+    visibility: visible;
+    pointer-events: auto;
+    transition: none;
+    z-index: 2;
   }
-  .panel__detail-in { overflow: hidden; }
+  .panel__eyebrow { margin-bottom: 4px; font-size: 0.56rem; letter-spacing: 0.3em; }
+  .panel__name { margin: 0; font-size: clamp(1.15rem, 6.4vw, 1.7rem); }
+
+  .panel__list-wrap {
+    display: grid;
+    grid-template-rows: 0fr;
+    opacity: 0;
+    visibility: hidden;
+    transition: grid-template-rows 500ms var(--ease-hero),
+                opacity 360ms ease,
+                visibility 0s linear 500ms;
+  }
+  .panel__stack { overflow: hidden; min-height: 0; }
+  .panel.is-expanded .panel__list-wrap {
+    grid-template-rows: 1fr;
+    opacity: 1;
+    visibility: visible;
+    transition: grid-template-rows 500ms var(--ease-hero),
+                opacity 380ms ease 140ms,
+                visibility 0s linear;
+  }
   .panel__list {
-    margin-top: 18px;
-    font-size: 0.82rem;
+    margin: 18px 0 22px;
+    gap: 8px 14px;
+    font-size: 0.86rem;
   }
-  .panel__list li { flex-basis: auto; }
+  .panel__cta { font-size: 0.7rem; }
 }
 
 /* ============================================================
@@ -1408,6 +1414,14 @@ body.menu-open .mobile-menu__link:nth-child(6) { transition-delay: 440ms; }
   :root {
     --gutter: clamp(20px, 5vw, 44px);
     --sec: clamp(96px, 14vh, 150px);
+  }
+  .hero {
+    --logo: clamp(64px, 12vh, 110px);
+    --logo-gap: clamp(38px, 7vh, 66px);
+    --zone-y: clamp(84px, 13vh, 132px);
+  }
+  .hero.is-engaged .panel:not(.is-expanded) .panel__logo-img {
+    transform: translate(var(--tx-sm), var(--ty)) scale(0.68);
   }
   .site-nav, .site-header__social { display: none; }
   .site-nav-toggle { display: flex; }
@@ -1473,8 +1487,6 @@ body.menu-open .mobile-menu__link:nth-child(6) { transition-delay: 440ms; }
   .site-footer__top { grid-template-columns: 1fr; }
   .site-footer__bottom { flex-direction: column; align-items: flex-start; gap: 12px; }
   .work-card { flex: 0 0 82vw; }
-  .panel__plus { width: 36px; height: 36px; }
-  .hero__panels { padding-top: var(--header-h); }
 }
 
 /* ============================================================
@@ -1488,12 +1500,15 @@ body.menu-open .mobile-menu__link:nth-child(6) { transition-delay: 440ms; }
     transition: none;
   }
   .panel,
-  .panel__img,
-  .panel__shade,
-  .panel__detail,
+  .panel__bg,
+  .panel__logo,
+  .panel__logo-img,
+  .panel__body,
+  .panel__list-wrap,
   .panel__list,
   .panel__cta { transition: none; }
-  .panel__img { transform: none; }
+  .panel__logo, .panel__logo-img { animation: none; }
+  .panel__body { transform: none; }
   .band__track { animation: none; }
   .gallery-sticky, .gallery, .gallery__col { will-change: auto; }
   .gallery-stage { height: auto; }
