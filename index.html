@@ -1,0 +1,622 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>GRM — Recording Studio, Belgrade</title>
+  <meta name="description" content="GRM is a professional recording studio in Belgrade — recording, mixing, mastering, music production and rehearsals in a considered, calm room built around the sound of the instrument.">
+  <meta name="theme-color" content="#050505">
+
+  <meta property="og:title" content="GRM — Recording Studio, Belgrade">
+  <meta property="og:description" content="Recording, mixing, mastering, music production and rehearsals — a considered studio in Belgrade.">
+  <meta property="og:type" content="website">
+  <meta property="og:locale" content="en">
+  <!-- TODO: replace with the production domain once live -->
+  <meta property="og:url" content="/">
+  <meta property="og:image" content="assets/img/grm-tile-1.png">
+
+  <link rel="icon" type="image/png" href="assets/img/favicon.png">
+  <link rel="preload" as="image" href="assets/img/GRM 4K_Background.png">
+
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Archivo:ital,wdth,wght@0,62.5,100..900;1,62.5,100..900&family=Inter:wght@300;400;500;600&display=swap">
+
+  <link rel="stylesheet" href="css/style.css">
+
+  <script type="application/ld+json">
+  {
+    "@context": "https://schema.org",
+    "@type": "ProfessionalService",
+    "name": "GRM",
+    "description": "Recording studio in Belgrade offering recording, mixing, mastering, music production and rehearsals.",
+    "address": {
+      "@type": "PostalAddress",
+      "addressLocality": "Belgrade",
+      "addressCountry": "RS"
+    },
+    "areaServed": "Serbia",
+    "image": "assets/img/grm-tile-1.png",
+    "email": "info@grmstudio.music",
+    "hasOfferCatalog": {
+      "@type": "OfferCatalog",
+      "name": "Studio services",
+      "itemListElement": [
+        { "@type": "Offer", "itemOffered": { "@type": "Service", "name": "Recording" } },
+        { "@type": "Offer", "itemOffered": { "@type": "Service", "name": "Mixing" } },
+        { "@type": "Offer", "itemOffered": { "@type": "Service", "name": "Mastering" } },
+        { "@type": "Offer", "itemOffered": { "@type": "Service", "name": "Music production" } },
+        { "@type": "Offer", "itemOffered": { "@type": "Service", "name": "Rehearsals" } }
+      ]
+    }
+  }
+  </script>
+</head>
+<body>
+
+  <a class="skip-link" href="#main">Skip to content</a>
+  <div class="progress" id="progress" aria-hidden="true"></div>
+
+  <!-- ============================================================
+       HEADER / NAVIGATION
+       Fixed. Transparent over the hero; gains a dark surface on
+       scroll. Brand left · nav center · socials right.
+       ============================================================ -->
+  <header class="site-header" id="siteHeader">
+    <div class="site-header__inner">
+      <a href="#top" class="site-header__brand" aria-label="GRM — back to top">
+        <img src="assets/img/grm-mark.png" alt="" width="38" height="38" class="site-header__mark">
+        <span class="site-header__word">GRM</span>
+      </a>
+
+      <nav class="site-nav" aria-label="Primary">
+        <a href="#services" class="site-nav__link">Services</a>
+        <a href="#work" class="site-nav__link">Work</a>
+        <a href="#studio" class="site-nav__link">Studio</a>
+        <a href="#equipment" class="site-nav__link">Equipment</a>
+        <a href="#contact" class="site-nav__link site-nav__link--cta">Book</a>
+      </nav>
+
+      <div class="site-header__social">
+        <!-- TODO: replace hrefs with live profiles -->
+        <a href="#contact" rel="noopener">Instagram</a>
+        <a href="#contact" rel="noopener">YouTube</a>
+      </div>
+
+      <button class="site-nav-toggle" id="navToggle" aria-expanded="false" aria-controls="mobileMenu" aria-label="Open menu">
+        <span class="site-nav-toggle__line"></span>
+        <span class="site-nav-toggle__line"></span>
+      </button>
+    </div>
+  </header>
+
+  <!-- Mobile fullscreen menu -->
+  <div class="mobile-menu" id="mobileMenu" aria-hidden="true">
+    <nav class="mobile-menu__nav" aria-label="Mobile">
+      <a href="#services" class="mobile-menu__link">Services</a>
+      <a href="#work" class="mobile-menu__link">Work</a>
+      <a href="#studio" class="mobile-menu__link">Studio</a>
+      <a href="#equipment" class="mobile-menu__link">Equipment</a>
+      <a href="#contact" class="mobile-menu__link">Contact</a>
+      <a href="#contact" class="mobile-menu__link">Book</a>
+    </nav>
+    <div class="mobile-menu__foot">
+      <span>Belgrade, Serbia</span>
+      <!-- TODO: real social links + email -->
+      <a href="#contact">Instagram</a>
+      <a href="#contact">YouTube</a>
+      <a href="mailto:info@grmstudio.music" class="is-mail">info@grmstudio.music</a>
+    </div>
+  </div>
+
+  <main id="main" tabindex="-1">
+
+    <!-- ============================================================
+         HERO — three-part division index
+         Each panel is a doorway: Production, Live, House.
+         Expand by hovering or by Enter/Space. Stack as accordion
+         under 768px.
+         ============================================================ -->
+    <section class="hero" id="top" aria-label="GRM — Recording Studio, Belgrade">
+      <p class="hero__kicker" aria-hidden="true">GRM&nbsp;&nbsp;—&nbsp;&nbsp;Music · Production · Culture</p>
+
+      <div class="hero__panels" id="heroPanels" data-hero="true">
+
+        <div class="panel" id="panelProduction" role="button" tabindex="0"
+             aria-expanded="false"
+             aria-label="GRM Production — recording, composition, mixing, mastering">
+          <div class="panel__bg">
+            <img class="panel__img" src="assets/img/GRM 4K 1x1_NoCircle.png" alt=""
+                 width="2160" height="2160" fetchpriority="high" decoding="async">
+          </div>
+          <div class="panel__shade" aria-hidden="true"></div>
+
+          <div class="panel__content">
+            <span class="panel__no">01</span>
+            <span class="panel__brand">GRM</span>
+            <span class="panel__name">Production</span>
+            <p class="panel__tag">Recording · Composition ·<br>Mixing · Mastering</p>
+            <span class="panel__plus" aria-hidden="true"><span></span><span></span></span>
+          </div>
+
+          <div class="panel__detail">
+            <div class="panel__detail-in">
+              <ul class="panel__list">
+                <li>Recording</li>
+                <li>Composition</li>
+                <li>Lyrics</li>
+                <li>Beats</li>
+                <li>Music production</li>
+                <li>Mixing</li>
+                <li>Mastering</li>
+              </ul>
+              <a class="panel__cta" href="#services">
+                Explore production <span aria-hidden="true">→</span>
+              </a>
+            </div>
+          </div>
+        </div>
+
+        <div class="panel" id="panelLive" role="button" tabindex="0"
+             aria-expanded="false"
+             aria-label="GRM Live — professional rehearsal space, sessions, live preparation">
+          <div class="panel__bg">
+            <img class="panel__img" src="assets/img/GRM 4K 1x1_Circle_.png" alt=""
+                 width="1080" height="1080" decoding="async">
+          </div>
+          <div class="panel__shade" aria-hidden="true"></div>
+
+          <div class="panel__content">
+            <span class="panel__no">02</span>
+            <span class="panel__brand">GRM</span>
+            <span class="panel__name">Live</span>
+            <p class="panel__tag">Rehearsals · Sessions ·<br>Live preparation</p>
+            <span class="panel__plus" aria-hidden="true"><span></span><span></span></span>
+          </div>
+
+          <div class="panel__detail">
+            <div class="panel__detail-in">
+              <ul class="panel__list">
+                <li>Professional rehearsal space</li>
+                <li>Rehearsals</li>
+                <li>Sessions</li>
+                <li>Live preparation</li>
+              </ul>
+              <a class="panel__cta" href="#studio">
+                Visit the room <span aria-hidden="true">→</span>
+              </a>
+            </div>
+          </div>
+        </div>
+
+        <div class="panel" id="panelHouse" role="button" tabindex="0"
+             aria-expanded="false"
+             aria-label="GRM House — record label, artists, releases">
+          <div class="panel__bg">
+            <img class="panel__img" src="assets/img/grm-tile-1.png" alt=""
+                 width="1400" height="1400" decoding="async">
+          </div>
+          <div class="panel__shade" aria-hidden="true"></div>
+
+          <div class="panel__content">
+            <span class="panel__no">03</span>
+            <span class="panel__brand">GRM</span>
+            <span class="panel__name">House</span>
+            <p class="panel__tag">Record label · Artists ·<br>Releases</p>
+            <span class="panel__plus" aria-hidden="true"><span></span><span></span></span>
+          </div>
+
+          <div class="panel__detail">
+            <div class="panel__detail-in">
+              <ul class="panel__list">
+                <li>Record label</li>
+                <li>Artists</li>
+                <li>Releases</li>
+                <li>Music & culture</li>
+              </ul>
+              <a class="panel__cta" href="#work">
+                See the work <span aria-hidden="true">→</span>
+              </a>
+            </div>
+          </div>
+        </div>
+
+      </div>
+    </section>
+
+    <!-- ============================================================
+         INTRO / STATEMENT
+         ============================================================ -->
+    <section class="intro reveal" id="intro">
+      <div class="container">
+        <p class="eyebrow">Introduction</p>
+        <h1 class="intro__headline">
+          The room<br>
+          is the<br>
+          <em>instrument</em>.
+        </h1>
+        <div class="intro__body">
+          <p>
+            GRM is a professional recording studio in Belgrade — a considered
+            room where records are tracked, mixed and mastered with patience,
+            and where bands and artists have the space to find the take
+            that matters.
+          </p>
+          <p class="intro__ph">
+            <strong>Studio story</strong> — replace with one or two sentences on
+            who runs GRM, the room itself, and how it sounds.
+          </p>
+        </div>
+      </div>
+    </section>
+
+    <!-- ============================================================
+         MARQUEE BAND — the five disciplines, once, slowly.
+         ============================================================ -->
+    <div class="band" role="presentation" aria-hidden="true">
+      <div class="band__track">
+        <span class="band__list">
+          <span class="band__word">Recording</span><span class="band__sep"></span>
+          <span class="band__word">Mixing</span><span class="band__sep"></span>
+          <span class="band__word">Mastering</span><span class="band__sep"></span>
+          <span class="band__word">Production</span><span class="band__sep"></span>
+          <span class="band__word">Rehearsals</span><span class="band__sep"></span>
+        </span>
+        <span class="band__list">
+          <span class="band__word">Recording</span><span class="band__sep"></span>
+          <span class="band__word">Mixing</span><span class="band__sep"></span>
+          <span class="band__word">Mastering</span><span class="band__sep"></span>
+          <span class="band__word">Production</span><span class="band__sep"></span>
+          <span class="band__word">Rehearsals</span><span class="band__sep"></span>
+        </span>
+      </div>
+    </div>
+
+    <!-- ============================================================
+         SERVICES — numbered editorial list, no cards
+         ============================================================ -->
+    <section class="services" id="services">
+      <div class="container">
+        <div class="section-head reveal">
+          <div>
+            <p class="eyebrow">Services</p>
+            <h2 class="section-head__title">What the room does</h2>
+          </div>
+          <p class="section-head__note">
+            Every project gets a clear brief, focused sessions
+            and sound that serves the song.
+          </p>
+        </div>
+
+        <ol class="services__list">
+          <li class="service reveal">
+            <span class="service__index">01</span>
+            <h3 class="service__name">Recording</h3>
+            <p class="service__desc">Full-band tracking and overdubs in a live, natural-sounding room, at any volume the session needs.</p>
+            <a class="service__link" href="#contact" aria-label="Enquire about recording">Enquire</a>
+          </li>
+          <li class="service reveal">
+            <span class="service__index">02</span>
+            <h3 class="service__name">Mixing</h3>
+            <p class="service__desc">Attentive, transparent mixes that respect the record’s direction and never leave the song behind.</p>
+            <a class="service__link" href="#contact" aria-label="Enquire about mixing">Enquire</a>
+          </li>
+          <li class="service reveal">
+            <span class="service__index">03</span>
+            <h3 class="service__name">Mastering</h3>
+            <p class="service__desc">Restrained final shaping across a release — loudness, clarity and consistent tone from track to track.</p>
+            <a class="service__link" href="#contact" aria-label="Enquire about mastering">Enquire</a>
+          </li>
+          <li class="service reveal">
+            <span class="service__index">04</span>
+            <h3 class="service__name">Music Production</h3>
+            <p class="service__desc">A co-pilot on arrangement, performance and sonics — called in when the song needs direction.</p>
+            <a class="service__link" href="#contact" aria-label="Enquire about music production">Enquire</a>
+          </li>
+          <li class="service reveal">
+            <span class="service__index">05</span>
+            <h3 class="service__name">Rehearsals</h3>
+            <p class="service__desc">A prepared, quiet space for bands to work the set properly — loud, and off the clock.</p>
+            <a class="service__link" href="#contact" aria-label="Enquire about rehearsals">Enquire</a>
+          </li>
+        </ol>
+      </div>
+    </section>
+
+    <!-- ============================================================
+         FEATURED WORK — horizontal rail
+         Artwork slots: two GRM plates stand in for cover art; the
+         rest are labelled placeholders until real project art is
+         supplied (4:5 or square, 1200–1600px wide recommended).
+         ============================================================ -->
+    <section class="work" id="work">
+      <div class="container">
+        <div class="section-head reveal">
+          <div>
+            <p class="eyebrow">Featured Work</p>
+            <h2 class="section-head__title">Recent sessions</h2>
+          </div>
+          <p class="section-head__note">
+            A selection of projects tracked, mixed or mastered in the room.
+          </p>
+        </div>
+      </div>
+
+      <div class="work__rail reveal" id="workRail" tabindex="0" role="region" aria-label="Recent projects — scroll horizontally. Use arrow keys to move.">
+        <!-- Replace data-ph/CAPTION placeholders with real artwork -->
+        <a class="work-card" href="#contact" tabindex="0">
+          <div class="work-card__top">
+            <span class="work-card__no">01</span>
+            <span class="work-card__role">Recorded · Mixed</span>
+          </div>
+          <div class="work-card__media">
+            <img src="assets/img/grm-tile-1.png" alt="GRM plate standing in for album artwork — replace with project cover art" loading="lazy" width="1400" height="1400">
+          </div>
+          <div class="work-card__meta">
+            <h3>Project title</h3>
+            <p>Artist&nbsp;·&nbsp;Year</p>
+          </div>
+        </a>
+
+        <a class="work-card" href="#contact" tabindex="0">
+          <div class="work-card__top">
+            <span class="work-card__no">02</span>
+            <span class="work-card__role">Mixed · Mastered</span>
+          </div>
+          <div class="work-card__media">
+            <img src="assets/img/grm-tile-2.png" alt="GRM plate standing in for album artwork — replace with project cover art" loading="lazy" width="1200" height="1200">
+          </div>
+          <div class="work-card__meta">
+            <h3>Project title</h3>
+            <p>Artist&nbsp;·&nbsp;Year</p>
+          </div>
+        </a>
+
+        <a class="work-card" href="#contact" tabindex="0">
+          <div class="work-card__top">
+            <span class="work-card__no">03</span>
+            <span class="work-card__role">Recorded</span>
+          </div>
+          <div class="work-card__media work-card__media--ph" data-ph="Artwork 03"></div>
+          <div class="work-card__meta">
+            <h3>Project title</h3>
+            <p>Artist&nbsp;·&nbsp;Year</p>
+          </div>
+        </a>
+
+        <a class="work-card" href="#contact" tabindex="0">
+          <div class="work-card__top">
+            <span class="work-card__no">04</span>
+            <span class="work-card__role">Mixed</span>
+          </div>
+          <div class="work-card__media work-card__media--ph" data-ph="Artwork 04"></div>
+          <div class="work-card__meta">
+            <h3>Project title</h3>
+            <p>Artist&nbsp;·&nbsp;Year</p>
+          </div>
+        </a>
+
+        <a class="work-card" href="#contact" tabindex="0">
+          <div class="work-card__top">
+            <span class="work-card__no">05</span>
+            <span class="work-card__role">Mastered</span>
+          </div>
+          <div class="work-card__media work-card__media--ph" data-ph="Artwork 05"></div>
+          <div class="work-card__meta">
+            <h3>Project title</h3>
+            <p>Artist&nbsp;·&nbsp;Year</p>
+          </div>
+        </a>
+      </div>
+
+      <p class="work__hint">Drag · scroll · arrow keys</p>
+    </section>
+
+    <!-- ============================================================
+         STUDIO / GALLERY — perspective horizontal scrub
+         Opens with an editorial panel, then columns that move at
+         their own speed. GRM plates sit beside labelled photo slots
+         (replace with real in-room photography).
+         ============================================================ -->
+    <section class="studio" id="studio">
+      <div class="gallery-stage" id="galleryStage">
+        <div class="gallery-sticky">
+          <div class="gallery">
+            <div class="gallery__panel">
+              <p class="eyebrow reveal">Studio</p>
+              <h2 class="gallery__title reveal" data-delay="1">The<br>room</h2>
+              <p class="gallery__note reveal" data-delay="2">
+                A calm, dark space designed around the sound of the
+                instrument — treated for recording, tuned for listening.
+              </p>
+              <p class="gallery__count reveal" data-delay="3">Photos — awaiting the room</p>
+            </div>
+
+            <div class="gallery__col gallery__col--a" data-speed="1.12">
+              <div class="gallery__col-inner">
+                <figure class="gallery__figure">
+                  <img src="assets/img/grm-tile-1.png" alt="GRM mark on a dark background" loading="lazy" width="1400" height="1400">
+                  <figcaption class="gallery__cap">The mark</figcaption>
+                </figure>
+                <figure class="gallery__figure gallery__figure--ph" data-ph="Live room — [photo]">
+                  <figcaption class="gallery__cap">Photo · Live room</figcaption>
+                </figure>
+              </div>
+            </div>
+
+            <div class="gallery__col gallery__col--b" data-speed="1.26">
+              <div class="gallery__col-inner">
+                <figure class="gallery__figure gallery__figure--ph" data-ph="Control room — [photo]">
+                  <figcaption class="gallery__cap">Photo · Control room</figcaption>
+                </figure>
+                <figure class="gallery__figure gallery__figure--tall gallery__figure--ph" data-ph="Outboard &amp; rack — [photo]">
+                  <figcaption class="gallery__cap">Photo · Outboard</figcaption>
+                </figure>
+                <figure class="gallery__figure">
+                  <img src="assets/img/grm-tile-2.png" alt="GRM mark inside a circle on a dark background" loading="lazy" width="1200" height="1200">
+                  <figcaption class="gallery__cap">The mark</figcaption>
+                </figure>
+              </div>
+            </div>
+
+            <div class="gallery__col gallery__col--c" data-speed="0.96">
+              <div class="gallery__col-inner">
+                <figure class="gallery__figure gallery__figure--tall gallery__figure--ph" data-ph="Instrument / mic detail — [photo]">
+                  <figcaption class="gallery__cap">Photo · Detail</figcaption>
+                </figure>
+                <figure class="gallery__figure gallery__figure--ph" data-ph="Entrance — [photo]">
+                  <figcaption class="gallery__cap">Photo · Entrance</figcaption>
+                </figure>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ============================================================
+         EQUIPMENT — editorial category columns
+         Leader-dotted rows; values to be confirmed against the
+         real inventory before launch.
+         ============================================================ -->
+    <section class="equipment" id="equipment">
+      <div class="container">
+        <div class="section-head reveal">
+          <div>
+            <p class="eyebrow">Equipment</p>
+            <h2 class="section-head__title">What’s in the chain</h2>
+          </div>
+          <p class="section-head__note">
+            A working, well-kept setup — described by category, not a wall
+            of specs.
+          </p>
+        </div>
+
+        <div class="equipment__grid">
+          <div class="equipment__col reveal" data-cat="Analog &amp; Front End">
+            <div class="equipment__cat-wrap">
+              <h3 class="equipment__cat">Analog &amp; Front&nbsp;End</h3>
+              <span class="equipment__no">01</span>
+            </div>
+            <ul class="equipment__list">
+              <li class="equipment__row"><span class="equipment__k">Console</span><span class="equipment__dots" aria-hidden="true"></span><span class="equipment__v ph">[to add]</span></li>
+              <li class="equipment__row"><span class="equipment__k">Preamps</span><span class="equipment__dots" aria-hidden="true"></span><span class="equipment__v ph">[to add]</span></li>
+              <li class="equipment__row"><span class="equipment__k">Outboard</span><span class="equipment__dots" aria-hidden="true"></span><span class="equipment__v ph">[to add]</span></li>
+            </ul>
+          </div>
+
+          <div class="equipment__col reveal" data-cat="Microphones">
+            <div class="equipment__cat-wrap">
+              <h3 class="equipment__cat">Microphones</h3>
+              <span class="equipment__no">02</span>
+            </div>
+            <ul class="equipment__list">
+              <li class="equipment__row"><span class="equipment__k">Condensers</span><span class="equipment__dots" aria-hidden="true"></span><span class="equipment__v ph">[to add]</span></li>
+              <li class="equipment__row"><span class="equipment__k">Dynamics</span><span class="equipment__dots" aria-hidden="true"></span><span class="equipment__v ph">[to add]</span></li>
+              <li class="equipment__row"><span class="equipment__k">Ribbons</span><span class="equipment__dots" aria-hidden="true"></span><span class="equipment__v ph">[to add]</span></li>
+            </ul>
+          </div>
+
+          <div class="equipment__col reveal" data-cat="Monitoring &amp; DAW">
+            <div class="equipment__cat-wrap">
+              <h3 class="equipment__cat">Monitoring &amp; DAW</h3>
+              <span class="equipment__no">03</span>
+            </div>
+            <ul class="equipment__list">
+              <li class="equipment__row"><span class="equipment__k">Monitors</span><span class="equipment__dots" aria-hidden="true"></span><span class="equipment__v ph">[to add]</span></li>
+              <li class="equipment__row"><span class="equipment__k">Headphones</span><span class="equipment__dots" aria-hidden="true"></span><span class="equipment__v ph">[to add]</span></li>
+              <li class="equipment__row"><span class="equipment__k">DAW</span><span class="equipment__dots" aria-hidden="true"></span><span class="equipment__v ph">[to add]</span></li>
+            </ul>
+          </div>
+
+          <div class="equipment__col reveal" data-cat="Instruments">
+            <div class="equipment__cat-wrap">
+              <h3 class="equipment__cat">Instruments</h3>
+              <span class="equipment__no">04</span>
+            </div>
+            <ul class="equipment__list">
+              <li class="equipment__row"><span class="equipment__k">Piano / keys</span><span class="equipment__dots" aria-hidden="true"></span><span class="equipment__v ph">[to add]</span></li>
+              <li class="equipment__row"><span class="equipment__k">Amps</span><span class="equipment__dots" aria-hidden="true"></span><span class="equipment__v ph">[to add]</span></li>
+              <li class="equipment__row"><span class="equipment__k">Backline</span><span class="equipment__dots" aria-hidden="true"></span><span class="equipment__v ph">[to add]</span></li>
+            </ul>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ============================================================
+         CTA — the closing statement
+         ============================================================ -->
+    <section class="cta" id="contact">
+      <div class="container">
+        <div class="cta__inner reveal">
+          <p class="eyebrow eyebrow--on-accent">Booking</p>
+          <h2 class="cta__title">Have a record<br>to make?</h2>
+          <!-- TODO: real GRM address -->
+          <a class="cta__mail" href="mailto:info@grmstudio.music">info@grmstudio.music</a>
+          <p class="cta__sub">
+            Tell us about the project and when you’d like to get in —
+            we’ll reply with availability and rates.
+          </p>
+          <p class="cta__loc">
+            <span>Belgrade, Serbia</span>
+            <span>By arrangement</span>
+          </p>
+        </div>
+      </div>
+    </section>
+
+  </main>
+
+  <!-- ============================================================
+       FOOTER
+       ============================================================ -->
+  <footer class="site-footer" id="siteFooter">
+    <img class="site-footer__watermark" src="assets/img/GRM 4K 1x1_Transparent.png"
+         alt="" loading="lazy" width="2160" height="2160">
+
+    <div class="container">
+      <div class="site-footer__top">
+        <a href="#top" class="site-footer__brand" aria-label="GRM — back to top">
+          <img src="assets/img/grm-mark.png" alt="" width="46" height="46">
+          <span>GRM</span>
+        </a>
+
+        <p class="site-footer__lede">
+          A professional recording studio in Belgrade — recording, mixing,
+          mastering, production and rehearsals in one considered room.
+        </p>
+
+        <div class="site-footer__nav">
+          <span class="site-footer__col-label">Studio</span>
+          <a href="#services">Services</a>
+          <a href="#work">Work</a>
+          <a href="#studio">Studio</a>
+          <a href="#equipment">Equipment</a>
+        </div>
+
+        <div class="site-footer__contact">
+          <span class="site-footer__col-label">Contact</span>
+          <p>Belgrade, Serbia</p>
+          <!-- TODO: real email / address / phone -->
+          <a href="mailto:info@grmstudio.music">info@grmstudio.music</a>
+        </div>
+
+        <div class="site-footer__social">
+          <span class="site-footer__col-label">Follow</span>
+          <!-- TODO: real social links -->
+          <a href="#contact" rel="noopener">Instagram</a>
+          <a href="#contact" rel="noopener">YouTube</a>
+        </div>
+      </div>
+
+      <div class="site-footer__bottom">
+        <p>© <span id="year">2026</span> GRM — All rights reserved</p>
+        <a href="#top" class="site-footer__top-link">Back to top</a>
+      </div>
+    </div>
+  </footer>
+
+  <script src="js/main.js"></script>
+</body>
+</html>
