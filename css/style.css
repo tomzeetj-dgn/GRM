@@ -522,8 +522,8 @@ body.menu-open .mobile-menu__link:nth-child(6) { transition-delay: 440ms; }
   font-family: var(--font-display);
   font-stretch: 62.5%;
   font-weight: 900;
-  font-size: clamp(2rem, 12.5vw, 8rem);
-  font-size: clamp(2rem, 12.5cqw, 8rem);
+  font-size: clamp(1.75rem, 10.5vw, 6.5rem);
+  font-size: clamp(1.75rem, 10.5cqw, 6.5rem);
   line-height: var(--lh-display);
   letter-spacing: 0.005em;
   color: var(--text);
