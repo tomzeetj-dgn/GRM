@@ -261,19 +261,14 @@
     window.addEventListener("resize", function () { if (enabled()) init(); });
   });
 
-  /* ---------- HERO PANELS: division index ----------
-     One mechanism (the .is-expanded class) drives pointer, touch
-     and keyboard states. Clicking or Enter/Space toggles a panel;
-     Arrow keys move focus between panels; leaving the section
-     (mouse or focus) settles back to the equal "three doors"
-     layout. */
+  /* ---------- HERO PANELS: three GRM worlds ----------
+     Hover and focus preview a world. The panels are real links, so
+     click/tap remains navigation rather than an accordion toggle. */
   onReady(function () {
     var root = document.getElementById("heroPanels");
     if (!root) return;
 
     var panels = Array.prototype.slice.call(root.querySelectorAll(".panel"));
-    var delayTimer = null;
-
     function setExpanded(panel, expanded, opts) {
       opts = opts || {};
       var was = panel.classList.contains("is-expanded");
@@ -292,14 +287,6 @@
         });
       }
 
-      var time = reduced() ? 0 : 12;
-      clearTimeout(delayTimer);
-      if (expanded && opts.focusFirst) {
-        delayTimer = setTimeout(function () {
-          var link = panel.querySelector(".panel__cta");
-          if (link) link.focus({ preventScroll: true });
-        }, time);
-      }
     }
 
     function expand(panel) { setExpanded(panel, true); }
@@ -325,25 +312,12 @@
       });
     });
 
-    // click toggles (collapse an active panel back to the equal state)
-    root.addEventListener("click", function (e) {
-      var panel = e.target.closest(".panel");
-      if (!panel) return;
-      if (e.target.closest("a")) return;
-      setExpanded(panel, !panel.classList.contains("is-expanded"));
-    });
-
     // keyboard
     root.addEventListener("keydown", function (e) {
       var panel = e.target.closest(".panel");
       if (!panel) return;
 
-      if (e.key === "Enter" || e.key === " ") {
-        // let the CTA link do its thing when it has focus
-        if (e.target.closest("a")) return;
-        e.preventDefault();
-        setExpanded(panel, !panel.classList.contains("is-expanded"));
-      } else if (e.key === "ArrowRight" || e.key === "ArrowLeft") {
+      if (e.key === "ArrowRight" || e.key === "ArrowLeft") {
         e.preventDefault();
         var i = panels.indexOf(panel);
         var next = panels[i + (e.key === "ArrowRight" ? 1 : -1)];

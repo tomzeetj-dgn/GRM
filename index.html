@@ -111,115 +111,90 @@
 
   <main id="main" tabindex="-1">
 
-    <!-- ============================================================
-         HERO — three-part division index
-         Each panel is a doorway: Production, Live, House.
-         Expand by hovering or by Enter/Space. Stack as accordion
-         under 768px.
-         ============================================================ -->
+     <!-- ============================================================
+          HERO — three GRM worlds
+          Hover previews a world; clicking enters it.
+          ============================================================ -->
     <section class="hero" id="top" aria-label="GRM — Recording Studio, Belgrade">
-      <p class="hero__kicker" aria-hidden="true">GRM&nbsp;&nbsp;—&nbsp;&nbsp;Music · Production · Culture</p>
-
       <div class="hero__panels" id="heroPanels" data-hero="true">
 
-        <div class="panel" id="panelProduction" role="button" tabindex="0"
+        <a class="panel" id="panelProduction" href="#services"
              aria-expanded="false"
-             aria-label="GRM Production — recording, composition, mixing, mastering">
+             aria-label="GRM Studio — recording, composition, production, mixing and mastering">
           <div class="panel__bg">
-            <img class="panel__img" src="assets/img/GRM 4K 1x1_NoCircle.png" alt=""
+            <img class="panel__img" src="assets/img/GRM Studio_00000.png" alt=""
                  width="2160" height="2160" fetchpriority="high" decoding="async">
           </div>
           <div class="panel__shade" aria-hidden="true"></div>
 
           <div class="panel__content">
-            <span class="panel__no">01</span>
-            <span class="panel__brand">GRM</span>
-            <span class="panel__name">Production</span>
-            <p class="panel__tag">Recording · Composition ·<br>Mixing · Mastering</p>
+            <img class="panel__logo" src="assets/img/GRM Studio_00000.png" alt="GRM Studio">
+            <div class="panel__copy">
+              <span class="panel__no">01</span>
+              <span class="panel__name">Studio</span>
+              <p class="panel__tag">Recording, composition, production,<br>mixing and mastering.</p>
+            </div>
             <span class="panel__plus" aria-hidden="true"><span></span><span></span></span>
           </div>
 
           <div class="panel__detail">
             <div class="panel__detail-in">
-              <ul class="panel__list">
-                <li>Recording</li>
-                <li>Composition</li>
-                <li>Lyrics</li>
-                <li>Beats</li>
-                <li>Music production</li>
-                <li>Mixing</li>
-                <li>Mastering</li>
-              </ul>
-              <a class="panel__cta" href="#services">
-                Explore production <span aria-hidden="true">→</span>
-              </a>
+              <span class="panel__cta">Enter Studio <span aria-hidden="true">→</span></span>
             </div>
           </div>
-        </div>
+        </a>
 
-        <div class="panel" id="panelLive" role="button" tabindex="0"
+        <a class="panel" id="panelLive" href="#studio"
              aria-expanded="false"
-             aria-label="GRM Live — professional rehearsal space, sessions, live preparation">
+             aria-label="GRM Liveroom — rehearsal space for musicians and bands">
           <div class="panel__bg">
-            <img class="panel__img" src="assets/img/GRM 4K 1x1_Circle_.png" alt=""
-                 width="1080" height="1080" decoding="async">
+            <img class="panel__img" src="assets/img/GRM LiveRoom 1x1_00000.png" alt=""
+                 width="2160" height="2160" decoding="async">
           </div>
           <div class="panel__shade" aria-hidden="true"></div>
 
           <div class="panel__content">
-            <span class="panel__no">02</span>
-            <span class="panel__brand">GRM</span>
-            <span class="panel__name">Live</span>
-            <p class="panel__tag">Rehearsals · Sessions ·<br>Live preparation</p>
+            <img class="panel__logo" src="assets/img/GRM LiveRoom 1x1_00000.png" alt="GRM Liveroom">
+            <div class="panel__copy">
+              <span class="panel__no">02</span>
+              <span class="panel__name">Liveroom</span>
+              <p class="panel__tag">Rehearsal space for musicians<br>and bands.</p>
+            </div>
             <span class="panel__plus" aria-hidden="true"><span></span><span></span></span>
           </div>
 
           <div class="panel__detail">
             <div class="panel__detail-in">
-              <ul class="panel__list">
-                <li>Professional rehearsal space</li>
-                <li>Rehearsals</li>
-                <li>Sessions</li>
-                <li>Live preparation</li>
-              </ul>
-              <a class="panel__cta" href="#studio">
-                Visit the room <span aria-hidden="true">→</span>
-              </a>
+              <span class="panel__cta">Enter Liveroom <span aria-hidden="true">→</span></span>
             </div>
           </div>
-        </div>
+        </a>
 
-        <div class="panel" id="panelHouse" role="button" tabindex="0"
+        <a class="panel" id="panelHouse" href="#work"
              aria-expanded="false"
-             aria-label="GRM House — record label, artists, releases">
+             aria-label="GRM Label — GRM's record label">
           <div class="panel__bg">
-            <img class="panel__img" src="assets/img/grm-tile-1.png" alt=""
-                 width="1400" height="1400" decoding="async">
+            <img class="panel__img" src="assets/img/GRM Label 1x1_00000.png" alt=""
+                 width="2160" height="2160" decoding="async">
           </div>
           <div class="panel__shade" aria-hidden="true"></div>
 
           <div class="panel__content">
-            <span class="panel__no">03</span>
-            <span class="panel__brand">GRM</span>
-            <span class="panel__name">House</span>
-            <p class="panel__tag">Record label · Artists ·<br>Releases</p>
+            <img class="panel__logo" src="assets/img/GRM Label 1x1_00000.png" alt="GRM Label">
+            <div class="panel__copy">
+              <span class="panel__no">03</span>
+              <span class="panel__name">Label</span>
+              <p class="panel__tag">GRM's record label for artists<br>and releases.</p>
+            </div>
             <span class="panel__plus" aria-hidden="true"><span></span><span></span></span>
           </div>
 
           <div class="panel__detail">
             <div class="panel__detail-in">
-              <ul class="panel__list">
-                <li>Record label</li>
-                <li>Artists</li>
-                <li>Releases</li>
-                <li>Music & culture</li>
-              </ul>
-              <a class="panel__cta" href="#work">
-                See the work <span aria-hidden="true">→</span>
-              </a>
+              <span class="panel__cta">Enter Label <span aria-hidden="true">→</span></span>
             </div>
           </div>
-        </div>
+        </a>
 
       </div>
     </section>
