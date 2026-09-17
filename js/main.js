@@ -262,12 +262,14 @@
   });
 
   /* ---------- HERO: GRM division zones ----------
-     The same .is-expanded class drives pointer, touch and keyboard
-     states. An expanded zone carries the hero out of "stack" and
-     into "engaged" (.hero.is-engaged on #top) so the logo plates
-     fan out and the services reveal. Clicking or Enter/Space toggles
-     a zone; Arrow keys move focus between zones; leaving the section
-     (mouse or focus) settles back to the quiet rest state. */
+     One mechanism (.is-expanded) drives pointer, touch and keyboard
+     states: the zone widens, its plate travels out of the stacked
+     composition into the zone, and the division's services reveal.
+     (.hero.is-engaged marks any-expanded so the other plates recede
+     in place.) The plates are never hidden or duplicated — a plate
+     only ever moves. Clicking or Enter/Space toggles a zone; Arrow
+     keys move focus between zones; leaving the section settles back
+     to the stacked rest state. */
   onReady(function () {
     var root = document.getElementById("heroPanels");
     if (!root) return;
