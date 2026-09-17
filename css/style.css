@@ -12,6 +12,19 @@
    no section styles its own values.
    ============================================================ */
 
+/* The display face — a single-weight ultra-condensed sans serif.
+   Declared with weight + stretch ranges so the design's 800/900
+   weights and 62.5% stretch all resolve to this one face without
+   any browser synthesis. */
+@font-face {
+  font-family: "UltraCondensedSansSerif";
+  src: url("../assets/fonts/UltraCondensedSansSerif.woff2") format("woff2"),
+       url("../assets/fonts/UltraCondensedSansSerif.ttf") format("truetype");
+  font-weight: 100 900;
+  font-stretch: 62.5% 125%;
+  font-display: swap;
+}
+
 :root {
   /* ---------- COLOR ---------- */
   --bg:            #050505;                 /* page base, near-black */
@@ -30,7 +43,7 @@
   --accent-hair:   rgba(27, 166, 154, 0.32);
 
   /* ---------- TYPOGRAPHY ---------- */
-  --font-display: "Archivo", "Arial Narrow", sans-serif;
+  --font-display: "UltraCondensedSansSerif", "Archivo", "Arial Narrow", sans-serif;
   --font-body:    "Inter", "Helvetica Neue", Arial, sans-serif;
 
   --f-display-xl: clamp(3.3rem, 9vw, 8rem);      /* hero of statements */
