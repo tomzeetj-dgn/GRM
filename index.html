@@ -112,111 +112,111 @@
   <main id="main" tabindex="-1">
 
     <!-- ============================================================
-         HERO — three GRM divisions as one quiet canvas
-         Rest: only the three coloured GRM logo plates, stacked
-         around the visual centre. Hover/tap a zone: the panel
-         widens, the logo travels from the stack into its zone,
-         and the division's services reveal. Stacked accordion
+         HERO — three-part division index
+         Each panel is a doorway: Production, Live, House.
+         Expand by hovering or by Enter/Space. Stack as accordion
          under 768px.
          ============================================================ -->
     <section class="hero" id="top" aria-label="GRM — Recording Studio, Belgrade">
-      <div class="hero__panels" id="heroPanels">
+      <p class="hero__kicker" aria-hidden="true">GRM&nbsp;&nbsp;—&nbsp;&nbsp;Music · Production · Culture</p>
 
-        <div class="panel panel--prod" id="panelProduction" role="button" tabindex="0"
+      <div class="hero__panels" id="heroPanels" data-hero="true">
+
+        <div class="panel" id="panelProduction" role="button" tabindex="0"
              aria-expanded="false"
-             aria-label="GRM Production — recording, composition, lyrics, beats, production, mixing, mastering">
-          <div class="panel__bg" aria-hidden="true">
-            <img class="panel__wash" src="assets/img/GRM Studio_00000.png" alt=""
+             aria-label="GRM Production — recording, composition, mixing, mastering">
+          <div class="panel__bg">
+            <img class="panel__img" src="assets/img/GRM 4K 1x1_NoCircle.png" alt=""
                  width="2160" height="2160" fetchpriority="high" decoding="async">
           </div>
-          <div class="panel__logo" aria-hidden="true">
-            <img class="panel__logo-img" src="assets/img/GRM Studio_00000.png" alt=""
-                 width="2160" height="2160">
+          <div class="panel__shade" aria-hidden="true"></div>
+
+          <div class="panel__content">
+            <span class="panel__no">01</span>
+            <span class="panel__brand">GRM</span>
+            <span class="panel__name">Production</span>
+            <p class="panel__tag">Recording · Composition ·<br>Mixing · Mastering</p>
+            <span class="panel__plus" aria-hidden="true"><span></span><span></span></span>
           </div>
-          <div class="panel__body">
-            <div class="panel__head">
-              <p class="panel__eyebrow">GRM · Division 01</p>
-              <h2 class="panel__name">Production</h2>
-            </div>
-            <div class="panel__list-wrap">
-              <div class="panel__stack">
-                <ul class="panel__list">
+
+          <div class="panel__detail">
+            <div class="panel__detail-in">
+              <ul class="panel__list">
                 <li>Recording</li>
                 <li>Composition</li>
                 <li>Lyrics</li>
                 <li>Beats</li>
-                <li>Production</li>
+                <li>Music production</li>
                 <li>Mixing</li>
                 <li>Mastering</li>
-                </ul>
-                <a class="panel__cta" href="#services">
-                  Explore production <span aria-hidden="true">→</span>
-                </a>
-              </div>
+              </ul>
+              <a class="panel__cta" href="#services">
+                Explore production <span aria-hidden="true">→</span>
+              </a>
             </div>
           </div>
         </div>
 
-        <div class="panel panel--live" id="panelLive" role="button" tabindex="0"
+        <div class="panel" id="panelLive" role="button" tabindex="0"
              aria-expanded="false"
-             aria-label="GRM Live — rehearsal space, rehearsals, sessions, live preparation">
-          <div class="panel__bg" aria-hidden="true">
-            <img class="panel__wash" src="assets/img/GRM LiveRoom 1x1_00000.png" alt=""
-                 width="2160" height="2160" decoding="async">
+             aria-label="GRM Live — professional rehearsal space, sessions, live preparation">
+          <div class="panel__bg">
+            <img class="panel__img" src="assets/img/GRM 4K 1x1_Circle_.png" alt=""
+                 width="1080" height="1080" decoding="async">
           </div>
-          <div class="panel__logo" aria-hidden="true">
-            <img class="panel__logo-img" src="assets/img/GRM LiveRoom 1x1_00000.png" alt=""
-                 width="2160" height="2160">
+          <div class="panel__shade" aria-hidden="true"></div>
+
+          <div class="panel__content">
+            <span class="panel__no">02</span>
+            <span class="panel__brand">GRM</span>
+            <span class="panel__name">Live</span>
+            <p class="panel__tag">Rehearsals · Sessions ·<br>Live preparation</p>
+            <span class="panel__plus" aria-hidden="true"><span></span><span></span></span>
           </div>
-          <div class="panel__body">
-            <div class="panel__head">
-              <p class="panel__eyebrow">GRM · Division 02</p>
-              <h2 class="panel__name">Live</h2>
-            </div>
-            <div class="panel__list-wrap">
-              <div class="panel__stack">
-                <ul class="panel__list">
-                <li>Rehearsal space</li>
+
+          <div class="panel__detail">
+            <div class="panel__detail-in">
+              <ul class="panel__list">
+                <li>Professional rehearsal space</li>
                 <li>Rehearsals</li>
                 <li>Sessions</li>
                 <li>Live preparation</li>
-                </ul>
-                <a class="panel__cta" href="#studio">
-                  Visit the room <span aria-hidden="true">→</span>
-                </a>
-              </div>
+              </ul>
+              <a class="panel__cta" href="#studio">
+                Visit the room <span aria-hidden="true">→</span>
+              </a>
             </div>
           </div>
         </div>
 
-        <div class="panel panel--house" id="panelHouse" role="button" tabindex="0"
+        <div class="panel" id="panelHouse" role="button" tabindex="0"
              aria-expanded="false"
              aria-label="GRM House — record label, artists, releases">
-          <div class="panel__bg" aria-hidden="true">
-            <img class="panel__wash" src="assets/img/GRM Label 1x1_00000.png" alt=""
-                 width="2160" height="2160" decoding="async">
+          <div class="panel__bg">
+            <img class="panel__img" src="assets/img/grm-tile-1.png" alt=""
+                 width="1400" height="1400" decoding="async">
           </div>
-          <div class="panel__logo" aria-hidden="true">
-            <img class="panel__logo-img" src="assets/img/GRM Label 1x1_00000.png" alt=""
-                 width="2160" height="2160">
+          <div class="panel__shade" aria-hidden="true"></div>
+
+          <div class="panel__content">
+            <span class="panel__no">03</span>
+            <span class="panel__brand">GRM</span>
+            <span class="panel__name">House</span>
+            <p class="panel__tag">Record label · Artists ·<br>Releases</p>
+            <span class="panel__plus" aria-hidden="true"><span></span><span></span></span>
           </div>
-          <div class="panel__body">
-            <div class="panel__head">
-              <p class="panel__eyebrow">GRM · Division 03</p>
-              <h2 class="panel__name">House</h2>
-            </div>
-            <div class="panel__list-wrap">
-              <div class="panel__stack">
-                <ul class="panel__list">
+
+          <div class="panel__detail">
+            <div class="panel__detail-in">
+              <ul class="panel__list">
                 <li>Record label</li>
                 <li>Artists</li>
                 <li>Releases</li>
-                <li>Music &amp; culture</li>
-                </ul>
-                <a class="panel__cta" href="#work">
-                  See the work <span aria-hidden="true">→</span>
-                </a>
-              </div>
+                <li>Music & culture</li>
+              </ul>
+              <a class="panel__cta" href="#work">
+                See the work <span aria-hidden="true">→</span>
+              </a>
             </div>
           </div>
         </div>
