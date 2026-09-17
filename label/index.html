@@ -1,0 +1,177 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>GRM Label — the label</title>
+  <meta name="description" content="GRM Label is the record-label side of GRM — artists, releases and music from the GRM house.">
+  <meta name="theme-color" content="#050505">
+
+  <meta property="og:title" content="GRM Label — the label">
+  <meta property="og:description" content="Artists, releases and music — GRM's record label.">
+  <meta property="og:type" content="website">
+  <meta property="og:locale" content="en">
+  <meta property="og:url" content="/label/">
+  <meta property="og:image" content="../assets/img/grm-tile-2.png">
+
+  <link rel="icon" type="image/png" href="../assets/img/favicon.png">
+  <link rel="preload" as="image" href="../assets/img/GRM 4K 1x1_Transparent.png">
+
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Archivo:ital,wdth,wght@0,62.5,100..900;1,62.5,100..900&family=Inter:wght@300;400;500;600&display=swap">
+
+  <link rel="stylesheet" href="../css/style.css">
+</head>
+<body class="theme-label" data-root="../" data-page="label">
+
+  <a class="skip-link" href="#main">Skip to content</a>
+  <div class="progress" id="progress" aria-hidden="true"></div>
+
+  <!-- Shared header + mobile menu, injected by js/main.js -->
+  <div id="headerMount" data-root="../"></div>
+
+  <main id="main" tabindex="-1">
+
+    <!-- ============================================================
+         PAGE HERO — GRM Label
+         ============================================================ -->
+    <section class="page-hero" id="top">
+      <img class="page-hero__mark" src="../assets/img/GRM Label 1x1_00000.png" alt="" loading="lazy" width="2160" height="2160">
+      <div class="page-hero__inner">
+        <p class="eyebrow">GRM Label</p>
+        <h1 class="page-hero__title">The<br><em>label</em></h1>
+        <p class="page-hero__lead">
+          GRM's record label — artists, releases and music
+          from the house.
+        </p>
+      </div>
+    </section>
+
+    <!-- ============================================================
+         ABOUT THE LABEL — placeholder copy, not invented detail
+         ============================================================ -->
+    <section class="section" id="about">
+      <div class="container">
+        <div class="section-head reveal">
+          <div>
+            <p class="eyebrow">About</p>
+            <h2 class="section-head__title">Why a label</h2>
+          </div>
+          <p class="section-head__note">
+            The label lives next to the studio — close to where the work is made.
+          </p>
+        </div>
+
+        <div class="section__grid reveal">
+          <p class="section__lead">
+            GRM Label exists to release the music made in the room and the
+            artists trusted by the house.
+          </p>
+          <p class="section__ph">
+            <strong>Label story</strong> — replace with the label's intent,
+            its first signings and its outlook. No invented detail for now.
+          </p>
+        </div>
+      </div>
+    </section>
+
+    <!-- ============================================================
+         ARTISTS / RELEASES — placeholder roster cards
+         Slots only; no fake artist names.
+         ============================================================ -->
+    <section class="section" id="roster">
+      <div class="container">
+        <div class="section-head reveal">
+          <div>
+            <p class="eyebrow">Artists</p>
+            <h2 class="section-head__title">On the roster</h2>
+          </div>
+          <p class="section-head__note">
+            Artist and release slots — awaiting the label's first signings.
+          </p>
+        </div>
+      </div>
+
+      <div class="work__rail reveal" id="labelRail" tabindex="0" role="region" aria-label="Artists and releases — scroll horizontally">
+        <div class="work-card work-card--ph">
+          <div class="work-card__top">
+            <span class="work-card__no">Artist 01</span>
+            <span class="work-card__role">Roster</span>
+          </div>
+          <div class="work-card__media work-card__media--ph" data-ph="Artist artwork"></div>
+          <div class="work-card__meta">
+            <h3>Artist name</h3>
+            <p>Signed</p>
+          </div>
+        </div>
+
+        <div class="work-card work-card--ph">
+          <div class="work-card__top">
+            <span class="work-card__no">Artist 02</span>
+            <span class="work-card__role">Roster</span>
+          </div>
+          <div class="work-card__media work-card__media--ph" data-ph="Artist artwork"></div>
+          <div class="work-card__meta">
+            <h3>Artist name</h3>
+            <p>Signed</p>
+          </div>
+        </div>
+
+        <div class="work-card work-card--ph">
+          <div class="work-card__top">
+            <span class="work-card__no">Release 01</span>
+            <span class="work-card__role">Out now</span>
+          </div>
+          <div class="work-card__media work-card__media--ph" data-ph="Release artwork"></div>
+          <div class="work-card__meta">
+            <h3>Release title</h3>
+            <p>Artist · Year</p>
+          </div>
+        </div>
+
+        <div class="work-card work-card--ph">
+          <div class="work-card__top">
+            <span class="work-card__no">Release 02</span>
+            <span class="work-card__role">Upcoming</span>
+          </div>
+          <div class="work-card__media work-card__media--ph" data-ph="Release artwork"></div>
+          <div class="work-card__meta">
+            <h3>Release title</h3>
+            <p>Artist · Year</p>
+          </div>
+        </div>
+      </div>
+
+      <p class="work__hint">Slots — ready for the first signings</p>
+    </section>
+
+    <!-- ============================================================
+         SUBMISSIONS CTA — green tint via theme variables
+         ============================================================ -->
+    <section class="cta" id="submissions">
+      <div class="container">
+        <div class="cta__inner reveal">
+          <p class="eyebrow eyebrow--on-accent">Submissions</p>
+          <h2 class="cta__title">Send your<br>work</h2>
+          <a class="cta__mail" href="mailto:info@grmstudio.music">info@grmstudio.music</a>
+          <p class="cta__sub">
+            Releases · Submissions · General enquiries — for the label,
+            directed to the right hands at GRM.
+          </p>
+          <p class="cta__loc">
+            <span>Belgrade, Serbia</span>
+            <span>Labeled by the house</span>
+          </p>
+        </div>
+      </div>
+    </section>
+
+  </main>
+
+  <!-- Shared footer, injected by js/main.js -->
+  <div id="footerMount"></div>
+
+  <script src="../js/main.js"></script>
+</body>
+</html>

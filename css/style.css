@@ -1366,3 +1366,104 @@ body.menu-open .mobile-menu__link:nth-child(6) { transition-delay: 440ms; }
   .gallery__col--c .gallery__col-inner { transform: none; }
   * { scroll-behavior: auto !important; }
 }
+
+/* ============================================================
+   DIVISION THEMES — one shared design system, one accent each.
+   Home keeps the default brand green. Each division overrides the
+   accent tokens; every component that consumes tokens re-tints.
+   ============================================================ */
+body.theme-studio  { --accent: #7a5d11; --accent-deep: #3a2c05; --accent-lite: #f5cf6a; --accent-hair: rgba(245, 207, 106, 0.32); }
+body.theme-label   { --accent: #0c5e4a; --accent-deep: #062e24; --accent-lite: #2ee6a8; --accent-hair: rgba(46, 230, 168, 0.32); }
+body.theme-liveroom { --accent: #8a3d1a; --accent-deep: #4a1f0a; --accent-lite: #ff8f56; --accent-hair: rgba(255, 143, 86, 0.32); }
+
+/* ============================================================
+   HOMEPAGE — hero only, no scroll
+   ============================================================ */
+body[data-page="home"] { overflow: hidden; }
+body[data-page="home"] .progress { display: none; }
+
+/* ============================================================
+   PAGE HERO — division openers (Studio / Label / Liveroom)
+   ============================================================ */
+.page-hero {
+  position: relative;
+  display: flex;
+  align-items: flex-end;
+  min-height: 100svh;
+  padding: calc(var(--header-h) + clamp(60px, 12vh, 140px)) 0 clamp(48px, 8vh, 96px) 0;
+  overflow: hidden;
+  background: var(--bg);
+}
+.page-hero__inner {
+  width: var(--container);
+  margin-inline: auto;
+  position: relative;
+  z-index: 1;
+}
+.page-hero__mark {
+  position: absolute;
+  right: -6vw;
+  bottom: -10vw;
+  width: min(46vw, 560px);
+  opacity: 0.06;
+  pointer-events: none;
+  user-select: none;
+  mix-blend-mode: screen;
+}
+.page-hero__title {
+  font-family: var(--font-display);
+  font-stretch: 62.5%;
+  font-weight: 900;
+  font-size: clamp(3.6rem, 12vw, 11rem);
+  line-height: 0.9;
+  letter-spacing: 0.005em;
+  text-transform: uppercase;
+  margin-top: 16px;
+}
+.page-hero__title em { font-style: normal; color: var(--accent-lite); }
+.page-hero__lead {
+  max-width: 48ch;
+  color: var(--text-muted);
+  margin-top: 28px;
+  font-size: clamp(1rem, 1.4vw, 1.125rem);
+}
+
+/* ============================================================
+   SHARED SECTION SPACING + scaffold grids (Label / Liveroom)
+   ============================================================ */
+.section { padding-top: var(--sec); }
+.section__grid {
+  display: grid;
+  grid-template-columns: minmax(0, 2fr) minmax(0, 1fr);
+  column-gap: clamp(40px, 8vw, 120px);
+  row-gap: 26px;
+}
+.section__lead {
+  color: var(--text-muted);
+  font-size: clamp(1rem, 1.4vw, 1.125rem);
+}
+.section__ph {
+  color: var(--text-faint);
+  font-size: var(--f-small);
+  border-left: 1px solid var(--border-strong);
+  padding-left: 16px;
+}
+.section__ph strong { color: var(--text); font-weight: 500; }
+
+.work-card--ph { cursor: default; }
+
+/* mobile menu socials row */
+.mobile-menu__social { display: flex; flex-wrap: wrap; gap: 12px 26px; }
+
+/* ============================================================
+   RESPONSIVE — page hero + scaffold grids
+   ============================================================ */
+@media (max-width: 1000px) {
+  .page-hero__title { font-size: clamp(3rem, 10vw, 7rem); }
+  .section__grid { grid-template-columns: 1fr; }
+}
+
+@media (max-width: 640px) {
+  .page-hero { min-height: 80svh; }
+  .page-hero__title { font-size: clamp(2.6rem, 14vw, 4rem); }
+}

@@ -24,6 +24,102 @@
   var RAF = window.requestAnimationFrame ||
             function (cb) { return setTimeout(cb, 16); };
 
+  /* ---------- SHARED CHROME (header / mobile menu / footer) ----------
+     One source of truth for the site chrome, injected into
+     #headerMount / #footerMount on every page. data-root on the mount
+     resolves relative links from any route depth ("" on home, "../" on
+     division pages). data-page on <body> marks the active nav item. */
+  function injectSiteChrome() {
+    var headerMount = document.getElementById("headerMount");
+    var footerMount = document.getElementById("footerMount");
+    var root = headerMount ? (headerMount.getAttribute("data-root") || "") : "";
+    var page = document.body.getAttribute("data-page") || "";
+
+    var navItems = [
+      { key: "home", label: "Home", href: root + "index.html" },
+      { key: "studio", label: "Studio", href: root + "studio/" },
+      { key: "label", label: "Label", href: root + "label/" },
+      { key: "liveroom", label: "Liveroom", href: root + "liveroom/" }
+    ];
+
+    function navLinks(cls) {
+      return navItems.map(function (item) {
+        var current = item.key === page ? ' aria-current="true"' : "";
+        return '<a href="' + item.href + '" class="' + cls + '"' + current + '>' + item.label + "</a>";
+      }).join("");
+    }
+
+    if (headerMount) {
+      headerMount.innerHTML =
+        '<header class="site-header" id="siteHeader">' +
+          '<div class="site-header__inner">' +
+            '<a href="' + root + 'index.html" class="site-header__brand" aria-label="GRM — back to top">' +
+              '<img src="' + root + 'assets/img/grm-mark.png" alt="" width="38" height="38" class="site-header__mark">' +
+              '<span class="site-header__word">GRM HOUSE</span>' +
+            "</a>" +
+            '<nav class="site-nav" aria-label="Primary">' + navLinks("site-nav__link") + "</nav>" +
+            '<button class="site-nav-toggle" id="navToggle" aria-expanded="false" aria-controls="mobileMenu" aria-label="Open menu">' +
+              '<span class="site-nav-toggle__line"></span>' +
+              '<span class="site-nav-toggle__line"></span>' +
+            "</button>" +
+          "</div>" +
+        "</header>" +
+        '<div class="mobile-menu" id="mobileMenu" aria-hidden="true">' +
+          '<nav class="mobile-menu__nav" aria-label="Mobile">' + navLinks("mobile-menu__link") + "</nav>" +
+          '<div class="mobile-menu__foot">' +
+            "<span>Belgrade, Serbia</span>" +
+            '<div class="mobile-menu__social">' +
+              '<a href="#contact" rel="noopener">Instagram</a>' +
+              '<a href="#contact" rel="noopener">YouTube</a>' +
+            "</div>" +
+            '<a href="mailto:info@grmstudio.music" class="is-mail">info@grmstudio.music</a>' +
+          "</div>" +
+        "</div>";
+    }
+
+    if (footerMount) {
+      footerMount.innerHTML =
+        '<footer class="site-footer" id="siteFooter">' +
+          '<img class="site-footer__watermark" src="' + root + 'assets/img/GRM 4K 1x1_Transparent.png"' +
+               ' alt="" loading="lazy" width="2160" height="2160">' +
+          '<div class="container">' +
+            '<div class="site-footer__top">' +
+              '<a href="' + root + 'index.html" class="site-footer__brand" aria-label="GRM — back to top">' +
+                '<img src="' + root + 'assets/img/grm-mark.png" alt="" width="46" height="46">' +
+                "<span>GRM</span>" +
+              "</a>" +
+              '<p class="site-footer__lede">' +
+                "An umbrella house in Belgrade — recording &amp; production, a record label, and a live rehearsal room under one GRM." +
+              "</p>" +
+              '<div class="site-footer__nav">' +
+                '<span class="site-footer__col-label">GRM</span>' +
+                '<a href="' + root + 'index.html">Home</a>' +
+                '<a href="' + root + 'studio/">Studio</a>' +
+                '<a href="' + root + 'label/">Label</a>' +
+                '<a href="' + root + 'liveroom/">Liveroom</a>' +
+              "</div>" +
+              '<div class="site-footer__contact">' +
+                '<span class="site-footer__col-label">Contact</span>' +
+                "<p>Belgrade, Serbia</p>" +
+                '<a href="mailto:info@grmstudio.music">info@grmstudio.music</a>' +
+              "</div>" +
+              '<div class="site-footer__social">' +
+                '<span class="site-footer__col-label">Follow</span>' +
+                '<a href="#contact" rel="noopener">Instagram</a>' +
+                '<a href="#contact" rel="noopener">YouTube</a>' +
+              "</div>" +
+            "</div>" +
+            '<div class="site-footer__bottom">' +
+              '<p>© <span id="year">2026</span> GRM — All rights reserved</p>' +
+              '<a href="#top" class="site-footer__top-link">Back to top</a>' +
+            "</div>" +
+          "</div>" +
+        "</footer>";
+    }
+  }
+
+  injectSiteChrome();
+
   /* ---------- SHARED HELPERS ---------- */
   function onReady(fn) {
     if (document.readyState === "loading") {
