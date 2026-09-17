@@ -398,16 +398,13 @@ body.menu-open .mobile-menu__link:nth-child(6) { transition-delay: 440ms; }
 
 /* ============================================================
    HERO — three GRM divisions, one quiet canvas
-   Rest: only the header and the three GRM logo plates, stacked
-   around the visual centre in a tight composition (green centred,
-   orange offset one way, yellow offset the other). The hero is
-   three full-height hover zones; hovering a zone widens it (~62%)
-   while THAT division's logo travels out of the stack into its
-   zone and its services reveal. The plate is a single element
-   that moves — it is always present, never fades in, never
-   duplicates. The other two plates stay in the stack and simply
-   recede. On mobile (<768px) the same zones become a vertical
-   tap accordion that keeps the stacked-plate start.
+   Rest: only the three coloured GRM logo plates stacked around
+   the visual centre. The hero is three full-height interactive
+   zones; hovering a zone widens it (~62%) while that division's
+   logo travels out of the stack into its zone and its services
+   reveal. State comes from JS classes: .panel.is-expanded plus
+   .hero.is-engaged (any panel open). On mobile (<768px) the same
+   panels become a vertical accordion.
    ============================================================ */
 .hero {
   position: relative;
@@ -421,24 +418,22 @@ body.menu-open .mobile-menu__link:nth-child(6) { transition-delay: 440ms; }
 
   /* logo plate geometry (shared by the three panels) */
   --logo: clamp(84px, 16vh, 150px);
+  --logo-gap: clamp(48px, 10vh, 88px);
   --zone-y: clamp(92px, 16vh, 168px);
 
-  /* rest = three plates in a tight vertical stack around the
-     visual centre. Each is offset slightly so the stack reads as
-     one art-directed composition, not three buttons: green sits
-     centre, orange leans left, yellow leans right. The plates
-     overlap part of each other (physical marks). */
-  --stack-jiggle: clamp(20px, 2.4vw, 34px);
-  --sx-prod: calc(50vw - var(--logo) / 2 + var(--stack-jiggle));
-  --sx-live: calc(16.6667vw - var(--logo) / 2 - var(--stack-jiggle));
+  /* rest = vertical stack centred on the visual middle.
+     --sx/--sy park each plate in that stack from its own
+     panel's origin (panels are equal thirds at rest). */
+  --sx-prod: calc(50vw - var(--logo) / 2);
+  --sx-live: calc(16.6667vw - var(--logo) / 2);
   --sx-house: calc(-16.6667vw - var(--logo) / 2);
   --sy-mid: calc(50vh - var(--logo) / 2);
-  --sy-step: calc(var(--logo) * 0.82);
+  --sy-step: calc(var(--logo) + var(--logo-gap));
 
-  /* engaged = the ACTIVE plate settles into the top of its own
-     zone (relative to the panel origin, which tracks the zone
-     edges). Only that plate moves; the others stay in the stack. */
+  /* engaged = each plate settles into the top of its own zone
+     (relative to the panel origin, which tracks the zone edges) */
   --tx: var(--gutter);
+  --tx-sm: clamp(16px, 2.4vw, 30px);
   --ty: var(--zone-y);
 }
 .hero__panels {
@@ -466,10 +461,9 @@ body.menu-open .mobile-menu__link:nth-child(6) { transition-delay: 440ms; }
   box-shadow: inset 0 0 0 2px rgba(27, 166, 154, 0.55);
   z-index: 3;
 }
-/* no dividers between zones — the hero zone boundaries stay
-   invisible until the active one expands */
+.hero__panels .panel + .panel { border-left: 1px solid var(--border); }
 
-/* faint colour identity of the expanded division only */
+/* faint colour identity of the expanded division */
 .panel__bg {
   position: absolute;
   inset: 0;
@@ -488,13 +482,15 @@ body.menu-open .mobile-menu__link:nth-child(6) { transition-delay: 440ms; }
   filter: saturate(0.85);
 }
 .panel.is-expanded .panel__bg { opacity: 1; }
+.hero.is-engaged .panel:not(.is-expanded) .panel__bg { opacity: 0.5; }
 
 /* ---------- logo plates ----------
    Each panel carries its plate absolutely at the panel origin.
-   At rest the three plates sit in their stacked composition via
-   per-panel --sx/--sy. When a zone is engaged only its own plate
-   travels to the top of the zone; the plates are never hidden,
-   faded out or duplicated. */
+   Rest: plates are offset (per-panel --sx/--sy) into a single
+   vertical stack around the visual centre. Engaged: they fan out
+   to the tops of their zones — the active plate full strength,
+   the others quiet and slightly smaller so they stay inside the
+   narrowed zones. */
 .panel__logo {
   position: absolute;
   top: 0;
@@ -503,6 +499,13 @@ body.menu-open .mobile-menu__link:nth-child(6) { transition-delay: 440ms; }
   height: var(--logo);
   z-index: 3;
   pointer-events: none;
+}
+html.js .panel__logo { animation: heroLogoIn 1000ms var(--ease-out) both; }
+.panel--live .panel__logo { animation-delay: 110ms; }
+.panel--house .panel__logo { animation-delay: 220ms; }
+@keyframes heroLogoIn {
+  from { opacity: 0; }
+  to   { opacity: 1; }
 }
 .panel__logo-img {
   position: absolute;
@@ -521,14 +524,13 @@ body.menu-open .mobile-menu__link:nth-child(6) { transition-delay: 440ms; }
 .panel--live .panel__logo-img { --sx: var(--sx-live); --sy: var(--sy-mid); }
 .panel--house .panel__logo-img { --sx: var(--sx-house); --sy: calc(var(--sy-mid) + var(--sy-step)); }
 
-/* only the engaged panel's plate moves to its zone top */
-.panel.is-expanded .panel__logo-img {
+.hero.is-engaged .panel__logo-img {
   transform: translate(var(--tx), var(--ty)) scale(1);
 }
-/* the other plates stay in the stack, visually secondary */
 .hero.is-engaged .panel:not(.is-expanded) .panel__logo-img {
-  opacity: 0.55;
-  filter: saturate(0.55) brightness(0.85);
+  transform: translate(var(--tx-sm), var(--ty)) scale(0.86);
+  opacity: 0.85;
+  filter: saturate(0.6) brightness(0.9);
 }
 
 /* ---------- division content ----------
@@ -1314,54 +1316,93 @@ body.menu-open .mobile-menu__link:nth-child(6) { transition-delay: 440ms; }
   .hero {
     height: auto;
     max-height: none;
-    overflow: visible;
-    contain: none;
-
-    /* smaller plates. The three tap rows (equal thirds at rest)
-       are the plates' containing blocks, so each plate is parked
-       in a shared stack around the hero's vertical centre via a
-       per-row offset. */
-    --logo: clamp(56px, 13vw, 84px);
-    --stack-jiggle: clamp(12px, 2.4vw, 22px);
-    --sy-step: calc(var(--logo) * 0.82);
-
-    /* all rows span the full width, so the shared horizontal
-       centre works from every row's origin */
-    --sx-prod: calc(50vw - var(--logo) / 2 + var(--stack-jiggle));
-    --sx-live: calc(50vw - var(--logo) / 2 - var(--stack-jiggle));
-    --sx-house: calc(50vw - var(--logo) / 2);
   }
 
   .hero__panels {
     flex-direction: column;
-    min-height: calc(100svh - var(--header-h));
-    padding-top: var(--header-h);
+    height: auto;
+    min-height: 100svh;
+    padding-top: calc(var(--header-h) + 1px);
   }
 
-  /* three full-height tap zones; the stacked plates stay
-     transform-driven just like desktop, so tapping a zone moves
-     its plate to the top of that zone and reveals the division */
-  .panel { min-height: 0; cursor: pointer; }
-  .panel.is-expanded { flex-grow: 3.2; }
+  /* accordion row: logo plate + identity always visible,
+     services list collapses/expands below the header row */
+  .panel {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    min-height: 84px;
+    cursor: pointer;
+  }
+  .hero__panels .panel + .panel { border-left: none; border-top: 1px solid var(--border); }
 
-  /* per-row rest position — places the plate in the shared stack
-     measured from its own row's top (rows are equal at rest) */
-  .panel--prod .panel__logo-img { --sy: calc(var(--h-row) * 1.5 - var(--logo) / 2 - var(--sy-step)); }
-  .panel--live .panel__logo-img { --sy: calc(var(--h-row) * 0.5 - var(--logo) / 2); }
-  .panel--house .panel__logo-img { --sy: calc(var(--h-row) * -0.5 - var(--logo) / 2 + var(--sy-step)); }
+  .panel__bg { opacity: 0.3; }
+  .panel.is-expanded .panel__bg { opacity: 0.45; }
+
+  .panel__logo {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    display: flex;
+    align-items: center;
+    padding-left: var(--gutter);
+    z-index: 3;
+    width: auto;
+    animation: none !important;
+  }
+  .panel__logo-img {
+    position: static;
+    width: 46px;
+    height: 46px;
+    transform: none !important;
+    opacity: 1 !important;
+    filter: none !important;
+  }
+  .hero.is-engaged .panel:not(.is-expanded) .panel__logo-img,
+  .hero.is-engaged .panel__logo-img { opacity: 1; }
 
   .panel__body {
-    left: var(--gutter);
-    right: var(--gutter);
-    top: calc(var(--ty) + var(--logo) + clamp(24px, 4vh, 40px));
+    position: relative;
+    left: auto;
+    top: auto;
     max-width: none;
+    width: 100%;
+    padding: 16px var(--gutter);
+    padding-left: calc(var(--gutter) + 46px + 16px);
+    opacity: 1;
+    transform: none;
+    visibility: visible;
+    pointer-events: auto;
+    transition: none;
+    z-index: 2;
   }
-  .panel__eyebrow { font-size: 0.6rem; }
-  .panel__name { font-size: clamp(1.2rem, 7vw, 1.8rem); margin-bottom: 20px; }
+  .panel__eyebrow { margin-bottom: 4px; font-size: 0.56rem; letter-spacing: 0.3em; }
+  .panel__name { margin: 0; font-size: clamp(1.15rem, 6.4vw, 1.7rem); }
+
+  .panel__list-wrap {
+    display: grid;
+    grid-template-rows: 0fr;
+    opacity: 0;
+    visibility: hidden;
+    transition: grid-template-rows 500ms var(--ease-hero),
+                opacity 360ms ease,
+                visibility 0s linear 500ms;
+  }
+  .panel__stack { overflow: hidden; min-height: 0; }
+  .panel.is-expanded .panel__list-wrap {
+    grid-template-rows: 1fr;
+    opacity: 1;
+    visibility: visible;
+    transition: grid-template-rows 500ms var(--ease-hero),
+                opacity 380ms ease 140ms,
+                visibility 0s linear;
+  }
   .panel__list {
+    margin: 18px 0 22px;
     gap: 8px 14px;
-    font-size: 0.88rem;
-    margin-bottom: 22px;
+    font-size: 0.86rem;
   }
   .panel__cta { font-size: 0.7rem; }
 }
@@ -1376,8 +1417,11 @@ body.menu-open .mobile-menu__link:nth-child(6) { transition-delay: 440ms; }
   }
   .hero {
     --logo: clamp(64px, 12vh, 110px);
+    --logo-gap: clamp(38px, 7vh, 66px);
     --zone-y: clamp(84px, 13vh, 132px);
-    --stack-jiggle: clamp(14px, 2vw, 26px);
+  }
+  .hero.is-engaged .panel:not(.is-expanded) .panel__logo-img {
+    transform: translate(var(--tx-sm), var(--ty)) scale(0.68);
   }
   .site-nav, .site-header__social { display: none; }
   .site-nav-toggle { display: flex; }
@@ -1485,23 +1529,4 @@ body.menu-open .mobile-menu__link:nth-child(6) { transition-delay: 440ms; }
   .gallery__col--b .gallery__col-inner,
   .gallery__col--c .gallery__col-inner { transform: none; }
   * { scroll-behavior: auto !important; }
-}
-
-/* ============================================================
-   HERO MOBILE OVERRIDES (redeclared after the ≤1000px block so
-   the phone-sized plates win over the tablet values)
-   ============================================================ */
-@media (max-width: 767px) {
-  .hero {
-    --logo: clamp(56px, 13vw, 84px);
-    --stack-jiggle: clamp(12px, 2.4vw, 22px);
-    --sy-step: calc(var(--logo) * 0.82);
-    /* rows are a third of the hero's usable body: the panels
-       container is (100svh - header) tall with its own header-
-       height top padding, so the actual shared row height is
-       (100svh - 2 * header) / 3 */
-    --h-row: calc((100svh - var(--header-h) * 2) / 3);
-    /* the active plate settles just below the fixed header */
-    --ty: calc(var(--header-h) + clamp(16px, 3vh, 32px));
-  }
 }
