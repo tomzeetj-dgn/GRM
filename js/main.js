@@ -49,6 +49,11 @@
       }).join("");
     }
 
+    /* The hero landing page keeps the header free of navigation — the three
+       division panels are the navigation there. Division pages get the
+       full chrome. */
+    var isHome = (page === "home" || page === "");
+
     if (headerMount) {
       headerMount.innerHTML =
         '<header class="site-header" id="siteHeader">' +
@@ -57,24 +62,26 @@
               '<img src="' + root + 'assets/img/grm-mark.png" alt="" width="38" height="38" class="site-header__mark">' +
               '<span class="site-header__word">GRM HOUSE</span>' +
             "</a>" +
-            '<nav class="site-nav" aria-label="Primary">' + navLinks("site-nav__link") + "</nav>" +
-            '<button class="site-nav-toggle" id="navToggle" aria-expanded="false" aria-controls="mobileMenu" aria-label="Open menu">' +
-              '<span class="site-nav-toggle__line"></span>' +
-              '<span class="site-nav-toggle__line"></span>' +
-            "</button>" +
+            (isHome ? "" :
+              '<nav class="site-nav" aria-label="Primary">' + navLinks("site-nav__link") + "</nav>" +
+              '<button class="site-nav-toggle" id="navToggle" aria-expanded="false" aria-controls="mobileMenu" aria-label="Open menu">' +
+                '<span class="site-nav-toggle__line"></span>' +
+                '<span class="site-nav-toggle__line"></span>' +
+              "</button>") +
           "</div>" +
         "</header>" +
-        '<div class="mobile-menu" id="mobileMenu" aria-hidden="true">' +
-          '<nav class="mobile-menu__nav" aria-label="Mobile">' + navLinks("mobile-menu__link") + "</nav>" +
-          '<div class="mobile-menu__foot">' +
-            "<span>Belgrade, Serbia</span>" +
-            '<div class="mobile-menu__social">' +
-              '<a href="#contact" rel="noopener">Instagram</a>' +
-              '<a href="#contact" rel="noopener">YouTube</a>' +
+        (isHome ? "" :
+          '<div class="mobile-menu" id="mobileMenu" aria-hidden="true">' +
+            '<nav class="mobile-menu__nav" aria-label="Mobile">' + navLinks("mobile-menu__link") + "</nav>" +
+            '<div class="mobile-menu__foot">' +
+              "<span>Belgrade, Serbia</span>" +
+              '<div class="mobile-menu__social">' +
+                '<a href="#contact" rel="noopener">Instagram</a>' +
+                '<a href="#contact" rel="noopener">YouTube</a>' +
+              "</div>" +
+              '<a href="mailto:info@grmstudio.music" class="is-mail">info@grmstudio.music</a>' +
             "</div>" +
-            '<a href="mailto:info@grmstudio.music" class="is-mail">info@grmstudio.music</a>' +
-          "</div>" +
-        "</div>";
+          "</div>");
     }
 
     if (footerMount) {
