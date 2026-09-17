@@ -539,6 +539,13 @@ body.menu-open .mobile-menu__link:nth-child(6) { transition-delay: 440ms; }
   max-width: 28em;
 }
 
+/* Per-panel title alignment: Studio left, Label centered, Liveroom right.
+   Scoped to the side-by-side hero — the mobile column layout is untouched. */
+@media (min-width: 768px) {
+  #panelHouse .panel__copy { text-align: center; }
+  #panelLive .panel__copy { text-align: right; }
+}
+
 /* ============================================================
    MARQUEE BAND — the five disciplines, once, slowly.
    Editorial divider, not decoration.
