@@ -279,10 +279,8 @@
         panel.style.setProperty("--panel-left", (rect.left - heroRect.left) + "px");
         panel.style.setProperty("--panel-top", (rect.top - heroRect.top) + "px");
       });
-      if (panels.some(function (panel) { return panel.classList.contains("is-expanded"); })) {
-        cancelAnimationFrame(logoFrame);
-        logoFrame = requestAnimationFrame(syncLogoWindows);
-      }
+      cancelAnimationFrame(logoFrame);
+      logoFrame = requestAnimationFrame(syncLogoWindows);
     }
 
     function setExpanded(panel, expanded, opts) {
@@ -309,14 +307,6 @@
     function expand(panel) { setExpanded(panel, true); }
     function collapse(panel) { setExpanded(panel, false); }
 
-    function resetNeutralLogoOrigins() {
-      if (panels.some(function (p) { return p.classList.contains("is-expanded"); })) return;
-      panels.forEach(function (panel, i) {
-        panel.style.setProperty("--panel-left", (i * 33.333) + "vw");
-        panel.style.setProperty("--panel-top", "0px");
-      });
-    }
-
     function settle() {
       panels.forEach(function (p) {
         if (p.classList.contains("is-expanded") &&
@@ -330,7 +320,6 @@
     // pointer
     root.addEventListener("mouseleave", function () {
       settle();
-      requestAnimationFrame(resetNeutralLogoOrigins);
     });
     panels.forEach(function (panel) {
       panel.addEventListener("mouseenter", function () {
