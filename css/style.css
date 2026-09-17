@@ -520,9 +520,9 @@ body.menu-open .mobile-menu__link:nth-child(6) { transition-delay: 440ms; }
   transform: translate(-50%, -50%);
   mix-blend-mode: screen;
 }
-.panel__logo-window--studio img { filter: drop-shadow(0 0 30px rgba(251, 212, 104, 0.55)); }
-.panel__logo-window--label img { filter: drop-shadow(0 0 34px rgba(28, 255, 173, 0.6)); }
-.panel__logo-window--live img { filter: drop-shadow(0 0 30px rgba(250, 145, 99, 0.55)); }
+.panel__logo-window--studio img { filter: none; }
+.panel__logo-window--label img { filter: none; }
+.panel__logo-window--live img { filter: none; }
 
 
 .panel__content {
