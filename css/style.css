@@ -545,9 +545,9 @@ body.menu-open .mobile-menu__link:nth-child(6) { transition-delay: 440ms; }
 }
 
 /* Per-panel title alignment: Studio left, Label centered, Liveroom right.
-   The small description becomes an editorial caption below the title —
-   clear breathing room, a short accent rule at its opening, and fine
-   uppercase type. Scoped to the side-by-side hero; mobile is untouched. */
+   The small description reads as a caption below the title: clear breathing
+   room, an accent overline that tracks the same alignment as the title, and
+   fine uppercase type. Text edges line up with the titles. Mobile untouched. */
 @media (min-width: 768px) {
   #panelHouse .panel__copy { text-align: center; }
   #panelLive .panel__copy { text-align: right; }
@@ -563,14 +563,15 @@ body.menu-open .mobile-menu__link:nth-child(6) { transition-delay: 440ms; }
   }
   .panel__tag::before {
     content: "";
-    display: inline-block;
-    vertical-align: middle;
-    width: clamp(20px, 3cqw, 36px);
+    display: block;
     height: 2px;
-    margin-right: 0.9em;
+    width: clamp(20px, 3cqw, 36px);
+    margin-bottom: 10px;
     background: var(--accent-lite);
     opacity: 0.85;
   }
+  #panelHouse .panel__tag::before { margin-right: auto; margin-left: auto; }
+  #panelLive .panel__tag::before { margin-left: auto; }
 }
 
 /* ============================================================
