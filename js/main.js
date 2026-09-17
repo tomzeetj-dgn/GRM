@@ -269,6 +269,22 @@
     if (!root) return;
 
     var panels = Array.prototype.slice.call(root.querySelectorAll(".panel"));
+    var hero = document.getElementById("top");
+    var logoFrame = 0;
+
+    function syncLogoWindows() {
+      var heroRect = hero.getBoundingClientRect();
+      panels.forEach(function (panel) {
+        var rect = panel.getBoundingClientRect();
+        panel.style.setProperty("--panel-left", (rect.left - heroRect.left) + "px");
+        panel.style.setProperty("--panel-top", (rect.top - heroRect.top) + "px");
+      });
+      if (panels.some(function (panel) { return panel.classList.contains("is-expanded"); })) {
+        cancelAnimationFrame(logoFrame);
+        logoFrame = requestAnimationFrame(syncLogoWindows);
+      }
+    }
+
     function setExpanded(panel, expanded, opts) {
       opts = opts || {};
       var was = panel.classList.contains("is-expanded");
@@ -276,6 +292,7 @@
 
       panel.classList.toggle("is-expanded", expanded);
       panel.setAttribute("aria-expanded", String(expanded));
+      syncLogoWindows();
 
       // keep only one panel open at a time (accordion semantics)
       if (expanded) {
@@ -311,6 +328,8 @@
         expand(panel);
       });
     });
+    window.addEventListener("resize", syncLogoWindows);
+    syncLogoWindows();
 
     // keyboard
     root.addEventListener("keydown", function (e) {
