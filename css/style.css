@@ -524,6 +524,28 @@ body.menu-open .mobile-menu__link:nth-child(6) { transition-delay: 440ms; }
 .panel__logo-window--label img { filter: none; }
 .panel__logo-window--live img { filter: none; }
 
+.panel__logo-window .panel__logo--glow {
+  position: absolute;
+  opacity: 0;
+  transition: opacity 560ms var(--ease-hero) 60ms;
+}
+.panel:hover .panel__logo--glow,
+.panel:focus-visible .panel__logo--glow,
+.panel.is-expanded .panel__logo--glow {
+  opacity: 1;
+}
+@media (prefers-reduced-motion: reduce) {
+  .panel__logo-window .panel__logo--glow { transition: none; }
+}
+
+.panel__logo-window .panel__logo--glow {
+  opacity: 0;
+  transition: opacity 520ms var(--ease-hero) 40ms;
+}
+.panel:hover .panel__logo--glow,
+.panel:focus-visible .panel__logo--glow,
+.panel.is-expanded .panel__logo--glow { opacity: 1; }
+
 
 .panel__content {
   position: relative;
