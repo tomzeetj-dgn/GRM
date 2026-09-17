@@ -253,7 +253,7 @@ html.js .reveal[data-delay="3"] { transition-delay: 360ms; }
   gap: 12px;
   line-height: 1;
 }
-.site-header__mark { width: 38px; height: 38px; }
+.site-header__mark { width: 1.55rem; height: 1.55rem; flex: none; }
 .site-header__word {
   font-family: var(--font-display);
   font-stretch: 62.5%;
