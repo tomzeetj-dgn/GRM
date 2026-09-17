@@ -375,6 +375,14 @@
     var hero = document.getElementById("top");
     var logoFrame = 0;
 
+    /* Route-transition lock (§13/14/29): a takeover seam that sits ON TOP
+       of the locked hero accordion. While it is set, mouseleave must NOT
+       collapse the selected panel — the panel owns the animation until the
+       real link navigation commits. The hero's own hover/show/hide behavior
+       is NEVER touched; this flag only short-circuits `settle()` during an
+       explicit user-initiated navigation. */
+    var isTransitioning = false;
+
     function syncLogoWindows() {
       var heroRect = hero.getBoundingClientRect();
       panels.forEach(function (panel) {
@@ -411,6 +419,7 @@
     function collapse(panel) { setExpanded(panel, false); }
 
     function settle() {
+      if (isTransitioning) return; /* §14/13: takeover owns the motion */
       panels.forEach(function (p) {
         if (p.classList.contains("is-expanded") &&
             document.activeElement !== p &&
@@ -431,6 +440,38 @@
     });
     window.addEventListener("resize", syncLogoWindows);
     syncLogoWindows();
+
+    // route-transition seam (§4/5 · §13/14 · §29): click is the natural
+    // final stage of the accordion — it does NOT reset to neutral first (§3).
+    // The selected panel owns the motion: we take the same accordion path the
+    // hover already started, let it keep expanding (flex-grow continuation,
+    // no resize, no neutral detour), and ONLY when the takeover timing has
+    // passed do we commit the real link navigation.
+    root.addEventListener("click", function (e) {
+      var panel = e.target.closest(".panel");
+      if (!panel) return; // not a panel — leave default alone
+
+      // §24 reduced motion: no sweeping takeover, navigate immediately
+      if (prefersReduced.matches) return;
+      // §13/14 double-click / repeat guard while the takeover owns motion
+      if (isTransitioning) { e.preventDefault(); return; }
+
+      e.preventDefault(); // we time the real navigation below
+      isTransitioning = true;
+
+      // continue from the CURRENT accordion state — if this panel is already
+      // expanded (hovered), expand() is a no-op, so there is NO reset; if it
+      // is not yet active, this is the same expand the hover would have
+      // produced, so the accordion still owns the motion.
+      expand(panel);
+
+      // takeover continues to full ownership, then a short logo hold, then
+      // commit the destination (real <a> href, real history — Pages-safe)
+      setTimeout(function () {
+        window.location.href = panel.getAttribute("href");
+      }, 760); // ~650ms continuation + ~120ms logo hold (§11, keep under 1s)
+
+    });
 
     // keyboard
     root.addEventListener("keydown", function (e) {

@@ -460,6 +460,28 @@ body.menu-open .mobile-menu__link:nth-child(6) { transition-delay: 440ms; }
   -webkit-tap-highlight-color: transparent;
 }
 .panel.is-expanded { flex-grow: 3.2; }
+
+/* §4/5/13 takeover continuation — the ONLY flex-grow override beyond 3.2,
+   and it lives INSIDE the route-selection lock (§13/14/29), so it engages
+   exclusively while js/main.js' takeover owns the motion. It picks up from
+   the accordion's CURRENT flex-grow (3.2 if hovered, or the same value the
+   hover would have produced on first expand) and uses the hero's own
+   flex-grow transition + easing, so the panel keeps sweeping to full viewport
+   with the EXACT same motion character — no reset (§3), no new engine.
+   The selected panel owns this: while it is set the accordion's
+   hover/mouseleave logic is untouched (that's js/main.js' job); this rule
+   only lets an expanded panel run its existing accordion motion all the way
+   to ownership instead of stopping at 3.2. */
+.hero.is-takeover .panel.is-expanded { flex-grow: 46; }
+/* take none of the takeover space: the other two fold down to their true
+   starting sliver so the selected panel's wipe has nothing to collide with */
+.hero.is-takeover .panel:not(.is-expanded) { flex-grow: 0; min-width: 0; }
+
+@media (prefers-reduced-motion: reduce) {
+  /* §24: js/main.js navigates immediately for reduced motion, so this class
+     never lands here — kept as a belt-and-braces guard anyway. */
+  .hero.is-takeover { transition: none; }
+}
 .hero__panels:not(:hover) .panel:not(:focus-visible) { outline: none; }
 .panel:focus-visible {
   box-shadow: inset 0 0 0 2px var(--accent-lite);
