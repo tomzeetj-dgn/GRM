@@ -545,10 +545,32 @@ body.menu-open .mobile-menu__link:nth-child(6) { transition-delay: 440ms; }
 }
 
 /* Per-panel title alignment: Studio left, Label centered, Liveroom right.
-   Scoped to the side-by-side hero — the mobile column layout is untouched. */
+   The small description becomes an editorial caption below the title —
+   clear breathing room, a short accent rule at its opening, and fine
+   uppercase type. Scoped to the side-by-side hero; mobile is untouched. */
 @media (min-width: 768px) {
   #panelHouse .panel__copy { text-align: center; }
   #panelLive .panel__copy { text-align: right; }
+
+  .panel__tag {
+    margin-top: clamp(18px, 2.6cqw, 30px);
+    max-width: 30em;
+    font-size: clamp(0.72rem, 2.2vw, 0.92rem);
+    font-size: clamp(0.72rem, 2.2cqw, 0.92rem);
+    letter-spacing: 0.13em;
+    line-height: 1.55;
+    text-transform: uppercase;
+  }
+  .panel__tag::before {
+    content: "";
+    display: inline-block;
+    vertical-align: middle;
+    width: clamp(20px, 3cqw, 36px);
+    height: 2px;
+    margin-right: 0.9em;
+    background: var(--accent-lite);
+    opacity: 0.85;
+  }
 }
 
 /* ============================================================
