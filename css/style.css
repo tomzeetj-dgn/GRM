@@ -712,6 +712,8 @@ body.menu-open .mobile-menu__link:nth-child(6) { transition-delay: 440ms; }
 @media (min-width: 768px) {
   #panelHouse .panel__copy { text-align: center; }
   #panelLive .panel__copy { text-align: right; }
+  #panelHouse .panel__tag { text-align: center; }
+  #panelLive .panel__tag { text-align: right; }
 
   .panel__tag {
     margin-top: clamp(18px, 2.6cqw, 30px);
