@@ -552,6 +552,8 @@
      survive those (§23/24/§29). */
   onReady(function () {
     if (document.body.getAttribute("data-page") === "label") {
+      if (window.__grmLabelArrivalStarted) return;
+      window.__grmLabelArrivalStarted = true;
       var labelArrival = sessionStorage.getItem("grm-arrival");
       if (labelArrival !== "label") return;
       sessionStorage.removeItem("grm-arrival");
