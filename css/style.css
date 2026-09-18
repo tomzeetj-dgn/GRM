@@ -698,6 +698,17 @@ body.is-shared-logo-pending .division-minimal-hero__scroll { visibility: hidden;
 .division-minimal-hero__scroll { position: absolute; top: calc(50% + clamp(220px, 25vh, 320px)); left: 50%; display: flex; flex-direction: column; align-items: center; gap: 12px; color: var(--text-faint); font-size: .62rem; font-weight: 500; letter-spacing: .2em; text-transform: uppercase; transform: translateX(-50%); }
 .division-minimal-hero__scroll i { display: block; width: 1px; height: 42px; overflow: hidden; background: var(--border-strong); }
 .division-minimal-hero__scroll i::after { content: ""; display: block; width: 1px; height: 18px; background: var(--accent-lite); animation: studio-scroll-line 2.4s var(--ease-out) infinite; }
+body.is-division-entering .site-header,
+body.is-division-entering .division-minimal-hero__title,
+body.is-division-entering .division-minimal-hero__lockup h1,
+body.is-division-entering .division-minimal-hero__scroll {
+  opacity: 0;
+  transition: opacity 1400ms ease;
+}
+body.is-division-enter-header .site-header,
+body.is-division-enter-title .division-minimal-hero__title,
+body.is-division-enter-descriptor .division-minimal-hero__lockup h1,
+body.is-division-enter-scroll .division-minimal-hero__scroll { opacity: 1; }
 @keyframes studio-scroll-line {
   from { transform: translateY(-18px); }
   55%, to { transform: translateY(42px); }
