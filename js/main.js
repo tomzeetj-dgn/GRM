@@ -475,10 +475,10 @@
         // (§24 navigates immediately above), and it is cleared on read, so
         // direct load / refresh / back never replay the arrival (§23).
         var destination = panel.getAttribute("href");
+        var sourceLogo = panel.querySelector(".panel__logo--glow");
+        var sourceRect = sourceLogo && sourceLogo.getBoundingClientRect();
         if (destination === "studio/") {
           sessionStorage.setItem("grm-arrival", "studio");
-           var sourceLogo = panel.querySelector(".panel__logo--glow");
-           var sourceRect = sourceLogo && sourceLogo.getBoundingClientRect();
           if (sourceRect) {
             sessionStorage.setItem("grm-studio-home-logo-width", String(sourceRect.width));
           }
@@ -492,9 +492,10 @@
           return;
         }
         if (destination === "label/") {
-          sessionStorage.setItem("grm-label-home-logo-width", String(sourceRect && sourceRect.width || 0));
+          sessionStorage.setItem("grm-arrival", "label");
+          if (sourceRect) sessionStorage.setItem("grm-label-home-logo-width", String(sourceRect.width));
           if (sourceLogo) sourceLogo.classList.add("is-label-logo-committed");
-          window.location.href = destination;
+          setTimeout(function () { window.location.href = destination; }, 820);
           return;
         }
         window.location.href = destination;
