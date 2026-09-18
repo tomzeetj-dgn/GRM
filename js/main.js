@@ -580,12 +580,12 @@
       document.fonts.ready.then(function () {
         requestAnimationFrame(function () {
           var endRect = labelLogo.getBoundingClientRect();
-          overlay.style.transition = "left 700ms cubic-bezier(0.22, 1, 0.36, 1), top 700ms cubic-bezier(0.22, 1, 0.36, 1), width 700ms cubic-bezier(0.22, 1, 0.36, 1), height 700ms cubic-bezier(0.22, 1, 0.36, 1)";
+          overlay.style.transition = "none";
           overlay.style.left = endRect.left + "px";
           overlay.style.top = endRect.top + "px";
           overlay.style.width = endRect.width + "px";
           overlay.style.height = endRect.height + "px";
-          overlay.addEventListener("transitionend", function () {
+          requestAnimationFrame(function () {
             labelLogo.style.visibility = "visible";
             overlay.remove();
             document.documentElement.classList.remove("division-arrival-pending");
@@ -594,7 +594,7 @@
             setTimeout(function () { document.body.classList.add("is-division-enter-title"); }, 480);
             setTimeout(function () { document.body.classList.add("is-division-enter-descriptor"); }, 820);
             setTimeout(function () { document.body.classList.add("is-division-enter-scroll"); }, 1160);
-          }, { once: true });
+          });
         });
       });
       return;
