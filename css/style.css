@@ -590,7 +590,7 @@ body.menu-open .mobile-menu__link:nth-child(6) { transition-delay: 440ms; }
   height: auto;
 }
 .studio-minimal-hero__title {
-  margin: clamp(-4px, -0.4vh, -2px) 0 0;
+  margin: clamp(20px, 3vh, 36px) 0 0;
   color: var(--text);
   font-family: var(--font-display);
   font-size: clamp(1.75rem, 10.5vw, 6.5rem);
@@ -600,7 +600,7 @@ body.menu-open .mobile-menu__link:nth-child(6) { transition-delay: 440ms; }
   text-transform: uppercase;
 }
 .studio-minimal-hero__lockup h1 {
-  margin: 0;
+  margin: clamp(12px, 2vh, 24px) 0 0;
   color: var(--text-muted);
   font-family: var(--font-body);
   font-size: clamp(0.68rem, 1vw, 0.86rem);
