@@ -532,28 +532,35 @@
     if (document.body.getAttribute("data-page") !== "studio") return;
     var hero = document.querySelector(".page-hero");
     var arrival = sessionStorage.getItem("grm-arrival");
-    if (arrival) sessionStorage.removeItem("grm-arrival"); // one-shot, no replay
-    if (arrival !== "studio" || reduced() || !hero) return; // instant for all others
+    if (arrival) sessionStorage.removeItem("grm-arrival");
+    if (arrival !== "studio" || reduced() || !hero) return;
+
     document.body.classList.add("is-studio-arriving");
     var logo = hero.querySelector(".studio-minimal-hero__logo");
-    if (logo) {
-       var homeLogoWidth = parseFloat(sessionStorage.getItem("grm-studio-home-logo-width"));
-       if (homeLogoWidth) sessionStorage.removeItem("grm-studio-home-logo-width");
-        if (homeLogoWidth) {
-          logo.style.width = homeLogoWidth + "px";
-          logo.classList.add("is-studio-logo-shrinking");
-          logo.getBoundingClientRect();
-        }
-        document.body.classList.add("is-shared-logo-pending");
+    if (!logo) return;
+
+    var homeLogoWidth = parseFloat(sessionStorage.getItem("grm-studio-home-logo-width"));
+    if (homeLogoWidth) sessionStorage.removeItem("grm-studio-home-logo-width");
+    if (homeLogoWidth) {
+      logo.style.width = homeLogoWidth + "px";
+      logo.classList.add("is-studio-logo-shrinking");
+      logo.getBoundingClientRect();
+    }
+
+    document.body.classList.add("is-shared-logo-pending");
+    document.fonts.ready.then(function () {
+      requestAnimationFrame(function () {
+        var destination = logo.getBoundingClientRect();
+        document.documentElement.style.setProperty("--studio-logo-final-width", destination.width + "px");
+        document.documentElement.style.setProperty("--studio-logo-final-height", destination.height + "px");
+        document.documentElement.style.setProperty("--studio-logo-final-left", destination.left + "px");
+        document.documentElement.style.setProperty("--studio-logo-final-top", destination.top + "px");
         requestAnimationFrame(function () {
-          requestAnimationFrame(function () {
-            logo.classList.add("is-studio-logo-landed");
-          });
-         document.body.classList.remove("is-shared-logo-pending");
-        requestAnimationFrame(function () {
+          logo.classList.add("is-studio-logo-landed");
+          document.body.classList.remove("is-shared-logo-pending");
           document.body.classList.remove("is-studio-arriving");
         });
       });
-    }
+    });
   });
 })();
