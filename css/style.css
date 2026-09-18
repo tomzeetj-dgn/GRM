@@ -623,6 +623,8 @@ body.theme-liveroom .division-minimal-hero {
   transform: translateY(-10vh);
 }
 .division-minimal-hero__logo { display: block; width: clamp(400px, 58vw, 880px); height: auto; position: relative; left: -1px; top: -38px; }
+.division-minimal-hero__logo.is-division-logo-shrinking { max-width: none; transition: width 700ms cubic-bezier(0.22, 1, 0.36, 1); }
+.division-minimal-hero__logo.is-division-logo-landed { width: clamp(400px, 58vw, 880px); }
 .division-minimal-hero__title { margin: 0; color: var(--text); font-family: var(--font-display); font-size: clamp(1.75rem, 10.5vw, 6.5rem); font-weight: 900; letter-spacing: .005em; line-height: var(--lh-display); text-transform: uppercase; }
 .division-minimal-hero__title,
 .division-minimal-hero__lockup h1 { position: relative; top: calc(clamp(-168px, -17vh, -100px) - 48px); }

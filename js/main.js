@@ -491,6 +491,12 @@
           }, 820);
           return;
         }
+        if (destination === "label/") {
+          sessionStorage.setItem("grm-label-home-logo-width", String(sourceRect && sourceRect.width || 0));
+          if (sourceLogo) sourceLogo.classList.add("is-label-logo-committed");
+          window.location.href = destination;
+          return;
+        }
         window.location.href = destination;
       }, 820); // ~650ms continuation + ~170ms logo-only hold (§11)
 
@@ -529,6 +535,27 @@
      motion all stay instant: the flag is consumed on read and it does not
      survive those (§23/24/§29). */
   onReady(function () {
+    if (document.body.getAttribute("data-page") === "label") {
+      var labelArrival = sessionStorage.getItem("grm-arrival");
+      if (labelArrival !== "label") return;
+      sessionStorage.removeItem("grm-arrival");
+      document.documentElement.classList.add("division-arrival-pending");
+      document.body.classList.add("is-division-entering");
+      var labelLogo = document.querySelector(".division-minimal-hero__logo");
+      var labelWidth = parseFloat(sessionStorage.getItem("grm-label-home-logo-width"));
+      if (labelWidth) sessionStorage.removeItem("grm-label-home-logo-width");
+      if (labelLogo && labelWidth) {
+        labelLogo.style.width = labelWidth + "px";
+        labelLogo.classList.add("is-division-logo-shrinking");
+        labelLogo.getBoundingClientRect();
+        requestAnimationFrame(function () { labelLogo.classList.add("is-division-logo-landed"); });
+      }
+      setTimeout(function () { document.body.classList.add("is-division-enter-header"); }, 140);
+      setTimeout(function () { document.body.classList.add("is-division-enter-title"); }, 480);
+      setTimeout(function () { document.body.classList.add("is-division-enter-descriptor"); }, 820);
+      setTimeout(function () { document.body.classList.add("is-division-enter-scroll"); }, 1160);
+      return;
+    }
     if (document.body.getAttribute("data-page") !== "studio") return;
     var hero = document.querySelector(".studio-minimal-hero");
     var arrival = sessionStorage.getItem("grm-arrival");
