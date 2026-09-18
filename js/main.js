@@ -477,15 +477,25 @@
         var destination = panel.getAttribute("href");
         var sourceLogo = panel.querySelector(".panel__logo--glow");
         var sourceRect = sourceLogo && sourceLogo.getBoundingClientRect();
-        var division = destination === "studio/" ? "studio" :
-          destination === "label/" ? "label" :
-          destination === "liveroom/" ? "liveroom" : "";
-        if (division) {
-          sessionStorage.setItem("grm-arrival", division);
-          if (sourceRect) sessionStorage.setItem("grm-home-logo-width", String(sourceRect.width));
+        if (destination === "studio/") {
+          sessionStorage.setItem("grm-arrival", "studio");
+          if (sourceRect) {
+            sessionStorage.setItem("grm-studio-home-logo-width", String(sourceRect.width));
+          }
           if (sourceLogo) {
-            panel.classList.add("is-division-logo-committed");
-            sourceLogo.classList.add("is-division-logo-committed");
+            panel.classList.add("is-studio-logo-committed");
+            sourceLogo.classList.add("is-studio-logo-committed");
+          }
+          setTimeout(function () {
+            window.location.href = destination;
+          }, 820);
+          return;
+        }
+        if (destination === "label/") {
+          sessionStorage.setItem("grm-arrival", "label");
+          if (sourceLogo) {
+            panel.classList.add("is-label-logo-committed");
+            sourceLogo.classList.add("is-label-logo-committed");
           }
           setTimeout(function () { window.location.href = destination; }, 820);
           return;
@@ -528,16 +538,32 @@
      motion all stay instant: the flag is consumed on read and it does not
      survive those (§23/24/§29). */
   onReady(function () {
-    var page = document.body.getAttribute("data-page");
-    if (page !== "studio" && page !== "label" && page !== "liveroom") return;
+    if (document.body.getAttribute("data-page") === "label") {
+      var labelArrival = sessionStorage.getItem("grm-arrival");
+      if (labelArrival !== "label") return;
+      sessionStorage.removeItem("grm-arrival");
+      document.documentElement.classList.add("division-arrival-pending");
+      document.body.classList.add("is-division-entering");
+      var labelLogo = document.querySelector(".division-minimal-hero__logo");
+      if (!labelLogo) return;
+      document.documentElement.classList.remove("division-arrival-pending");
+      document.body.classList.remove("is-division-entering");
+      setTimeout(function () { document.body.classList.add("is-division-enter-header"); }, 140);
+      setTimeout(function () { document.body.classList.add("is-division-enter-title"); }, 480);
+      setTimeout(function () { document.body.classList.add("is-division-enter-descriptor"); }, 820);
+      setTimeout(function () { document.body.classList.add("is-division-enter-scroll"); }, 1160);
+      return;
+    }
+    if (document.body.getAttribute("data-page") !== "studio") return;
+    var hero = document.querySelector(".studio-minimal-hero");
     var arrival = sessionStorage.getItem("grm-arrival");
-    if (arrival !== page) return;
-    sessionStorage.removeItem("grm-arrival");
-    document.documentElement.classList.remove("studio-arrival-pending", "division-arrival-pending");
-    var hero = page === "studio" ? document.querySelector(".studio-minimal-hero") : document.querySelector(".division-minimal-hero");
-    if (reduced() || !hero) return;
-    document.body.classList.add(page === "studio" ? "is-studio-arriving" : "is-division-entering");
-    var logo = hero.querySelector(page === "studio" ? ".studio-minimal-hero__logo" : ".division-minimal-hero__logo");
+    if (arrival) sessionStorage.removeItem("grm-arrival");
+    if (arrival !== "studio" || reduced() || !hero) return;
+    document.documentElement.classList.remove("studio-arrival-pending");
+
+    document.body.classList.add("is-studio-arriving");
+    document.body.classList.add("is-studio-entering");
+    var logo = hero.querySelector(".studio-minimal-hero__logo");
     if (!logo) return;
 
     document.body.classList.add("is-shared-logo-pending");
@@ -549,13 +575,13 @@
         document.documentElement.style.setProperty("--studio-logo-final-left", destination.left + "px");
         document.documentElement.style.setProperty("--studio-logo-final-top", destination.top + "px");
         requestAnimationFrame(function () {
-          logo.classList.add(page === "studio" ? "is-studio-logo-landed" : "is-division-logo-landed");
+          logo.classList.add("is-studio-logo-landed");
           document.body.classList.remove("is-shared-logo-pending");
-          document.body.classList.remove(page === "studio" ? "is-studio-arriving" : "is-division-entering");
-          setTimeout(function () { document.body.classList.add(page === "studio" ? "is-studio-enter-header" : "is-division-enter-header"); }, 140);
-          setTimeout(function () { document.body.classList.add(page === "studio" ? "is-studio-enter-title" : "is-division-enter-title"); }, 480);
-          setTimeout(function () { document.body.classList.add(page === "studio" ? "is-studio-enter-descriptor" : "is-division-enter-descriptor"); }, 820);
-          setTimeout(function () { document.body.classList.add(page === "studio" ? "is-studio-enter-scroll" : "is-division-enter-scroll"); }, 1160);
+          document.body.classList.remove("is-studio-arriving");
+          setTimeout(function () { document.body.classList.add("is-studio-enter-header"); }, 140);
+          setTimeout(function () { document.body.classList.add("is-studio-enter-title"); }, 480);
+          setTimeout(function () { document.body.classList.add("is-studio-enter-descriptor"); }, 820);
+          setTimeout(function () { document.body.classList.add("is-studio-enter-scroll"); }, 1160);
         });
       });
     });
