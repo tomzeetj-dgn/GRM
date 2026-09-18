@@ -477,6 +477,22 @@
         var destination = panel.getAttribute("href");
         if (destination === "studio/") {
           sessionStorage.setItem("grm-arrival", "studio");
+          var sourceLogo = panel.querySelector(".panel__logo--glow");
+          var sourceRect = sourceLogo && sourceLogo.getBoundingClientRect();
+          var transition = document.createElement("div");
+          transition.className = "studio-transition";
+          transition.setAttribute("aria-hidden", "true");
+          transition.innerHTML = '<img class="studio-transition__logo" src="assets/img/GRM Studio Glow.png" alt="">';
+          document.body.appendChild(transition);
+          if (sourceRect) {
+            transition.style.setProperty("--studio-start-left", sourceRect.left + "px");
+            transition.style.setProperty("--studio-start-top", sourceRect.top + "px");
+            transition.style.setProperty("--studio-start-width", sourceRect.width + "px");
+            transition.style.setProperty("--studio-start-height", sourceRect.height + "px");
+          }
+          requestAnimationFrame(function () {
+            transition.classList.add("is-shared-move");
+          });
           setTimeout(function () {
             window.location.href = destination;
           }, 820);
@@ -530,9 +546,6 @@
     if (logo) {
       logo.classList.add("is-shared-logo-hidden");
       document.body.classList.add("is-shared-logo-pending");
-      var finalLogoWidth = logo.getBoundingClientRect().width;
-      var transitionBaseWidth = Math.min(window.innerWidth * 1.3, 1872);
-      document.documentElement.style.setProperty("--studio-final-scale", String(finalLogoWidth / transitionBaseWidth));
       requestAnimationFrame(function () {
         logo.classList.remove("is-shared-logo-hidden");
         logo.classList.add("is-shared-logo-landed");

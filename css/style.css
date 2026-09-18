@@ -499,16 +499,16 @@ body.menu-open .mobile-menu__link:nth-child(6) { transition-delay: 440ms; }
 }
 .studio-transition__logo {
   position: absolute;
-  top: 50%;
-  left: 50%;
-  width: min(130vw, 1872px);
-  height: min(130vw, 1872px);
+  top: var(--studio-start-top, 50%);
+  left: var(--studio-start-left, 50%);
+  width: var(--studio-start-width, min(130vw, 1872px));
+  height: var(--studio-start-height, min(130vw, 1872px));
   max-width: none;
   object-fit: contain;
   transform: none;
   mix-blend-mode: screen;
   opacity: 1;
-  transform: translate(-50%, -50%);
+  transform: none;
   transition: transform 700ms cubic-bezier(0.22, 1, 0.36, 1);
 }
 .studio-transition__logo {
@@ -516,7 +516,10 @@ body.menu-open .mobile-menu__link:nth-child(6) { transition-delay: 440ms; }
   transform-origin: center;
 }
 .studio-transition.is-shared-move .studio-transition__logo {
-  transform: translate(-50%, -50%) scale(var(--studio-final-scale, 0.5));
+  left: 50%;
+  top: 50%;
+  width: clamp(400px, 58vw, 880px);
+  height: clamp(400px, 58vw, 880px);
 }
 
 /* Studio hero: centered logo lockup, intentionally quiet. */
