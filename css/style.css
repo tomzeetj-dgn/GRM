@@ -628,7 +628,7 @@ body.theme-liveroom .division-minimal-hero {
 .division-minimal-hero__lockup h1 { position: relative; top: calc(clamp(-168px, -17vh, -100px) - 48px); }
 .division-minimal-hero__lockup h1 { max-width: 90vw; margin: 0; color: var(--text-muted); font-family: var(--font-body); font-size: clamp(.68rem, 1vw, .86rem); font-weight: 500; letter-spacing: .24em; line-height: 1.35; text-align: center; }
 .division-minimal-hero__scroll { position: absolute; top: calc(50% + clamp(220px, 25vh, 320px)); left: 50%; display: flex; flex-direction: column; align-items: center; gap: 12px; color: var(--text-faint); font-size: .62rem; font-weight: 500; letter-spacing: .2em; text-transform: uppercase; transform: translateX(-50%); }
-.division-minimal-hero__scroll i { display: block; width: 1px; height: 42px; background: var(--border-strong); }
+.division-minimal-hero__scroll i { display: block; width: 1px; height: 42px; overflow: hidden; background: var(--border-strong); }
 .division-minimal-hero__scroll i::after { content: ""; display: block; width: 1px; height: 18px; background: var(--accent-lite); animation: studio-scroll-line 2.4s var(--ease-out) infinite; }
 @keyframes studio-scroll-line {
   from { transform: translateY(-18px); }
