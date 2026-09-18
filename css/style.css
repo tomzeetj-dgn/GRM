@@ -532,11 +532,9 @@ body.menu-open .mobile-menu__link:nth-child(6) { transition-delay: 440ms; }
 }
 .studio-transition.is-shared-move .studio-transition__logo {
   transform:
-    translate(
-      calc(var(--studio-logo-left, 50vw) - 50vw),
-      calc(var(--studio-logo-top, 50vh) - 50vh)
-    )
-    scale(calc(var(--studio-logo-width, 49vw) / min(130vw, 1872px)));
+    translate(-50%, -50%)
+    translate(0, calc(-10vh - 40px))
+    scale(calc(clamp(400px, 58vw, 880px) / min(130vw, 1872px)));
   filter: brightness(1.06);
 }
 

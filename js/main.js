@@ -488,11 +488,11 @@
           requestAnimationFrame(function () {
             transition.classList.add("is-ready");
           });
+           setTimeout(function () {
+             transition.classList.add("is-shared-move");
+           }, 620);
           setTimeout(function () {
-            transition.classList.add("is-shared-move");
-          }, 620);
-          setTimeout(function () {
-            window.location.href = destination;
+             window.location.href = destination;
           }, 1040);
           return;
         }
@@ -548,11 +548,6 @@
       document.body.classList.add("is-shared-logo-pending");
       document.fonts.ready.then(function () {
         requestAnimationFrame(function () {
-          var rect = logo.getBoundingClientRect();
-          document.documentElement.style.setProperty("--studio-logo-left", rect.left + "px");
-          document.documentElement.style.setProperty("--studio-logo-top", rect.top + "px");
-          document.documentElement.style.setProperty("--studio-logo-width", rect.width + "px");
-          document.documentElement.style.setProperty("--studio-logo-height", rect.height + "px");
           requestAnimationFrame(function () {
             logo.classList.remove("is-shared-logo-hidden");
             logo.classList.add("is-shared-logo-landed");
