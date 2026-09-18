@@ -477,6 +477,16 @@ body.menu-open .mobile-menu__link:nth-child(6) { transition-delay: 440ms; }
    starting sliver so the selected panel's wipe has nothing to collide with */
 .hero.is-takeover .panel:not(.is-expanded) { flex-grow: 0; min-width: 0; }
 
+/* Studio takeover cleanup: once the selected panel owns the hero, leave only
+   its stationary logo on the dark field for the short handoff hold. */
+.hero.is-takeover .panel__content,
+.hero.is-takeover .panel::before,
+.hero.is-takeover .hero__panels .panel + .panel {
+  opacity: 0;
+  border-color: transparent;
+  pointer-events: none;
+}
+
 @media (prefers-reduced-motion: reduce) {
   /* §24: js/main.js navigates immediately for reduced motion, so this class
      never lands here — kept as a belt-and-braces guard anyway. */
@@ -1546,6 +1556,43 @@ body[data-page="home"] .progress { display: none; }
   color: var(--text-muted);
   margin-top: 28px;
   font-size: clamp(1rem, 1.4vw, 1.125rem);
+}
+
+/* Studio destination reveal: direct loads remain unchanged. Only the
+   one-shot takeover arrival class exposes this restrained handoff. */
+@keyframes studio-arrival-up {
+  from { opacity: 0; transform: translateY(20px); }
+  to { opacity: 1; transform: none; }
+}
+@keyframes studio-arrival-fade {
+  from { opacity: 0; }
+  to { opacity: 1; }
+}
+body[data-page="studio"].is-studio-arriving .site-header {
+  animation: studio-arrival-fade 500ms var(--ease-out) both;
+}
+body[data-page="studio"].is-studio-arriving .page-hero__mark {
+  animation: studio-arrival-fade 500ms var(--ease-out) both;
+}
+body[data-page="studio"].is-studio-arriving .page-hero__inner > * {
+  animation: studio-arrival-up 520ms var(--ease-out) both;
+}
+body[data-page="studio"].is-studio-arriving .page-hero__inner > *:nth-child(1) {
+  animation-delay: 90ms;
+}
+body[data-page="studio"].is-studio-arriving .page-hero__inner > *:nth-child(2) {
+  animation-delay: 170ms;
+}
+body[data-page="studio"].is-studio-arriving .page-hero__inner > *:nth-child(3) {
+  animation-delay: 250ms;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  body[data-page="studio"].is-studio-arriving .site-header,
+  body[data-page="studio"].is-studio-arriving .page-hero__mark,
+  body[data-page="studio"].is-studio-arriving .page-hero__inner > * {
+    animation: none;
+  }
 }
 
 /* ============================================================

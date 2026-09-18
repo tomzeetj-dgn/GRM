@@ -458,6 +458,7 @@
 
       e.preventDefault(); // we time the real navigation below
       isTransitioning = true;
+      hero.classList.add("is-takeover");
 
       // continue from the CURRENT accordion state — if this panel is already
       // expanded (hovered), expand() is a no-op, so there is NO reset; if it
@@ -473,9 +474,12 @@
         // around its mark on arrival. Reduced motion never reaches this line
         // (§24 navigates immediately above), and it is cleared on read, so
         // direct load / refresh / back never replay the arrival (§23).
-        sessionStorage.setItem("grm-arrival", panel.getAttribute("href"));
-        window.location.href = panel.getAttribute("href");
-      }, 760); // ~650ms continuation + ~120ms logo hold (§11, keep under 1s)
+        var destination = panel.getAttribute("href");
+        if (destination === "studio/") {
+          sessionStorage.setItem("grm-arrival", "studio");
+        }
+        window.location.href = destination;
+      }, 820); // ~650ms continuation + ~170ms logo-only hold (§11)
 
     });
 
@@ -512,11 +516,11 @@
      motion all stay instant: the flag is consumed on read and it does not
      survive those (§23/24/§29). */
   onReady(function () {
-    if (document.body.getAttribute("data-page") !== "studio") return CommitmentPanel;
+    if (document.body.getAttribute("data-page") !== "studio") return;
     var hero = document.querySelector(".page-hero");
     var arrival = sessionStorage.getItem("grm-arrival");
     if (arrival) sessionStorage.removeItem("grm-arrival"); // one-shot, no replay
-    if (!arrival || reduced() || !hero) return; // instant for all others
-    hero.classList.add("is-arriving");
+    if (arrival !== "studio" || reduced() || !hero) return; // instant for all others
+    document.body.classList.add("is-studio-arriving");
   });
 })();
