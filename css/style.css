@@ -593,10 +593,10 @@ body.menu-open .mobile-menu__link:nth-child(6) { transition-delay: 440ms; }
   margin: clamp(-4px, -0.4vh, -2px) 0 0;
   color: var(--text);
   font-family: var(--font-display);
-  font-size: clamp(1.5rem, 2.8vw, 2.6rem);
-  font-weight: 800;
-  letter-spacing: 0.08em;
-  line-height: 1;
+  font-size: clamp(1.75rem, 10.5vw, 6.5rem);
+  font-weight: 900;
+  letter-spacing: 0.005em;
+  line-height: var(--lh-display);
   text-transform: uppercase;
 }
 .studio-minimal-hero__lockup h1 {
