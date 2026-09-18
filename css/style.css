@@ -590,7 +590,7 @@ body.menu-open .mobile-menu__link:nth-child(6) { transition-delay: 440ms; }
   height: auto;
 }
 .studio-minimal-hero__title {
-  margin: clamp(-4px, -0.4vh, -2px) 0 0;
+  margin: 0;
   color: var(--text);
   font-family: var(--font-display);
   font-size: clamp(1.75rem, 10.5vw, 6.5rem);
@@ -608,6 +608,11 @@ body.menu-open .mobile-menu__link:nth-child(6) { transition-delay: 440ms; }
   letter-spacing: 0.24em;
   line-height: 1;
   text-align: center;
+}
+.studio-minimal-hero__title,
+.studio-minimal-hero__lockup h1 {
+  position: relative;
+  top: clamp(-24px, -2.5vh, -12px);
 }
 .studio-minimal-hero__scroll {
   position: absolute;
