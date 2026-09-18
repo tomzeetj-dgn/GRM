@@ -478,7 +478,16 @@
         if (destination === "studio/") {
           sessionStorage.setItem("grm-arrival", "studio");
           sessionStorage.setItem("grm-shared-logo", "1");
-          sessionStorage.setItem("grm-shared-logo-size", String(Math.min(window.innerWidth * 1.3, 1872)));
+           var homeLogo = panel.querySelector(".panel__logo--glow");
+           if (homeLogo) {
+             var homeRect = homeLogo.getBoundingClientRect();
+             sessionStorage.setItem("grm-shared-logo-rect", JSON.stringify({
+               left: homeRect.left,
+               top: homeRect.top,
+               width: homeRect.width,
+               height: homeRect.height
+             }));
+           }
           var transition = document.createElement("div");
            transition.className = "studio-transition studio-transition--shared";
           transition.setAttribute("aria-hidden", "true");
@@ -539,10 +548,11 @@
     var hero = document.querySelector(".page-hero");
     var arrival = sessionStorage.getItem("grm-arrival");
     var sharedLogo = sessionStorage.getItem("grm-shared-logo");
-    var sharedLogoSize = parseFloat(sessionStorage.getItem("grm-shared-logo-size"));
+    var sharedLogoRect = null;
+    try { sharedLogoRect = JSON.parse(sessionStorage.getItem("grm-shared-logo-rect")); } catch (e) {}
     if (arrival) sessionStorage.removeItem("grm-arrival"); // one-shot, no replay
     if (sharedLogo) sessionStorage.removeItem("grm-shared-logo");
-    if (sharedLogoSize) sessionStorage.removeItem("grm-shared-logo-size");
+    if (sharedLogoRect) sessionStorage.removeItem("grm-shared-logo-rect");
     if (arrival !== "studio" || reduced() || !hero) return; // instant for all others
     document.body.classList.add("is-studio-arriving");
     var logo = hero.querySelector(".studio-minimal-hero__logo");
@@ -553,16 +563,16 @@
       document.fonts.ready.then(function () {
         requestAnimationFrame(function () {
           var destination = studioLogo ? studioLogo.getBoundingClientRect() : null;
-          if (destination) {
-            var startSize = sharedLogoSize || window.innerWidth;
-            var viewport = {
-              x: window.innerWidth / 2,
-              y: window.innerHeight / 2,
-            };
-            document.documentElement.style.setProperty("--studio-delta-x", (destination.left + destination.width / 2 - viewport.x) + "px");
-            document.documentElement.style.setProperty("--studio-delta-y", (destination.top + destination.height / 2 - viewport.y) + "px");
-            document.documentElement.style.setProperty("--studio-scale-x", (destination.width / startSize) + "");
-            document.documentElement.style.setProperty("--studio-scale-y", (destination.height / startSize) + "");
+          if (destination && sharedLogoRect) {
+            document.documentElement.style.setProperty("--studio-start-left", sharedLogoRect.left + "px");
+            document.documentElement.style.setProperty("--studio-start-top", sharedLogoRect.top + "px");
+            document.documentElement.style.setProperty("--studio-start-width", sharedLogoRect.width + "px");
+            document.documentElement.style.setProperty("--studio-start-height", sharedLogoRect.height + "px");
+            document.documentElement.style.setProperty("--studio-end-left", destination.left + "px");
+            document.documentElement.style.setProperty("--studio-end-top", destination.top + "px");
+            document.documentElement.style.setProperty("--studio-end-width", destination.width + "px");
+            document.documentElement.style.setProperty("--studio-end-height", destination.height + "px");
+            document.body.classList.add("is-shared-rect-ready");
           }
           requestAnimationFrame(function () {
             logo.classList.remove("is-shared-logo-hidden");

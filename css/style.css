@@ -531,9 +531,10 @@ body.menu-open .mobile-menu__link:nth-child(6) { transition-delay: 440ms; }
   filter: blur(0);
 }
 .studio-transition.is-shared-move .studio-transition__logo {
-  transform:
-    translate(var(--studio-delta-x, 0px), var(--studio-delta-y, 0px))
-    scale(var(--studio-scale-x, 1), var(--studio-scale-y, 1));
+  left: var(--studio-end-left, 50vw);
+  top: var(--studio-end-top, 50vh);
+  width: var(--studio-end-width, min(130vw, 1872px));
+  height: var(--studio-end-height, min(130vw, 1872px));
 }
 
 /* Studio hero: centered logo lockup, intentionally quiet. */
