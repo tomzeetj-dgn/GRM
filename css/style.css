@@ -714,11 +714,13 @@ body.menu-open .mobile-menu__link:nth-child(6) { transition-delay: 440ms; }
    fine uppercase type. Text edges line up with the titles. Mobile untouched. */
 @media (min-width: 768px) {
   #panelProduction .panel__copy { align-items: flex-start; text-align: left; }
-  #panelHouse .panel__copy { align-items: stretch; text-align: center; }
-  #panelLive .panel__copy { align-items: stretch; text-align: right; }
+  #panelHouse .panel__copy,
+  #panelLive .panel__copy { position: relative; display: block; }
   #panelProduction .panel__tag { align-self: flex-start; text-align: left; }
-  #panelHouse .panel__tag { align-self: stretch; width: 100%; text-align: center; }
-  #panelLive .panel__tag { align-self: stretch; width: 100%; text-align: right; }
+  #panelHouse .panel__tag,
+  #panelLive .panel__tag { width: 100%; max-width: none; }
+  #panelHouse .panel__tag { text-align: center; }
+  #panelLive .panel__tag { text-align: right; }
 
   .panel__tag {
     margin-top: clamp(18px, 2.6cqw, 30px);
