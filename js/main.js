@@ -493,6 +493,7 @@
         }
         if (destination === "label/") {
           sessionStorage.setItem("grm-arrival", "label");
+          if (sourceRect) sessionStorage.setItem("grm-label-home-logo-width", String(sourceRect.width));
           if (sourceLogo) {
             panel.classList.add("is-label-logo-committed");
             sourceLogo.classList.add("is-label-logo-committed");
@@ -546,12 +547,31 @@
       document.body.classList.add("is-division-entering");
       var labelLogo = document.querySelector(".division-minimal-hero__logo");
       if (!labelLogo) return;
-      document.documentElement.classList.remove("division-arrival-pending");
-      document.body.classList.remove("is-division-entering");
-      setTimeout(function () { document.body.classList.add("is-division-enter-header"); }, 140);
-      setTimeout(function () { document.body.classList.add("is-division-enter-title"); }, 480);
-      setTimeout(function () { document.body.classList.add("is-division-enter-descriptor"); }, 820);
-      setTimeout(function () { document.body.classList.add("is-division-enter-scroll"); }, 1160);
+      var labelWidth = parseFloat(sessionStorage.getItem("grm-label-home-logo-width"));
+      if (labelWidth) sessionStorage.removeItem("grm-label-home-logo-width");
+      document.body.classList.add("is-shared-logo-pending");
+      document.fonts.ready.then(function () {
+        requestAnimationFrame(function () {
+          var destination = labelLogo.getBoundingClientRect();
+          document.documentElement.style.setProperty("--label-logo-final-width", destination.width + "px");
+          document.documentElement.style.setProperty("--label-logo-final-height", destination.height + "px");
+          if (labelWidth) {
+            labelLogo.style.width = labelWidth + "px";
+            labelLogo.classList.add("is-division-logo-shrinking");
+            labelLogo.getBoundingClientRect();
+          }
+          requestAnimationFrame(function () {
+            labelLogo.classList.add("is-division-logo-landed");
+            document.documentElement.classList.remove("division-arrival-pending");
+            document.body.classList.remove("is-shared-logo-pending");
+            document.body.classList.remove("is-division-entering");
+            setTimeout(function () { document.body.classList.add("is-division-enter-header"); }, 140);
+            setTimeout(function () { document.body.classList.add("is-division-enter-title"); }, 480);
+            setTimeout(function () { document.body.classList.add("is-division-enter-descriptor"); }, 820);
+            setTimeout(function () { document.body.classList.add("is-division-enter-scroll"); }, 1160);
+          });
+        });
+      });
       return;
     }
     if (document.body.getAttribute("data-page") !== "studio") return;
