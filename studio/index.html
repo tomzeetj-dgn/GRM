@@ -22,6 +22,11 @@
   <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Archivo:ital,wdth,wght@0,62.5,100..900;1,62.5,100..900&family=Inter:wght@300;400;500;600&display=swap">
 
   <link rel="stylesheet" href="../css/style.css">
+  <script>
+    if (sessionStorage.getItem("grm-arrival") === "studio") {
+      document.documentElement.classList.add("studio-arrival-pending");
+    }
+  </script>
 </head>
 <body class="theme-studio" data-root="../" data-page="studio">
 

@@ -538,6 +538,12 @@ body.is-studio-entering .studio-minimal-hero__scroll {
   opacity: 0;
   transition: opacity 1400ms ease;
 }
+html.studio-arrival-pending .site-header,
+html.studio-arrival-pending .studio-minimal-hero__title,
+html.studio-arrival-pending .studio-minimal-hero__lockup h1,
+html.studio-arrival-pending .studio-minimal-hero__scroll {
+  opacity: 0;
+}
 body.is-studio-enter-header .site-header,
 body.is-studio-enter-title .studio-minimal-hero__title,
 body.is-studio-enter-descriptor .studio-minimal-hero__lockup h1,

@@ -534,6 +534,7 @@
     var arrival = sessionStorage.getItem("grm-arrival");
     if (arrival) sessionStorage.removeItem("grm-arrival");
     if (arrival !== "studio" || reduced() || !hero) return;
+    document.documentElement.classList.remove("studio-arrival-pending");
 
     document.body.classList.add("is-studio-arriving");
     document.body.classList.add("is-studio-entering");
