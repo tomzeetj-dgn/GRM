@@ -477,37 +477,14 @@
         var destination = panel.getAttribute("href");
         if (destination === "studio/") {
           sessionStorage.setItem("grm-arrival", "studio");
-          sessionStorage.setItem("grm-shared-logo", "1");
-           var homeLogo = panel.querySelector(".panel__logo--glow");
-           if (homeLogo) {
-             var homeRect = homeLogo.getBoundingClientRect();
-             sessionStorage.setItem("grm-shared-logo-rect", JSON.stringify({
-               left: homeRect.left,
-               top: homeRect.top,
-               width: homeRect.width,
-               height: homeRect.height
-             }));
-             document.documentElement.style.setProperty("--studio-start-left", homeRect.left + "px");
-             document.documentElement.style.setProperty("--studio-start-top", homeRect.top + "px");
-             document.documentElement.style.setProperty("--studio-start-width", homeRect.width + "px");
-             document.documentElement.style.setProperty("--studio-start-height", homeRect.height + "px");
-           }
           var transition = document.createElement("div");
-           transition.className = "studio-transition studio-transition--shared";
+          transition.className = "studio-transition";
           transition.setAttribute("aria-hidden", "true");
-           transition.innerHTML =
-             '<div class="studio-transition__environment"></div>' +
-             '<img class="studio-transition__logo" src="assets/img/GRM Studio Glow.png" alt="">';
-           document.body.appendChild(transition);
-          requestAnimationFrame(function () {
-            transition.classList.add("is-ready");
-          });
-           setTimeout(function () {
-             transition.classList.add("is-shared-move");
-           }, 620);
+          transition.innerHTML = '<img class="studio-transition__logo" src="assets/img/GRM Studio Glow.png" alt="">';
+          document.body.appendChild(transition);
           setTimeout(function () {
-             window.location.href = destination;
-          }, 1040);
+            window.location.href = destination;
+          }, 820);
           return;
         }
         window.location.href = destination;
@@ -551,38 +528,22 @@
     if (document.body.getAttribute("data-page") !== "studio") return;
     var hero = document.querySelector(".page-hero");
     var arrival = sessionStorage.getItem("grm-arrival");
-    var sharedLogo = sessionStorage.getItem("grm-shared-logo");
-    var sharedLogoRect = null;
-    try { sharedLogoRect = JSON.parse(sessionStorage.getItem("grm-shared-logo-rect")); } catch (e) {}
     if (arrival) sessionStorage.removeItem("grm-arrival"); // one-shot, no replay
-    if (sharedLogo) sessionStorage.removeItem("grm-shared-logo");
-    if (sharedLogoRect) sessionStorage.removeItem("grm-shared-logo-rect");
     if (arrival !== "studio" || reduced() || !hero) return; // instant for all others
     document.body.classList.add("is-studio-arriving");
     var logo = hero.querySelector(".studio-minimal-hero__logo");
-    var studioLogo = document.querySelector("[data-studio-hero-logo]");
-    if (sharedLogo && logo) {
+    if (logo) {
       logo.classList.add("is-shared-logo-hidden");
       document.body.classList.add("is-shared-logo-pending");
-      document.fonts.ready.then(function () {
+      var finalLogoWidth = logo.getBoundingClientRect().width;
+      var transitionBaseWidth = Math.min(window.innerWidth * 1.3, 1872);
+      document.documentElement.style.setProperty("--studio-final-scale", String(finalLogoWidth / transitionBaseWidth));
+      requestAnimationFrame(function () {
+        logo.classList.remove("is-shared-logo-hidden");
+        logo.classList.add("is-shared-logo-landed");
+        document.body.classList.remove("is-shared-logo-pending");
         requestAnimationFrame(function () {
-          var destination = studioLogo ? studioLogo.getBoundingClientRect() : null;
-          if (destination && sharedLogoRect) {
-            document.documentElement.style.setProperty("--studio-start-left", sharedLogoRect.left + "px");
-            document.documentElement.style.setProperty("--studio-start-top", sharedLogoRect.top + "px");
-            document.documentElement.style.setProperty("--studio-start-width", sharedLogoRect.width + "px");
-            document.documentElement.style.setProperty("--studio-start-height", sharedLogoRect.height + "px");
-            document.documentElement.style.setProperty("--studio-end-left", destination.left + "px");
-            document.documentElement.style.setProperty("--studio-end-top", destination.top + "px");
-            document.documentElement.style.setProperty("--studio-end-width", destination.width + "px");
-            document.documentElement.style.setProperty("--studio-end-height", destination.height + "px");
-            document.body.classList.add("is-shared-rect-ready");
-          }
-          requestAnimationFrame(function () {
-            logo.classList.remove("is-shared-logo-hidden");
-            logo.classList.add("is-shared-logo-landed");
-            document.body.classList.remove("is-shared-logo-pending");
-          });
+          document.body.classList.remove("is-studio-arriving");
         });
       });
     }
