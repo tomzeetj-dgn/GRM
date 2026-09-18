@@ -477,16 +477,12 @@
         var destination = panel.getAttribute("href");
         if (destination === "studio/") {
           sessionStorage.setItem("grm-arrival", "studio");
-          var sourceLogo = panel.querySelector(".panel__logo--glow");
-          var sourceRect = sourceLogo && sourceLogo.getBoundingClientRect();
+           var sourceLogo = panel.querySelector(".panel__logo--glow");
+           var sourceRect = sourceLogo && sourceLogo.getBoundingClientRect();
           if (sourceRect) {
             sessionStorage.setItem("grm-studio-home-logo-width", String(sourceRect.width));
           }
-          if (sourceLogo) sourceLogo.classList.add("is-studio-destination-move");
-          requestAnimationFrame(function () {
-            if (sourceLogo) sourceLogo.classList.add("is-studio-destination-size");
-          });
-          setTimeout(function () {
+           setTimeout(function () {
             window.location.href = destination;
           }, 820);
           return;
@@ -537,13 +533,15 @@
     document.body.classList.add("is-studio-arriving");
     var logo = hero.querySelector(".studio-minimal-hero__logo");
     if (logo) {
-      var homeLogoWidth = parseFloat(sessionStorage.getItem("grm-studio-home-logo-width"));
-      if (homeLogoWidth) sessionStorage.removeItem("grm-studio-home-logo-width");
-      logo.classList.add("is-shared-logo-hidden");
-      document.body.classList.add("is-shared-logo-pending");
-      requestAnimationFrame(function () {
-        logo.classList.remove("is-shared-logo-hidden");
-        logo.classList.add("is-shared-logo-landed");
+       var homeLogoWidth = parseFloat(sessionStorage.getItem("grm-studio-home-logo-width"));
+       if (homeLogoWidth) sessionStorage.removeItem("grm-studio-home-logo-width");
+       if (homeLogoWidth) {
+         logo.style.width = homeLogoWidth + "px";
+         logo.classList.add("is-studio-logo-shrinking");
+       }
+       document.body.classList.add("is-shared-logo-pending");
+       requestAnimationFrame(function () {
+         logo.classList.add("is-studio-logo-landed");
         document.body.classList.remove("is-shared-logo-pending");
         requestAnimationFrame(function () {
           document.body.classList.remove("is-studio-arriving");
