@@ -581,13 +581,23 @@ body.menu-open .mobile-menu__link:nth-child(6) { transition-delay: 440ms; }
   display: flex;
   flex-direction: column;
   align-items: center;
-  gap: clamp(22px, 3.5vh, 42px);
+  gap: clamp(18px, 2.8vh, 34px);
   transform: translateY(-3vh);
 }
 .studio-minimal-hero__logo {
   display: block;
   width: clamp(230px, 31vw, 480px);
   height: auto;
+}
+.studio-minimal-hero__title {
+  margin: clamp(-4px, -0.4vh, -2px) 0 0;
+  color: var(--text);
+  font-family: var(--font-display);
+  font-size: clamp(1.2rem, 2.2vw, 2rem);
+  font-weight: 800;
+  letter-spacing: 0.08em;
+  line-height: 1;
+  text-transform: uppercase;
 }
 .studio-minimal-hero__lockup h1 {
   margin: 0;
