@@ -487,6 +487,10 @@
                width: homeRect.width,
                height: homeRect.height
              }));
+             document.documentElement.style.setProperty("--studio-start-left", homeRect.left + "px");
+             document.documentElement.style.setProperty("--studio-start-top", homeRect.top + "px");
+             document.documentElement.style.setProperty("--studio-start-width", homeRect.width + "px");
+             document.documentElement.style.setProperty("--studio-start-height", homeRect.height + "px");
            }
           var transition = document.createElement("div");
            transition.className = "studio-transition studio-transition--shared";
