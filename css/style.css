@@ -605,6 +605,29 @@ body.is-studio-enter-scroll .studio-minimal-hero__scroll {
   background: var(--studio-yellow, var(--accent-lite));
   animation: studio-scroll-line 2.4s var(--ease-out) infinite;
 }
+body.theme-label .division-minimal-hero,
+body.theme-liveroom .division-minimal-hero {
+  position: relative;
+  min-height: 100svh;
+  display: grid;
+  place-items: center;
+  padding: var(--header-h) var(--gutter) 12vh;
+  background: var(--bg);
+}
+.division-minimal-hero__lockup {
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: clamp(18px, 2.8vh, 34px);
+  transform: translateY(-10vh);
+}
+.division-minimal-hero__logo { display: block; width: clamp(360px, 52vw, 760px); height: auto; position: relative; top: -38px; }
+.division-minimal-hero__title { margin: 0; color: var(--text); font-family: var(--font-display); font-size: clamp(1.75rem, 10.5vw, 6.5rem); font-weight: 900; letter-spacing: .005em; line-height: var(--lh-display); text-transform: uppercase; }
+.division-minimal-hero__lockup h1 { max-width: 90vw; margin: 0; color: var(--text-muted); font-family: var(--font-body); font-size: clamp(.68rem, 1vw, .86rem); font-weight: 500; letter-spacing: .24em; line-height: 1.35; text-align: center; }
+.division-minimal-hero__scroll { position: absolute; top: calc(50% + clamp(220px, 25vh, 320px)); left: 50%; display: flex; flex-direction: column; align-items: center; gap: 12px; color: var(--text-faint); font-size: .62rem; font-weight: 500; letter-spacing: .2em; text-transform: uppercase; transform: translateX(-50%); }
+.division-minimal-hero__scroll i { display: block; width: 1px; height: 42px; background: var(--border-strong); }
+.division-minimal-hero__scroll i::after { content: ""; display: block; width: 1px; height: 18px; background: var(--accent-lite); animation: studio-scroll-line 2.4s var(--ease-out) infinite; }
 @keyframes studio-scroll-line {
   from { transform: translateY(-18px); }
   55%, to { transform: translateY(42px); }
