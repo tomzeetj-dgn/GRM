@@ -546,12 +546,28 @@
       document.body.classList.add("is-division-entering");
       var labelLogo = document.querySelector(".division-minimal-hero__logo");
       if (!labelLogo) return;
-      document.documentElement.classList.remove("division-arrival-pending");
-      document.body.classList.remove("is-division-entering");
-      setTimeout(function () { document.body.classList.add("is-division-enter-header"); }, 140);
-      setTimeout(function () { document.body.classList.add("is-division-enter-title"); }, 480);
-      setTimeout(function () { document.body.classList.add("is-division-enter-descriptor"); }, 820);
-      setTimeout(function () { document.body.classList.add("is-division-enter-scroll"); }, 1160);
+      var labelWidth = parseFloat(sessionStorage.getItem("grm-label-home-logo-width"));
+      if (labelWidth) sessionStorage.removeItem("grm-label-home-logo-width");
+      if (labelWidth) {
+        labelLogo.style.width = labelWidth + "px";
+        labelLogo.classList.add("is-division-logo-shrinking");
+        labelLogo.getBoundingClientRect();
+      }
+      document.body.classList.add("is-shared-logo-pending");
+      document.fonts.ready.then(function () {
+        requestAnimationFrame(function () {
+          requestAnimationFrame(function () {
+            labelLogo.classList.add("is-division-logo-landed");
+            document.documentElement.classList.remove("division-arrival-pending");
+            document.body.classList.remove("is-shared-logo-pending");
+            document.body.classList.remove("is-division-entering");
+            setTimeout(function () { document.body.classList.add("is-division-enter-header"); }, 140);
+            setTimeout(function () { document.body.classList.add("is-division-enter-title"); }, 480);
+            setTimeout(function () { document.body.classList.add("is-division-enter-descriptor"); }, 820);
+            setTimeout(function () { document.body.classList.add("is-division-enter-scroll"); }, 1160);
+          });
+        });
+      });
       return;
     }
     if (document.body.getAttribute("data-page") !== "studio") return;
