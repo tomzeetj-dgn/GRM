@@ -714,8 +714,8 @@ body.menu-open .mobile-menu__link:nth-child(6) { transition-delay: 440ms; }
   #panelHouse .panel__copy { align-items: center; text-align: center; }
   #panelLive .panel__copy { align-items: flex-end; text-align: right; }
   #panelProduction .panel__tag { text-align: left; }
-  #panelHouse .panel__tag { text-align: center; }
-  #panelLive .panel__tag { text-align: right; }
+  #panelHouse .panel__tag { width: 100%; text-align: center; }
+  #panelLive .panel__tag { width: 100%; text-align: right; }
 
   .panel__tag {
     margin-top: clamp(18px, 2.6cqw, 30px);
