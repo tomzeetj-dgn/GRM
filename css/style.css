@@ -522,6 +522,8 @@ body.menu-open .mobile-menu__link:nth-child(6) { transition-delay: 440ms; }
   width: clamp(400px, 58vw, 880px);
   height: auto;
   position: relative;
+  left: 50%;
+  transform: translateX(-50%);
   top: -40px;
 }
 .studio-minimal-hero__logo.is-studio-logo-shrinking {
