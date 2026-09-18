@@ -553,9 +553,9 @@
       document.fonts.ready.then(function () {
         requestAnimationFrame(function () {
           if (labelWidth) {
-          labelLogo.style.width = labelWidth + "px";
-          labelLogo.classList.add("is-division-logo-shrinking");
-          labelLogo.getBoundingClientRect();
+            labelLogo.style.width = labelWidth + "px";
+            labelLogo.classList.add("is-division-logo-shrinking");
+            labelLogo.getBoundingClientRect();
           }
           requestAnimationFrame(function () {
             labelLogo.classList.add("is-division-logo-landed");
