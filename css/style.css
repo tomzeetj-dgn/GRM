@@ -526,14 +526,6 @@ body.menu-open .mobile-menu__link:nth-child(6) { transition-delay: 440ms; }
   left: -1px;
   top: -38px;
 }
-.studio-minimal-hero__logo.is-studio-logo-shrinking {
-  transition: width 700ms cubic-bezier(0.22, 1, 0.36, 1);
-  max-width: none;
-}
-.studio-minimal-hero__logo.is-studio-logo-landed {
-  width: var(--studio-logo-final-width, clamp(400px, 58vw, 880px));
-  height: var(--studio-logo-final-height, auto);
-}
 body.is-shared-logo-pending .studio-minimal-hero__title,
 body.is-shared-logo-pending .studio-minimal-hero__lockup h1,
 body.is-shared-logo-pending .studio-minimal-hero__scroll {

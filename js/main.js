@@ -539,14 +539,6 @@
     var logo = hero.querySelector(".studio-minimal-hero__logo");
     if (!logo) return;
 
-    var homeLogoWidth = parseFloat(sessionStorage.getItem("grm-studio-home-logo-width"));
-    if (homeLogoWidth) sessionStorage.removeItem("grm-studio-home-logo-width");
-    if (homeLogoWidth) {
-      logo.style.width = homeLogoWidth + "px";
-      logo.classList.add("is-studio-logo-shrinking");
-      logo.getBoundingClientRect();
-    }
-
     document.body.classList.add("is-shared-logo-pending");
     document.fonts.ready.then(function () {
       requestAnimationFrame(function () {
