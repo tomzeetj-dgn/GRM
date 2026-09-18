@@ -458,6 +458,9 @@
 
       e.preventDefault(); // we time the real navigation below
       isTransitioning = true;
+      if (panel.id === "panelHouse") {
+        panel.classList.add("is-label-takeover-selected");
+      }
       hero.classList.add("is-takeover");
 
       // continue from the CURRENT accordion state — if this panel is already

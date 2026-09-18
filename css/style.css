@@ -486,6 +486,9 @@ body.menu-open .mobile-menu__link:nth-child(6) { transition-delay: 440ms; }
   border-color: transparent;
   pointer-events: none;
 }
+.hero.is-takeover .hero__panels #panelHouse.is-label-takeover-selected {
+  opacity: 1;
+}
 
 /* Studio hero: centered logo lockup, intentionally quiet. */
 .panel#panelProduction .panel__logo--glow.is-studio-logo-committed {
