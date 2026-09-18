@@ -477,11 +477,6 @@
         var destination = panel.getAttribute("href");
         if (destination === "studio/") {
           sessionStorage.setItem("grm-arrival", "studio");
-          var transition = document.createElement("div");
-          transition.className = "studio-transition";
-          transition.setAttribute("aria-hidden", "true");
-          transition.innerHTML = '<img class="studio-transition__logo" src="assets/img/GRM Studio Glow.png" alt="">';
-          document.body.appendChild(transition);
           setTimeout(function () {
             window.location.href = destination;
           }, 820);
