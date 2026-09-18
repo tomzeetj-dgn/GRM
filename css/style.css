@@ -536,13 +536,13 @@ body.is-studio-entering .studio-minimal-hero__title,
 body.is-studio-entering .studio-minimal-hero__lockup h1,
 body.is-studio-entering .studio-minimal-hero__scroll {
   opacity: 0;
+  transition: opacity 750ms cubic-bezier(0.16, 1, 0.3, 1);
 }
 body.is-studio-enter-header .site-header,
 body.is-studio-enter-title .studio-minimal-hero__title,
 body.is-studio-enter-descriptor .studio-minimal-hero__lockup h1,
 body.is-studio-enter-scroll .studio-minimal-hero__scroll {
   opacity: 1;
-  transition: opacity 750ms cubic-bezier(0.16, 1, 0.3, 1);
 }
 .studio-minimal-hero__title {
   margin: 0;
