@@ -618,7 +618,7 @@ body.menu-open .mobile-menu__link:nth-child(6) { transition-delay: 440ms; }
 }
 .studio-minimal-hero__scroll {
   position: absolute;
-  bottom: clamp(52px, 9vh, 96px);
+  top: calc(50% + clamp(220px, 25vh, 320px));
   left: 50%;
   display: flex;
   flex-direction: column;
