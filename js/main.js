@@ -530,7 +530,7 @@
      survive those (§23/24/§29). */
   onReady(function () {
     if (document.body.getAttribute("data-page") !== "studio") return;
-    var hero = document.querySelector(".page-hero");
+    var hero = document.querySelector(".studio-minimal-hero");
     var arrival = sessionStorage.getItem("grm-arrival");
     if (arrival) sessionStorage.removeItem("grm-arrival");
     if (arrival !== "studio" || reduced() || !hero) return;
@@ -559,6 +559,11 @@
           logo.classList.add("is-studio-logo-landed");
           document.body.classList.remove("is-shared-logo-pending");
           document.body.classList.remove("is-studio-arriving");
+          document.body.classList.add("is-studio-entering");
+          setTimeout(function () { document.body.classList.add("is-studio-enter-header"); }, 100);
+          setTimeout(function () { document.body.classList.add("is-studio-enter-title"); }, 330);
+          setTimeout(function () { document.body.classList.add("is-studio-enter-descriptor"); }, 560);
+          setTimeout(function () { document.body.classList.add("is-studio-enter-scroll"); }, 790);
         });
       });
     });

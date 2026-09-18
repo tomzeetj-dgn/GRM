@@ -539,6 +539,27 @@ body.is-shared-logo-pending .studio-minimal-hero__lockup h1,
 body.is-shared-logo-pending .studio-minimal-hero__scroll {
   visibility: hidden;
 }
+body.is-studio-entering .site-header,
+body.is-studio-entering .studio-minimal-hero__title,
+body.is-studio-entering .studio-minimal-hero__lockup h1,
+body.is-studio-entering .studio-minimal-hero__scroll {
+  opacity: 0;
+}
+body.is-studio-entering .studio-minimal-hero__title,
+body.is-studio-entering .studio-minimal-hero__lockup h1 {
+  transform: translateY(6px);
+}
+body.is-studio-enter-header .site-header,
+body.is-studio-enter-title .studio-minimal-hero__title,
+body.is-studio-enter-descriptor .studio-minimal-hero__lockup h1,
+body.is-studio-enter-scroll .studio-minimal-hero__scroll {
+  opacity: 1;
+  transition: opacity 550ms cubic-bezier(0.22, 1, 0.36, 1), transform 550ms cubic-bezier(0.22, 1, 0.36, 1);
+}
+body.is-studio-enter-title .studio-minimal-hero__title,
+body.is-studio-enter-descriptor .studio-minimal-hero__lockup h1 {
+  transform: translateY(0);
+}
 .studio-minimal-hero__title {
   margin: 0;
   color: var(--text);
@@ -604,6 +625,14 @@ body.is-shared-logo-pending .studio-minimal-hero__scroll {
      never lands here — kept as a belt-and-braces guard anyway. */
   .hero.is-takeover { transition: none; }
   .studio-minimal-hero__scroll i::after { animation: none; }
+  body.is-studio-entering .site-header,
+  body.is-studio-entering .studio-minimal-hero__title,
+  body.is-studio-entering .studio-minimal-hero__lockup h1,
+  body.is-studio-entering .studio-minimal-hero__scroll {
+    opacity: 1;
+    transform: none;
+    transition: none;
+  }
 }
 .hero__panels:not(:hover) .panel:not(:focus-visible) { outline: none; }
 .panel:focus-visible {
