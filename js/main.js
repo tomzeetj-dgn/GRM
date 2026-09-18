@@ -21,27 +21,6 @@
   var isMobileMenuOpen = false;
   var lastFocused = null;
 
-  function labelDebug(stage, panel) {
-    if (!panel || panel.id !== "panelHouse") return;
-    console.log("[LABEL DEBUG]", stage, performance.now());
-    var source = panel.querySelector(".panel__logo--glow");
-    if (source) {
-      console.log("[LABEL DEBUG] source", source.getBoundingClientRect(), {
-        opacity: getComputedStyle(source).opacity,
-        visibility: getComputedStyle(source).visibility,
-        display: getComputedStyle(source).display
-      });
-    }
-    var overlay = document.getElementById("labelTransitionLogo");
-    if (overlay) {
-      console.log("[LABEL DEBUG] overlay", overlay.getBoundingClientRect(), {
-        opacity: getComputedStyle(overlay).opacity,
-        visibility: getComputedStyle(overlay).visibility,
-        display: getComputedStyle(overlay).display
-      });
-    }
-  }
-
   var RAF = window.requestAnimationFrame ||
             function (cb) { return setTimeout(cb, 16); };
 
@@ -471,7 +450,6 @@
     root.addEventListener("click", function (e) {
       var panel = e.target.closest(".panel");
       if (!panel) return; // not a panel — leave default alone
-      if (panel.id === "panelHouse") labelDebug("HOME-CLICK", panel);
 
       // §24 reduced motion: no sweeping takeover, navigate immediately
       if (prefersReduced.matches) return;
@@ -526,10 +504,8 @@
           if (sourceLogo) {
             panel.classList.add("is-label-logo-committed");
             sourceLogo.classList.add("is-label-logo-committed");
-            labelDebug("HOME-COMMITTED", panel);
           }
            setTimeout(function () {
-             labelDebug("HOME-NAVIGATING", panel);
              window.location.href = destination;
            }, 820);
           return;
@@ -573,9 +549,6 @@
      survive those (§23/24/§29). */
   onReady(function () {
     if (document.body.getAttribute("data-page") === "label") {
-      console.log("[LABEL DEBUG] LABEL-MAIN-JS", performance.now());
-      var debugBadge = document.getElementById("labelDebugBadge");
-      if (debugBadge) debugBadge.textContent = "LABEL-MAIN-JS";
       var labelArrival = sessionStorage.getItem("grm-arrival");
       if (labelArrival !== "label") return;
       sessionStorage.removeItem("grm-arrival");
@@ -598,11 +571,7 @@
           overlay.style.top = endRect.top + "px";
           overlay.style.width = endRect.width + "px";
           overlay.style.height = endRect.height + "px";
-          console.log("[LABEL DEBUG] LABEL-ANIMATING", performance.now(), overlay.getBoundingClientRect(), endRect);
-          if (debugBadge) debugBadge.textContent = "LABEL-ANIMATING";
           overlay.addEventListener("transitionend", function () {
-            console.log("[LABEL DEBUG] LABEL-LANDED", performance.now(), overlay.getBoundingClientRect(), labelLogo.getBoundingClientRect());
-            if (debugBadge) debugBadge.textContent = "LABEL-LANDED";
             labelLogo.style.visibility = "visible";
             overlay.remove();
             document.documentElement.classList.remove("division-arrival-pending");

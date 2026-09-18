@@ -25,8 +25,6 @@
   <link rel="stylesheet" href="../css/style.css">
   <script>
     if (sessionStorage.getItem("grm-arrival") === "label") {
-      console.log("[LABEL DEBUG] LABEL-FIRST-SCRIPT", performance.now());
-      document.documentElement.classList.add("label-debug-arrival");
     }
     if (sessionStorage.getItem("grm-arrival") === "label") {
       document.documentElement.classList.add("division-arrival-pending");
@@ -51,13 +49,7 @@
     overlay.style.top = rect.top + "px";
     overlay.style.width = rect.width + "px";
     overlay.style.height = rect.height + "px";
-    overlay.style.outline = "4px solid red";
     document.body.appendChild(overlay);
-    var badge = document.createElement("div");
-    badge.id = "labelDebugBadge";
-    badge.textContent = "LABEL-OVERLAY-CREATED";
-    document.body.appendChild(badge);
-    console.log("[LABEL DEBUG] LABEL-OVERLAY-CREATED", performance.now(), overlay.getBoundingClientRect());
   }());
 </script>
 
