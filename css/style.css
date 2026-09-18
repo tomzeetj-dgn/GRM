@@ -516,17 +516,6 @@ body.menu-open .mobile-menu__link:nth-child(6) { transition-delay: 440ms; }
 .panel#panelHouse.is-label-logo-committed .panel__logo-window--label > img:first-child {
   opacity: 0;
 }
-.panel#panelHouse .panel__logo--glow.is-label-logo-committed {
-  width: clamp(400px, 58vw, 880px);
-  height: clamp(400px, 58vw, 880px);
-  top: 50%;
-  left: 50%;
-  transition: width 700ms cubic-bezier(0.22, 1, 0.36, 1),
-              height 700ms cubic-bezier(0.22, 1, 0.36, 1),
-              top 700ms cubic-bezier(0.22, 1, 0.36, 1),
-              left 700ms cubic-bezier(0.22, 1, 0.36, 1);
-  transform: translate(-50%, -50%);
-}
 .studio-minimal-hero {
   position: relative;
   min-height: 100svh;
