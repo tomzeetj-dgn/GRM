@@ -618,11 +618,13 @@
             labelLogo.style.visibility = "visible";
             overlay.remove();
             document.documentElement.classList.remove("division-arrival-pending");
-            document.body.classList.remove("is-division-entering");
             setTimeout(function () { document.body.classList.add("is-division-enter-header"); }, 140);
             setTimeout(function () { document.body.classList.add("is-division-enter-title"); }, 480);
             setTimeout(function () { document.body.classList.add("is-division-enter-descriptor"); }, 820);
-            setTimeout(function () { document.body.classList.add("is-division-enter-scroll"); }, 1160);
+            setTimeout(function () {
+              document.body.classList.add("is-division-enter-scroll");
+              document.body.classList.remove("is-division-entering");
+            }, 1160);
           });
         });
       });
@@ -655,11 +657,13 @@
             liveroomLogo.style.visibility = "visible";
             overlay.remove();
             document.documentElement.classList.remove("division-arrival-pending");
-            document.body.classList.remove("is-division-entering");
             setTimeout(function () { document.body.classList.add("is-division-enter-header"); }, 140);
             setTimeout(function () { document.body.classList.add("is-division-enter-title"); }, 480);
             setTimeout(function () { document.body.classList.add("is-division-enter-descriptor"); }, 820);
-            setTimeout(function () { document.body.classList.add("is-division-enter-scroll"); }, 1160);
+            setTimeout(function () {
+              document.body.classList.add("is-division-enter-scroll");
+              document.body.classList.remove("is-division-entering");
+            }, 1160);
           });
         });
       });
