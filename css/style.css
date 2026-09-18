@@ -792,8 +792,8 @@ body.is-studio-enter-scroll .studio-minimal-hero__scroll {
   }
   #panelHouse .panel__tag::before { margin-right: auto; margin-left: auto; }
   #panelLive .panel__tag::before { margin-left: auto; }
-  body.theme-studio #panelProduction .panel__tag::before { background: var(--accent-lite); }
-  body.theme-liveroom #panelLive .panel__tag::before { background: #ff8f56; }
+  #panelProduction .panel__tag::before { background: #f5cf6a; }
+  #panelLive .panel__tag::before { background: #ff8f56; }
 }
 
 /* ============================================================
