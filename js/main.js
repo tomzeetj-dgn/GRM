@@ -478,7 +478,7 @@
         if (destination === "studio/") {
           sessionStorage.setItem("grm-arrival", "studio");
           var transition = document.createElement("div");
-          transition.className = "studio-transition";
+          transition.className = "studio-transition studio-transition--centered";
           transition.setAttribute("aria-hidden", "true");
           transition.innerHTML =
             '<img class="studio-transition__echo studio-transition__echo--one" src="assets/img/GRM Studio Glow.png" alt="">' +

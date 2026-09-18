@@ -547,6 +547,9 @@ body.menu-open .mobile-menu__link:nth-child(6) { transition-delay: 440ms; }
   opacity: 0;
   transition: opacity 120ms ease;
 }
+.studio-transition--centered .studio-transition__logo {
+  transform: translate(-50%, -50%) scale(0.72);
+}
 @keyframes studio-impact {
   0% { filter: brightness(1); transform: translate(-50%, -50%) scale(1); }
   45% { filter: brightness(1.65); transform: translate(-50%, -50%) scale(1.035); }
@@ -565,11 +568,78 @@ body.menu-open .mobile-menu__link:nth-child(6) { transition-delay: 440ms; }
   to { transform: translate(-50%, -50%) scale(8); filter: brightness(1.12); }
 }
 
+/* Studio hero: centered logo lockup, intentionally quiet. */
+.studio-minimal-hero {
+  position: relative;
+  min-height: 100svh;
+  display: grid;
+  place-items: center;
+  padding: var(--header-h) var(--gutter) 12vh;
+  background: var(--bg);
+}
+.studio-minimal-hero__lockup {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: clamp(22px, 3.5vh, 42px);
+  transform: translateY(-3vh);
+}
+.studio-minimal-hero__logo {
+  display: block;
+  width: clamp(230px, 31vw, 480px);
+  height: auto;
+}
+.studio-minimal-hero__lockup h1 {
+  margin: 0;
+  color: var(--text-muted);
+  font-family: var(--font-body);
+  font-size: clamp(0.68rem, 1vw, 0.86rem);
+  font-weight: 500;
+  letter-spacing: 0.24em;
+  line-height: 1;
+  text-align: center;
+}
+.studio-minimal-hero__scroll {
+  position: absolute;
+  bottom: clamp(28px, 5vh, 54px);
+  left: 50%;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 12px;
+  color: var(--text-faint);
+  font-size: 0.62rem;
+  font-weight: 500;
+  letter-spacing: 0.2em;
+  text-transform: uppercase;
+  transform: translateX(-50%);
+}
+.studio-minimal-hero__scroll i {
+  display: block;
+  width: 1px;
+  height: 42px;
+  overflow: hidden;
+  background: var(--border-strong);
+}
+.studio-minimal-hero__scroll i::after {
+  content: "";
+  display: block;
+  width: 1px;
+  height: 18px;
+  background: var(--studio-yellow, var(--accent-lite));
+  animation: studio-scroll-line 2.4s var(--ease-out) infinite;
+}
+@keyframes studio-scroll-line {
+  from { transform: translateY(-18px); }
+  55%, to { transform: translateY(42px); }
+}
+
 @media (prefers-reduced-motion: reduce) {
   /* §24: js/main.js navigates immediately for reduced motion, so this class
      never lands here — kept as a belt-and-braces guard anyway. */
   .hero.is-takeover { transition: none; }
   .studio-transition { display: none; }
+  .studio-minimal-hero__scroll i::after { animation: none; }
 }
 .hero__panels:not(:hover) .panel:not(:focus-visible) { outline: none; }
 .panel:focus-visible {
