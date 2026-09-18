@@ -492,12 +492,12 @@
           return;
         }
         if (destination === "label/") {
-      sessionStorage.setItem("grm-arrival", "label");
-      if (sourceRect) sessionStorage.setItem("grm-label-home-logo-width", String(sourceRect.width));
-      if (sourceLogo) {
-        panel.classList.add("is-label-logo-committed");
-        sourceLogo.classList.add("is-label-logo-committed");
-      }
+          sessionStorage.setItem("grm-arrival", "label");
+          if (sourceRect) sessionStorage.setItem("grm-label-home-logo-width", String(sourceRect.width));
+          if (sourceLogo) {
+            panel.classList.add("is-label-logo-committed");
+            sourceLogo.classList.add("is-label-logo-committed");
+          }
           setTimeout(function () { window.location.href = destination; }, 820);
           return;
         }
