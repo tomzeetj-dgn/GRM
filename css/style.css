@@ -487,39 +487,20 @@ body.menu-open .mobile-menu__link:nth-child(6) { transition-delay: 440ms; }
   pointer-events: none;
 }
 
-/* Studio-only shared-element handoff. The normal hero never sees these rules. */
-.studio-transition {
-  position: fixed;
-  inset: 0;
-  z-index: 1000;
-  overflow: hidden;
-  pointer-events: none;
-  background: transparent;
-  opacity: 1;
+/* Studio uses the selected panel's existing Glow logo for its post-takeover
+   movement; no duplicate transition logo is created. */
+.panel#panelProduction .panel__logo--glow.is-studio-destination-move {
+  transition: left 700ms cubic-bezier(0.22, 1, 0.36, 1),
+              top 700ms cubic-bezier(0.22, 1, 0.36, 1),
+              width 700ms cubic-bezier(0.22, 1, 0.36, 1),
+              height 700ms cubic-bezier(0.22, 1, 0.36, 1);
 }
-.studio-transition__logo {
-  position: absolute;
-  top: var(--studio-start-top, 50%);
-  left: var(--studio-start-left, 50%);
-  width: var(--studio-start-width, min(130vw, 1872px));
-  height: var(--studio-start-height, min(130vw, 1872px));
-  max-width: none;
-  object-fit: contain;
-  transform: none;
-  mix-blend-mode: screen;
-  opacity: 1;
-  transform: none;
-  transition: transform 700ms cubic-bezier(0.22, 1, 0.36, 1);
-}
-.studio-transition__logo {
-  z-index: 2;
-  transform-origin: center;
-}
-.studio-transition.is-shared-move .studio-transition__logo {
-  left: 50%;
+.panel#panelProduction .panel__logo--glow.is-studio-destination-size {
   top: 50%;
+  left: 50%;
   width: clamp(400px, 58vw, 880px);
   height: clamp(400px, 58vw, 880px);
+  transform: translate(-50%, -50%);
 }
 
 /* Studio hero: centered logo lockup, intentionally quiet. */
@@ -619,7 +600,6 @@ body.is-shared-logo-pending .studio-minimal-hero__scroll {
   /* §24: js/main.js navigates immediately for reduced motion, so this class
      never lands here — kept as a belt-and-braces guard anyway. */
   .hero.is-takeover { transition: none; }
-  .studio-transition { display: none; }
   .studio-minimal-hero__scroll i::after { animation: none; }
 }
 .hero__panels:not(:hover) .panel:not(:focus-visible) { outline: none; }
