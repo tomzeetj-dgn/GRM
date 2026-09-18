@@ -588,6 +588,8 @@ body.menu-open .mobile-menu__link:nth-child(6) { transition-delay: 440ms; }
   display: block;
   width: clamp(400px, 58vw, 880px);
   height: auto;
+  position: relative;
+  top: -40px;
 }
 .studio-minimal-hero__title {
   margin: 0;
