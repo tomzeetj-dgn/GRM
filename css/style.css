@@ -705,6 +705,12 @@ body.is-division-entering .division-minimal-hero__scroll {
   opacity: 0;
   transition: opacity 1400ms ease;
 }
+html.division-arrival-pending .site-header,
+html.division-arrival-pending .division-minimal-hero__title,
+html.division-arrival-pending .division-minimal-hero__lockup h1,
+html.division-arrival-pending .division-minimal-hero__scroll {
+  opacity: 0;
+}
 body.is-division-enter-header .site-header,
 body.is-division-enter-title .division-minimal-hero__title,
 body.is-division-enter-descriptor .division-minimal-hero__lockup h1,
