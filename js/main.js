@@ -482,7 +482,10 @@
           if (sourceRect) {
             sessionStorage.setItem("grm-studio-home-logo-width", String(sourceRect.width));
           }
-          if (sourceLogo) sourceLogo.classList.add("is-studio-logo-committed");
+          if (sourceLogo) {
+            panel.classList.add("is-studio-logo-committed");
+            sourceLogo.classList.add("is-studio-logo-committed");
+          }
           setTimeout(function () {
             window.location.href = destination;
           }, 820);
