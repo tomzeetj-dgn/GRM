@@ -481,10 +481,10 @@
           var transition = document.createElement("div");
            transition.className = "studio-transition studio-transition--shared";
           transition.setAttribute("aria-hidden", "true");
-          transition.innerHTML =
-            '<div class="studio-transition__environment"></div>' +
-            '<img class="studio-transition__logo" src="assets/img/GRM Studio Glow.png" alt="">';
-          document.body.appendChild(transition);
+           transition.innerHTML =
+             '<div class="studio-transition__environment"></div>' +
+             '<img class="studio-transition__logo" src="assets/img/GRM Studio Glow.png" alt="">';
+           document.body.appendChild(transition);
           requestAnimationFrame(function () {
             transition.classList.add("is-ready");
           });
@@ -545,10 +545,19 @@
     var logo = hero.querySelector(".studio-minimal-hero__logo");
     if (sharedLogo && logo) {
       logo.classList.add("is-shared-logo-hidden");
-      requestAnimationFrame(function () {
+      document.body.classList.add("is-shared-logo-pending");
+      document.fonts.ready.then(function () {
         requestAnimationFrame(function () {
-          logo.classList.remove("is-shared-logo-hidden");
-          logo.classList.add("is-shared-logo-landed");
+          var rect = logo.getBoundingClientRect();
+          document.documentElement.style.setProperty("--studio-logo-left", rect.left + "px");
+          document.documentElement.style.setProperty("--studio-logo-top", rect.top + "px");
+          document.documentElement.style.setProperty("--studio-logo-width", rect.width + "px");
+          document.documentElement.style.setProperty("--studio-logo-height", rect.height + "px");
+          requestAnimationFrame(function () {
+            logo.classList.remove("is-shared-logo-hidden");
+            logo.classList.add("is-shared-logo-landed");
+            document.body.classList.remove("is-shared-logo-pending");
+          });
         });
       });
     }
