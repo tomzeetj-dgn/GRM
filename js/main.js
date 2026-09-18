@@ -478,25 +478,24 @@
         if (destination === "studio/") {
           sessionStorage.setItem("grm-arrival", "studio");
           var transition = document.createElement("div");
-          transition.className = "studio-transition studio-transition--centered";
+           transition.className = "studio-transition studio-transition--shared";
           transition.setAttribute("aria-hidden", "true");
           transition.innerHTML =
-            '<img class="studio-transition__echo studio-transition__echo--one" src="assets/img/GRM Studio Glow.png" alt="">' +
-            '<img class="studio-transition__echo studio-transition__echo--two" src="assets/img/GRM Studio Glow.png" alt="">' +
+            '<div class="studio-transition__environment"></div>' +
             '<img class="studio-transition__logo" src="assets/img/GRM Studio Glow.png" alt="">';
           document.body.appendChild(transition);
           requestAnimationFrame(function () {
             transition.classList.add("is-ready");
           });
           setTimeout(function () {
-            transition.classList.add("is-impact");
+            transition.classList.add("is-shared-move");
           }, 620);
           setTimeout(function () {
-            transition.classList.add("is-punch");
-          }, 720);
+            transition.classList.add("is-shared-land");
+          }, 1040);
           setTimeout(function () {
             window.location.href = destination;
-          }, 1240);
+          }, 1120);
           return;
         }
         window.location.href = destination;
