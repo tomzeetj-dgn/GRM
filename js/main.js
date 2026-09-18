@@ -468,6 +468,12 @@
       // takeover continues to full ownership, then a short logo hold, then
       // commit the destination (real <a> href, real history — Pages-safe)
       setTimeout(function () {
+        // §8/11 destination-arrival flag: remember which division the takeover
+        // is committing to, so the Studio page (and only Studio) can reveal
+        // around its mark on arrival. Reduced motion never reaches this line
+        // (§24 navigates immediately above), and it is cleared on read, so
+        // direct load / refresh / back never replay the arrival (§23).
+        sessionStorage.setItem("grm-arrival", panel.getAttribute("href"));
         window.location.href = panel.getAttribute("href");
       }, 760); // ~650ms continuation + ~120ms logo hold (§11, keep under 1s)
 
@@ -494,5 +500,23 @@
     document.addEventListener("focusin", function (e) {
       if (!root.contains(e.target)) settle();
     });
+  });
+
+  /* ---------- STUDIO-ONLY · §8/9/11 destination-arrival reveal ----------
+     The home takeover remembers the division it commits to (grm-arrival,
+     set ONLY on the takeover path, cleared on read). This block — and it
+     alone — is Studio-scoped: when Studio actually arrives out of that
+     takeover (and NOT reduced motion, §24, meaning the flag was never set),
+     the hero reveals AROUND its mark: the mark stays put, the inner content
+     staggers in around it. Direct load, refresh, back-forward and reduced
+     motion all stay instant: the flag is consumed on read and it does not
+     survive those (§23/24/§29). */
+  onReady(function () {
+    if (document.body.getAttribute("data-page") !== "studio") return CommitmentPanel;
+    var hero = document.querySelector(".page-hero");
+    var arrival = sessionStorage.getItem("grm-arrival");
+    if (arrival) sessionStorage.removeItem("grm-arrival"); // one-shot, no replay
+    if (!arrival || reduced() || !hero) return; // instant for all others
+    hero.classList.add("is-arriving");
   });
 })();
