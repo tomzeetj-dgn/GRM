@@ -671,6 +671,8 @@ body.menu-open .mobile-menu__link:nth-child(6) { transition-delay: 440ms; }
 }
 .panel__copy {
   width: 100%;
+  display: flex;
+  flex-direction: column;
   opacity: 0;
   transform: translateY(14px);
   transition: opacity 420ms ease 90ms, transform 520ms var(--ease-hero) 90ms;
@@ -712,11 +714,11 @@ body.menu-open .mobile-menu__link:nth-child(6) { transition-delay: 440ms; }
    fine uppercase type. Text edges line up with the titles. Mobile untouched. */
 @media (min-width: 768px) {
   #panelProduction .panel__copy { align-items: flex-start; text-align: left; }
-  #panelHouse .panel__copy { align-items: center; text-align: center; }
-  #panelLive .panel__copy { align-items: flex-end; text-align: right; }
-  #panelProduction .panel__tag { text-align: left; }
-  #panelHouse .panel__tag { width: 100%; text-align: center; }
-  #panelLive .panel__tag { width: 100%; text-align: right; }
+  #panelHouse .panel__copy { align-items: stretch; text-align: center; }
+  #panelLive .panel__copy { align-items: stretch; text-align: right; }
+  #panelProduction .panel__tag { align-self: flex-start; text-align: left; }
+  #panelHouse .panel__tag { align-self: stretch; width: 100%; text-align: center; }
+  #panelLive .panel__tag { align-self: stretch; width: 100%; text-align: right; }
 
   .panel__tag {
     margin-top: clamp(18px, 2.6cqw, 30px);
