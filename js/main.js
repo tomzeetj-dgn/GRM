@@ -552,27 +552,25 @@
       if (!labelLogo) return;
       var startRect = JSON.parse(sessionStorage.getItem("grm-label-start-rect") || "null");
       sessionStorage.removeItem("grm-label-start-rect");
+      labelLogo.style.visibility = "hidden";
+      var overlay = document.createElement("img");
+      overlay.className = "label-transition-logo";
+      overlay.src = "../assets/img/GRM Label Glow.png";
+      overlay.alt = "";
+      overlay.setAttribute("aria-hidden", "true");
+      overlay.style.left = (startRect ? startRect.left : 50) + "px";
+      overlay.style.top = (startRect ? startRect.top : 50) + "px";
+      overlay.style.width = (startRect ? startRect.width : 1) + "px";
+      overlay.style.height = (startRect ? startRect.height : 1) + "px";
+      document.body.appendChild(overlay);
+      overlay.getBoundingClientRect();
       document.fonts.ready.then(function () {
         requestAnimationFrame(function () {
           var endRect = labelLogo.getBoundingClientRect();
-          labelLogo.style.visibility = "hidden";
-          var overlay = document.createElement("img");
-          overlay.className = "label-transition-logo";
-          overlay.src = "../assets/img/GRM Label Glow.png";
-          overlay.alt = "";
-          overlay.setAttribute("aria-hidden", "true");
-          overlay.style.left = (startRect ? startRect.left : endRect.left) + "px";
-          overlay.style.top = (startRect ? startRect.top : endRect.top) + "px";
-          overlay.style.width = (startRect ? startRect.width : endRect.width) + "px";
-          overlay.style.height = (startRect ? startRect.height : endRect.height) + "px";
-          document.body.appendChild(overlay);
-          overlay.getBoundingClientRect();
-          requestAnimationFrame(function () {
-            overlay.style.left = endRect.left + "px";
-            overlay.style.top = endRect.top + "px";
-            overlay.style.width = endRect.width + "px";
-            overlay.style.height = endRect.height + "px";
-          });
+          overlay.style.left = endRect.left + "px";
+          overlay.style.top = endRect.top + "px";
+          overlay.style.width = endRect.width + "px";
+          overlay.style.height = endRect.height + "px";
           overlay.addEventListener("transitionend", function () {
             labelLogo.style.visibility = "visible";
             overlay.remove();
