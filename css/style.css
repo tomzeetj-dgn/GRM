@@ -614,7 +614,7 @@ body.menu-open .mobile-menu__link:nth-child(6) { transition-delay: 440ms; }
 .studio-minimal-hero__title,
 .studio-minimal-hero__lockup h1 {
   position: relative;
-  top: clamp(-68px, -7vh, -36px);
+  top: clamp(-168px, -17vh, -100px);
 }
 .studio-minimal-hero__scroll {
   position: absolute;
