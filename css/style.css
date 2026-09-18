@@ -487,10 +487,89 @@ body.menu-open .mobile-menu__link:nth-child(6) { transition-delay: 440ms; }
   pointer-events: none;
 }
 
+/* Studio-only title-sequence handoff. This layer is created after the
+   existing takeover has completed; the normal hero never sees these rules. */
+.studio-transition {
+  position: fixed;
+  inset: 0;
+  z-index: 1000;
+  overflow: hidden;
+  pointer-events: none;
+  background: transparent;
+  opacity: 0;
+  transition: background 90ms ease;
+}
+.studio-transition.is-ready { opacity: 1; }
+.studio-transition__logo,
+.studio-transition__echo {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  width: min(130vw, 1872px);
+  height: min(130vw, 1872px);
+  max-width: none;
+  object-fit: contain;
+  transform: translate(-50%, -50%);
+  mix-blend-mode: screen;
+  opacity: 0;
+}
+.studio-transition__logo {
+  z-index: 2;
+  transform-origin: center;
+}
+.studio-transition__echo { z-index: 1; }
+.studio-transition__echo--one { transform: translate(-50%, -50%) scale(1.015); }
+.studio-transition__echo--two { transform: translate(-50%, -50%) scale(1.03); }
+.studio-transition.is-impact {
+  background: radial-gradient(circle at center, rgba(255, 226, 52, 0.14), transparent 34%);
+}
+.studio-transition.is-impact .studio-transition__logo {
+  opacity: 1;
+  animation: studio-impact 110ms var(--ease-out) both;
+}
+.studio-transition.is-impact .studio-transition__echo--one {
+  opacity: 0.28;
+  animation: studio-echo-one 110ms ease-out both;
+}
+.studio-transition.is-impact .studio-transition__echo--two {
+  opacity: 0.14;
+  animation: studio-echo-two 130ms ease-out both;
+}
+.studio-transition.is-punch {
+  background: var(--bg);
+  transition: background 80ms ease;
+}
+.studio-transition.is-punch .studio-transition__logo {
+  opacity: 1;
+  animation: studio-punch 480ms cubic-bezier(0.12, 0.82, 0.18, 1) forwards;
+}
+.studio-transition.is-punch .studio-transition__echo {
+  opacity: 0;
+  transition: opacity 120ms ease;
+}
+@keyframes studio-impact {
+  0% { filter: brightness(1); transform: translate(-50%, -50%) scale(1); }
+  45% { filter: brightness(1.65); transform: translate(-50%, -50%) scale(1.035); }
+  100% { filter: brightness(1); transform: translate(-50%, -50%) scale(1); }
+}
+@keyframes studio-echo-one {
+  from { transform: translate(-50%, -50%) scale(1); opacity: 0.38; }
+  to { transform: translate(-50%, -50%) scale(1.08); opacity: 0; }
+}
+@keyframes studio-echo-two {
+  from { transform: translate(-50%, -50%) scale(1); opacity: 0.22; }
+  to { transform: translate(-50%, -50%) scale(1.14); opacity: 0; }
+}
+@keyframes studio-punch {
+  from { transform: translate(-50%, -50%) scale(1); filter: brightness(1); }
+  to { transform: translate(-50%, -50%) scale(8); filter: brightness(1.12); }
+}
+
 @media (prefers-reduced-motion: reduce) {
   /* §24: js/main.js navigates immediately for reduced motion, so this class
      never lands here — kept as a belt-and-braces guard anyway. */
   .hero.is-takeover { transition: none; }
+  .studio-transition { display: none; }
 }
 .hero__panels:not(:hover) .panel:not(:focus-visible) { outline: none; }
 .panel:focus-visible {
