@@ -509,6 +509,15 @@
             sourceLogo.classList.add("is-label-logo-committed");
           }
            setTimeout(function () {
+             if (sourceLogo) {
+               var committedRect = sourceLogo.getBoundingClientRect();
+               sessionStorage.setItem("grm-label-start-rect", JSON.stringify({
+                 left: committedRect.left,
+                 top: committedRect.top,
+                 width: committedRect.width,
+                 height: committedRect.height
+               }));
+             }
              window.location.href = destination;
            }, 820);
           return;
