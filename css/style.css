@@ -511,6 +511,7 @@ body.menu-open .mobile-menu__link:nth-child(6) { transition-delay: 440ms; }
   background: var(--bg);
 }
 .studio-minimal-hero__lockup {
+  width: 100%;
   display: flex;
   flex-direction: column;
   align-items: center;
