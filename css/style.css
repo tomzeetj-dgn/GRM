@@ -1682,6 +1682,7 @@ body.theme-liveroom { --accent: #8a3d1a; --accent-deep: #4a1f0a; --accent-lite: 
    ============================================================ */
 body[data-page="home"] { overflow: hidden; }
 body[data-page="home"] .progress { display: none; }
+body[data-page="home"] .site-header { display: none; }
 
 /* ============================================================
    PAGE HERO — division openers (Studio / Label / Liveroom)
