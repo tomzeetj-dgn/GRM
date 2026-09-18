@@ -16,6 +16,7 @@
 
   <link rel="icon" type="image/png" href="../assets/img/favicon.png">
   <link rel="preload" as="image" href="../assets/img/GRM 4K 1x1_Transparent.png">
+  <link rel="preload" as="image" href="../assets/img/GRM Label Glow.png">
 
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -29,6 +30,26 @@
   </script>
 </head>
 <body class="theme-label" data-root="../" data-page="label">
+<script>
+  (function () {
+    if (sessionStorage.getItem("grm-arrival") !== "label") return;
+    var raw = sessionStorage.getItem("grm-label-start-rect");
+    if (!raw) return;
+    var rect;
+    try { rect = JSON.parse(raw); } catch (e) { return; }
+    var overlay = document.createElement("img");
+    overlay.id = "labelTransitionLogo";
+    overlay.className = "label-transition-logo";
+    overlay.src = "../assets/img/GRM Label Glow.png";
+    overlay.alt = "";
+    overlay.setAttribute("aria-hidden", "true");
+    overlay.style.left = rect.left + "px";
+    overlay.style.top = rect.top + "px";
+    overlay.style.width = rect.width + "px";
+    overlay.style.height = rect.height + "px";
+    document.body.appendChild(overlay);
+  }());
+</script>
 
   <a class="skip-link" href="#main">Skip to content</a>
   <div class="progress" id="progress" aria-hidden="true"></div>

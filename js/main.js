@@ -557,20 +557,14 @@
       var startRect = JSON.parse(sessionStorage.getItem("grm-label-start-rect") || "null");
       sessionStorage.removeItem("grm-label-start-rect");
       labelLogo.style.visibility = "hidden";
-      var overlay = document.createElement("img");
-      overlay.className = "label-transition-logo";
-      overlay.src = "../assets/img/GRM Label Glow.png";
-      overlay.alt = "";
-      overlay.setAttribute("aria-hidden", "true");
-      overlay.style.left = (startRect ? startRect.left : 50) + "px";
-      overlay.style.top = (startRect ? startRect.top : 50) + "px";
-      overlay.style.width = (startRect ? startRect.width : 1) + "px";
-      overlay.style.height = (startRect ? startRect.height : 1) + "px";
-      document.body.appendChild(overlay);
+      var overlay = document.getElementById("labelTransitionLogo");
+      if (!overlay) return;
+      overlay.style.transition = "none";
       overlay.getBoundingClientRect();
       document.fonts.ready.then(function () {
         requestAnimationFrame(function () {
           var endRect = labelLogo.getBoundingClientRect();
+          overlay.style.transition = "left 700ms cubic-bezier(0.22, 1, 0.36, 1), top 700ms cubic-bezier(0.22, 1, 0.36, 1), width 700ms cubic-bezier(0.22, 1, 0.36, 1), height 700ms cubic-bezier(0.22, 1, 0.36, 1)";
           overlay.style.left = endRect.left + "px";
           overlay.style.top = endRect.top + "px";
           overlay.style.width = endRect.width + "px";
