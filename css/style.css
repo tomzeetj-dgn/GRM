@@ -670,6 +670,7 @@ body.menu-open .mobile-menu__link:nth-child(6) { transition-delay: 440ms; }
   min-width: 0;
 }
 .panel__copy {
+  width: 100%;
   opacity: 0;
   transform: translateY(14px);
   transition: opacity 420ms ease 90ms, transform 520ms var(--ease-hero) 90ms;
