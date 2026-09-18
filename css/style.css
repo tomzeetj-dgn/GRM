@@ -582,7 +582,7 @@ body.menu-open .mobile-menu__link:nth-child(6) { transition-delay: 440ms; }
   flex-direction: column;
   align-items: center;
   gap: clamp(18px, 2.8vh, 34px);
-  transform: translateY(1vh);
+  transform: translateY(-10vh);
 }
 .studio-minimal-hero__logo {
   display: block;
@@ -618,7 +618,7 @@ body.menu-open .mobile-menu__link:nth-child(6) { transition-delay: 440ms; }
 }
 .studio-minimal-hero__scroll {
   position: absolute;
-  bottom: clamp(28px, 5vh, 54px);
+  bottom: clamp(52px, 9vh, 96px);
   left: 50%;
   display: flex;
   flex-direction: column;
