@@ -582,7 +582,7 @@ body.menu-open .mobile-menu__link:nth-child(6) { transition-delay: 440ms; }
   flex-direction: column;
   align-items: center;
   gap: clamp(18px, 2.8vh, 34px);
-  transform: translateY(-3vh);
+  transform: translateY(1vh);
 }
 .studio-minimal-hero__logo {
   display: block;
