@@ -505,6 +505,9 @@ body.menu-open .mobile-menu__link:nth-child(6) { transition-delay: 440ms; }
 .panel#panelHouse.is-label-logo-committed .panel__logo-window--label > img:first-child {
   opacity: 0;
 }
+.panel#panelHouse.is-label-logo-committed .panel__logo-window--label > img:first-child {
+  opacity: 0;
+}
 .studio-minimal-hero {
   position: relative;
   min-height: 100svh;
