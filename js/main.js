@@ -477,6 +477,7 @@
         var destination = panel.getAttribute("href");
         if (destination === "studio/") {
           sessionStorage.setItem("grm-arrival", "studio");
+          sessionStorage.setItem("grm-shared-logo", "1");
           var transition = document.createElement("div");
            transition.className = "studio-transition studio-transition--shared";
           transition.setAttribute("aria-hidden", "true");
@@ -491,11 +492,8 @@
             transition.classList.add("is-shared-move");
           }, 620);
           setTimeout(function () {
-            transition.classList.add("is-shared-land");
-          }, 1040);
-          setTimeout(function () {
             window.location.href = destination;
-          }, 1120);
+          }, 1040);
           return;
         }
         window.location.href = destination;
@@ -539,8 +537,20 @@
     if (document.body.getAttribute("data-page") !== "studio") return;
     var hero = document.querySelector(".page-hero");
     var arrival = sessionStorage.getItem("grm-arrival");
+    var sharedLogo = sessionStorage.getItem("grm-shared-logo");
     if (arrival) sessionStorage.removeItem("grm-arrival"); // one-shot, no replay
+    if (sharedLogo) sessionStorage.removeItem("grm-shared-logo");
     if (arrival !== "studio" || reduced() || !hero) return; // instant for all others
     document.body.classList.add("is-studio-arriving");
+    var logo = hero.querySelector(".studio-minimal-hero__logo");
+    if (sharedLogo && logo) {
+      logo.classList.add("is-shared-logo-hidden");
+      requestAnimationFrame(function () {
+        requestAnimationFrame(function () {
+          logo.classList.remove("is-shared-logo-hidden");
+          logo.classList.add("is-shared-logo-landed");
+        });
+      });
+    }
   });
 })();
