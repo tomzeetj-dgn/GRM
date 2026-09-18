@@ -536,6 +536,7 @@
     if (arrival !== "studio" || reduced() || !hero) return;
 
     document.body.classList.add("is-studio-arriving");
+    document.body.classList.add("is-studio-entering");
     var logo = hero.querySelector(".studio-minimal-hero__logo");
     if (!logo) return;
 
@@ -551,7 +552,6 @@
           logo.classList.add("is-studio-logo-landed");
           document.body.classList.remove("is-shared-logo-pending");
           document.body.classList.remove("is-studio-arriving");
-          document.body.classList.add("is-studio-entering");
           setTimeout(function () { document.body.classList.add("is-studio-enter-header"); }, 140);
           setTimeout(function () { document.body.classList.add("is-studio-enter-title"); }, 480);
           setTimeout(function () { document.body.classList.add("is-studio-enter-descriptor"); }, 820);
