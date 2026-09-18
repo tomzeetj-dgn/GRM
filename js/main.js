@@ -482,7 +482,8 @@
           if (sourceRect) {
             sessionStorage.setItem("grm-studio-home-logo-width", String(sourceRect.width));
           }
-           setTimeout(function () {
+          if (sourceLogo) sourceLogo.classList.add("is-studio-logo-committed");
+          setTimeout(function () {
             window.location.href = destination;
           }, 820);
           return;
