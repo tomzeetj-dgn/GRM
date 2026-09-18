@@ -522,6 +522,21 @@
            }, 820);
           return;
         }
+        if (destination === "liveroom/") {
+          sessionStorage.setItem("grm-arrival", "liveroom");
+          if (sourceRect) sessionStorage.setItem("grm-liveroom-start-rect", JSON.stringify({
+            left: sourceRect.left,
+            top: sourceRect.top,
+            width: sourceRect.width,
+            height: sourceRect.height
+          }));
+          if (sourceLogo) {
+            panel.classList.add("is-liveroom-logo-committed");
+            sourceLogo.classList.add("is-liveroom-logo-committed");
+          }
+          setTimeout(function () { window.location.href = destination; }, 820);
+          return;
+        }
         window.location.href = destination;
       }, 820); // ~650ms continuation + ~170ms logo-only hold (§11)
 
@@ -587,6 +602,43 @@
           overlay.style.height = endRect.height + "px";
           requestAnimationFrame(function () {
             labelLogo.style.visibility = "visible";
+            overlay.remove();
+            document.documentElement.classList.remove("division-arrival-pending");
+            document.body.classList.remove("is-division-entering");
+            setTimeout(function () { document.body.classList.add("is-division-enter-header"); }, 140);
+            setTimeout(function () { document.body.classList.add("is-division-enter-title"); }, 480);
+            setTimeout(function () { document.body.classList.add("is-division-enter-descriptor"); }, 820);
+            setTimeout(function () { document.body.classList.add("is-division-enter-scroll"); }, 1160);
+          });
+        });
+      });
+      return;
+    }
+    if (document.body.getAttribute("data-page") === "liveroom") {
+      if (window.__grmLiveroomArrivalStarted) return;
+      window.__grmLiveroomArrivalStarted = true;
+      var liveroomArrival = sessionStorage.getItem("grm-arrival");
+      if (liveroomArrival !== "liveroom") return;
+      sessionStorage.removeItem("grm-arrival");
+      document.documentElement.classList.add("division-arrival-pending");
+      document.body.classList.add("is-division-entering");
+      var liveroomLogo = document.querySelector(".division-minimal-hero__logo");
+      if (!liveroomLogo) return;
+      var startRect = JSON.parse(sessionStorage.getItem("grm-liveroom-start-rect") || "null");
+      sessionStorage.removeItem("grm-liveroom-start-rect");
+      liveroomLogo.style.visibility = "hidden";
+      var overlay = document.getElementById("liveroomTransitionLogo");
+      if (!overlay) return;
+      document.fonts.ready.then(function () {
+        requestAnimationFrame(function () {
+          var endRect = liveroomLogo.getBoundingClientRect();
+          overlay.style.transition = "none";
+          overlay.style.left = endRect.left + "px";
+          overlay.style.top = endRect.top + "px";
+          overlay.style.width = endRect.width + "px";
+          overlay.style.height = endRect.height + "px";
+          requestAnimationFrame(function () {
+            liveroomLogo.style.visibility = "visible";
             overlay.remove();
             document.documentElement.classList.remove("division-arrival-pending");
             document.body.classList.remove("is-division-entering");

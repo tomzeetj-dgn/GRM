@@ -516,6 +516,18 @@ body.menu-open .mobile-menu__link:nth-child(6) { transition-delay: 440ms; }
               top 700ms cubic-bezier(0.22, 1, 0.36, 1),
               left 700ms cubic-bezier(0.22, 1, 0.36, 1);
 }
+.panel#panelLive .panel__logo--glow.is-liveroom-logo-committed {
+  width: clamp(400px, 58vw, 880px);
+  height: clamp(400px, 58vw, 880px);
+  top: 38%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  transition: width 700ms cubic-bezier(0.22, 1, 0.36, 1),
+              height 700ms cubic-bezier(0.22, 1, 0.36, 1),
+              top 700ms cubic-bezier(0.22, 1, 0.36, 1),
+              left 700ms cubic-bezier(0.22, 1, 0.36, 1);
+}
+.panel#panelLive.is-liveroom-logo-committed .panel__logo-window--live > img:first-child { opacity: 0; }
 .panel#panelHouse.is-label-logo-committed .panel__logo-window--label > img:first-child {
   opacity: 0;
 }
@@ -662,6 +674,14 @@ body.theme-liveroom .division-minimal-hero {
               top 700ms cubic-bezier(0.22, 1, 0.36, 1),
               width 700ms cubic-bezier(0.22, 1, 0.36, 1),
               height 700ms cubic-bezier(0.22, 1, 0.36, 1);
+}
+.liveroom-transition-logo {
+  position: fixed;
+  z-index: 1000;
+  pointer-events: none;
+  max-width: none;
+  object-fit: contain;
+  opacity: 1;
 }
 body.is-shared-logo-pending .division-minimal-hero__title,
 body.is-shared-logo-pending .division-minimal-hero__lockup h1,

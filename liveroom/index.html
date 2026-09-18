@@ -22,8 +22,35 @@
   <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Archivo:ital,wdth,wght@0,62.5,100..900;1,62.5,100..900&family=Inter:wght@300;400;500;600&display=swap">
 
   <link rel="stylesheet" href="../css/style.css">
+  <link rel="preload" as="image" href="../assets/img/GRM LiveRoom Glow.png">
+  <script>
+    if (sessionStorage.getItem("grm-arrival") === "liveroom") {
+      document.documentElement.classList.add("division-arrival-pending");
+    }
+  </script>
 </head>
 <body class="theme-liveroom" data-root="../" data-page="liveroom">
+<script>
+  (function () {
+    if (sessionStorage.getItem("grm-arrival") !== "liveroom") return;
+    var raw = sessionStorage.getItem("grm-liveroom-start-rect");
+    if (!raw) return;
+    var rect;
+    try { rect = JSON.parse(raw); } catch (e) { return; }
+    var overlay = document.createElement("img");
+    overlay.id = "liveroomTransitionLogo";
+    overlay.className = "liveroom-transition-logo";
+    overlay.src = "../assets/img/GRM LiveRoom Glow.png";
+    overlay.alt = "";
+    overlay.setAttribute("aria-hidden", "true");
+    overlay.style.left = rect.left + "px";
+    overlay.style.top = rect.top + "px";
+    overlay.style.width = rect.width + "px";
+    overlay.style.height = rect.height + "px";
+    overlay.style.transition = "none";
+    document.body.appendChild(overlay);
+  }());
+</script>
 
   <a class="skip-link" href="#main">Skip to content</a>
   <div class="progress" id="progress" aria-hidden="true"></div>
