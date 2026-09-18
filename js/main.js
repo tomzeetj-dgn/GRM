@@ -501,6 +501,10 @@
               height: sourceRect.height
             }));
           }
+          if (sourceLogo) {
+            panel.classList.add("is-label-logo-committed");
+            sourceLogo.classList.add("is-label-logo-committed");
+          }
           setTimeout(function () { window.location.href = destination; }, 820);
           return;
         }
