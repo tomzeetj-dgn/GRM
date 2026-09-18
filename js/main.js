@@ -552,10 +552,10 @@
           document.body.classList.remove("is-shared-logo-pending");
           document.body.classList.remove("is-studio-arriving");
           document.body.classList.add("is-studio-entering");
-          setTimeout(function () { document.body.classList.add("is-studio-enter-header"); }, 100);
-          setTimeout(function () { document.body.classList.add("is-studio-enter-title"); }, 330);
-          setTimeout(function () { document.body.classList.add("is-studio-enter-descriptor"); }, 560);
-          setTimeout(function () { document.body.classList.add("is-studio-enter-scroll"); }, 790);
+          setTimeout(function () { document.body.classList.add("is-studio-enter-header"); }, 140);
+          setTimeout(function () { document.body.classList.add("is-studio-enter-title"); }, 480);
+          setTimeout(function () { document.body.classList.add("is-studio-enter-descriptor"); }, 820);
+          setTimeout(function () { document.body.classList.add("is-studio-enter-scroll"); }, 1160);
         });
       });
     });
