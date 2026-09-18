@@ -586,7 +586,7 @@ body.menu-open .mobile-menu__link:nth-child(6) { transition-delay: 440ms; }
 }
 .studio-minimal-hero__logo {
   display: block;
-  width: clamp(320px, 44vw, 680px);
+  width: clamp(400px, 58vw, 880px);
   height: auto;
 }
 .studio-minimal-hero__title {
