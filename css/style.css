@@ -519,7 +519,7 @@ body.menu-open .mobile-menu__link:nth-child(6) { transition-delay: 440ms; }
   transform: translate(-50%, -50%);
   mix-blend-mode: screen;
   opacity: 1;
-  transition: transform 620ms cubic-bezier(0.22, 1, 0.36, 1), filter 70ms ease;
+  transition: transform 620ms cubic-bezier(0.22, 1, 0.36, 1);
 }
 .studio-transition__logo {
   z-index: 2;
@@ -534,7 +534,6 @@ body.menu-open .mobile-menu__link:nth-child(6) { transition-delay: 440ms; }
   transform:
     translate(var(--studio-delta-x, 0px), var(--studio-delta-y, 0px))
     scale(var(--studio-scale-x, 1), var(--studio-scale-y, 1));
-  filter: brightness(1.06);
 }
 
 /* Studio hero: centered logo lockup, intentionally quiet. */
