@@ -493,9 +493,13 @@
         }
         if (destination === "label/") {
           sessionStorage.setItem("grm-arrival", "label");
-          if (sourceLogo) {
-            panel.classList.add("is-label-logo-committed");
-            sourceLogo.classList.add("is-label-logo-committed");
+          if (sourceRect) {
+            sessionStorage.setItem("grm-label-start-rect", JSON.stringify({
+              left: sourceRect.left,
+              top: sourceRect.top,
+              width: sourceRect.width,
+              height: sourceRect.height
+            }));
           }
           setTimeout(function () { window.location.href = destination; }, 820);
           return;
@@ -546,12 +550,41 @@
       document.body.classList.add("is-division-entering");
       var labelLogo = document.querySelector(".division-minimal-hero__logo");
       if (!labelLogo) return;
-      document.documentElement.classList.remove("division-arrival-pending");
-      document.body.classList.remove("is-division-entering");
-      setTimeout(function () { document.body.classList.add("is-division-enter-header"); }, 140);
-      setTimeout(function () { document.body.classList.add("is-division-enter-title"); }, 480);
-      setTimeout(function () { document.body.classList.add("is-division-enter-descriptor"); }, 820);
-      setTimeout(function () { document.body.classList.add("is-division-enter-scroll"); }, 1160);
+      var startRect = JSON.parse(sessionStorage.getItem("grm-label-start-rect") || "null");
+      sessionStorage.removeItem("grm-label-start-rect");
+      document.fonts.ready.then(function () {
+        requestAnimationFrame(function () {
+          var endRect = labelLogo.getBoundingClientRect();
+          labelLogo.style.visibility = "hidden";
+          var overlay = document.createElement("img");
+          overlay.className = "label-transition-logo";
+          overlay.src = "../assets/img/GRM Label Glow.png";
+          overlay.alt = "";
+          overlay.setAttribute("aria-hidden", "true");
+          overlay.style.left = (startRect ? startRect.left : endRect.left) + "px";
+          overlay.style.top = (startRect ? startRect.top : endRect.top) + "px";
+          overlay.style.width = (startRect ? startRect.width : endRect.width) + "px";
+          overlay.style.height = (startRect ? startRect.height : endRect.height) + "px";
+          document.body.appendChild(overlay);
+          overlay.getBoundingClientRect();
+          requestAnimationFrame(function () {
+            overlay.style.left = endRect.left + "px";
+            overlay.style.top = endRect.top + "px";
+            overlay.style.width = endRect.width + "px";
+            overlay.style.height = endRect.height + "px";
+          });
+          overlay.addEventListener("transitionend", function () {
+            labelLogo.style.visibility = "visible";
+            overlay.remove();
+            document.documentElement.classList.remove("division-arrival-pending");
+            document.body.classList.remove("is-division-entering");
+            setTimeout(function () { document.body.classList.add("is-division-enter-header"); }, 140);
+            setTimeout(function () { document.body.classList.add("is-division-enter-title"); }, 480);
+            setTimeout(function () { document.body.classList.add("is-division-enter-descriptor"); }, 820);
+            setTimeout(function () { document.body.classList.add("is-division-enter-scroll"); }, 1160);
+          }, { once: true });
+        });
+      });
       return;
     }
     if (document.body.getAttribute("data-page") !== "studio") return;
