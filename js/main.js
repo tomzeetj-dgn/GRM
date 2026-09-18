@@ -461,6 +461,9 @@
       if (panel.id === "panelHouse") {
         panel.classList.add("is-label-takeover-selected");
       }
+      if (panel.id === "panelLive") {
+        panel.classList.add("is-liveroom-takeover-selected");
+      }
       hero.classList.add("is-takeover");
 
       // continue from the CURRENT accordion state — if this panel is already
@@ -534,7 +537,18 @@
             panel.classList.add("is-liveroom-logo-committed");
             sourceLogo.classList.add("is-liveroom-logo-committed");
           }
-          setTimeout(function () { window.location.href = destination; }, 820);
+          setTimeout(function () {
+            if (sourceLogo) {
+              var committedRect = sourceLogo.getBoundingClientRect();
+              sessionStorage.setItem("grm-liveroom-start-rect", JSON.stringify({
+                left: committedRect.left,
+                top: committedRect.top,
+                width: committedRect.width,
+                height: committedRect.height
+              }));
+            }
+            window.location.href = destination;
+          }, 820);
           return;
         }
         window.location.href = destination;
