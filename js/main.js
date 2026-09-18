@@ -535,14 +535,17 @@
     if (logo) {
        var homeLogoWidth = parseFloat(sessionStorage.getItem("grm-studio-home-logo-width"));
        if (homeLogoWidth) sessionStorage.removeItem("grm-studio-home-logo-width");
-       if (homeLogoWidth) {
-         logo.style.width = homeLogoWidth + "px";
-         logo.classList.add("is-studio-logo-shrinking");
-       }
-       document.body.classList.add("is-shared-logo-pending");
-       requestAnimationFrame(function () {
-         logo.classList.add("is-studio-logo-landed");
-        document.body.classList.remove("is-shared-logo-pending");
+        if (homeLogoWidth) {
+          logo.style.width = homeLogoWidth + "px";
+          logo.classList.add("is-studio-logo-shrinking");
+          logo.getBoundingClientRect();
+        }
+        document.body.classList.add("is-shared-logo-pending");
+        requestAnimationFrame(function () {
+          requestAnimationFrame(function () {
+            logo.classList.add("is-studio-logo-landed");
+          });
+         document.body.classList.remove("is-shared-logo-pending");
         requestAnimationFrame(function () {
           document.body.classList.remove("is-studio-arriving");
         });
