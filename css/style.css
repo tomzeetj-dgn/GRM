@@ -506,7 +506,7 @@ body.menu-open .mobile-menu__link:nth-child(6) { transition-delay: 440ms; }
   opacity: 0;
 }
 .panel#panelHouse .panel__logo--glow.is-label-logo-committed {
-  width: clamp(280px, 38vw, 590px);
+  width: clamp(400px, 58vw, 880px);
   height: clamp(400px, 58vw, 880px);
   top: 50%;
   left: 50%;
