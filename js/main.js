@@ -635,9 +635,12 @@
           morph.style.opacity = "0";
           target.style.visibility = "visible";
            morph.addEventListener("transitionend", function () {
-             morph.remove();
-             document.documentElement.classList.remove("division-morph-pending");
-             document.documentElement.classList.remove("division-morph-ui-pending");
+            morph.remove();
+            document.documentElement.classList.remove("division-morph-pending");
+            document.documentElement.classList.remove("division-morph-ui-pending");
+            setTimeout(function () { document.body.classList.add("is-division-enter-title"); }, 480);
+            setTimeout(function () { document.body.classList.add("is-division-enter-descriptor"); }, 820);
+            setTimeout(function () { document.body.classList.add("is-division-enter-scroll"); }, 1160);
              setTimeout(function () { document.body.classList.add("is-division-enter-title"); }, 480);
              setTimeout(function () { document.body.classList.add("is-division-enter-descriptor"); }, 820);
              setTimeout(function () { document.body.classList.add("is-division-enter-scroll"); }, 1160);
