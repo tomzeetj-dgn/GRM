@@ -730,6 +730,10 @@ body.is-division-enter-header .site-header,
 body.is-division-enter-title .division-minimal-hero__title,
 body.is-division-enter-descriptor .division-minimal-hero__lockup h1,
 body.is-division-enter-scroll .division-minimal-hero__scroll { opacity: 1; }
+html.division-morph-ui-pending body.is-division-enter-scroll .division-minimal-hero__scroll {
+  opacity: 1;
+  transition: opacity 1400ms ease;
+}
 @keyframes studio-scroll-line {
   from { transform: translateY(-18px); }
   55%, to { transform: translateY(42px); }
