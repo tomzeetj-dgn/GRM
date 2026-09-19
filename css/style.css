@@ -570,6 +570,10 @@ body.is-studio-entering .studio-minimal-hero__scroll {
   opacity: 0;
   transition: opacity 1400ms ease;
 }
+body.is-division-morph-exit .studio-minimal-hero__title,
+body.is-division-morph-exit .studio-minimal-hero__lockup h1,
+body.is-division-morph-exit .studio-minimal-hero__scroll,
+body.is-division-morph-exit .site-header { opacity: 0; transition: opacity 400ms ease; }
 html.studio-arrival-pending .site-header,
 html.studio-arrival-pending .studio-minimal-hero__title,
 html.studio-arrival-pending .studio-minimal-hero__lockup h1,
@@ -711,6 +715,11 @@ html.division-arrival-pending .division-minimal-hero__lockup h1,
 html.division-arrival-pending .division-minimal-hero__scroll {
   opacity: 0;
 }
+html.division-morph-pending .site-header,
+html.division-morph-pending .division-minimal-hero__title,
+html.division-morph-pending .division-minimal-hero__lockup h1,
+html.division-morph-pending .division-minimal-hero__scroll { opacity: 0; }
+.division-morph-logo { position: fixed; z-index: 10000; pointer-events: none; max-width: none; object-fit: contain; opacity: 1; }
 body.is-division-enter-header .site-header,
 body.is-division-enter-title .division-minimal-hero__title,
 body.is-division-enter-descriptor .division-minimal-hero__lockup h1,

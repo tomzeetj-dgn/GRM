@@ -127,6 +127,26 @@
 
   injectSiteChrome();
 
+  /* Studio -> Label only: identity dissolve, separate from Home arrivals. */
+  (function () {
+    if (document.body.getAttribute("data-page") !== "studio" || reduced()) return;
+    var busy = false;
+    document.addEventListener("click", function (event) {
+      var link = event.target.closest('.site-nav a[href$="label/"]');
+      if (!link || event.button !== 0 || event.metaKey || event.ctrlKey || event.shiftKey || event.altKey || busy) return;
+      event.preventDefault();
+      busy = true;
+      var logo = document.querySelector(".studio-minimal-hero__logo");
+      var rect = logo && logo.getBoundingClientRect();
+      if (rect) {
+        sessionStorage.setItem("grm-morph-arrival", "label");
+        sessionStorage.setItem("grm-morph-start", JSON.stringify({ left: rect.left, top: rect.top, width: rect.width, height: rect.height }));
+      }
+      document.body.classList.add("is-division-morph-exit");
+      setTimeout(function () { window.location.href = link.href; }, 520);
+    });
+  }());
+
   /* ---------- SHARED HELPERS ---------- */
   function onReady(fn) {
     if (document.readyState === "loading") {
@@ -589,6 +609,39 @@
      motion all stay instant: the flag is consumed on read and it does not
      survive those (§23/24/§29). */
   onReady(function () {
+    if (document.body.getAttribute("data-page") === "label" && sessionStorage.getItem("grm-morph-arrival") === "label") {
+      if (window.__grmStudioLabelMorph) return;
+      window.__grmStudioLabelMorph = true;
+      sessionStorage.removeItem("grm-morph-arrival");
+      var source = JSON.parse(sessionStorage.getItem("grm-morph-start") || "null");
+      sessionStorage.removeItem("grm-morph-start");
+      var target = document.querySelector(".division-minimal-hero__logo");
+      if (!source || !target) return;
+      target.style.visibility = "hidden";
+      var morph = document.createElement("img");
+      morph.className = "division-morph-logo";
+      morph.src = "../assets/img/GRM Label Glow.png";
+      morph.alt = "";
+      morph.setAttribute("aria-hidden", "true");
+      morph.style.left = source.left + "px";
+      morph.style.top = source.top + "px";
+      morph.style.width = source.width + "px";
+      morph.style.height = source.height + "px";
+      document.body.appendChild(morph);
+      document.fonts.ready.then(function () {
+        requestAnimationFrame(function () {
+          var end = target.getBoundingClientRect();
+          morph.style.transition = "opacity 700ms ease";
+          morph.style.opacity = "0";
+          target.style.visibility = "visible";
+          morph.addEventListener("transitionend", function () {
+            morph.remove();
+            document.documentElement.classList.remove("division-morph-pending");
+          }, { once: true });
+          void end;
+        });
+      });
+    }
     if (document.body.getAttribute("data-page") === "label") {
       if (window.__grmLabelArrivalStarted) return;
       window.__grmLabelArrivalStarted = true;
