@@ -640,8 +640,15 @@
              setTimeout(function () { document.body.classList.add("is-division-enter-title"); }, 480);
              setTimeout(function () { document.body.classList.add("is-division-enter-descriptor"); }, 820);
              setTimeout(function () {
-               document.body.classList.add("is-division-enter-scroll");
-               document.documentElement.classList.remove("division-morph-ui-pending");
+             document.body.classList.add("is-division-enter-scroll");
+             var scrollIndicator = document.querySelector(".division-minimal-hero__scroll");
+             if (scrollIndicator) {
+               scrollIndicator.addEventListener("transitionend", function (event) {
+                 if (event.propertyName === "opacity") {
+                   document.documentElement.classList.remove("division-morph-ui-pending");
+                 }
+               }, { once: true });
+             }
              }, 1160);
            }, { once: true });
           void end;

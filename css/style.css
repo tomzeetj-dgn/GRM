@@ -715,7 +715,6 @@ html.division-arrival-pending .division-minimal-hero__lockup h1,
 html.division-arrival-pending .division-minimal-hero__scroll {
   opacity: 0;
 }
-html.division-morph-pending .site-header,
 html.division-morph-pending .division-minimal-hero__title,
 html.division-morph-pending .division-minimal-hero__lockup h1,
 html.division-morph-pending .division-minimal-hero__scroll { opacity: 0; }
