@@ -127,6 +127,26 @@
 
   injectSiteChrome();
 
+  /* Studio -> Label only: identity dissolve, separate from Home arrivals. */
+  (function () {
+    if (document.body.getAttribute("data-page") !== "studio" || reduced()) return;
+    var busy = false;
+    document.addEventListener("click", function (event) {
+      var link = event.target.closest('.site-nav a[href$="label/"]');
+      if (!link || event.button !== 0 || event.metaKey || event.ctrlKey || event.shiftKey || event.altKey || busy) return;
+      event.preventDefault();
+      busy = true;
+      var logo = document.querySelector(".studio-minimal-hero__logo");
+      var rect = logo && logo.getBoundingClientRect();
+      if (rect) {
+        sessionStorage.setItem("grm-morph-arrival", "label");
+        sessionStorage.setItem("grm-morph-start", JSON.stringify({ left: rect.left, top: rect.top, width: rect.width, height: rect.height }));
+      }
+      document.body.classList.add("is-division-morph-exit");
+      setTimeout(function () { window.location.href = link.href; }, 520);
+    });
+  }());
+
   /* ---------- SHARED HELPERS ---------- */
   function onReady(fn) {
     if (document.readyState === "loading") {
