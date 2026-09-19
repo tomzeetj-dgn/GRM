@@ -572,8 +572,7 @@ body.is-studio-entering .studio-minimal-hero__scroll {
 }
 body.is-division-morph-exit .studio-minimal-hero__title,
 body.is-division-morph-exit .studio-minimal-hero__lockup h1,
-body.is-division-morph-exit .studio-minimal-hero__scroll,
-body.is-division-morph-exit .site-header { opacity: 0; transition: opacity 400ms ease; }
+body.is-division-morph-exit .studio-minimal-hero__scroll { opacity: 0; transition: opacity 400ms ease; }
 html.studio-arrival-pending .site-header,
 html.studio-arrival-pending .studio-minimal-hero__title,
 html.studio-arrival-pending .studio-minimal-hero__lockup h1,
