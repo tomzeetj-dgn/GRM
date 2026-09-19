@@ -719,6 +719,9 @@ html.division-morph-pending .site-header,
 html.division-morph-pending .division-minimal-hero__title,
 html.division-morph-pending .division-minimal-hero__lockup h1,
 html.division-morph-pending .division-minimal-hero__scroll { opacity: 0; }
+html.division-morph-ui-pending .division-minimal-hero__title,
+html.division-morph-ui-pending .division-minimal-hero__lockup h1,
+html.division-morph-ui-pending .division-minimal-hero__scroll { opacity: 0; }
 .division-morph-logo { position: fixed; z-index: 10000; pointer-events: none; max-width: none; object-fit: contain; opacity: 1; }
 body.is-division-enter-header .site-header,
 body.is-division-enter-title .division-minimal-hero__title,
