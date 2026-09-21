@@ -147,6 +147,39 @@
     });
   }());
 
+  /* Label/Liveroom division-to-division routes only. Studio -> Label above
+     remains isolated as the approved reference transition. */
+  (function () {
+    var page = document.body.getAttribute("data-page");
+    if (reduced() || (page !== "label" && page !== "liveroom")) return;
+
+    var busy = false;
+    var logo = document.querySelector(".division-minimal-hero__logo");
+
+    document.addEventListener("click", function (event) {
+      var link = event.target.closest('.site-nav a[href$="studio/"], .site-nav a[href$="label/"], .site-nav a[href$="liveroom/"]');
+      if (!link || event.button !== 0 || event.metaKey || event.ctrlKey || event.shiftKey || event.altKey || busy) return;
+
+      var destination = link.getAttribute("href").replace(/^.*\/|\/$/g, "");
+      if (destination === page) return;
+
+      event.preventDefault();
+      busy = true;
+      var rect = logo && logo.getBoundingClientRect();
+      if (rect) {
+        sessionStorage.setItem("grm-morph-arrival", destination);
+        sessionStorage.setItem("grm-morph-start", JSON.stringify({
+          left: rect.left,
+          top: rect.top,
+          width: rect.width,
+          height: rect.height
+        }));
+      }
+      document.body.classList.add("is-division-page-morph-exit");
+      setTimeout(function () { window.location.href = link.href; }, 520);
+    });
+  }());
+
   /* ---------- SHARED HELPERS ---------- */
   function onReady(fn) {
     if (document.readyState === "loading") {
