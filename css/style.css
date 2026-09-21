@@ -732,6 +732,31 @@ html.division-morph-ui-pending body.is-division-enter-scroll .division-minimal-h
   opacity: 1;
   transition: opacity 1400ms ease;
 }
+
+html.studio-morph-pending .studio-minimal-hero__title,
+html.studio-morph-pending .studio-minimal-hero__lockup h1,
+html.studio-morph-pending .studio-minimal-hero__scroll { opacity: 0; }
+
+html.studio-morph-ui-pending .studio-minimal-hero__title,
+html.studio-morph-ui-pending .studio-minimal-hero__lockup h1,
+html.studio-morph-ui-pending .studio-minimal-hero__scroll {
+  opacity: 0;
+  transition: opacity 1400ms ease;
+}
+
+.studio-morph-logo {
+  position: fixed;
+  z-index: 10000;
+  pointer-events: none;
+  max-width: none;
+  object-fit: contain;
+}
+
+html.studio-morph-ui-pending body.is-studio-enter-scroll .studio-minimal-hero__scroll {
+  opacity: 1;
+  transition: opacity 1400ms ease;
+}
+
 @keyframes studio-scroll-line {
   from { transform: translateY(-18px); }
   55%, to { transform: translateY(42px); }

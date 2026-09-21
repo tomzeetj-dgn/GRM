@@ -655,6 +655,100 @@
         });
       });
     }
+    if (document.body.getAttribute("data-page") === "liveroom" && sessionStorage.getItem("grm-morph-arrival") === "liveroom") {
+      if (window.__grmStudioLiveroomMorph) return;
+      window.__grmStudioLiveroomMorph = true;
+      sessionStorage.removeItem("grm-morph-arrival");
+      var source = JSON.parse(sessionStorage.getItem("grm-morph-start") || "null");
+      sessionStorage.removeItem("grm-morph-start");
+      var target = document.querySelector(".division-minimal-hero__logo");
+      if (!source || !target) return;
+      target.style.visibility = "hidden";
+      var morph = document.createElement("img");
+      morph.className = "division-morph-logo";
+      morph.src = "../assets/img/GRM LiveRoom Glow.png";
+      morph.alt = "";
+      morph.setAttribute("aria-hidden", "true");
+      morph.style.left = source.left + "px";
+      morph.style.top = source.top + "px";
+      morph.style.width = source.width + "px";
+      morph.style.height = source.height + "px";
+      document.body.appendChild(morph);
+      document.fonts.ready.then(function () {
+        requestAnimationFrame(function () {
+          var end = target.getBoundingClientRect();
+          morph.style.transition = "opacity 700ms ease";
+          morph.style.opacity = "0";
+          target.style.visibility = "visible";
+           morph.addEventListener("transitionend", function () {
+             morph.remove();
+             document.documentElement.classList.remove("division-morph-pending");
+             setTimeout(function () { document.body.classList.add("is-division-enter-title"); }, 480);
+             setTimeout(function () { document.body.classList.add("is-division-enter-descriptor"); }, 820);
+             setTimeout(function () {
+             document.body.classList.add("is-division-enter-scroll");
+             var scrollIndicator = document.querySelector(".division-minimal-hero__scroll");
+             if (scrollIndicator) {
+               scrollIndicator.addEventListener("transitionend", function (event) {
+                 if (event.propertyName === "opacity") {
+                   document.documentElement.classList.remove("division-morph-ui-pending");
+                 }
+               }, { once: true });
+             }
+             }, 1160);
+           }, { once: true });
+          void end;
+        });
+      });
+    }
+
+    if (document.body.getAttribute("data-page") === "studio" && sessionStorage.getItem("grm-morph-arrival") === "studio") {
+      if (window.__grmDivisionStudioMorph) return;
+      window.__grmDivisionStudioMorph = true;
+      sessionStorage.removeItem("grm-morph-arrival");
+      var source = JSON.parse(sessionStorage.getItem("grm-morph-start") || "null");
+      sessionStorage.removeItem("grm-morph-start");
+      var target = document.querySelector(".studio-minimal-hero__logo");
+      if (!source || !target) return;
+      target.style.visibility = "hidden";
+      var morph = document.createElement("img");
+      morph.className = "studio-morph-logo";
+      morph.src = "../assets/img/GRM Studio Glow.png";
+      morph.alt = "";
+      morph.setAttribute("aria-hidden", "true");
+      morph.style.left = source.left + "px";
+      morph.style.top = source.top + "px";
+      morph.style.width = source.width + "px";
+      morph.style.height = source.height + "px";
+      document.body.appendChild(morph);
+      document.fonts.ready.then(function () {
+        requestAnimationFrame(function () {
+          var end = target.getBoundingClientRect();
+          morph.style.transition = "opacity 700ms ease";
+          morph.style.opacity = "0";
+          target.style.visibility = "visible";
+           morph.addEventListener("transitionend", function () {
+             morph.remove();
+             document.documentElement.classList.remove("studio-morph-pending");
+             setTimeout(function () { document.body.classList.add("is-studio-enter-title"); }, 480);
+             setTimeout(function () { document.body.classList.add("is-studio-enter-descriptor"); }, 820);
+             setTimeout(function () {
+             document.body.classList.add("is-studio-enter-scroll");
+             var scrollIndicator = document.querySelector(".studio-minimal-hero__scroll");
+             if (scrollIndicator) {
+               scrollIndicator.addEventListener("transitionend", function (event) {
+                 if (event.propertyName === "opacity") {
+                   document.documentElement.classList.remove("studio-morph-ui-pending");
+                 }
+               }, { once: true });
+             }
+             }, 1160);
+           }, { once: true });
+          void end;
+        });
+      });
+    }
+
     if (document.body.getAttribute("data-page") === "label") {
       if (window.__grmLabelArrivalStarted) return;
       window.__grmLabelArrivalStarted = true;

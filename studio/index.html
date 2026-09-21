@@ -26,6 +26,10 @@
     if (sessionStorage.getItem("grm-arrival") === "studio") {
       document.documentElement.classList.add("studio-arrival-pending");
     }
+    if (sessionStorage.getItem("grm-morph-arrival") === "studio") {
+      document.documentElement.classList.add("studio-morph-pending");
+      document.documentElement.classList.add("studio-morph-ui-pending");
+    }
   </script>
 </head>
 <body class="theme-studio" data-root="../" data-page="studio">
