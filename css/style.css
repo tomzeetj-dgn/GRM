@@ -738,6 +738,14 @@ html.division-morph-ui-pending body.is-division-enter-scroll .division-minimal-h
   opacity: 1;
   transition: opacity 1400ms ease;
 }
+html.division-morph-ui-pending body.is-division-enter-title .division-minimal-hero__title {
+  opacity: 1;
+  transition: opacity 1400ms ease;
+}
+html.division-morph-ui-pending body.is-division-enter-descriptor .division-minimal-hero__lockup h1 {
+  opacity: 1;
+  transition: opacity 1400ms ease;
+}
 
 html.studio-morph-pending .studio-minimal-hero__title,
 html.studio-morph-pending .studio-minimal-hero__lockup h1,
@@ -759,6 +767,14 @@ html.studio-morph-ui-pending .studio-minimal-hero__scroll {
 }
 
 html.studio-morph-ui-pending body.is-studio-enter-scroll .studio-minimal-hero__scroll {
+  opacity: 1;
+  transition: opacity 1400ms ease;
+}
+html.studio-morph-ui-pending body.is-studio-enter-title .studio-minimal-hero__title {
+  opacity: 1;
+  transition: opacity 1400ms ease;
+}
+html.studio-morph-ui-pending body.is-studio-enter-descriptor .studio-minimal-hero__lockup h1 {
   opacity: 1;
   transition: opacity 1400ms ease;
 }

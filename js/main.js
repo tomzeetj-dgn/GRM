@@ -147,6 +147,104 @@
     });
   }());
 
+  /* Liveroom -> Label only: isolated copy of the Liveroom source handoff. */
+  (function () {
+    if (document.body.getAttribute("data-page") !== "liveroom" || reduced()) return;
+    var busy = false;
+    document.addEventListener("click", function (event) {
+      var link = event.target.closest('.site-nav a[href$="label/"]');
+      if (!link || event.button !== 0 || event.metaKey || event.ctrlKey || event.shiftKey || event.altKey || busy) return;
+      event.preventDefault();
+      busy = true;
+      var logo = document.querySelector(".division-minimal-hero__logo");
+      var rect = logo && logo.getBoundingClientRect();
+      if (rect) {
+        sessionStorage.setItem("grm-morph-arrival", "label");
+        sessionStorage.setItem("grm-morph-start", JSON.stringify({ left: rect.left, top: rect.top, width: rect.width, height: rect.height }));
+      }
+      document.body.classList.add("is-division-page-morph-exit");
+      setTimeout(function () { window.location.href = link.href; }, 520);
+    });
+  }());
+
+  /* Liveroom -> Studio only: isolated copy of the Label source handoff. */
+  (function () {
+    if (document.body.getAttribute("data-page") !== "liveroom" || reduced()) return;
+    var busy = false;
+    document.addEventListener("click", function (event) {
+      var link = event.target.closest('.site-nav a[href$="studio/"]');
+      if (!link || event.button !== 0 || event.metaKey || event.ctrlKey || event.shiftKey || event.altKey || busy) return;
+      event.preventDefault();
+      busy = true;
+      var logo = document.querySelector(".division-minimal-hero__logo");
+      var rect = logo && logo.getBoundingClientRect();
+      if (rect) {
+        sessionStorage.setItem("grm-morph-arrival", "studio");
+        sessionStorage.setItem("grm-morph-start", JSON.stringify({ left: rect.left, top: rect.top, width: rect.width, height: rect.height }));
+      }
+      setTimeout(function () { window.location.href = link.href; }, 520);
+    });
+  }());
+
+  /* Label -> Liveroom only: isolated copy of the Label source handoff. */
+  (function () {
+    if (document.body.getAttribute("data-page") !== "label" || reduced()) return;
+    var busy = false;
+    document.addEventListener("click", function (event) {
+      var link = event.target.closest('.site-nav a[href$="liveroom/"]');
+      if (!link || event.button !== 0 || event.metaKey || event.ctrlKey || event.shiftKey || event.altKey || busy) return;
+      event.preventDefault();
+      busy = true;
+      var logo = document.querySelector(".division-minimal-hero__logo");
+      var rect = logo && logo.getBoundingClientRect();
+      if (rect) {
+        sessionStorage.setItem("grm-morph-arrival", "liveroom");
+        sessionStorage.setItem("grm-morph-start", JSON.stringify({ left: rect.left, top: rect.top, width: rect.width, height: rect.height }));
+      }
+      document.body.classList.add("is-division-page-morph-exit");
+      setTimeout(function () { window.location.href = link.href; }, 520);
+    });
+  }());
+
+  /* Studio -> Liveroom only: isolated copy of the Studio source handoff. */
+  (function () {
+    if (document.body.getAttribute("data-page") !== "studio" || reduced()) return;
+    var busy = false;
+    document.addEventListener("click", function (event) {
+      var link = event.target.closest('.site-nav a[href$="liveroom/"]');
+      if (!link || event.button !== 0 || event.metaKey || event.ctrlKey || event.shiftKey || event.altKey || busy) return;
+      event.preventDefault();
+      busy = true;
+      var logo = document.querySelector(".studio-minimal-hero__logo");
+      var rect = logo && logo.getBoundingClientRect();
+      if (rect) {
+        sessionStorage.setItem("grm-morph-arrival", "liveroom");
+        sessionStorage.setItem("grm-morph-start", JSON.stringify({ left: rect.left, top: rect.top, width: rect.width, height: rect.height }));
+      }
+      document.body.classList.add("is-division-morph-exit");
+      setTimeout(function () { window.location.href = link.href; }, 520);
+    });
+  }());
+
+  /* Label -> Studio only: use the approved division identity handoff. */
+  (function () {
+    if (document.body.getAttribute("data-page") !== "label" || reduced()) return;
+    var busy = false;
+    document.addEventListener("click", function (event) {
+      var link = event.target.closest('.site-nav a[href$="studio/"]');
+      if (!link || event.button !== 0 || event.metaKey || event.ctrlKey || event.shiftKey || event.altKey || busy) return;
+      event.preventDefault();
+      busy = true;
+      var logo = document.querySelector(".division-minimal-hero__logo");
+      var rect = logo && logo.getBoundingClientRect();
+      if (rect) {
+        sessionStorage.setItem("grm-morph-arrival", "studio");
+        sessionStorage.setItem("grm-morph-start", JSON.stringify({ left: rect.left, top: rect.top, width: rect.width, height: rect.height }));
+      }
+      setTimeout(function () { window.location.href = link.href; }, 520);
+    });
+  }());
+
   /* Label/Liveroom division-to-division routes only. Studio -> Label above
      remains isolated as the approved reference transition. */
   (function () {
@@ -157,7 +255,8 @@
     var logo = document.querySelector(".division-minimal-hero__logo");
 
     document.addEventListener("click", function (event) {
-      var link = event.target.closest('.site-nav a[href$="studio/"], .site-nav a[href$="label/"], .site-nav a[href$="liveroom/"]');
+      var link = event.target.closest('.site-nav a[href$="label/"]');
+      if (page !== "label") return;
       if (!link || event.button !== 0 || event.metaKey || event.ctrlKey || event.shiftKey || event.altKey || busy) return;
 
       var destination = link.getAttribute("href").replace(/^.*\/|\/$/g, "");
