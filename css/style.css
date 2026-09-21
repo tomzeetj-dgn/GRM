@@ -103,6 +103,36 @@ ul, ol { list-style: none; margin: 0; padding: 0; }
 h1, h2, h3, h4, p, figure, blockquote { margin: 0; }
 
 section[id], footer[id] { scroll-margin-top: var(--header-h); }
+html.home-intro-pending body > *:not(#headerMount):not(#main) { visibility: hidden; }
+html.home-intro-pending .site-header { visibility: hidden; opacity: 0; }
+html.home-intro-pending body[data-page="home"] .site-header { display: block; }
+body[data-page="home"].home-intro-running { pointer-events: none; }
+body[data-page="home"].home-intro-running .panel + .panel { border-left-color: transparent; }
+.home-intro-divider { position: absolute; z-index: 5; left: 0; top: 0; width: 1px; height: 100%; background: var(--border); transform: scaleY(0); pointer-events: none; }
+.home-intro-divider--left { transform-origin: top; }
+.home-intro-divider--right { transform-origin: bottom; }
+body[data-page="home"].home-intro-lines .home-intro-divider { transform: scaleY(1); transition: transform 1200ms cubic-bezier(.22, 1, .36, 1); }
+body[data-page="home"].home-intro-running #panelProduction .panel__logo-window,
+body[data-page="home"].home-intro-running #panelHouse .panel__logo-window,
+body[data-page="home"].home-intro-running #panelLive .panel__logo-window { opacity: 0 !important; }
+body[data-page="home"].home-intro-running.home-intro-label #panelHouse .panel__logo-window { opacity: 1 !important; filter: none; transition: opacity 400ms ease-out; }
+body[data-page="home"].home-intro-running.home-intro-studio #panelProduction .panel__logo-window { opacity: 1 !important; filter: none; transition: opacity 400ms ease-out; }
+body[data-page="home"].home-intro-running.home-intro-liveroom #panelLive .panel__logo-window { opacity: 1 !important; filter: none; transition: opacity 400ms ease-out; }
+body[data-page="home"].home-intro-running .panel__logo--glow { opacity: 0; }
+body[data-page="home"].home-intro-running .panel__logo-window .panel__logo--glow.home-intro-pulse { animation: home-intro-glow-pulse 1300ms ease-in-out forwards !important; }
+body.home-intro-liveroom #panelHouse .panel__logo-window,
+body.home-intro-liveroom #panelProduction .panel__logo-window { filter: brightness(1); }
+body.home-intro-header-visible .site-header { visibility: visible; opacity: 1; transition: opacity 450ms ease; }
+@media (prefers-reduced-motion: reduce) { html.home-intro-pending .site-header { visibility: visible; opacity: 1; } }
+@keyframes home-intro-glow-pulse {
+  0% { opacity: 0; }
+  18% { opacity: .45; }
+  38% { opacity: .9; }
+  52% { opacity: 1; }
+  68% { opacity: .88; }
+  82% { opacity: .5; }
+  100% { opacity: 0; }
+}
 
 ::selection { background: var(--accent-lite); color: var(--bg); }
 

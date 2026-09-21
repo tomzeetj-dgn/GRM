@@ -23,9 +23,16 @@
   <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Archivo:ital,wdth,wght@0,62.5,100..900;1,62.5,100..900&family=Inter:wght@300;400;500;600&display=swap">
 
   <link rel="stylesheet" href="css/style.css">
+  <script>
+    (function () {
+      var reduce = window.matchMedia && window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+      var seen = false;
+      try { seen = sessionStorage.getItem("grm-home-intro-seen") === "1"; } catch (e) {}
+      if (!seen && !reduce) document.documentElement.classList.add("home-intro-pending");
+    }());
+  </script>
 </head>
-<body data-page="home">
-
+  <body data-page="home">
   <a class="skip-link" href="#main">Skip to content</a>
   <div class="progress" id="progress" aria-hidden="true"></div>
 
