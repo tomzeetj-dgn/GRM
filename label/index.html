@@ -74,112 +74,534 @@
         <img class="division-minimal-hero__logo" src="../assets/img/GRM Label Glow.png" alt="GRM Label" width="2160" height="2160">
         <p class="division-minimal-hero__title">GRM LABEL</p>
         <h1 id="label-hero-title">THE RECORD LABEL</h1>
+        <p class="label-hero-meta">Est. 2017 &middot; Belgrade &middot; 13 releases &middot; 10 artists</p>
       </div>
       <div class="division-minimal-hero__scroll" aria-hidden="true"><span>Scroll</span><i></i></div>
     </section>
 
     <!-- ============================================================
-         ABOUT THE LABEL — placeholder copy, not invented detail
+         OPENER — editorial manifesto + archival fact row.
+         Replaces the former About block. No cards, no panels: the
+         spread is defined by display type, measure and hairline rules.
          ============================================================ -->
-    <section class="section" id="about">
+    <section class="section label-opener" id="about" aria-labelledby="label-opener-title">
       <div class="container">
-        <div class="section-head reveal">
-          <div>
-            <p class="eyebrow">About</p>
-            <h2 class="section-head__title">Why a label</h2>
-          </div>
-          <p class="section-head__note">
-            The label lives next to the studio — close to where the work is made.
+        <p class="eyebrow reveal">The label</p>
+
+        <h2 class="label-opener__statement reveal" id="label-opener-title">We release music<br>we <em>believe</em> in.</h2>
+
+        <div class="label-opener__body reveal" data-delay="1">
+          <p>
+            GRM is an independent record label in Belgrade, working out of the
+            same house as the studio and the live room. We sign artists we
+            believe in, record them properly, and put the record out ourselves.
+            No label-group machinery, no content pipeline — everything on the
+            catalogue was written, mixed and mastered in this building.
           </p>
         </div>
 
-        <div class="section__grid reveal">
-          <p class="section__lead">
-            GRM Label exists to release the music made in the room and the
-            artists trusted by the house.
-          </p>
-          <p class="section__ph">
-            <strong>Label story</strong> — replace with the label's intent,
-            its first signings and its outlook. No invented detail for now.
-          </p>
+        <div class="label-opener__facts reveal" data-delay="2">
+          <span class="label-opener__fact">Est. 2017</span>
+          <span class="label-opener__fact">Belgrade</span>
+          <span class="label-opener__fact">13 releases</span>
+          <span class="label-opener__fact">10 artists</span>
         </div>
       </div>
     </section>
 
     <!-- ============================================================
-         ARTISTS / RELEASES — placeholder roster cards
-         Slots only; no fake artist names.
+         ROSTER INDEX — compact catalogue directory.
+         Ten artists as a quiet editorial index: archive number, name
+         and release count on a single baseline, separated by restrained
+         hairlines. No bands, no masks, no motion behind the type. On
+         desktop one restrained annotation module sits to the right of
+         the list — eyebrow, short copy, a hairline-framed sleeve and
+         its metadata — and crossfades the selected artist's latest
+         release on hover or focus; it supports the index, never
+         competes with it. vitić stays lowercase on purpose. The
+         module is hidden on tablet/mobile so the list stays purely
+         typographic and easy to browse.
          ============================================================ -->
-    <section class="section" id="roster">
+    <section class="section label-roster" id="roster" aria-labelledby="label-roster-title">
       <div class="container">
         <div class="section-head reveal">
           <div>
             <p class="eyebrow">Artists</p>
-            <h2 class="section-head__title">On the roster</h2>
+            <h2 class="section-head__title" id="label-roster-title">The roster</h2>
           </div>
-          <p class="section-head__note">
-            Artist and release slots — awaiting the label's first signings.
-          </p>
+          <p class="section-head__note">Ten artists on the GRM catalogue. Point at a name; the sleeve shows in the frame.</p>
+        </div>
+
+        <div class="label-roster__layout reveal" data-label-roster data-delay="1">
+
+          <ul class="label-roster__list" role="list">
+
+            <li class="label-roster__item">
+              <button class="label-roster__row" type="button" data-image="../assets/img/releases/dzu-prizma.jpg" data-title="Prizma">
+                <span class="label-roster__no">01</span>
+                <span class="label-roster__name">DZU</span>
+                <span class="label-roster__count">03 RELEASES</span>
+              </button>
+            </li>
+
+            <li class="label-roster__item">
+              <button class="label-roster__row" type="button" data-image="../assets/img/releases/igla-ego.jpg" data-title="Ego">
+                <span class="label-roster__no">02</span>
+                <span class="label-roster__name">IGLA</span>
+                <span class="label-roster__count">02 RELEASES</span>
+              </button>
+            </li>
+
+            <li class="label-roster__item">
+              <button class="label-roster__row" type="button" data-image="../assets/img/releases/kojot-zlatnih-cetiri.jpg" data-title="Zlatnih Četiri">
+                <span class="label-roster__no">03</span>
+                <span class="label-roster__name">KOJOT</span>
+                <span class="label-roster__count">01 RELEASES</span>
+              </button>
+            </li>
+
+            <li class="label-roster__item">
+              <button class="label-roster__row" type="button" data-image="../assets/img/releases/kobi-mirise-na-milion.jpg" data-title="Miriše na Milion">
+                <span class="label-roster__no">04</span>
+                <span class="label-roster__name">KOBI</span>
+                <span class="label-roster__count">01 RELEASES</span>
+              </button>
+            </li>
+
+            <li class="label-roster__item">
+              <button class="label-roster__row" type="button" data-image="../assets/img/releases/nedelja-na-rezervi.jpg" data-title="Na Rezervi">
+                <span class="label-roster__no">05</span>
+                <span class="label-roster__name">NEDELJA</span>
+                <span class="label-roster__count">01 RELEASES</span>
+              </button>
+            </li>
+
+            <li class="label-roster__item">
+              <button class="label-roster__row" type="button" data-image="../assets/img/releases/grzi-trag.jpg" data-title="Trag">
+                <span class="label-roster__no">06</span>
+                <span class="label-roster__name">GRZI</span>
+                <span class="label-roster__count">01 RELEASES</span>
+              </button>
+            </li>
+
+            <li class="label-roster__item">
+              <button class="label-roster__row" type="button" data-image="../assets/img/releases/struka-opet-se-obrce.jpg" data-title="Opet se Obrće">
+                <span class="label-roster__no">07</span>
+                <span class="label-roster__name">STRUKA</span>
+                <span class="label-roster__count">01 RELEASES</span>
+              </button>
+            </li>
+
+            <li class="label-roster__item">
+              <button class="label-roster__row" type="button" data-image="../assets/img/releases/pablo-kenedi-trap-je-mrtav.jpg" data-title="Trap je Mrtav">
+                <span class="label-roster__no">08</span>
+                <span class="label-roster__name">PABLO KENEDI</span>
+                <span class="label-roster__count">01 RELEASES</span>
+              </button>
+            </li>
+
+            <li class="label-roster__item">
+              <button class="label-roster__row" type="button" data-image="../assets/img/releases/maia-drama.jpg" data-title="Drama">
+                <span class="label-roster__no">09</span>
+                <span class="label-roster__name">MAIA</span>
+                <span class="label-roster__count">01 RELEASES</span>
+              </button>
+            </li>
+
+            <li class="label-roster__item">
+              <button class="label-roster__row" type="button" data-image="../assets/img/releases/vitic-slojevi.jpg" data-title="Slojevi">
+                <span class="label-roster__no">10</span>
+                <span class="label-roster__name">vitić</span>
+                <span class="label-roster__count">01 RELEASES</span>
+              </button>
+            </li>
+
+          </ul>
+
+          <div class="label-roster__preview">
+            <p class="eyebrow label-roster__module-eyebrow">Selected release</p>
+            <p class="label-roster__module-copy">Point at a name in the index to browse their latest sleeve.</p>
+            <figure class="label-roster__frame" aria-hidden="true">
+              <img class="label-roster__frame-img is-on" src="../assets/img/releases/dzu-prizma.jpg" alt="" decoding="async" draggable="false">
+              <img class="label-roster__frame-img" alt="" decoding="async" draggable="false">
+            </figure>
+            <p class="label-roster__module-title">DZU</p>
+            <p class="label-roster__module-meta">Latest release &middot; Prizma</p>
+          </div>
+
         </div>
       </div>
-
-      <div class="work__rail reveal" id="labelRail" tabindex="0" role="region" aria-label="Artists and releases — scroll horizontally">
-        <div class="work-card work-card--ph">
-          <div class="work-card__top">
-            <span class="work-card__no">Artist 01</span>
-            <span class="work-card__role">Roster</span>
-          </div>
-          <div class="work-card__media work-card__media--ph" data-ph="Artist artwork"></div>
-          <div class="work-card__meta">
-            <h3>Artist name</h3>
-            <p>Signed</p>
-          </div>
-        </div>
-
-        <div class="work-card work-card--ph">
-          <div class="work-card__top">
-            <span class="work-card__no">Artist 02</span>
-            <span class="work-card__role">Roster</span>
-          </div>
-          <div class="work-card__media work-card__media--ph" data-ph="Artist artwork"></div>
-          <div class="work-card__meta">
-            <h3>Artist name</h3>
-            <p>Signed</p>
-          </div>
-        </div>
-
-        <div class="work-card work-card--ph">
-          <div class="work-card__top">
-            <span class="work-card__no">Release 01</span>
-            <span class="work-card__role">Out now</span>
-          </div>
-          <div class="work-card__media work-card__media--ph" data-ph="Release artwork"></div>
-          <div class="work-card__meta">
-            <h3>Release title</h3>
-            <p>Artist · Year</p>
-          </div>
-        </div>
-
-        <div class="work-card work-card--ph">
-          <div class="work-card__top">
-            <span class="work-card__no">Release 02</span>
-            <span class="work-card__role">Upcoming</span>
-          </div>
-          <div class="work-card__media work-card__media--ph" data-ph="Release artwork"></div>
-          <div class="work-card__meta">
-            <h3>Release title</h3>
-            <p>Artist · Year</p>
-          </div>
-        </div>
-      </div>
-
-      <p class="work__hint">Slots — ready for the first signings</p>
     </section>
 
     <!-- ============================================================
-         SUBMISSIONS CTA — green tint via theme variables
+         INTERACTION SANDBOX — TEMPORARY, for internal design review.
+         Six roster-interaction concepts (01–06) to compare under
+         identical conditions: the same reduced 4-artist subset (DZU,
+         IGLA, PABLO KENEDI, vitić), same order, same base typography,
+         artwork frames, dimensions, mint accent and dark background
+         as the production index above. Each prototype carries a
+         CONCEPT nn label as obvious dev UI and uses only its own
+         .roster-cand-* classes with a modifier per concept — the
+         production roster logic is never touched, and each concept
+         shares the same data, styles and one small driver script.
+         Delete this whole section, the sandbox CSS block and the
+         sandbox script when a direction is chosen.
          ============================================================ -->
-    <section class="cta" id="submissions">
+    <section class="label-sandbox" id="sandbox" aria-label="Roster interaction concepts — temporary comparison for review">
+      <div class="container">
+        <div class="section-head">
+          <div>
+            <p class="eyebrow">Sandbox</p>
+            <h2 class="section-head__title">Roster concepts</h2>
+          </div>
+          <p class="section-head__note">Temporary comparison · shared artists DZU · IGLA · PABLO KENEDI · vitić · not a final direction.</p>
+        </div>
+
+        <!-- CONCEPT 01 / BASELINE -->
+        <article class="roster-cand" data-concept="01" data-cand-roster aria-labelledby="cand-01-title">
+          <header class="roster-cand__label">
+            <span class="roster-cand__tag">Concept 01</span>
+            <h3 class="roster-cand__label-title" id="cand-01-title">Baseline</h3>
+            <span class="roster-cand__note">Control — the current roster exactly: quiet list, fixed preview module.</span>
+          </header>
+          <div class="roster-cand__stage">
+            <ul class="roster-cand__list" role="list">
+              <li class="roster-cand__item">
+                <button class="roster-cand__row" type="button" data-image="../assets/img/releases/dzu-prizma.jpg" data-title="Prizma">
+                  <span class="roster-cand__no">01</span>
+                  <span class="roster-cand__name">DZU</span>
+                  <span class="roster-cand__count">03 RELEASES</span>
+                </button>
+              </li>
+              <li class="roster-cand__item">
+                <button class="roster-cand__row" type="button" data-image="../assets/img/releases/igla-ego.jpg" data-title="Ego">
+                  <span class="roster-cand__no">02</span>
+                  <span class="roster-cand__name">IGLA</span>
+                  <span class="roster-cand__count">02 RELEASES</span>
+                </button>
+              </li>
+              <li class="roster-cand__item">
+                <button class="roster-cand__row" type="button" data-image="../assets/img/releases/pablo-kenedi-trap-je-mrtav.jpg" data-title="Trap je Mrtav">
+                  <span class="roster-cand__no">03</span>
+                  <span class="roster-cand__name">PABLO KENEDI</span>
+                  <span class="roster-cand__count">01 RELEASES</span>
+                </button>
+              </li>
+              <li class="roster-cand__item">
+                <button class="roster-cand__row" type="button" data-image="../assets/img/releases/vitic-slojevi.jpg" data-title="Slojevi">
+                  <span class="roster-cand__no">04</span>
+                  <span class="roster-cand__name">vitić</span>
+                  <span class="roster-cand__count">01 RELEASES</span>
+                </button>
+              </li>
+            </ul>
+            <div class="roster-cand__preview">
+              <p class="eyebrow roster-cand__eyebrow">Selected release</p>
+              <p class="roster-cand__copy">Point at a name in the index to browse their latest sleeve.</p>
+              <div class="roster-cand__artwork">
+                <figure class="roster-cand__frame" aria-hidden="true">
+                  <img class="roster-cand__frame-img is-on" src="../assets/img/releases/dzu-prizma.jpg" alt="" decoding="async" draggable="false">
+                  <img class="roster-cand__frame-img" alt="" decoding="async" draggable="false">
+                </figure>
+              </div>
+              <p class="roster-cand__title">DZU</p>
+              <p class="roster-cand__meta">Latest release &middot; Prizma</p>
+            </div>
+          </div>
+        </article>
+
+        <!-- CONCEPT 02 / ARTWORK BLEED -->
+        <article class="roster-cand roster-cand--bleed" data-concept="02" data-cand-roster aria-labelledby="cand-02-title">
+          <header class="roster-cand__label">
+            <span class="roster-cand__tag">Concept 02</span>
+            <h3 class="roster-cand__label-title" id="cand-02-title">Artwork bleed</h3>
+            <span class="roster-cand__note">The square stays the anchor; one edge runs into a masked strip, a fragment escapes.</span>
+          </header>
+          <div class="roster-cand__stage">
+            <ul class="roster-cand__list" role="list">
+              <li class="roster-cand__item">
+                <button class="roster-cand__row" type="button" data-image="../assets/img/releases/dzu-prizma.jpg" data-title="Prizma">
+                  <span class="roster-cand__no">01</span>
+                  <span class="roster-cand__name">DZU</span>
+                  <span class="roster-cand__count">03 RELEASES</span>
+                </button>
+              </li>
+              <li class="roster-cand__item">
+                <button class="roster-cand__row" type="button" data-image="../assets/img/releases/igla-ego.jpg" data-title="Ego">
+                  <span class="roster-cand__no">02</span>
+                  <span class="roster-cand__name">IGLA</span>
+                  <span class="roster-cand__count">02 RELEASES</span>
+                </button>
+              </li>
+              <li class="roster-cand__item">
+                <button class="roster-cand__row" type="button" data-image="../assets/img/releases/pablo-kenedi-trap-je-mrtav.jpg" data-title="Trap je Mrtav">
+                  <span class="roster-cand__no">03</span>
+                  <span class="roster-cand__name">PABLO KENEDI</span>
+                  <span class="roster-cand__count">01 RELEASES</span>
+                </button>
+              </li>
+              <li class="roster-cand__item">
+                <button class="roster-cand__row" type="button" data-image="../assets/img/releases/vitic-slojevi.jpg" data-title="Slojevi">
+                  <span class="roster-cand__no">04</span>
+                  <span class="roster-cand__name">vitić</span>
+                  <span class="roster-cand__count">01 RELEASES</span>
+                </button>
+              </li>
+            </ul>
+            <div class="roster-cand__preview">
+              <p class="eyebrow roster-cand__eyebrow">Selected release</p>
+              <p class="roster-cand__copy">Point at a name in the index to browse their latest sleeve.</p>
+              <div class="roster-cand__artwork roster-cand__bleeds">
+                <figure class="roster-cand__frame" aria-hidden="true">
+                  <img class="roster-cand__frame-img is-on" src="../assets/img/releases/dzu-prizma.jpg" alt="" decoding="async" draggable="false">
+                  <img class="roster-cand__frame-img" alt="" decoding="async" draggable="false">
+                </figure>
+                <div class="roster-cand__bleed roster-cand__bleed--strip" aria-hidden="true">
+                  <img class="roster-cand__frame-img is-on" src="../assets/img/releases/dzu-prizma.jpg" alt="" decoding="async" draggable="false">
+                  <img class="roster-cand__frame-img" alt="" decoding="async" draggable="false">
+                </div>
+                <div class="roster-cand__bleed roster-cand__bleed--frag" aria-hidden="true">
+                  <img class="roster-cand__frame-img is-on" src="../assets/img/releases/dzu-prizma.jpg" alt="" decoding="async" draggable="false">
+                  <img class="roster-cand__frame-img" alt="" decoding="async" draggable="false">
+                </div>
+              </div>
+              <p class="roster-cand__title">DZU</p>
+              <p class="roster-cand__meta">Latest release &middot; Prizma</p>
+            </div>
+          </div>
+        </article>
+
+        <!-- CONCEPT 03 / MICRO SHIFT -->
+        <article class="roster-cand roster-cand--shift" data-concept="03" data-cand-roster aria-labelledby="cand-03-title">
+          <header class="roster-cand__label">
+            <span class="roster-cand__tag">Concept 03</span>
+            <h3 class="roster-cand__label-title" id="cand-03-title">Micro shift</h3>
+            <span class="roster-cand__note">The preview recomposes on selection — artwork shifts, metadata moves opposite, a wire extends. No layout jump.</span>
+          </header>
+          <div class="roster-cand__stage">
+            <ul class="roster-cand__list" role="list">
+              <li class="roster-cand__item">
+                <button class="roster-cand__row" type="button" data-image="../assets/img/releases/dzu-prizma.jpg" data-title="Prizma">
+                  <span class="roster-cand__no">01</span>
+                  <span class="roster-cand__name">DZU</span>
+                  <span class="roster-cand__count">03 RELEASES</span>
+                </button>
+              </li>
+              <li class="roster-cand__item">
+                <button class="roster-cand__row" type="button" data-image="../assets/img/releases/igla-ego.jpg" data-title="Ego">
+                  <span class="roster-cand__no">02</span>
+                  <span class="roster-cand__name">IGLA</span>
+                  <span class="roster-cand__count">02 RELEASES</span>
+                </button>
+              </li>
+              <li class="roster-cand__item">
+                <button class="roster-cand__row" type="button" data-image="../assets/img/releases/pablo-kenedi-trap-je-mrtav.jpg" data-title="Trap je Mrtav">
+                  <span class="roster-cand__no">03</span>
+                  <span class="roster-cand__name">PABLO KENEDI</span>
+                  <span class="roster-cand__count">01 RELEASES</span>
+                </button>
+              </li>
+              <li class="roster-cand__item">
+                <button class="roster-cand__row" type="button" data-image="../assets/img/releases/vitic-slojevi.jpg" data-title="Slojevi">
+                  <span class="roster-cand__no">04</span>
+                  <span class="roster-cand__name">vitić</span>
+                  <span class="roster-cand__count">01 RELEASES</span>
+                </button>
+              </li>
+            </ul>
+            <div class="roster-cand__preview">
+              <p class="eyebrow roster-cand__eyebrow">Selected release</p>
+              <p class="roster-cand__copy">Point at a name in the index to browse their latest sleeve.</p>
+              <div class="roster-cand__artwork">
+                <figure class="roster-cand__frame" aria-hidden="true">
+                  <img class="roster-cand__frame-img is-on" src="../assets/img/releases/dzu-prizma.jpg" alt="" decoding="async" draggable="false">
+                  <img class="roster-cand__frame-img" alt="" decoding="async" draggable="false">
+                </figure>
+              </div>
+              <p class="roster-cand__title">DZU</p>
+              <p class="roster-cand__meta">Latest release &middot; Prizma</p>
+              <span class="roster-cand__wire" aria-hidden="true"></span>
+            </div>
+          </div>
+        </article>
+
+        <!-- CONCEPT 04 / CATALOGUE MARKER -->
+        <article class="roster-cand roster-cand--marker" data-concept="04" data-cand-roster aria-labelledby="cand-04-title">
+          <header class="roster-cand__label">
+            <span class="roster-cand__tag">Concept 04</span>
+            <h3 class="roster-cand__label-title" id="cand-04-title">Catalogue marker</h3>
+            <span class="roster-cand__note">A mint marker glides beside the active row. Nothing else in the list moves.</span>
+          </header>
+          <div class="roster-cand__stage">
+            <span class="roster-cand__marker" aria-hidden="true"></span>
+            <ul class="roster-cand__list" role="list">
+              <li class="roster-cand__item">
+                <button class="roster-cand__row" type="button" data-image="../assets/img/releases/dzu-prizma.jpg" data-title="Prizma">
+                  <span class="roster-cand__no">01</span>
+                  <span class="roster-cand__name">DZU</span>
+                  <span class="roster-cand__count">03 RELEASES</span>
+                </button>
+              </li>
+              <li class="roster-cand__item">
+                <button class="roster-cand__row" type="button" data-image="../assets/img/releases/igla-ego.jpg" data-title="Ego">
+                  <span class="roster-cand__no">02</span>
+                  <span class="roster-cand__name">IGLA</span>
+                  <span class="roster-cand__count">02 RELEASES</span>
+                </button>
+              </li>
+              <li class="roster-cand__item">
+                <button class="roster-cand__row" type="button" data-image="../assets/img/releases/pablo-kenedi-trap-je-mrtav.jpg" data-title="Trap je Mrtav">
+                  <span class="roster-cand__no">03</span>
+                  <span class="roster-cand__name">PABLO KENEDI</span>
+                  <span class="roster-cand__count">01 RELEASES</span>
+                </button>
+              </li>
+              <li class="roster-cand__item">
+                <button class="roster-cand__row" type="button" data-image="../assets/img/releases/vitic-slojevi.jpg" data-title="Slojevi">
+                  <span class="roster-cand__no">04</span>
+                  <span class="roster-cand__name">vitić</span>
+                  <span class="roster-cand__count">01 RELEASES</span>
+                </button>
+              </li>
+            </ul>
+            <div class="roster-cand__preview">
+              <p class="eyebrow roster-cand__eyebrow">Selected release</p>
+              <p class="roster-cand__copy">Point at a name in the index to browse their latest sleeve.</p>
+              <div class="roster-cand__artwork">
+                <figure class="roster-cand__frame" aria-hidden="true">
+                  <img class="roster-cand__frame-img is-on" src="../assets/img/releases/dzu-prizma.jpg" alt="" decoding="async" draggable="false">
+                  <img class="roster-cand__frame-img" alt="" decoding="async" draggable="false">
+                </figure>
+              </div>
+              <p class="roster-cand__title">DZU</p>
+              <p class="roster-cand__meta">Latest release &middot; Prizma</p>
+            </div>
+          </div>
+        </article>
+
+        <!-- CONCEPT 05 / GHOST TYPE -->
+        <article class="roster-cand roster-cand--ghost" data-concept="05" data-cand-roster aria-labelledby="cand-05-title">
+          <header class="roster-cand__label">
+            <span class="roster-cand__tag">Concept 05</span>
+            <h3 class="roster-cand__label-title" id="cand-05-title">Ghost type</h3>
+            <span class="roster-cand__note">An enormous name sits faintly behind the module, cropped by the stage, crossfading on selection.</span>
+          </header>
+          <div class="roster-cand__stage">
+            <div class="roster-cand__ghost-crop" aria-hidden="true">
+              <span class="roster-cand__ghost is-on">DZU</span>
+              <span class="roster-cand__ghost"></span>
+            </div>
+            <ul class="roster-cand__list" role="list">
+              <li class="roster-cand__item">
+                <button class="roster-cand__row" type="button" data-image="../assets/img/releases/dzu-prizma.jpg" data-title="Prizma">
+                  <span class="roster-cand__no">01</span>
+                  <span class="roster-cand__name">DZU</span>
+                  <span class="roster-cand__count">03 RELEASES</span>
+                </button>
+              </li>
+              <li class="roster-cand__item">
+                <button class="roster-cand__row" type="button" data-image="../assets/img/releases/igla-ego.jpg" data-title="Ego">
+                  <span class="roster-cand__no">02</span>
+                  <span class="roster-cand__name">IGLA</span>
+                  <span class="roster-cand__count">02 RELEASES</span>
+                </button>
+              </li>
+              <li class="roster-cand__item">
+                <button class="roster-cand__row" type="button" data-image="../assets/img/releases/pablo-kenedi-trap-je-mrtav.jpg" data-title="Trap je Mrtav">
+                  <span class="roster-cand__no">03</span>
+                  <span class="roster-cand__name">PABLO KENEDI</span>
+                  <span class="roster-cand__count">01 RELEASES</span>
+                </button>
+              </li>
+              <li class="roster-cand__item">
+                <button class="roster-cand__row" type="button" data-image="../assets/img/releases/vitic-slojevi.jpg" data-title="Slojevi">
+                  <span class="roster-cand__no">04</span>
+                  <span class="roster-cand__name">vitić</span>
+                  <span class="roster-cand__count">01 RELEASES</span>
+                </button>
+              </li>
+            </ul>
+            <div class="roster-cand__preview">
+              <p class="eyebrow roster-cand__eyebrow">Selected release</p>
+              <p class="roster-cand__copy">Point at a name in the index to browse their latest sleeve.</p>
+              <div class="roster-cand__artwork">
+                <figure class="roster-cand__frame" aria-hidden="true">
+                  <img class="roster-cand__frame-img is-on" src="../assets/img/releases/dzu-prizma.jpg" alt="" decoding="async" draggable="false">
+                  <img class="roster-cand__frame-img" alt="" decoding="async" draggable="false">
+                </figure>
+              </div>
+              <p class="roster-cand__title">DZU</p>
+              <p class="roster-cand__meta">Latest release &middot; Prizma</p>
+            </div>
+          </div>
+        </article>
+
+        <!-- CONCEPT 06 / MARKER + GHOST TYPE -->
+        <article class="roster-cand roster-cand--marker roster-cand--ghost" data-concept="06" data-cand-roster aria-labelledby="cand-06-title">
+          <header class="roster-cand__label">
+            <span class="roster-cand__tag">Concept 06</span>
+            <h3 class="roster-cand__label-title" id="cand-06-title">Marker + ghost type</h3>
+            <span class="roster-cand__note">Concepts 04 and 05 combined; nothing else is added.</span>
+          </header>
+          <div class="roster-cand__stage">
+            <span class="roster-cand__marker" aria-hidden="true"></span>
+            <div class="roster-cand__ghost-crop" aria-hidden="true">
+              <span class="roster-cand__ghost is-on">DZU</span>
+              <span class="roster-cand__ghost"></span>
+            </div>
+            <ul class="roster-cand__list" role="list">
+              <li class="roster-cand__item">
+                <button class="roster-cand__row" type="button" data-image="../assets/img/releases/dzu-prizma.jpg" data-title="Prizma">
+                  <span class="roster-cand__no">01</span>
+                  <span class="roster-cand__name">DZU</span>
+                  <span class="roster-cand__count">03 RELEASES</span>
+                </button>
+              </li>
+              <li class="roster-cand__item">
+                <button class="roster-cand__row" type="button" data-image="../assets/img/releases/igla-ego.jpg" data-title="Ego">
+                  <span class="roster-cand__no">02</span>
+                  <span class="roster-cand__name">IGLA</span>
+                  <span class="roster-cand__count">02 RELEASES</span>
+                </button>
+              </li>
+              <li class="roster-cand__item">
+                <button class="roster-cand__row" type="button" data-image="../assets/img/releases/pablo-kenedi-trap-je-mrtav.jpg" data-title="Trap je Mrtav">
+                  <span class="roster-cand__no">03</span>
+                  <span class="roster-cand__name">PABLO KENEDI</span>
+                  <span class="roster-cand__count">01 RELEASES</span>
+                </button>
+              </li>
+              <li class="roster-cand__item">
+                <button class="roster-cand__row" type="button" data-image="../assets/img/releases/vitic-slojevi.jpg" data-title="Slojevi">
+                  <span class="roster-cand__no">04</span>
+                  <span class="roster-cand__name">vitić</span>
+                  <span class="roster-cand__count">01 RELEASES</span>
+                </button>
+              </li>
+            </ul>
+            <div class="roster-cand__preview">
+              <p class="eyebrow roster-cand__eyebrow">Selected release</p>
+              <p class="roster-cand__copy">Point at a name in the index to browse their latest sleeve.</p>
+              <div class="roster-cand__artwork">
+                <figure class="roster-cand__frame" aria-hidden="true">
+                  <img class="roster-cand__frame-img is-on" src="../assets/img/releases/dzu-prizma.jpg" alt="" decoding="async" draggable="false">
+                  <img class="roster-cand__frame-img" alt="" decoding="async" draggable="false">
+                </figure>
+              </div>
+              <p class="roster-cand__title">DZU</p>
+              <p class="roster-cand__meta">Latest release &middot; Prizma</p>
+            </div>
+          </div>
+        </article>
+
+      </div>
+    </section>
+
+    <!-- ============================================================
+         SUBMISSIONS CTA — temporarily removed from the Phase 1 visual
+         flow (kept intact; it will fold into the Label end slate).
+         ============================================================ -->
+    <section class="cta" id="submissions" hidden>
       <div class="container">
         <div class="cta__inner reveal">
           <p class="eyebrow eyebrow--on-accent">Submissions</p>
@@ -203,5 +625,174 @@
   <div id="footerMount"></div>
 
   <script src="../js/main.js"></script>
+
+  <!-- ============================================================
+       ROSTER PREVIEW — page-local, Label only.
+       One annotation module beside the index: eyebrow, short copy,
+       a single hairline-framed sleeve and its metadata beneath. Hover
+       or focus a row, and the frame crossfades to that artist's
+       latest release while the module title/meta follow the row.
+       Leaving the list keeps the last sleeve up so the module never
+       goes blank. Reduced-motion swaps instantly (no fade). The frame
+       artwork is decorative (aria-hidden) — the list is the content.
+       ============================================================ -->
+  <script>
+  (function () {
+    'use strict';
+    var layout = document.querySelector('[data-label-roster]');
+    if (!layout) return;
+    var frames = Array.prototype.slice.call(layout.querySelectorAll('.label-roster__frame-img'));
+    var rows = Array.prototype.slice.call(layout.querySelectorAll('.label-roster__row'));
+    var titleEl = layout.querySelector('.label-roster__module-title');
+    var metaEl = layout.querySelector('.label-roster__module-meta');
+    if (!frames.length || !rows.length) return;
+
+    var preloaded = {};
+    var active = 0;
+
+    function preload() {
+      rows.forEach(function (row) {
+        var src = row.getAttribute('data-image');
+        if (!src || preloaded[src]) return;
+        preloaded[src] = true;
+        var pre = new Image();
+        pre.src = src;
+      });
+    }
+
+    function show(row) {
+      var src = row.getAttribute('data-image');
+      if (!src) return;
+      var shown = frames[active];
+      if (shown.getAttribute('src') !== src) {
+        var next = frames[1 - active];
+        next.setAttribute('src', src);
+        shown.classList.remove('is-on');
+        next.classList.add('is-on');
+        active = 1 - active;
+      }
+      var name = row.querySelector('.label-roster__name');
+      if (titleEl && name) titleEl.textContent = name.textContent.trim();
+      if (metaEl) metaEl.textContent = 'Latest release \u00b7 ' + (row.getAttribute('data-title') || '');
+    }
+
+    rows.forEach(function (row) {
+      row.addEventListener('mouseenter', function () { show(row); });
+      row.addEventListener('focus', function () { show(row); });
+      row.addEventListener('click', function () { show(row); });
+    });
+
+    preload();
+  })();
+  </script>
+
+  <!-- ============================================================
+       SANDBOX DRIVER — TEMPORARY, Label only.
+       One shared script drives all six roster-cand prototypes so
+       the comparison stays identical: the same data (data-image /
+       data-title on the rows), the same two-layer crossfade, and a
+       per-concept modifier bullet on top (bleed pairs, shift custom
+       props, catalogue marker, ghost type). It never touches the
+       production roster. Delete with the sandbox section + CSS.
+       ============================================================ -->
+  <script>
+  (function () {
+    'use strict';
+    var roots = Array.prototype.slice.call(document.querySelectorAll('[data-cand-roster]'));
+    if (!roots.length) return;
+
+    var SHIFT_Y = [18, 8, -8, -18];
+    var WIRE = [40, 56, 72, 88];
+
+    roots.forEach(function (root) {
+      var pairs = Array.prototype.slice.call(root.querySelectorAll('.roster-cand__frame, .roster-cand__bleed'));
+      var rows = Array.prototype.slice.call(root.querySelectorAll('.roster-cand__row'));
+      var titleEl = root.querySelector('.roster-cand__title');
+      var metaEl = root.querySelector('.roster-cand__meta');
+      var previewEl = root.querySelector('.roster-cand__preview');
+      var markerEl = root.querySelector('.roster-cand__marker');
+      var ghosts = Array.prototype.slice.call(root.querySelectorAll('.roster-cand__ghost'));
+      var isShift = root.classList.contains('roster-cand--shift');
+      if (!pairs.length || !rows.length) return;
+
+      var active = 0;
+      var ghostActive = 0;
+
+      function crossfade(pair, src) {
+        var imgs = pair.querySelectorAll('.roster-cand__frame-img');
+        if (imgs.length < 2) return;
+        var shown = imgs[active];
+        if (shown.getAttribute('src') === src) return;
+        var next = imgs[1 - active];
+        next.setAttribute('src', src);
+        shown.classList.remove('is-on');
+        next.classList.add('is-on');
+        active = 1 - active;
+      }
+
+      function shiftModule(idx) {
+        if (!isShift || !previewEl) return;
+        previewEl.style.setProperty('--sb-shift-y', SHIFT_Y[idx % SHIFT_Y.length] + 'px');
+        previewEl.style.setProperty('--sb-wire', WIRE[idx % WIRE.length] + '%');
+      }
+
+      function moveMarker(rowEl) {
+        if (!markerEl) return;
+        var item = rowEl.closest('.roster-cand__item');
+        if (!item) return;
+        var parent = markerEl.offsetParent;
+        if (!parent) return;
+        var pRect = parent.getBoundingClientRect();
+        var iRect = item.getBoundingClientRect();
+        markerEl.style.top = (iRect.top - pRect.top + iRect.height / 2) + 'px';
+      }
+
+      function setGhost(name) {
+        if (ghosts.length < 2) return;
+        var shown = ghosts[ghostActive];
+        var next = ghosts[1 - ghostActive];
+        if (next.textContent !== name) next.textContent = name;
+        shown.classList.remove('is-on');
+        next.classList.add('is-on');
+        ghostActive = 1 - ghostActive;
+      }
+
+      function show(rowEl, idx) {
+        var src = rowEl.getAttribute('data-image');
+        if (!src) return;
+        pairs.forEach(function (pair) { crossfade(pair, src); });
+        var name = rowEl.querySelector('.roster-cand__name');
+        if (titleEl && name) titleEl.textContent = name.textContent.trim();
+        if (metaEl) metaEl.textContent = 'Latest release \u00b7 ' + (rowEl.getAttribute('data-title') || '');
+        shiftModule(idx);
+        moveMarker(rowEl);
+        if (ghosts.length && name) setGhost(name.textContent.trim());
+      }
+
+      // preload every artwork so the first crossfade is instant
+      var preloaded = {};
+      rows.forEach(function (rowEl) {
+        var src = rowEl.getAttribute('data-image');
+        if (!src || preloaded[src]) return;
+        preloaded[src] = true;
+        var pre = new Image();
+        pre.src = src;
+      });
+
+      rows.forEach(function (rowEl, idx) {
+        rowEl.addEventListener('mouseenter', function () { show(rowEl, idx); });
+        rowEl.addEventListener('focus', function () { show(rowEl, idx); });
+        rowEl.addEventListener('click', function () { show(rowEl, idx); });
+      });
+
+      // seed the resting state to the first row so every prototype
+      // opens with DZU / Prizma and the marker + shift settle in.
+      var first = rows[0];
+      var fname = first.querySelector('.roster-cand__name').textContent.trim();
+      if (ghosts.length) { ghosts[0].textContent = fname; ghosts[0].classList.add('is-on'); }
+      show(first, 0);
+    });
+  })();
+  </script>
 </body>
 </html>

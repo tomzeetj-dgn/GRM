@@ -39,7 +39,7 @@
 
     var navItems = [
       { key: "home", label: "Home", href: root + "index.html" },
-      { key: "studio", label: "Studio", href: root + "studio/" },
+      { key: "studio", label: "Production", href: root + "studio/" },
       { key: "label", label: "Label", href: root + "label/" },
       { key: "liveroom", label: "Liveroom", href: root + "liveroom/" }
     ];
@@ -59,9 +59,10 @@
     if (headerMount) {
       headerMount.innerHTML =
         '<header class="site-header" id="siteHeader">' +
-          '<div class="site-header__inner">' +
+            '<div class="site-header__inner">' +
             '<a href="' + root + 'index.html" class="site-header__brand" aria-label="GRM — back to top">' +
               '<img src="' + root + 'assets/img/grm-mark.png" alt="" width="38" height="38" class="site-header__mark">' +
+              '<img src="' + root + 'assets/img/GRM 4K 1x1_Transparent.png" alt="" aria-hidden="true" class="site-header__mark-glow">' +
               '<span class="site-header__word">GRM HOUSE</span>' +
             "</a>" +
             (isHome ? "" :
@@ -103,7 +104,7 @@
               '<div class="site-footer__nav">' +
                 '<span class="site-footer__col-label">GRM</span>' +
                 '<a href="' + root + 'index.html">Home</a>' +
-                '<a href="' + root + 'studio/">Studio</a>' +
+                '<a href="' + root + 'studio/">Production</a>' +
                 '<a href="' + root + 'label/">Label</a>' +
                 '<a href="' + root + 'liveroom/">Liveroom</a>' +
               "</div>" +
@@ -1077,4 +1078,582 @@
       });
     });
   });
+
+  /* ---------- LIVEROOM SCHEDULE: week navigation ----------
+     One week state shared by every schedule instance. Only the heading
+     word and date range transition; timetable geometry is untouched.
+     The authored "THIS WEEK" (Mon 21 SEP 2026) is the zero anchor. */
+  onReady(function () {
+    if (document.body.getAttribute("data-page") !== "liveroom") return;
+    var sections = Array.prototype.slice.call(document.querySelectorAll(".liveroom-availability"));
+    if (!sections.length) return;
+
+    var MONTHS = ["JAN", "FEB", "MAR", "APR", "MAY", "JUN", "JUL", "AUG", "SEP", "OCT", "NOV", "DEC"];
+    var NUMBER_WORDS = ["ZERO", "ONE", "TWO", "THREE", "FOUR", "FIVE", "SIX", "SEVEN", "EIGHT", "NINE", "TEN", "ELEVEN", "TWELVE", "THIRTEEN", "FOURTEEN", "FIFTEEN", "SIXTEEN"];
+    var CURRENT = new Date(2026, 8, 21); /* Mon 21 SEP 2026 */
+    var offset = 0;
+    var busy = false;
+    var duration = 320;
+
+    function pad(n) { return n < 10 ? "0" + n : String(n); }
+
+    function weekStart() {
+      return new Date(CURRENT.getFullYear(), CURRENT.getMonth(), CURRENT.getDate() + offset * 7);
+    }
+
+    function headingLabel() {
+      var span = Math.abs(offset);
+      if (offset === 0) return "THIS WEEK";
+      if (offset === 1) return "NEXT WEEK";
+      if (offset === -1) return "LAST WEEK";
+      if (offset > 1) return "IN " + (NUMBER_WORDS[span] || span) + " WEEKS";
+      return (NUMBER_WORDS[span] || span) + " WEEKS AGO";
+    }
+
+    function rangeLabel() {
+      var start = weekStart();
+      var end = new Date(start.getFullYear(), start.getMonth(), start.getDate() + 6);
+      if (start.getMonth() === end.getMonth()) {
+        return pad(start.getDate()) + "–" + pad(end.getDate()) + " " + MONTHS[start.getMonth()];
+      }
+      return pad(start.getDate()) + " " + MONTHS[start.getMonth()] + "–" + pad(end.getDate()) + " " + MONTHS[end.getMonth()];
+    }
+
+    function swapText() {
+      sections.forEach(function (section) {
+        var label = section.querySelector("[data-week-label]");
+        var range = section.querySelector("[data-week-range]");
+        if (label) label.textContent = headingLabel();
+        if (range) range.textContent = rangeLabel();
+        section.classList.toggle("is-off-current", offset !== 0);
+      });
+    }
+
+    function change(dir) {
+      if (busy) return;
+      if (reduced()) {
+        offset += dir;
+        swapText();
+        return;
+      }
+      busy = true;
+      var leave = dir > 0 ? "is-leaving-fwd" : "is-leaving-back";
+      var enter = dir > 0 ? "is-entering-fwd" : "is-entering-back";
+      sections.forEach(function (section) {
+        var unit = section.querySelector(".liveroom-availability__title-unit");
+        if (unit) unit.classList.add(leave);
+      });
+      setTimeout(function () {
+        offset += dir;
+        swapText();
+        sections.forEach(function (section) {
+          var unit = section.querySelector(".liveroom-availability__title-unit");
+          if (!unit) return;
+          unit.classList.remove(leave);
+          unit.classList.add(enter);
+        });
+        sections[0].offsetWidth; /* commit the incoming start state */
+        RAF(function () {
+          sections.forEach(function (section) {
+            var unit = section.querySelector(".liveroom-availability__title-unit");
+            if (unit) unit.classList.remove(enter);
+          });
+          busy = false;
+        });
+      }, duration);
+    }
+
+    sections.forEach(function (section) {
+      var prev = section.querySelector(".liveroom-availability__title-arrow--prev");
+      var next = section.querySelector(".liveroom-availability__title-arrow--next");
+      if (prev) prev.addEventListener("click", function () { change(-1); });
+      if (next) next.addEventListener("click", function () { change(1); });
+    });
+  });
+
+  /* ---------- LIVEROOM "The room": ghost materialise ----------
+     Words haze in one-by-one (80 ms stagger) inside a block that
+     settles from a soft defocus. Re-ghosts on every arrival. Mirrors
+     the Manifesto reveal on ghost-pitcher.com. */
+  onReady(function () {
+    var room = document.getElementById("liveroom-room");
+    var sched = document.querySelector(".liveroom-availability");
+
+    var triggers = Array.prototype.slice.call(room ? room.querySelectorAll(".lr-room") : []);
+    if (sched) {
+      triggers = triggers.concat(Array.prototype.slice.call(sched.querySelectorAll(".lr-room")));
+    }
+    if (!triggers.length) return;
+
+    function splitWords(el) {
+      if (el.dataset.split) return;
+      el.dataset.split = "1";
+      var walk = function (node) {
+        Array.prototype.slice.call(node.childNodes).forEach(function (ch) {
+          if (ch.nodeType === 3) {
+            var frag = document.createDocumentFragment();
+            ch.textContent.split(/(\s+)/).forEach(function (tok) {
+              if (/^\s*$/.test(tok)) { frag.appendChild(document.createTextNode(tok)); return; }
+              var s = document.createElement("span");
+              s.className = "lr-word";
+              s.textContent = tok;
+              frag.appendChild(s);
+            });
+            node.replaceChild(frag, ch);
+          } else if (ch.nodeType === 1 && ch.tagName !== "BR") {
+            walk(ch);
+          }
+        });
+      };
+      walk(el);
+      var words = el.querySelectorAll(".lr-word");
+      var i = 0;
+      words.forEach(function (s) { s.style.transitionDelay = (i++ * 80) + "ms"; });
+    }
+
+    if (reduced() || !("IntersectionObserver" in window)) {
+      triggers.forEach(function (el) { el.classList.add("in"); });
+      return;
+    }
+
+    triggers.forEach(function (el) {
+      if (el.classList.contains("lr-split")) splitWords(el);
+    });
+
+    var io = new IntersectionObserver(function (entries) {
+      entries.forEach(function (entry) {
+        if (entry.target.classList.contains("lr-re")) {
+          entry.target.classList.toggle("in", entry.isIntersecting);
+        } else if (entry.isIntersecting) {
+          entry.target.classList.add("in");
+          io.unobserve(entry.target);
+        }
+      });
+    }, { threshold: 0.15 });
+
+    triggers.forEach(function (el) { io.observe(el); });
+  });
+})();
+
+/* ---------- LIVEROOM "The room": bento gallery hover reflow ----------
+   Hovering a tile expands it; neighbours physically yield space via
+   animated grid-track redistribution (mouse-only). Moves are gated by
+   a 14px hysteresis so reflowing boundaries can never flicker.
+   Self-contained; touches nothing outside #liveroom-room. */
+(function () {
+  function onReady(fn) {
+    if (document.readyState === "loading") {
+      document.addEventListener("DOMContentLoaded", fn);
+    } else {
+      fn();
+    }
+  }
+  onReady(function () {
+    var room = document.getElementById("liveroom-room");
+    if (!room) return;
+    var media = room.querySelector(".liveroom-room__media");
+    if (!media || !("elementFromPoint" in document)) return;
+    var tiles = Array.prototype.slice.call(media.querySelectorAll(".liveroom-room__img"));
+    if (!tiles.length) return;
+
+    var applied = 0;
+    var inside = false;
+    var lx = 0, ly = 0, moved = 0;
+
+    function indexOf(el) {
+      for (var i = 0; i < tiles.length; i++) if (tiles[i] === el) return i + 1;
+      return 0;
+    }
+    function hit(x, y) {
+      var el = document.elementFromPoint(x, y);
+      if (!el) return 0;
+      var t = el.closest ? el.closest(".liveroom-room__img") : null;
+      return t ? indexOf(t) : 0;
+    }
+    function setState(i) {
+      if (i === applied) return;
+      applied = i;
+      media.classList.remove("is-hover-1", "is-hover-2", "is-hover-3", "is-hover-4");
+      if (i) media.classList.add("is-hover-" + i);
+    }
+    media.addEventListener("pointerenter", function (e) {
+      if (e.pointerType && e.pointerType !== "mouse") return;
+      inside = true;
+      moved = 0;
+      lx = e.clientX; ly = e.clientY;
+      setState(hit(lx, ly));
+    });
+    media.addEventListener("pointermove", function (e) {
+      if (!inside || (e.pointerType && e.pointerType !== "mouse")) return;
+      moved += Math.abs(e.clientX - lx) + Math.abs(e.clientY - ly);
+      lx = e.clientX; ly = e.clientY;
+      if (moved < 14) return;
+      moved = 0;
+      var t = hit(e.clientX, e.clientY);
+      if (t) setState(t);
+    });
+    media.addEventListener("pointerleave", function (e) {
+      if (e.relatedTarget && media.contains(e.relatedTarget)) return;
+      inside = false;
+      moved = 0;
+      setState(0);
+    });
+  });
+})();
+
+/* ---------- GRM PRODUCTION · VISUAL: aperture reveal drive ----------
+   Scroll-triggered, time-based aperture. Scrolling only triggers the
+   reveal: when the showreel's top crosses ~68% of the viewport height
+   (IntersectionObserver, rootMargin bottom -32%), the two black masks
+   part vertically in a single ~1400ms ease-in-out-cubic animation.
+   The reveal runs once per load (closed -> playing -> open), is driven
+   purely by elapsed time, and cannot be reversed, replayed, slowed, or
+   interrupted by scrolling. The showreel object NEVER moves or scales:
+   it sits in normal document flow at its final size; the masks are the
+   only animated geometry (GPU-safe transforms).
+
+   Reduced motion / no JS: the CSS suppresses the masks and the figure
+   renders fully revealed in flow, so this module stops here.
+
+   The media plate inside is temporary; the driver only moves the masks,
+   so swapping in the real showreel video does not touch this code. */
+(function () {
+  function onReady(fn) {
+    if (document.readyState === "loading") {
+      document.addEventListener("DOMContentLoaded", fn);
+    } else {
+      fn();
+    }
+  }
+
+  onReady(function () {
+    if (document.body.getAttribute("data-page") !== "studio") return;
+
+    /* The pending VIEW OUR WORK link is inert until the real YouTube URL
+       is supplied: keep it from jumping the page to the top. */
+    document.addEventListener("click", function (e) {
+      var link = e.target && e.target.closest ? e.target.closest("[data-pending-youtube]") : null;
+      if (link) { e.preventDefault(); e.stopPropagation(); }
+    });
+
+    var aperture = document.querySelector("[data-showreel-aperture]");
+    if (!aperture) return;
+
+    var stage = aperture.querySelector(".showreel-aperture__stage");
+    var maskTop = aperture.querySelector("[data-showreel-mask-top]");
+    var maskBottom = aperture.querySelector("[data-showreel-mask-bottom]");
+    if (!stage || !maskTop || !maskBottom) return;
+
+    var reduced = window.matchMedia("(prefers-reduced-motion: reduce)");
+    if (reduced.matches) return;
+
+    var HALF_HAIRLINE = 1.5;  /* ~3px seam in the closed aperture */
+    var DURATION = 1400;      /* ms for the full aperture opening */
+    var TRIGGER_STOP = 0.32;  /* viewport fraction: trigger at ~68vh */
+    var state = "closed";     /* closed -> playing -> open */
+    var half = 1;             /* half the stage (figure) height, px */
+
+    function easeInOutCubic(t) {
+      return t < 0.5 ? 4 * t * t * t : 1 - Math.pow(-2 * t + 2, 3) / 2;
+    }
+
+    function setMasks(topTr, bottomTr) {
+      maskTop.style.transform = "translate3d(0," + topTr + "px,0)";
+      maskBottom.style.transform = "translate3d(0," + bottomTr + "px,0)";
+    }
+
+    function measure() {
+      var vh = window.innerHeight || document.documentElement.clientHeight;
+      var vw = window.innerWidth || document.documentElement.clientWidth;
+
+      /* 92vw target on desktop, height-capped so the showreel (16:9)
+         plus its metadata bar keeps the approved viewport fit. */
+      var frameW = Math.min(vw * 0.92, vh * 0.88 * (16 / 9));
+      stage.style.setProperty("--showreel-frame-w", frameW + "px");
+
+      half = Math.max(1, stage.clientHeight / 2);
+    }
+
+    function open() {
+      if (state !== "closed") return;
+      state = "playing";
+      var target = half;   /* captured: a resize cannot jump the reveal */
+      var t0 = performance.now();
+
+      (function frame(now) {
+        var t = Math.min(1, (now - t0) / DURATION);
+        var o = easeInOutCubic(t);
+        setMasks(
+          -(HALF_HAIRLINE + (target - HALF_HAIRLINE) * o),
+          HALF_HAIRLINE + (target - HALF_HAIRLINE) * o
+        );
+        if (t < 1) requestAnimationFrame(frame);
+        else state = "open";
+      })(performance.now());
+    }
+
+    function onLayout() {
+      measure();
+      /* Keep resting geometry honest after a resize without resetting
+         reveal state; a running reveal keeps its captured half. */
+      if (state === "open") setMasks(-half, half);
+      else if (state === "closed") setMasks(-HALF_HAIRLINE, HALF_HAIRLINE);
+    }
+
+    /* Trigger once: the showreel top crossing ~68% of the viewport. */
+    if ("IntersectionObserver" in window) {
+      var observer = new IntersectionObserver(function (entries) {
+        entries.forEach(function (en) {
+          if (en.isIntersecting && state === "closed") {
+            observer.disconnect();
+            open();
+          }
+        });
+      }, { rootMargin: "0px 0px -" + (TRIGGER_STOP * 100) + "% 0px", threshold: 0 });
+      observer.observe(aperture);
+    } else {
+      /* Fallback: open once the trigger line is actually crossed. */
+      function onFirstScroll() {
+        if (state !== "closed") return;
+        var top = aperture.getBoundingClientRect().top;
+        if (top <= (window.innerHeight || 0) * (1 - TRIGGER_STOP)) open();
+      }
+      window.addEventListener("scroll", onFirstScroll, { passive: true });
+      onFirstScroll();
+    }
+
+    window.addEventListener("resize", onLayout, { passive: true });
+    measure();
+    setMasks(-HALF_HAIRLINE, HALF_HAIRLINE);
+  });
+})();
+
+/* ============================================================
+   GRM Sound — single interactive release wall.
+   One logical collection (the V4 plaque for IGLA — Prvi
+   Aristokrat), duplicated only as invisible clones to form a
+   seamless looping track. One authoritative rAF controller
+   drives a continuous slow drift; pointer press+drag moves the
+   wall 1:1, release hands the pointer's momentum back so the
+   carousel glides and converges smoothly onto the ambient
+   autoplay velocity (never stopping). Reduced-motion turns the
+   autoplay off but keeps manual drag/swipe intact.
+   ============================================================ */
+(function () {
+  "use strict";
+  var row = document.querySelector(".grm-sound__row[data-grm-sound-row]");
+  if (!row) return;
+
+  var section = row.closest(".grm-sound");
+  var track = row.querySelector(".grm-sound__track[data-grm-sound-track]");
+  var base = track ? track.firstElementChild : null;
+  if (!section || !track || !base) return;
+
+  section.classList.add("grm-sound--js");
+
+  var reduceQuery = window.matchMedia("(prefers-reduced-motion: reduce)");
+
+  var setWidth = 0;
+  var scale = 0;
+  var vel = 0;
+  var autoplayDir = 1;
+  var velMax = 0;
+  var sampleVel = 0;
+  var lastSampleX = null;
+  var lastSampleT = 0;
+  var VEL_TAU = 600;
+  var pos = 0;
+  var clones = [];
+
+  function measure() {
+    setWidth = base.offsetWidth;
+  }
+
+  function wrap(delta) {
+    delta = delta % setWidth;
+    if (delta < 0) delta += setWidth;
+    return delta;
+  }
+
+  function paint() {
+    track.style.transform = "translate3d(" + (-pos) + "px,0,0)";
+  }
+
+  function fill() {
+    clones.forEach(function (node) { node.parentNode.removeChild(node); });
+    clones = [];
+
+    measure();
+    var viewport = row.clientWidth || window.innerWidth;
+    var extra = Math.ceil(viewport / Math.max(setWidth, 1)) + 1;
+    scale = setWidth / 120;
+    velMax = Math.max(480, setWidth * 0.3);
+    vel = scale * autoplayDir;
+
+    var frag = document.createDocumentFragment();
+    for (var i = 0; i < extra; i++) {
+      var copy = base.cloneNode(true);
+      copy.setAttribute("aria-hidden", "true");
+      var links = copy.querySelectorAll("a");
+      for (var k = 0; k < links.length; k++) {
+        links[k].setAttribute("tabindex", "-1");
+      }
+      clones.push(copy);
+      frag.appendChild(copy);
+    }
+    track.appendChild(frag);
+
+    pos = wrap(pos);
+    paint();
+  }
+
+  var last = null;
+  var enabled = !reduceQuery.matches;
+  var dragging = false;
+  var engaged = false;
+  var startX = 0;
+  var startY = 0;
+  var startPos = 0;
+  var suppressClick = false;
+  var suppressTimer = null;
+  var engagedId = -1;
+
+  function clampVel(v) {
+    if (v > velMax) return velMax;
+    if (v < -velMax) return -velMax;
+    return v;
+  }
+
+  function loop(now) {
+    if (last === null) last = now;
+    var dt = now - last;
+    last = now;
+    if (dt > 64) dt = 64;
+
+    if (enabled && !dragging && !engaged && setWidth > 0) {
+      var target = scale * autoplayDir;
+      if (vel !== target) {
+        vel = target + (vel - target) * Math.exp(-dt / VEL_TAU);
+        if (Math.abs(vel - target) < 0.01) vel = target;
+      }
+      pos = wrap(pos + (vel * dt) / 1000);
+      paint();
+    }
+    window.requestAnimationFrame(loop);
+  }
+
+  function onDown(e) {
+    clearTimeout(suppressTimer);
+    suppressClick = false;
+    startX = e.clientX;
+    startY = e.clientY;
+    startPos = pos;
+    engaged = true;
+    engagedId = e.pointerId;
+    dragging = false;
+    sampleVel = 0;
+    lastSampleX = null;
+    lastSampleT = 0;
+  }
+
+  function onMove(e) {
+    if (!engaged) return;
+    var dx = e.clientX - startX;
+    var dy = e.clientY - startY;
+    if (!dragging) {
+      if (Math.abs(dx) < 6 || Math.abs(dy) > Math.abs(dx)) return;
+      dragging = true;
+      suppressClick = true;
+      row.classList.add("grm-sound__row--dragging");
+      try { row.setPointerCapture(e.pointerId); } catch (err) {}
+      lastSampleX = null;
+      lastSampleT = 0;
+      sampleVel = 0;
+    }
+    if (e.cancelable) e.preventDefault();
+    pos = wrap(startPos - dx);
+    paint();
+
+    var t = e.timeStamp;
+    if (lastSampleX !== null) {
+      var dtms = t - lastSampleT;
+      if (dtms > 1 && dtms < 200) {
+        var inst = (-(e.clientX - lastSampleX) * 1000) / dtms;
+        var alpha = Math.min(1, dtms / 90);
+        sampleVel = sampleVel * (1 - alpha) + inst * alpha;
+      }
+    }
+    lastSampleX = e.clientX;
+    lastSampleT = t;
+  }
+
+  function onUp(e) {
+    if (!engaged || e.pointerId !== engagedId) return;
+    engaged = false;
+    engagedId = -1;
+    if (dragging) {
+      dragging = false;
+      row.classList.remove("grm-sound__row--dragging");
+      suppressClick = true;
+      suppressTimer = setTimeout(function () { suppressClick = false; }, 400);
+      vel = clampVel(sampleVel);
+      autoplayDir = e.clientX > startX ? -1 : 1;
+    }
+    try { if (row.hasPointerCapture(e.pointerId)) row.releasePointerCapture(e.pointerId); } catch (err) {}
+  }
+
+  function onCancel(e) {
+    if (!engaged || e.pointerId !== engagedId) return;
+    engaged = false;
+    engagedId = -1;
+    dragging = false;
+    suppressClick = true;
+    row.classList.remove("grm-sound__row--dragging");
+    if (suppressTimer) clearTimeout(suppressTimer);
+    suppressTimer = setTimeout(function () { suppressClick = false; }, 400);
+  }
+
+  row.addEventListener("pointerdown", onDown);
+  row.addEventListener("pointermove", onMove);
+  row.addEventListener("pointerup", onUp);
+  row.addEventListener("pointercancel", onCancel);
+  window.addEventListener("pointerup", onUp);
+  window.addEventListener("pointercancel", onCancel);
+  row.addEventListener("dragstart", function (e) {
+    if (engaged || dragging) e.preventDefault();
+  });
+  row.addEventListener("click", function (e) {
+    if (suppressClick && e.detail > 0) {
+      e.preventDefault();
+      e.stopPropagation();
+      suppressClick = false;
+    }
+  }, true);
+
+  function syncReduce() {
+    enabled = !reduceQuery.matches;
+  }
+  if (reduceQuery.addEventListener) reduceQuery.addEventListener("change", syncReduce);
+  else if (reduceQuery.addListener) reduceQuery.addListener(syncReduce);
+
+  var resizeTimer = null;
+  function onResize() {
+    if (resizeTimer) return;
+    resizeTimer = setTimeout(function () {
+      resizeTimer = null;
+      fill();
+    }, 150);
+  }
+  window.addEventListener("resize", onResize, { passive: true });
+
+  function start() {
+    fill();
+    window.requestAnimationFrame(loop);
+  }
+
+  if (document.readyState === "loading") {
+    document.addEventListener("DOMContentLoaded", start);
+  } else {
+    start();
+  }
 })();

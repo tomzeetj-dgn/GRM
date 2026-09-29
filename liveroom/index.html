@@ -76,99 +76,39 @@
       <div class="division-minimal-hero__scroll" aria-hidden="true"><span>Scroll</span><i></i></div>
     </section>
 
-    <!-- ============================================================
-         THE ROOM — placeholder copy about the live room
-         ============================================================ -->
-    <section class="section" id="room">
-      <div class="container">
-        <div class="section-head reveal">
-          <div>
-            <p class="eyebrow">The Room</p>
-            <h2 class="section-head__title">A place to be loud</h2>
-          </div>
-          <p class="section-head__note">
-            Rehearsal space, practical and straightforward — made for working bands.
-          </p>
-        </div>
-
-        <div class="section__grid reveal">
-          <p class="section__lead">
-            The live room is GRM's rehearsal floor — built for volume,
-            set up to work, and kept clear when it's time to play.
-          </p>
-          <p class="section__ph">
-            <strong>Room details</strong> — replace with size, feel, layout and
-            what a band needs to know before booking. No invented detail for now.
-          </p>
-        </div>
+    <section class="liveroom-room" id="liveroom-room" aria-labelledby="liveroom-room-title">
+      <div class="liveroom-room__text">
+        <p class="eyebrow lr-room lr-re">Liveroom</p>
+        <h2 class="liveroom-room__title lr-room lr-split lr-re" id="liveroom-room-title">The<br><em>room</em></h2>
+        <p class="liveroom-room__note lr-room lr-re">Built for rehearsals. Plug in, turn up and play.</p>
+      </div>
+      <div class="liveroom-room__media">
+        <figure class="liveroom-room__img liveroom-room__img--primary lr-room lr-re">
+          <img src="../assets/img/Liveroom 1.png" alt="GRM Liveroom control room" loading="lazy">
+        </figure>
+        <figure class="liveroom-room__img liveroom-room__img--wide lr-room lr-re">
+          <img src="../assets/img/Liveroom 2.png" alt="GRM Liveroom drum kit" loading="lazy">
+        </figure>
+        <figure class="liveroom-room__img liveroom-room__img--detail lr-room lr-re">
+          <img src="../assets/img/Liveroom 3.png" alt="GRM Liveroom Markbass amplifier" loading="lazy">
+        </figure>
+        <figure class="liveroom-room__img liveroom-room__img--detail lr-room lr-re">
+          <img src="../assets/img/Liveroom 4.png" alt="GRM Liveroom microphone" loading="lazy">
+        </figure>
       </div>
     </section>
-
-    <!-- ============================================================
-         BACKLINE / EQUIPMENT — placeholder category grid
-         ============================================================ -->
-    <section class="equipment" id="backline">
-      <div class="container">
-        <div class="section-head reveal">
-          <div>
-            <p class="eyebrow">Backline</p>
-            <h2 class="section-head__title">What's in the room</h2>
-          </div>
-          <p class="section-head__note">
-            Backline, PA and monitoring — described by category, confirmed
-            against the real inventory before launch.
-          </p>
-        </div>
-
-        <div class="equipment__grid">
-          <div class="equipment__col reveal" data-cat="Backline &amp; Amps">
-            <div class="equipment__cat-wrap">
-              <h3 class="equipment__cat">Backline &amp; Amp</h3>
-              <span class="equipment__no">01</span>
-            </div>
-            <ul class="equipment__list">
-              <li class="equipment__row"><span class="equipment__k">Drums</span><span class="equipment__dots" aria-hidden="true"></span><span class="equipment__v ph">[to add]</span></li>
-              <li class="equipment__row"><span class="equipment__k">Guitar amps</span><span class="equipment__dots" aria-hidden="true"></span><span class="equipment__v ph">[to add]</span></li>
-              <li class="equipment__row"><span class="equipment__k">Bass amps</span><span class="equipment__dots" aria-hidden="true"></span><span class="equipment__v ph">[to add]</span></li>
-            </ul>
-          </div>
-
-          <div class="equipment__col reveal" data-cat="PA &amp; Monitoring">
-            <div class="equipment__cat-wrap">
-              <h3 class="equipment__cat">PA &amp; Monitoring</h3>
-              <span class="equipment__no">02</span>
-            </div>
-            <ul class="equipment__list">
-              <li class="equipment__row"><span class="equipment__k">PA</span><span class="equipment__dots" aria-hidden="true"></span><span class="equipment__v ph">[to add]</span></li>
-              <li class="equipment__row"><span class="equipment__k">Monitors</span><span class="equipment__dots" aria-hidden="true"></span><span class="equipment__v ph">[to add]</span></li>
-              <li class="equipment__row"><span class="equipment__k">Desk</span><span class="equipment__dots" aria-hidden="true"></span><span class="equipment__v ph">[to add]</span></li>
-            </ul>
-          </div>
-        </div>
-      </div>
-    </section>
-
-    <!-- ============================================================
-         BOOKING CTA — orange tint via theme variables
-         ============================================================ -->
-    <section class="cta" id="booking">
-      <div class="container">
-        <div class="cta__inner reveal">
-          <p class="eyebrow eyebrow--on-accent">Booking</p>
-          <h2 class="cta__title">Ready to<br>play?</h2>
-          <a class="cta__mail" href="mailto:info@grmstudio.music">info@grmstudio.music</a>
-          <p class="cta__sub">
-            Rehearsals · Sessions — write to the room and we'll sort the time.
-          </p>
-          <p class="cta__loc">
-            <span>Belgrade, Serbia</span>
-            <span>By arrangement</span>
-          </p>
-        </div>
-      </div>
-    </section>
-
-  </main>
+    <section class="liveroom-availability" id="availability" aria-labelledby="availability-title"><div class="liveroom-availability__head"><p class="eyebrow lr-room lr-re">Room schedule</p><h2 id="availability-title" class="liveroom-availability__title lr-room lr-re" data-week-offset="0"><button class="liveroom-availability__title-arrow liveroom-availability__title-arrow--prev" type="button" aria-label="Previous week"><svg class="liveroom-availability__chevron" viewBox="0 0 16 18" aria-hidden="true"><path d="M10 3 L4 9 L10 15"></path></svg></button><span class="liveroom-availability__title-unit"><span class="liveroom-availability__title-word" data-week-label>THIS WEEK</span><span class="liveroom-availability__week" data-week-range>21–27 SEP</span></span><button class="liveroom-availability__title-arrow liveroom-availability__title-arrow--next" type="button" aria-label="Next week"><svg class="liveroom-availability__chevron" viewBox="0 0 16 18" aria-hidden="true"><path d="M6 3 L12 9 L6 15"></path></svg></button></h2></div><div class="liveroom-availability__board lr-room lr-re"><div class="liveroom-availability__days"><span>TIME</span><b>MON</b><b>TUE</b><b>WED</b><b>THU</b><b>FRI</b><b>SAT</b><b class="is-today">SUN<small>TODAY</small></b></div><div class="liveroom-availability__hours"><span>10:00</span><span>11:00</span><span>12:00</span><span>13:00</span><span>14:00</span><span>15:00</span><span>16:00</span><span>17:00</span><span>18:00</span><span>19:00</span><span>20:00</span><span>21:00</span><span>22:00</span></div><div class="liveroom-availability__slots"><span class="liveroom-availability__separator" aria-hidden="true"></span><span class="liveroom-availability__separator" aria-hidden="true"></span><span class="liveroom-availability__separator" aria-hidden="true"></span><span class="liveroom-availability__separator" aria-hidden="true"></span><span class="liveroom-availability__separator" aria-hidden="true"></span><span class="liveroom-availability__separator" aria-hidden="true"></span><i class="is-taken is-taken--one" tabindex="0" aria-label="Taken Monday 13:00 to 16:00">TAKEN<br><small>13:00–16:00</small></i><i class="is-taken is-taken--two" tabindex="0" aria-label="Taken Wednesday 18:00 to 21:00">TAKEN<br><small>18:00–21:00</small></i><i class="is-taken is-taken--three" tabindex="0" aria-label="Taken Friday 11:00 to 13:00">TAKEN<br><small>11:00–13:00</small></i><i class="is-taken is-taken--four" tabindex="0" aria-label="Taken Saturday 16:00 to 20:00">TAKEN<br><small>16:00–20:00</small></i></div></div></section>
+    <div class="liveroom-utility">
+      <a class="liveroom-utility__item" href="https://maps.google.com/?q=Blagoja%20Parovi%C4%87a%2019a%2C%20Beograd" target="_blank" rel="noreferrer noopener" aria-label="GRM Liveroom location: Blagoja Parovića 19a, Beograd">
+        <em>LOCATION</em>
+        <strong>Blagoja Parovića 19a, Beograd</strong>
+      </a>
+      <a class="liveroom-utility__item" href="tel:+381636465666" aria-label="Call GRM Liveroom to book a rehearsal: +381 63 646 5666">
+        <em>BOOK A REHEARSAL</em>
+        <strong>+381 63 646 5666</strong>
+      </a>
+    </div>
+    </main>
 
   <!-- Shared footer, injected by js/main.js -->
   <div id="footerMount"></div>

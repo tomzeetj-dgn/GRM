@@ -161,3 +161,50 @@ CSS (added to the hero block in `css/style.css`):
   neutral before calling it done — the logo window is the one thing that
   must never move.
 - Hard-refresh (Cmd+Shift+R) to clear cached hero assets on the live page.
+
+---
+
+## 7. Label — polish slate (Phase 1)
+
+All Label-phase rules are fully scoped to `body.theme-label` / `.label-*` in the
+appended "GRM LABEL — PHASE ONE" block of `css/style.css` plus the page-local
+script at the bottom of `label/index.html`. No shared rule is modified.
+
+- **Hero metadata**: `body.theme-label .label-hero-meta` (facts line
+  `Est. 2017 · Belgrade · 13 releases · 10 artists`), positioned to inherit
+  the hero slot shared with the scroll cue (the cue drops on Label only);
+  rides the arrival/morph fade sequence.
+- **Editorial opener (manifesto)**: statement `WE RELEASE MUSIC / WE BELIEVE IN.`
+  (markup lowercase + uppercase transform; single mint accent on `<em>believe</em>`),
+  `--label-copy:rgba(236,233,226,.78)` lives ONLY on `body.theme-label`;
+  copy 38rem measure, `clamp(1.05rem,.95vw,1.15rem)`/1.7, `padding-top:calc(var(--sec) + clamp(24px,3vh,48px))`;
+  facts row is spans (no dl), letter-spacing `.22em`, tabular-nums.
+- **Roster — compact editorial index** (replaces the full-width image wipe). No bands,
+  no masked stage, no wipe, no veil, no drift. Ten rows, each: `01    DZU    03 RELEASES`
+  (index + display-face name + release count). Row height ~77px @1440 (name
+  `clamp(2rem,3.5vw,3.5rem)`, #ece9e2; index/count 14px body, `--text-faint`, .16em,
+  hover/focus -> `--text-muted`). Restrained hairline separators, no cards/boxes/radius. `vitić`
+  is lowercase in the source (no `text-transform` on names). Roster footprint ~1.1-1.3 viewports.
+- **Preview module** — a single editorial annotation module on the right of the list (desktop >=820px
+  only), anchored to the roster column (module top aligns with the first row; `position:sticky; top:clamp(16px,4vh,48px)`).
+  Composition inside one quiet module (no card/background/shadow/radius; spacing, hairlines and type only):
+  1. eyebrow `Selected release` (reuses `.eyebrow`)
+  2. one-line copy — `Point at a name in the index to browse their latest sleeve.`
+  3. artwork frame — `clamp(220px,22vw,320px)`, aspect-ratio 1, 1px hairline border, crisp 1:1 crop, no glow/blur/tilt/zoom
+  4. metadata beneath — active artist name (display face, title-capped) over `Latest release · <title>` (14px→11.2px stack),
+     split by a hairline border-top above the name
+  Two stacked `.label-roster__frame-img` layers crossfade 250ms on row hover/focus/click; module title+meta follow the
+  row via per-row `data-title` (real release titles, e.g. `Prizma`, `Trap je Mrtav`, `Slojevi`). Frame capped at 320px so
+  2x DPR <= 640 against native 640x640 artwork — no upscaling. Reduced-motion swaps instantly. No layout shift (absolute
+  layers in a fixed aspect-ratio frame); rapid pointer movement is stable (swap only on src change, two layers only).
+  Hidden below 820px (pure typographic list, easy to browse on touch).
+- **Active row state** (hover / keyboard-focus only; no dimension or position animation): index `01..10` -> Label mint
+  (`--accent-lite`), release count -> `--label-copy` (.78, brighter than its rest .46), name -> `#ffffff` (subtle,
+  already near-white). The row geometry stays fixed.
+- Dead wipe CSS/JS fully removed (`.label-roster__band/stage/image/veil`, `.is-lit`, wipes, drift);
+  the roster preview IIFE is page-local in `label/index.html`.
+- **Image treatment (retired)** — the old full-width band treatment (opacity .6, dual-layer veil,
+  saturate/brightness filter, 700ms clip wipe) was removed with the wipe. Do not reintroduce behind
+  the roster.
+- **CTA**: `#submissions` kept with the `hidden` attribute — folds into the Label end slate later
+  (reversible).
