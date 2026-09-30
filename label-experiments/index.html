@@ -1,0 +1,1135 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>GRM Label — Design Playground (dev)</title>
+  <meta name="description" content="GRM Label — experimental design playground. Four creative directions: Editorial, Exhibition, Record Sleeve, Contact Sheet. Development route, not part of the live site.">
+  <meta name="robots" content="noindex, nofollow">
+  <meta name="theme-color" content="#050505">
+
+  <link rel="icon" type="image/png" href="../assets/img/favicon.png">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Archivo:ital,wdth,wght@0,62.5,100..900;1,62.5,100..900&family=Inter:wght@300;400;500;600&display=swap">
+
+  <link rel="stylesheet" href="../css/style.css">
+  <link rel="stylesheet" href="experiments.css">
+  <script>document.documentElement.classList.add("js");</script>
+</head>
+<body class="lbx" data-root="../" data-page="label-experiments">
+<script src="experiments.js" defer></script>
+
+  <!-- Dev-only shell, NOT part of the production navigation. -->
+  <header class="lbx-top">
+    <div class="lbx-wrap">
+      <a class="lbx-top__brand" href="../">GRM</a>
+      <span class="lbx-top__title">Label — design playground</span>
+      <div class="lbx-top__links">
+        <span class="lbx-top__dev">dev route</span>
+        <a href="../label/">→ production /label</a>
+      </div>
+    </div>
+  </header>
+
+  <main id="main">
+
+    <!-- ============================================================
+         PLAYGROUND OPENING
+         ============================================================ -->
+    <section class="lbx-door" aria-labelledby="lbx-door-title">
+      <div class="lbx-wrap">
+        <p class="lbx-eyebrow">Four creative directions · in progress</p>
+        <h1 class="lbx-door__title" id="lbx-door-title">The label,<br>reconsidered.</h1>
+        <p class="lbx-door__stand">
+          GRM Label explored as editorial, exhibition, packaging and archive.
+          Built from the existing site DNA — same house, same catalogue, same green.
+          No direction chosen yet; this route is a temporary comparison, not the live page.
+        </p>
+        <nav class="lbx-toc" aria-label="Concepts">
+          <a href="#concept-01">Concept 01 — The Editorial</a>
+          <a href="#concept-02">Concept 02 — The Exhibition</a>
+          <a href="#concept-03">Concept 03 — The Record Sleeve</a>
+          <a href="#concept-04">Concept 04 — The Contact Sheet</a>
+          <a href="#concept-05">Concept 05 — The Music Comes First</a>
+        </nav>
+      </div>
+    </section>
+
+    <!-- ============================================================
+         CONCEPT 01 — THE EDITORIAL
+         ============================================================ -->
+    <section class="lbx-concept" id="concept-01" data-concept="1" aria-labelledby="concept-01-title">
+      <div class="lbx-gap" aria-hidden="true">
+        <span class="lbx-gap__line"></span>
+        <span class="lbx-gap__kicker">Concept 01</span>
+        <span class="lbx-gap__line"></span>
+      </div>
+      <header class="lbx-concept__head">
+        <div class="lbx-wrap">
+          <h2 class="lbx-concept__title" id="concept-01-title">The editorial</h2>
+          <p class="lbx-concept__note">The label as an independent music publication — photography-led, oversized display type, magazine architecture.</p>
+        </div>
+      </header>
+
+      <div class="ed lbx-wrap" data-scope="editorial">
+
+        <div class="ed-mast">
+          <span class="ed-mast__pub">GRM Label Review</span>
+          <span class="ed-mast__issue">No. 01 — Prototype</span>
+        </div>
+
+        <header class="ed-intro" data-reveal="rise">
+          <p class="lbx-eyebrow">This is the label in print</p>
+          <h3 class="ed-intro__title">Music from<br><em>one</em> house.</h3>
+          <p class="ed-intro__stand">
+            An independent record label in Belgrade, working out of the same building
+            as the studio and the live room. Written, mixed and mastered in-house.
+            The stories behind thirteen releases.
+          </p>
+          <p class="ed-intro__meta">Belgrade · Est. 2017 · 13 releases · 10 artists</p>
+        </header>
+
+        <div class="ed-dispatches" aria-label="Features in this issue">
+          <span class="ed-dispatches__label">In this issue</span>
+          <a class="ed-dispatches__item" href="#ed-dzu"><span class="ed-dispatches__no">01</span>DZU<span class="ed-dispatches__tease">three singles, one run</span></a>
+          <a class="ed-dispatches__item" href="#ed-igla"><span class="ed-dispatches__no">02</span>IGLA<span class="ed-dispatches__tease">the two-part voice</span></a>
+          <a class="ed-dispatches__item" href="#ed-vitic"><span class="ed-dispatches__no">03</span><span class="lbx-lower">vitić</span><span class="ed-dispatches__tease">a single sleeve</span></a>
+        </div>
+
+        <!-- FEATURE 01 — DZU (cover story, image-led wide composition) -->
+        <article class="ed-feature" id="ed-dzu">
+          <header class="ed-feature__head">
+            <span class="ed-folio">No. 01</span>
+            <span class="ed-kicker">Cover story</span>
+          </header>
+
+          <h3 class="ed-feature__title" data-reveal="rise">DZU</h3>
+
+          <div class="ed-wrap1">
+            <figure class="ed-photo ed-photo--wide" data-reveal="wipeup">
+              <div class="ed-photo__mask">
+                <img src="../assets/img/releases/dzu-prizma.jpg" alt="DZU — Prizma (cover art)" decoding="async" draggable="false" loading="lazy">
+              </div>
+              <figcaption class="ed-cap">Fig. 01 — DZU, “Prizma”. Sleeve art, in-house record.</figcaption>
+            </figure>
+
+            <div class="ed-body" data-reveal="rise">
+              <p class="ed-lead">
+                Three singles in, DZU is the catalogue’s most frequent voice — a run that
+                opens with “Prizma” and keeps folding back toward the label’s own room.
+              </p>
+              <aside class="ed-meta" aria-label="Artist metadata">
+                <span class="ed-meta__row"><b>Artist</b><i>DZU</i></span>
+                <span class="ed-meta__row"><b>Releases</b><i>03</i></span>
+                <span class="ed-meta__row"><b>Titles</b><i>Prizma · Vir · Kangal</i></span>
+                <span class="ed-meta__row"><b>Recorded</b><i>In-house, GRM</i></span>
+              </aside>
+              <p class="ed-note"><span class="ph">[ artist bio — placeholder, pending verification ]</span></p>
+            </div>
+          </div>
+
+          <blockquote class="ed-quote" data-reveal="wipeup">
+            <p>“We release music we believe in.”</p>
+            <cite>— from the label, GRM</cite>
+          </blockquote>
+        </article>
+
+        <!-- FEATURE 02 — IGLA (tall image column + text column, title crossing both) -->
+        <article class="ed-feature ed-feature--ig" id="ed-igla">
+          <header class="ed-feature__head">
+            <span class="ed-folio">No. 02</span>
+            <span class="ed-kicker">The artists</span>
+          </header>
+
+          <h3 class="ed-feature__title" data-reveal="rise">IGLA</h3>
+
+          <div class="ed-wrap2">
+            <figure class="ed-photo ed-photo--tall" data-reveal="wipeup">
+              <div class="ed-photo__mask">
+                <img src="../assets/img/GRM Production - 7.png" alt="Vocal recording setup at GRM Production" decoding="async" draggable="false" loading="lazy">
+              </div>
+              <figcaption class="ed-cap">In session — vocal chain inside the GRM studio.</figcaption>
+            </figure>
+
+            <div class="ed-body" data-reveal="rise">
+              <p class="ed-lead">
+                Two releases deep — “Ego” and “Uroboros”. A voice that works best when the
+                room is quiet.
+              </p>
+              <aside class="ed-meta" aria-label="Artist metadata">
+                <span class="ed-meta__row"><b>Artist</b><i>IGLA</i></span>
+                <span class="ed-meta__row"><b>Releases</b><i>02</i></span>
+                <span class="ed-meta__row"><b>Titles</b><i>Ego · Uroboros</i></span>
+                <span class="ed-meta__row"><b>Recorded</b><i>In-house, GRM</i></span>
+              </aside>
+              <p class="ed-note"><span class="ph">[ artist bio — placeholder, pending verification ]</span></p>
+            </div>
+          </div>
+
+          <figure class="ed-diptych" data-reveal="wipeup">
+            <figure class="ed-diptych__half">
+              <div class="ed-photo__mask">
+                <img src="../assets/img/releases/igla-ego.jpg" alt="IGLA — Ego (cover art)" decoding="async" draggable="false" loading="lazy">
+              </div>
+              <figcaption class="ed-cap">Fig. 02 — “Ego”.</figcaption>
+            </figure>
+            <figure class="ed-diptych__half">
+              <div class="ed-photo__mask">
+                <img src="../assets/img/GRM Production - 3.png" alt="Keyboard and production workstation at GRM Production" decoding="async" draggable="false" loading="lazy">
+              </div>
+              <figcaption class="ed-cap">The workstation where it was built.</figcaption>
+            </figure>
+          </figure>
+        </article>
+
+        <!-- FEATURE 03 — vitić (asymmetric, text over, hanging image, footnote) -->
+        <article class="ed-feature ed-feature--vit" id="ed-vitic">
+          <header class="ed-feature__head">
+            <span class="ed-folio">No. 03</span>
+            <span class="ed-kicker">Back of the book</span>
+          </header>
+
+          <h3 class="ed-feature__title ed-feature__title--low" data-reveal="rise"><span class="lbx-lower">vitić</span><span class="ed-period">.</span></h3>
+
+          <div class="ed-wrap3">
+            <div class="ed-body" data-reveal="rise">
+              <p class="ed-lead">
+                A single sleeve so far — “Slojevi”. Lowercase on purpose; the record
+                does the talking.
+              </p>
+              <aside class="ed-meta" aria-label="Artist metadata">
+                <span class="ed-meta__row"><b>Artist</b><i><span class="lbx-lower">vitić</span></i></span>
+                <span class="ed-meta__row"><b>Releases</b><i>01</i></span>
+                <span class="ed-meta__row"><b>Titles</b><i>Slojevi</i></span>
+                <span class="ed-meta__row"><b>Recorded</b><i>In-house, GRM</i></span>
+              </aside>
+              <p class="ed-note"><span class="ph">[ artist bio — placeholder, pending verification ]</span></p>
+            </div>
+
+            <figure class="ed-photo ed-photo--hang" data-reveal="wipeup">
+              <div class="ed-photo__mask">
+                <img src="../assets/img/releases/vitic-slojevi.jpg" alt="vitić — Slojevi (cover art)" decoding="async" draggable="false" loading="lazy">
+              </div>
+              <figcaption class="ed-cap">Fig. 03 — “Slojevi”. The sleeve.</figcaption>
+            </figure>
+          </div>
+
+          <figure class="ed-foot" data-reveal="rise">
+            <div class="ed-foot__img">
+              <div class="ed-photo__mask">
+                <img src="../assets/img/Liveroom 1.png" alt="GRM Liveroom control room" decoding="async" draggable="false" loading="lazy">
+              </div>
+            </div>
+            <figcaption class="ed-cap">The room it was rehearsed in — GRM Liveroom control room.<br>
+              <span class="ph">[ rehearsal material — placeholder placement ]</span></figcaption>
+          </figure>
+        </article>
+
+        <footer class="ed-colophon">
+          <p>Issue No. 01 — prototype. Set in Archivo Ultra Condensed + Inter. GRM · Belgrade · Est. 2017.</p>
+        </footer>
+
+      </div>
+    </section>
+
+    <!-- ============================================================
+         CONCEPT 02 — THE EXHIBITION
+         ============================================================ -->
+    <section class="lbx-concept" id="concept-02" data-concept="2" aria-labelledby="concept-02-title">
+      <div class="lbx-gap" aria-hidden="true">
+        <span class="lbx-gap__line"></span>
+        <span class="lbx-gap__kicker">Concept 02</span>
+        <span class="lbx-gap__line"></span>
+      </div>
+      <header class="lbx-concept__head">
+        <div class="lbx-wrap">
+          <h2 class="lbx-concept__title" id="concept-02-title">The exhibition</h2>
+          <p class="lbx-concept__note">The label as a curated gallery — exhibits on the wall, restrained captions, deliberate pacing.</p>
+        </div>
+      </header>
+
+      <div class="ex" data-scope="exhibition">
+
+        <div class="ex-intro">
+          <div class="lbx-wrap">
+            <p class="lbx-eyebrow">GRM Label — permanent collection</p>
+            <h3 class="ex-intro__title">The catalogue<br>on the wall.</h3>
+            <p class="ex-intro__line">Three exhibits — walk the room.</p>
+          </div>
+        </div>
+
+        <!-- EXHIBIT 01 — DZU -->
+        <div class="ex-room" id="ex-dzu" data-exhibit="0">
+          <div class="ex-wall" aria-hidden="true">
+            <span class="ex-wall__label">Wall — 01 / 03</span>
+          </div>
+          <div class="ex-exhibit">
+            <span class="ex-number">Exhibit 01</span>
+
+            <div class="ex-object" data-reveal="fade">
+              <span class="ex-object__plate" aria-hidden="true"></span>
+              <img src="../assets/img/releases/dzu-prizma.jpg" alt="DZU — Prizma (exhibited artwork)" decoding="async" draggable="false" loading="lazy">
+              <span class="ex-object__tag">Fig. 01 — Prizma</span>
+            </div>
+
+            <header class="ex-caption">
+              <h4 class="ex-name">DZU</h4>
+              <p class="ex-sub">Three works — Prizma · Vir · Kangal</p>
+            </header>
+
+            <p class="ex-note">The label’s most frequent voice, in three singles.<br>
+              <span class="ph">[ artist bio — placeholder, pending verification ]</span></p>
+
+            <dl class="ex-ref">
+              <div><dt>Reference</dt><dd>Prizma</dd></div>
+              <div><dt>Release</dt><dd>01 / 13</dd></div>
+              <div><dt>Recorded</dt><dd>In-house</dd></div>
+            </dl>
+
+            <div class="ex-more">
+              <button type="button" class="ex-more__btn" aria-expanded="false" aria-controls="ex-dzu-detail">Discover more</button>
+              <div class="ex-detail" id="ex-dzu-detail" hidden>
+                <p class="ex-detail__note"><span class="ph">[ caption — placeholder ]</span></p>
+                <div class="ex-detail__thumbs" aria-label="Related works">
+                  <figure><img src="../assets/img/releases/dzu-vir.jpg" alt="DZU — Vir" loading="lazy"><figcaption>Vir</figcaption></figure>
+                  <figure><img src="../assets/img/releases/dzu-igla-kangal.jpg" alt="DZU / IGLA — Kangal" loading="lazy"><figcaption>Kangal</figcaption></figure>
+                  <figure><img src="../assets/img/releases/dzu-prizma.jpg" alt="DZU — Prizma" loading="lazy"><figcaption>Prizma</figcaption></figure>
+                </div>
+              </div>
+            </div>
+
+            <nav class="ex-nav" aria-label="Exhibit navigation">
+              <button type="button" class="ex-nav__prev">← Prev</button>
+              <span class="ex-nav__count">Exhibit 01 / 03</span>
+              <button type="button" class="ex-nav__next">Next →</button>
+            </nav>
+          </div>
+        </div>
+
+        <!-- EXHIBIT 02 — IGLA -->
+        <div class="ex-room" id="ex-igla" data-exhibit="1">
+          <div class="ex-wall" aria-hidden="true">
+            <span class="ex-wall__label">Wall — 02 / 03</span>
+          </div>
+          <div class="ex-exhibit">
+            <span class="ex-number">Exhibit 02</span>
+
+            <div class="ex-object" data-reveal="fade">
+              <span class="ex-object__plate" aria-hidden="true"></span>
+              <img src="../assets/img/releases/igla-ego.jpg" alt="IGLA — Ego (exhibited artwork)" decoding="async" draggable="false" loading="lazy">
+              <span class="ex-object__tag">Fig. 02 — Ego</span>
+            </div>
+
+            <header class="ex-caption">
+              <h4 class="ex-name">IGLA</h4>
+              <p class="ex-sub">Two works — Ego · Uroboros</p>
+            </header>
+
+            <p class="ex-note">A voice that works best when the room is quiet.<br>
+              <span class="ph">[ artist bio — placeholder, pending verification ]</span></p>
+
+            <dl class="ex-ref">
+              <div><dt>Reference</dt><dd>Ego</dd></div>
+              <div><dt>Release</dt><dd>02 / 13</dd></div>
+              <div><dt>Recorded</dt><dd>In-house</dd></div>
+            </dl>
+
+            <div class="ex-more">
+              <button type="button" class="ex-more__btn" aria-expanded="false" aria-controls="ex-igla-detail">Discover more</button>
+              <div class="ex-detail" id="ex-igla-detail" hidden>
+                <p class="ex-detail__note"><span class="ph">[ caption — placeholder ]</span></p>
+                <div class="ex-detail__thumbs" aria-label="Related works">
+                  <figure><img src="../assets/img/releases/igla-uroboros.jpg" alt="IGLA — Uroboros" loading="lazy"><figcaption>Uroboros</figcaption></figure>
+                  <figure><img src="../assets/img/releases/igla-ego.jpg" alt="IGLA — Ego" loading="lazy"><figcaption>Ego</figcaption></figure>
+                  <figure><img src="../assets/img/GRM Production - 7.png" alt="Vocal recording setup at GRM Production" loading="lazy"><figcaption>Session</figcaption></figure>
+                </div>
+              </div>
+            </div>
+
+            <nav class="ex-nav" aria-label="Exhibit navigation">
+              <button type="button" class="ex-nav__prev">← Prev</button>
+              <span class="ex-nav__count">Exhibit 02 / 03</span>
+              <button type="button" class="ex-nav__next">Next →</button>
+            </nav>
+          </div>
+        </div>
+
+        <!-- EXHIBIT 03 — vitić -->
+        <div class="ex-room" id="ex-vitic" data-exhibit="2">
+          <div class="ex-wall" aria-hidden="true">
+            <span class="ex-wall__label">Wall — 03 / 03</span>
+          </div>
+          <div class="ex-exhibit">
+            <span class="ex-number">Exhibit 03</span>
+
+            <div class="ex-object" data-reveal="fade">
+              <span class="ex-object__plate" aria-hidden="true"></span>
+              <img src="../assets/img/releases/vitic-slojevi.jpg" alt="vitić — Slojevi (exhibited artwork)" decoding="async" draggable="false" loading="lazy">
+              <span class="ex-object__tag">Fig. 03 — Slojevi</span>
+            </div>
+
+            <header class="ex-caption">
+              <h4 class="ex-name"><span class="lbx-lower">vitić</span></h4>
+              <p class="ex-sub">One work — Slojevi</p>
+            </header>
+
+            <p class="ex-note">A single sleeve so far; lowercase on purpose.<br>
+              <span class="ph">[ artist bio — placeholder, pending verification ]</span></p>
+
+            <dl class="ex-ref">
+              <div><dt>Reference</dt><dd>Slojevi</dd></div>
+              <div><dt>Release</dt><dd>03 / 13</dd></div>
+              <div><dt>Recorded</dt><dd>In-house</dd></div>
+            </dl>
+
+            <div class="ex-more">
+              <button type="button" class="ex-more__btn" aria-expanded="false" aria-controls="ex-vitic-detail">Discover more</button>
+              <div class="ex-detail" id="ex-vitic-detail" hidden>
+                <p class="ex-detail__note"><span class="ph">[ caption — placeholder ]</span></p>
+                <div class="ex-detail__thumbs" aria-label="Related works">
+                  <figure><img src="../assets/img/releases/vitic-slojevi.jpg" alt="vitić — Slojevi" loading="lazy"><figcaption>Slojevi</figcaption></figure>
+                  <figure><img src="../assets/img/Liveroom 1.png" alt="GRM Liveroom control room" loading="lazy"><figcaption>The room</figcaption></figure>
+                  <figure><img src="../assets/img/releases/dzu-igla-kangal.jpg" alt="DZU / IGLA — Kangal" loading="lazy"><figcaption>Kangal</figcaption></figure>
+                </div>
+              </div>
+            </div>
+
+            <nav class="ex-nav" aria-label="Exhibit navigation">
+              <button type="button" class="ex-nav__prev">← Prev</button>
+              <span class="ex-nav__count">Exhibit 03 / 03</span>
+              <button type="button" class="ex-nav__next">Next →</button>
+            </nav>
+          </div>
+        </div>
+
+        <nav class="ex-rail" aria-label="Current exhibit" aria-hidden="true">
+          <span class="ex-rail__tick" data-tick="0">01</span>
+          <span class="ex-rail__tick" data-tick="1">02</span>
+          <span class="ex-rail__tick" data-tick="2">03</span>
+        </nav>
+      </div>
+    </section>
+
+    <!-- ============================================================
+         CONCEPT 03 — THE RECORD SLEEVE
+         ============================================================ -->
+    <section class="lbx-concept" id="concept-03" data-concept="3" aria-labelledby="concept-03-title">
+      <div class="lbx-gap" aria-hidden="true">
+        <span class="lbx-gap__line"></span>
+        <span class="lbx-gap__kicker">Concept 03</span>
+        <span class="lbx-gap__line"></span>
+      </div>
+      <header class="lbx-concept__head">
+        <div class="lbx-wrap">
+          <h2 class="lbx-concept__title" id="concept-03-title">The record sleeve</h2>
+          <p class="lbx-concept__note">Packaging translated to screen — grid, catalogue references, liner notes, one unfold.</p>
+        </div>
+      </header>
+      <div class="lbx-wrap">
+
+      <div class="rs" data-scope="sleeve">
+
+        <!-- front cover / gatefold, closed -->
+        <section class="rs-display" aria-label="Record sleeve prototype">
+          <div class="rs-gate" id="rs-gate">
+            <span class="rs-spine" aria-hidden="true">GRM-LB · GRM-LB · GRM-LB</span>
+
+            <!-- A side -->
+            <div class="rs-face rs-face--l" aria-hidden="true">
+              <span class="rs-corner rs-corner--tl"></span>
+              <span class="rs-corner rs-corner--br"></span>
+              <span class="rs-code">GRM-LB 001</span>
+              <div class="rs-lockup">
+                <img class="rs-lockup__mark" src="../assets/img/grm-tile-2.png" alt="" aria-hidden="true" loading="lazy">
+                <span class="rs-lockup__word">GRM</span>
+                <span class="rs-lockup__sub">LABEL — SELECTED CATALOGUE</span>
+              </div>
+              <span class="rs-barcode" aria-hidden="true"></span>
+              <span class="rs-face__meta">Side A — GRM Label</span>
+            </div>
+
+            <!-- B side -->
+            <div class="rs-face rs-face--r" aria-hidden="true">
+              <span class="rs-corner rs-corner--tl"></span>
+              <span class="rs-corner rs-corner--br"></span>
+              <span class="rs-slogan">Music from<br>one house.</span>
+              <span class="rs-face__meta">Side B — Ten artists<span class="rs-floor">Belgrade · Est. 2017</span></span>
+            </div>
+
+            <!-- gatefold interior, revealed when opened -->
+            <div class="rs-inner" id="rs-inner">
+              <div class="rs-inner__grid">
+                <div class="rs-notes">
+                  <p class="rs-notes__kicker">Liner notes — inside the gatefold</p>
+                  <p class="rs-notes__copy">
+                    GRM is an independent record label in Belgrade, working out of the same
+                    house as the studio and the live room. We sign artists we believe in,
+                    record them properly, and put the record out ourselves. No label-group
+                    machinery, no content pipeline — everything on the catalogue was written,
+                    mixed and mastered in this building.
+                  </p>
+                  <p class="rs-notes__credits">
+                    Recorded · mixed · mastered in-house — GRM, Belgrade.<br>
+                    Design — house style, Archivo Ultra Condensed + Inter.
+                  </p>
+                </div>
+
+                <div class="rs-index">
+                  <p class="rs-notes__kicker">The catalogue — inserts</p>
+
+                  <a class="rs-insert" href="#rs-rel-dzu">
+                    <span class="rs-insert__code">GRM-LB 001</span>
+                    <span class="rs-insert__face">DZU</span>
+                    <span class="rs-insert__art"><img src="../assets/img/releases/dzu-prizma.jpg" alt="DZU — Prizma" loading="lazy"></span>
+                    <span class="rs-insert__list">Prizma · Vir · Kangal</span>
+                  </a>
+
+                  <a class="rs-insert" href="#rs-rel-igla">
+                    <span class="rs-insert__code">GRM-LB 002</span>
+                    <span class="rs-insert__face">IGLA</span>
+                    <span class="rs-insert__art"><img src="../assets/img/releases/igla-ego.jpg" alt="IGLA — Ego" loading="lazy"></span>
+                    <span class="rs-insert__list">Ego · Uroboros</span>
+                  </a>
+
+                  <a class="rs-insert" href="#rs-rel-vitic">
+                    <span class="rs-insert__code">GRM-LB 003</span>
+                    <span class="rs-insert__face"><span class="lbx-lower">vitić</span></span>
+                    <span class="rs-insert__art"><img src="../assets/img/releases/vitic-slojevi.jpg" alt="vitić — Slojevi" loading="lazy"></span>
+                    <span class="rs-insert__list">Slojevi</span>
+                  </a>
+
+                  <p class="rs-index__note"><span class="ph">[ catalogue numbers — placeholder ]</span></p>
+                </div>
+              </div>
+            </div>
+
+            <button type="button" class="rs-unfold" aria-expanded="false" aria-controls="rs-inner">
+              <span class="rs-unfold__line"></span>
+              <span class="rs-unfold__label">Unfold the sleeve</span>
+            </button>
+          </div>
+        </section>
+
+        <!-- selected releases -->
+        <section class="rs-rel" id="rs-rel-dzu">
+          <p class="rs-notes__kicker">Selected releases</p>
+          <div class="rs-grid">
+            <figure class="rs-item" id="rs-rel-dzu-a">
+              <img src="../assets/img/releases/dzu-prizma.jpg" alt="DZU — Prizma" decoding="async" draggable="false" loading="lazy">
+              <figcaption class="rs-item__meta">
+                <span class="rs-item__t">Prizma — DZU</span>
+                <span class="rs-item__c"><span class="ph">[ cat. placeholder ]</span> · 01</span>
+              </figcaption>
+            </figure>
+            <figure class="rs-item" id="rs-rel-vir">
+              <img src="../assets/img/releases/dzu-vir.jpg" alt="DZU — Vir" decoding="async" draggable="false" loading="lazy">
+              <figcaption class="rs-item__meta">
+                <span class="rs-item__t">Vir — DZU</span>
+                <span class="rs-item__c"><span class="ph">[ cat. placeholder ]</span> · 02</span>
+              </figcaption>
+            </figure>
+            <figure class="rs-item" id="rs-rel-igla">
+              <img src="../assets/img/releases/igla-ego.jpg" alt="IGLA — Ego" decoding="async" draggable="false" loading="lazy">
+              <figcaption class="rs-item__meta">
+                <span class="rs-item__t">Ego — IGLA</span>
+                <span class="rs-item__c"><span class="ph">[ cat. placeholder ]</span> · 03</span>
+              </figcaption>
+            </figure>
+            <figure class="rs-item" id="rs-rel-uro">
+              <img src="../assets/img/releases/igla-uroboros.jpg" alt="IGLA — Uroboros" decoding="async" draggable="false" loading="lazy">
+              <figcaption class="rs-item__meta">
+                <span class="rs-item__t">Uroboros — IGLA</span>
+                <span class="rs-item__c"><span class="ph">[ cat. placeholder ]</span> · 04</span>
+              </figcaption>
+            </figure>
+            <figure class="rs-item" id="rs-rel-kan">
+              <img src="../assets/img/releases/dzu-igla-kangal.jpg" alt="DZU / IGLA — Kangal" decoding="async" draggable="false" loading="lazy">
+              <figcaption class="rs-item__meta">
+                <span class="rs-item__t">Kangal — DZU / IGLA</span>
+                <span class="rs-item__c"><span class="ph">[ cat. placeholder ]</span> · 05</span>
+              </figcaption>
+            </figure>
+            <figure class="rs-item" id="rs-rel-vitic">
+              <img src="../assets/img/releases/vitic-slojevi.jpg" alt="vitić — Slojevi" decoding="async" draggable="false" loading="lazy">
+              <figcaption class="rs-item__meta">
+                <span class="rs-item__t">Slojevi — <span class="lbx-lower">vitić</span></span>
+                <span class="rs-item__c"><span class="ph">[ cat. placeholder ]</span> · 06</span>
+              </figcaption>
+            </figure>
+          </div>
+          <p class="rs-quality">13 releases on the catalogue · 10 artists · written, mixed &amp; mastered in-house.</p>
+        </section>
+
+        <!-- rear metadata -->
+        <footer class="rs-rear">
+          <div class="rs-rear__row">
+            <span>GRM Label</span>
+            <span>Belgrade, Serbia</span>
+            <span>Est. 2017</span>
+          </div>
+          <div class="rs-rear__row">
+            <span>info@grmstudio.music</span>
+            <span>Labeled by the house</span>
+          </div>
+          <span class="rs-rear__copyright">© 2017 — prototype, GRM.</span>
+        </footer>
+
+      </div>
+      </div>
+    </section>
+
+    <!-- ============================================================
+         CONCEPT 04 — THE CONTACT SHEET
+         ============================================================ -->
+    <section class="lbx-concept" id="concept-04" data-concept="4" aria-labelledby="concept-04-title">
+      <div class="lbx-gap" aria-hidden="true">
+        <span class="lbx-gap__line"></span>
+        <span class="lbx-gap__kicker">Concept 04</span>
+        <span class="lbx-gap__line"></span>
+      </div>
+      <header class="lbx-concept__head">
+        <div class="lbx-wrap">
+          <h2 class="lbx-concept__title" id="concept-04-title">The contact sheet</h2>
+          <p class="lbx-concept__note">The label as a living archive — numbered frames, annotations, a readout that answers back.</p>
+        </div>
+      </header>
+
+      <div class="cs lbx-wrap" data-scope="sheet">
+        <div class="cs-intro">
+          <p class="lbx-eyebrow">Archive — contact sheet 001</p>
+          <h3 class="cs-intro__title">The sheet.</h3>
+          <p class="cs-intro__line">Explore the house. Select any frame to read its label.</p>
+        </div>
+
+        <div class="cs-sheet" role="list" aria-label="Archive contact sheet">
+          <button type="button" class="cs-frame cs-frame--4" role="listitem" aria-label="A-01 — DZU, Prizma"
+            data-code="A-01" data-artist="DZU" data-title="Prizma" data-kind="Release cover"
+            data-img="../assets/img/releases/dzu-prizma.jpg"
+            data-capt="Cover, first of three. In-house record." data-related="Vir · Kangal">
+            <img src="../assets/img/releases/dzu-prizma.jpg" alt="DZU — Prizma (cover)" loading="lazy" draggable="false">
+            <span class="cs-frame__code">A-01</span>
+            <span class="cs-frame__capt">DZU — Prizma</span>
+          </button>
+
+          <button type="button" class="cs-frame cs-frame--4" role="listitem" aria-label="A-02 — the control room"
+            data-code="A-02" data-artist="GRM" data-title="Production" data-kind="Photograph"
+            data-img="../assets/img/GRM Production - 2.png"
+            data-capt="The control room where everything was mixed." data-related="Studio">
+            <img src="../assets/img/GRM Production - 2.png" alt="GRM Production control room" loading="lazy" draggable="false">
+            <span class="cs-frame__code">A-02</span>
+            <span class="cs-frame__capt">Control room</span>
+          </button>
+
+          <button type="button" class="cs-frame cs-frame--4 cs-frame--type" role="listitem" aria-label="A-03 — catalogue poster, thirteen releases"
+            data-code="A-03" data-artist="GRM" data-title="Catalogue" data-kind="Poster fragment"
+            data-img="" data-capt="Poster fragment — thirteen releases, ten artists." data-related="Est. 2017">
+            <span class="cs-frame__poster" aria-hidden="true">13<span class="cs-frame__poster-sub">releases</span></span>
+            <span class="cs-frame__code">A-03</span>
+            <span class="cs-frame__capt">Catalogue — 13</span>
+          </button>
+
+          <button type="button" class="cs-frame cs-frame--2" role="listitem" aria-label="A-04 — IGLA, Ego"
+            data-code="A-04" data-artist="IGLA" data-title="Ego" data-kind="Release cover"
+            data-img="../assets/img/releases/igla-ego.jpg"
+            data-capt="First of two — Ego." data-related="Uroboros">
+            <img src="../assets/img/releases/igla-ego.jpg" alt="IGLA — Ego (cover)" loading="lazy" draggable="false">
+            <span class="cs-frame__code">A-04</span>
+            <span class="cs-frame__capt">IGLA — Ego</span>
+          </button>
+
+          <button type="button" class="cs-frame cs-frame--2" role="listitem" aria-label="A-05 — detail, Prizma crop"
+            data-code="A-05" data-artist="DZU" data-title="Prizma" data-kind="Detail crop"
+            data-img="../assets/img/releases/dzu-prizma.jpg"
+            data-capt="Detail crop — same sleeve, second contact sheet frame." data-related="A-01 · Vir">
+            <img src="../assets/img/releases/dzu-prizma.jpg" alt="Detail crop of DZU — Prizma" loading="lazy" draggable="false">
+            <span class="cs-frame__code">A-05</span>
+            <span class="cs-frame__capt">Prizma — detail</span>
+          </button>
+
+          <button type="button" class="cs-frame cs-frame--6" role="listitem" aria-label="A-06 — backstage, rehearsal room drum kit"
+            data-code="A-06" data-artist="GRM" data-title="Liveroom" data-kind="Photograph"
+            data-img="../assets/img/Liveroom 2.png"
+            data-capt="Backstage — the drum kit in the live room." data-related="Rehearsal">
+            <img src="../assets/img/Liveroom 2.png" alt="GRM Liveroom drum kit" loading="lazy" draggable="false">
+            <span class="cs-frame__code">A-06</span>
+            <span class="cs-frame__capt">Liveroom — drum kit</span>
+          </button>
+
+          <button type="button" class="cs-frame cs-frame--4" role="listitem" aria-label="A-07 — vitić, Slojevi"
+            data-code="A-07" data-artist="vitić" data-title="Slojevi" data-kind="Release cover"
+            data-img="../assets/img/releases/vitic-slojevi.jpg"
+            data-capt="One sleeve, lowercase on purpose." data-related="A-10">
+            <img src="../assets/img/releases/vitic-slojevi.jpg" alt="vitić — Slojevi (cover)" loading="lazy" draggable="false">
+            <span class="cs-frame__code">A-07</span>
+            <span class="cs-frame__capt"><span class="lbx-lower">vitić</span> — Slojevi</span>
+          </button>
+
+          <button type="button" class="cs-frame cs-frame--4" role="listitem" aria-label="A-08 — vocal recording setup"
+            data-code="A-08" data-artist="GRM" data-title="Production" data-kind="Photograph"
+            data-img="../assets/img/GRM Production - 7.png"
+            data-capt="Vocal chain inside the studio." data-related="Studio">
+            <img src="../assets/img/GRM Production - 7.png" alt="Vocal recording setup at GRM Production" loading="lazy" draggable="false">
+            <span class="cs-frame__code">A-08</span>
+            <span class="cs-frame__capt">Vocal setup</span>
+          </button>
+
+          <button type="button" class="cs-frame cs-frame--4" role="listitem" aria-label="A-09 — GRZI, Trag"
+            data-code="A-09" data-artist="GRZI" data-title="Trag" data-kind="Release cover"
+            data-img="../assets/img/releases/grzi-trag.jpg"
+            data-capt="Single — Trag." data-related="Catalogue">
+            <img src="../assets/img/releases/grzi-trag.jpg" alt="GRZI — Trag (cover)" loading="lazy" draggable="false">
+            <span class="cs-frame__code">A-09</span>
+            <span class="cs-frame__capt">GRZI — Trag</span>
+          </button>
+
+          <button type="button" class="cs-frame cs-frame--2" role="listitem" aria-label="A-10 — vocal microphone"
+            data-code="A-10" data-artist="GRM" data-title="Liveroom" data-kind="Photograph"
+            data-img="../assets/img/Liveroom 4.png"
+            data-capt="A microphone in the live room." data-related="vitić — Slojevi">
+            <img src="../assets/img/Liveroom 4.png" alt="GRM Liveroom microphone" loading="lazy" draggable="false">
+            <span class="cs-frame__code">A-10</span>
+            <span class="cs-frame__capt">Mic</span>
+          </button>
+
+          <button type="button" class="cs-frame cs-frame--2" role="listitem" aria-label="A-11 — KOJOT, Zlatnih Četiri"
+            data-code="A-11" data-artist="KOJOT" data-title="Zlatnih Četiri" data-kind="Release cover"
+            data-img="../assets/img/releases/kojot-zlatnih-cetiri.jpg"
+            data-capt="Single — Zlatnih Četiri." data-related="Catalogue">
+            <img src="../assets/img/releases/kojot-zlatnih-cetiri.jpg" alt="KOJOT — Zlatnih Četiri (cover)" loading="lazy" draggable="false">
+            <span class="cs-frame__code">A-11</span>
+            <span class="cs-frame__capt">KOJOT — Zlatnih Četiri</span>
+          </button>
+
+          <button type="button" class="cs-frame cs-frame--4 cs-frame--type" role="listitem" aria-label="A-12 — poster fragment, one house"
+            data-code="A-12" data-artist="GRM" data-title="Poster" data-kind="Poster fragment"
+            data-img="" data-capt="Poster fragment — music from one house." data-related="Home">
+            <span class="cs-frame__poster" aria-hidden="true">ONE<span class="cs-frame__poster-sub">house</span></span>
+            <span class="cs-frame__code">A-12</span>
+            <span class="cs-frame__capt">Poster — one house</span>
+          </button>
+
+          <button type="button" class="cs-frame cs-frame--6" role="listitem" aria-label="A-13 — PABLO KENEDI, Trap je Mrtav"
+            data-code="A-13" data-artist="PABLO KENEDI" data-title="Trap je Mrtav" data-kind="Release cover"
+            data-img="../assets/img/releases/pablo-kenedi-trap-je-mrtav.jpg"
+            data-capt="Single — Trap je Mrtav." data-related="Catalogue">
+            <img src="../assets/img/releases/pablo-kenedi-trap-je-mrtav.jpg" alt="PABLO KENEDI — Trap je Mrtav (cover)" loading="lazy" draggable="false">
+            <span class="cs-frame__code">A-13</span>
+            <span class="cs-frame__capt">PABLO KENEDI — Trap je Mrtav</span>
+          </button>
+
+          <button type="button" class="cs-frame cs-frame--4" role="listitem" aria-label="A-14 — production workstation"
+            data-code="A-14" data-artist="GRM" data-title="Production" data-kind="Photograph"
+            data-img="../assets/img/GRM Production - 3.png"
+            data-capt="Keyboard and production workstation." data-related="Studio">
+            <img src="../assets/img/GRM Production - 3.png" alt="Keyboard and production workstation at GRM Production" loading="lazy" draggable="false">
+            <span class="cs-frame__code">A-14</span>
+            <span class="cs-frame__capt">Workstation</span>
+          </button>
+
+          <button type="button" class="cs-frame cs-frame--4" role="listitem" aria-label="A-15 — MAIA, Drama"
+            data-code="A-15" data-artist="MAIA" data-title="Drama" data-kind="Release cover"
+            data-img="../assets/img/releases/maia-drama.jpg"
+            data-capt="Single — Drama." data-related="Catalogue">
+            <img src="../assets/img/releases/maia-drama.jpg" alt="MAIA — Drama (cover)" loading="lazy" draggable="false">
+            <span class="cs-frame__code">A-15</span>
+            <span class="cs-frame__capt">MAIA — Drama</span>
+          </button>
+
+          <button type="button" class="cs-frame cs-frame--2" role="listitem" aria-label="A-16 — NEDELJA, Na Rezervi"
+            data-code="A-16" data-artist="NEDELJA" data-title="Na Rezervi" data-kind="Release cover"
+            data-img="../assets/img/releases/nedelja-na-rezervi.jpg"
+            data-capt="Single — Na Rezervi." data-related="Catalogue">
+            <img src="../assets/img/releases/nedelja-na-rezervi.jpg" alt="NEDELJA — Na Rezervi (cover)" loading="lazy" draggable="false">
+            <span class="cs-frame__code">A-16</span>
+            <span class="cs-frame__capt">NEDELJA — Na Rezervi</span>
+          </button>
+
+          <button type="button" class="cs-frame cs-frame--2" role="listitem" aria-label="A-17 — amplifier"
+            data-code="A-17" data-artist="GRM" data-title="Liveroom" data-kind="Photograph"
+            data-img="../assets/img/Liveroom 3.png"
+            data-capt="A Markbass amplifier in the room." data-related="Rehearsal">
+            <img src="../assets/img/Liveroom 3.png" alt="GRM Liveroom Markbass amplifier" loading="lazy" draggable="false">
+            <span class="cs-frame__code">A-17</span>
+            <span class="cs-frame__capt">Amp</span>
+          </button>
+
+          <button type="button" class="cs-frame cs-frame--4" role="listitem" aria-label="A-18 — DZU / IGLA, Kangal"
+            data-code="A-18" data-artist="DZU / IGLA" data-title="Kangal" data-kind="Release cover"
+            data-img="../assets/img/releases/dzu-igla-kangal.jpg"
+            data-capt="Split — Kangal." data-related="A-01 · A-04">
+            <img src="../assets/img/releases/dzu-igla-kangal.jpg" alt="DZU / IGLA — Kangal (cover)" loading="lazy" draggable="false">
+            <span class="cs-frame__code">A-18</span>
+            <span class="cs-frame__capt">DZU / IGLA — Kangal</span>
+          </button>
+
+          <button type="button" class="cs-frame cs-frame--2" role="listitem" aria-label="A-19 — STRUKA, Opet se Obrće"
+            data-code="A-19" data-artist="STRUKA" data-title="Opet se Obrće" data-kind="Release cover"
+            data-img="../assets/img/releases/struka-opet-se-obrce.jpg"
+            data-capt="Single — Opet se Obrće." data-related="Catalogue">
+            <img src="../assets/img/releases/struka-opet-se-obrce.jpg" alt="STRUKA — Opet se Obrće (cover)" loading="lazy" draggable="false">
+            <span class="cs-frame__code">A-19</span>
+            <span class="cs-frame__capt">STRUKA — Opet se Obrće</span>
+          </button>
+
+          <button type="button" class="cs-frame cs-frame--2" role="listitem" aria-label="A-20 — beat making workstation"
+            data-code="A-20" data-artist="GRM" data-title="Production" data-kind="Photograph"
+            data-img="../assets/img/GRM Production - 6.png"
+            data-capt="Beat making workstation." data-related="Studio">
+            <img src="../assets/img/GRM Production - 6.png" alt="Beat making workstation at GRM Production" loading="lazy" draggable="false">
+            <span class="cs-frame__code">A-20</span>
+            <span class="cs-frame__capt">Beat station</span>
+          </button>
+
+          <button type="button" class="cs-frame cs-frame--2" role="listitem" aria-label="A-21 — KOBI, Miriše na Milion"
+            data-code="A-21" data-artist="KOBI" data-title="Miriše na Milion" data-kind="Release cover"
+            data-img="../assets/img/releases/kobi-mirise-na-milion.jpg"
+            data-capt="Single — Miriše na Milion." data-related="Catalogue">
+            <img src="../assets/img/releases/kobi-mirise-na-milion.jpg" alt="KOBI — Miriše na Milion (cover)" loading="lazy" draggable="false">
+            <span class="cs-frame__code">A-21</span>
+            <span class="cs-frame__capt">KOBI — Miriše na Milion</span>
+          </button>
+
+          <button type="button" class="cs-frame cs-frame--6" role="listitem" aria-label="A-22 — liveroom control room"
+            data-code="A-22" data-artist="GRM" data-title="Liveroom" data-kind="Photograph"
+            data-img="../assets/img/Liveroom 1.png"
+            data-capt="The control room the bands rehearse against." data-related="Rehearsal">
+            <img src="../assets/img/Liveroom 1.png" alt="GRM Liveroom control room" loading="lazy" draggable="false">
+            <span class="cs-frame__code">A-22</span>
+            <span class="cs-frame__capt">Control room — liveroom</span>
+          </button>
+        </div>
+
+        <aside class="cs-readout" aria-live="polite" role="status">
+          <span class="cs-readout__label">Selected frame</span>
+          <div class="cs-readout__body">
+            <span class="cs-readout__code" id="cs-readout-code">A-00</span>
+            <span class="cs-readout__name" id="cs-readout-name">Point at a frame</span>
+            <span class="cs-readout__meta" id="cs-readout-meta"></span>
+            <span class="cs-readout__capt" id="cs-readout-capt"></span>
+          </div>
+          <button type="button" class="cs-readout__clear" id="cs-readout-clear" hidden>Clear</button>
+        </aside>
+
+      </div>
+    </section>
+
+    <!-- ============================================================
+         CONCEPT 05 — THE MUSIC COMES FIRST
+         Music and artwork first — releases, artists, the people
+         behind the label, and where to hear it. One reusable
+         expanded-release view carries the listening experience.
+         ============================================================ -->
+    <section class="lbx-concept" id="concept-05" data-concept="5" aria-labelledby="concept-05-title">
+      <div class="lbx-gap" aria-hidden="true">
+        <span class="lbx-gap__line"></span>
+        <span class="lbx-gap__kicker">Concept 05</span>
+        <span class="lbx-gap__line"></span>
+      </div>
+      <header class="lbx-concept__head">
+        <div class="lbx-wrap">
+          <h2 class="lbx-concept__title" id="concept-05-title">The music comes first</h2>
+          <p class="lbx-concept__note">Releases, artists and the people behind the label — framed around the record, not around an index. One shared, expanded release view carries the listening.</p>
+        </div>
+      </header>
+
+      <div class="c5" data-scope="music-first">
+
+        <!-- 01 — INTRODUCTION -->
+        <header class="c5-intro" id="c5-intro">
+          <p class="lbx-eyebrow" data-reveal="rise">GRM Label — Belgrade</p>
+          <h3 class="c5-intro__title" data-reveal="rise">An independent label<br>from one house<span class="c5-accent">.</span></h3>
+          <p class="c5-intro__copy" data-reveal="rise">
+            GRM is an independent record label in Belgrade, working out of the same house as the studio
+            and the live room. We sign artists we believe in, record them properly, and put the record out
+            ourselves.
+          </p>
+          <p class="c5-intro__meta" data-reveal="rise">Written · mixed · mastered in-house <span class="c5-mdot">/</span> Est. 2017 <span class="c5-mdot">/</span> 13 releases <span class="c5-mdot">/</span> 10 artists</p>
+        </header>
+
+        <!-- 02 — SELECTED RELEASES -->
+        <section class="c5-sec c5-rel" id="c5-releases" aria-labelledby="c5-rel-title">
+          <header class="c5-sec__head" data-reveal="rise">
+            <p class="lbx-eyebrow">Selected releases</p>
+            <h3 class="c5-sec__title" id="c5-rel-title">Six records<span class="c5-accent">.</span></h3>
+            <p class="c5-sec__note">A handful of the catalogue, as it sounds right now. Open a cover to read the record.</p>
+          </header>
+
+          <div class="c5-grid" data-reveal="rise">
+            <button type="button" class="c5-card" data-id="prizma" data-title="Prizma" data-artist="DZU" data-type="EP" data-year="2026"
+              data-img="../assets/img/releases/dzu-prizma.jpg"
+              data-desc="[ short description — placeholder, pending verification ]"
+              data-listen="https://open.spotify.com/album/2r0IEzDy97D05pKxvaHOzu?si=pwnIusorQO2Ns9NZK-AzOA">
+              <span class="c5-card__art"><img src="../assets/img/releases/dzu-prizma.jpg" alt="Prizma — DZU (cover)" width="640" height="640" decoding="async" draggable="false" loading="lazy">
+                <span class="c5-card__open">Open record ↗</span>
+              </span>
+              <span class="c5-card__meta">
+                <span class="c5-card__title">Prizma</span>
+                <span class="c5-card__by"><span class="c5-card__artist">DZU</span><span class="c5-card__type">EP · 2026</span></span>
+              </span>
+            </button>
+
+            <button type="button" class="c5-card" data-id="vir" data-title="Vir" data-artist="DZU" data-type="SINGLE" data-year="2025"
+              data-img="../assets/img/releases/dzu-vir.jpg"
+              data-desc="[ short description — placeholder, pending verification ]"
+              data-listen="https://open.spotify.com/track/4qXzB05S0sCJVscMRKlhMR?si=5078ef9b86534148">
+              <span class="c5-card__art"><img src="../assets/img/releases/dzu-vir.jpg" alt="Vir — DZU (cover)" width="640" height="640" decoding="async" draggable="false" loading="lazy">
+                <span class="c5-card__open">Open record ↗</span>
+              </span>
+              <span class="c5-card__meta">
+                <span class="c5-card__title">Vir</span>
+                <span class="c5-card__by"><span class="c5-card__artist">DZU</span><span class="c5-card__type">SINGLE · 2025</span></span>
+              </span>
+            </button>
+
+            <button type="button" class="c5-card" data-id="ego" data-title="Ego" data-artist="IGLA" data-type="ALBUM" data-year="2017"
+              data-img="../assets/img/releases/igla-ego.jpg"
+              data-desc="[ short description — placeholder, pending verification ]"
+              data-listen="https://open.spotify.com/album/1CvD7hkwJMaM1mxNiyM0H1?si=8YFdt-dKRr6wyypY082ggQ">
+              <span class="c5-card__art"><img src="../assets/img/releases/igla-ego.jpg" alt="Ego — IGLA (cover)" width="640" height="640" decoding="async" draggable="false" loading="lazy">
+                <span class="c5-card__open">Open record ↗</span>
+              </span>
+              <span class="c5-card__meta">
+                <span class="c5-card__title">Ego</span>
+                <span class="c5-card__by"><span class="c5-card__artist">IGLA</span><span class="c5-card__type">ALBUM · 2017</span></span>
+              </span>
+            </button>
+
+            <button type="button" class="c5-card" data-id="uroboros" data-title="Uroboros" data-artist="IGLA" data-type="SINGLE" data-year="2025"
+              data-img="../assets/img/releases/igla-uroboros.jpg"
+              data-desc="[ short description — placeholder, pending verification ]"
+              data-listen="https://open.spotify.com/track/3koyxRkyATnAVv9TSbDrl5?si=53cbd0a3419a4437">
+              <span class="c5-card__art"><img src="../assets/img/releases/igla-uroboros.jpg" alt="Uroboros — IGLA (cover)" width="640" height="640" decoding="async" draggable="false" loading="lazy">
+                <span class="c5-card__open">Open record ↗</span>
+              </span>
+              <span class="c5-card__meta">
+                <span class="c5-card__title">Uroboros</span>
+                <span class="c5-card__by"><span class="c5-card__artist">IGLA</span><span class="c5-card__type">SINGLE · 2025</span></span>
+              </span>
+            </button>
+
+            <button type="button" class="c5-card" data-id="kangal" data-title="Kangal" data-artist="DZU &amp; IGLA" data-type="SINGLE" data-year="2026"
+              data-img="../assets/img/releases/dzu-igla-kangal.jpg"
+              data-desc="[ short description — placeholder, pending verification ]"
+              data-listen="https://open.spotify.com/track/2wP6Z8Ku76PxYV87OsfbTQ?si=2f57f5ee1eb045ea">
+              <span class="c5-card__art"><img src="../assets/img/releases/dzu-igla-kangal.jpg" alt="Kangal — DZU &amp; IGLA (cover)" width="640" height="640" decoding="async" draggable="false" loading="lazy">
+                <span class="c5-card__open">Open record ↗</span>
+              </span>
+              <span class="c5-card__meta">
+                <span class="c5-card__title">Kangal</span>
+                <span class="c5-card__by"><span class="c5-card__artist">DZU &amp; IGLA</span><span class="c5-card__type">SINGLE · 2026</span></span>
+              </span>
+            </button>
+
+            <button type="button" class="c5-card" data-id="slojevi" data-title="slojevi" data-artist="vitić" data-type="ALBUM" data-year="2025"
+              data-img="../assets/img/releases/vitic-slojevi.jpg"
+              data-desc="[ short description — placeholder, pending verification ]"
+              data-listen="https://open.spotify.com/album/3UwgT9Q264REblojL5sio9?si=EaUlW150RMqUhZ5wZssaIA">
+              <span class="c5-card__art"><img src="../assets/img/releases/vitic-slojevi.jpg" alt="slojevi — vitić (cover)" width="640" height="640" decoding="async" draggable="false" loading="lazy">
+                <span class="c5-card__open">Open record ↗</span>
+              </span>
+              <span class="c5-card__meta">
+                <span class="c5-card__title">slojevi</span>
+                <span class="c5-card__by"><span class="c5-card__artist">vitić</span><span class="c5-card__type">ALBUM · 2025</span></span>
+              </span>
+            </button>
+          </div>
+
+          <p class="c5-rel__note" data-reveal="rise">Thirteen records on the catalogue today — every one recorded in this building. <a href="#c5-artists" class="c5-seemore">Meet the artists below <span class="c5-arrow">↓</span></a></p>
+        </section>
+
+        <!-- 03 — THE ARTISTS -->
+        <section class="c5-sec c5-art" id="c5-artists" aria-labelledby="c5-art-title">
+          <header class="c5-sec__head" data-reveal="rise">
+            <p class="lbx-eyebrow">The artists</p>
+            <h3 class="c5-sec__title" id="c5-art-title">The people who make it<span class="c5-accent">.</span></h3>
+          </header>
+
+          <!-- featured — DZU -->
+          <div class="c5-feat">
+            <div class="c5-feat__vis" data-reveal="rise">
+              <figure class="c5-feat__main">
+                <img src="../assets/img/releases/dzu-prizma.jpg" alt="Prizma — DZU (cover)" width="640" height="640" decoding="async" draggable="false" loading="lazy">
+                <span class="c5-feat__tag">Prizma</span>
+              </figure>
+              <figure class="c5-feat__side">
+                <img src="../assets/img/releases/dzu-vir.jpg" alt="Vir — DZU (cover)" width="640" height="640" decoding="async" draggable="false" loading="lazy">
+                <span class="c5-feat__tag">Vir</span>
+              </figure>
+              <figure class="c5-feat__side">
+                <img src="../assets/img/releases/dzu-igla-kangal.jpg" alt="Kangal — DZU &amp; IGLA (cover)" width="640" height="640" decoding="async" draggable="false" loading="lazy">
+                <span class="c5-feat__tag">Kangal</span>
+              </figure>
+            </div>
+
+            <div class="c5-feat__copy" data-reveal="rise">
+              <p class="lbx-eyebrow">Featured</p>
+              <h4 class="c5-feat__name">DZU</h4>
+              <p class="c5-feat__line">An EP and two singles, all recorded in-house.</p>
+              <p class="c5-feat__bio"><span class="ph">[ artist bio — placeholder, pending verification ]</span></p>
+              <ul class="c5-feat__facts">
+                <li><span>Releases</span><b>03</b></li>
+                <li><span>Titles</span><b>Prizma · Vir · Kangal</b></li>
+                <li><span>Role</span><b>First voice of the label</b></li>
+              </ul>
+              <p class="c5-feat__action">
+                <a href="#c5-releases" class="c5-link">Back to the records <span class="c5-arrow">↗</span></a>
+                <button type="button" class="c5-link c5-link--btn" data-open="prizma">Open the first one <span class="c5-arrow">↗</span></button>
+              </p>
+            </div>
+          </div>
+
+          <!-- secondary introductions -->
+          <div class="c5-artists">
+            <article class="c5-artist">
+              <span class="c5-artist__thumb"><img src="../assets/img/releases/igla-ego.jpg" alt="Ego — IGLA (cover)" width="640" height="640" decoding="async" draggable="false" loading="lazy"></span>
+              <div class="c5-artist__desc">
+                <h4>IGLA</h4>
+                <p>Two records of their own — plus the Kangal split with DZU.</p>
+              </div>
+              <button type="button" class="c5-artist__go c5-link c5-link--btn" data-open="ego">Open Ego <span class="c5-arrow">↗</span></button>
+            </article>
+
+            <article class="c5-artist">
+              <span class="c5-artist__thumb"><img src="../assets/img/releases/vitic-slojevi.jpg" alt="slojevi — vitić (cover)" width="640" height="640" decoding="async" draggable="false" loading="lazy"></span>
+              <div class="c5-artist__desc">
+                <h4>vitić</h4>
+                <p>One album so far — slojevi. Lowercase on purpose.</p>
+              </div>
+              <button type="button" class="c5-artist__go c5-link c5-link--btn" data-open="slojevi">Open slojevi <span class="c5-arrow">↗</span></button>
+            </article>
+          </div>
+
+          <p class="c5-roster" data-reveal="rise">Also on the label — GRZI <span class="c5-mdot">·</span> KOJOT <span class="c5-mdot">·</span> PABLO KENEDI <span class="c5-mdot">·</span> MAIA <span class="c5-mdot">·</span> NEDELJA <span class="c5-mdot">·</span> STRUKA <span class="c5-mdot">·</span> KOBI</p>
+        </section>
+
+        <!-- 04 — THE PEOPLE BEHIND GRM -->
+        <section class="c5-sec c5-team" id="c5-team" aria-labelledby="c5-team-title">
+          <header class="c5-sec__head" data-reveal="rise">
+            <p class="lbx-eyebrow">The people behind GRM</p>
+            <h3 class="c5-sec__title" id="c5-team-title">The house<span class="c5-accent">.</span></h3>
+            <p class="c5-sec__note">Whoever runs the label works within these walls. Names and portraits below are placeholders until the real team is confirmed.</p>
+          </header>
+
+          <div class="c5-team__grid">
+            <article class="c5-person">
+              <div class="c5-person__portrait">
+                <span class="c5-person__phlab">Portrait — placeholder</span>
+                <span class="c5-person__initial">GR</span>
+              </div>
+              <p class="c5-person__name"><span class="ph">[ Name — placeholder ]</span></p>
+              <p class="c5-person__role">Founder · Studio</p>
+              <p class="c5-person__bio"><span class="ph">[ bio — placeholder ]</span></p>
+              <p class="c5-person__detail"><span class="ph">[ detail — placeholder ]</span></p>
+            </article>
+            <article class="c5-person">
+              <div class="c5-person__portrait">
+                <span class="c5-person__phlab">Portrait — placeholder</span>
+                <span class="c5-person__initial">RM</span>
+              </div>
+              <p class="c5-person__name"><span class="ph">[ Name — placeholder ]</span></p>
+              <p class="c5-person__role">Engineer · Producer</p>
+              <p class="c5-person__bio"><span class="ph">[ bio — placeholder ]</span></p>
+              <p class="c5-person__detail"><span class="ph">[ detail — placeholder ]</span></p>
+            </article>
+            <article class="c5-person">
+              <div class="c5-person__portrait">
+                <span class="c5-person__phlab">Portrait — placeholder</span>
+                <span class="c5-person__initial">IK</span>
+              </div>
+              <p class="c5-person__name"><span class="ph">[ Name — placeholder ]</span></p>
+              <p class="c5-person__role">Designer</p>
+              <p class="c5-person__bio"><span class="ph">[ bio — placeholder ]</span></p>
+              <p class="c5-person__detail"><span class="ph">[ detail — placeholder ]</span></p>
+            </article>
+            <article class="c5-person">
+              <div class="c5-person__portrait">
+                <span class="c5-person__phlab">Portrait — placeholder</span>
+                <span class="c5-person__initial">LJ</span>
+              </div>
+              <p class="c5-person__name"><span class="ph">[ Name — placeholder ]</span></p>
+              <p class="c5-person__role">Label · Management</p>
+              <p class="c5-person__bio"><span class="ph">[ bio — placeholder ]</span></p>
+              <p class="c5-person__detail"><span class="ph">[ detail — placeholder ]</span></p>
+            </article>
+          </div>
+        </section>
+
+        <!-- 05 — FIND OUR MUSIC -->
+        <section class="c5-sec c5-plat" id="c5-platforms" aria-labelledby="c5-plat-title">
+          <header class="c5-sec__head" data-reveal="rise">
+            <p class="lbx-eyebrow">Find our music</p>
+            <h3 class="c5-sec__title" id="c5-plat-title">Where it plays<span class="c5-accent">.</span></h3>
+            <p class="c5-sec__note">Only verified destinations are linked — anything else is listed until it exists.</p>
+          </header>
+
+          <div class="c5-plat__list" data-reveal="rise">
+            <div class="c5-plat__row">
+              <a class="c5-plat__name" href="https://open.spotify.com/album/2r0IEzDy97D05pKxvaHOzu?si=pwnIusorQO2Ns9NZK-AzOA" target="_blank" rel="noopener noreferrer">Spotify <span class="c5-plat__note">13 releases live — open the latest</span></a>
+              <span class="c5-arrow">↗</span>
+            </div>
+            <div class="c5-plat__row">
+              <span class="c5-plat__name">YouTube <span class="c5-plat__note">[ destination — placeholder ]</span></span>
+              <span class="c5-plat__status">pending</span>
+            </div>
+            <div class="c5-plat__row">
+              <span class="c5-plat__name">Apple Music <span class="c5-plat__note">[ destination — placeholder ]</span></span>
+              <span class="c5-plat__status">pending</span>
+            </div>
+            <div class="c5-plat__row">
+              <span class="c5-plat__name">Bandcamp <span class="c5-plat__note">[ destination — placeholder ]</span></span>
+              <span class="c5-plat__status">pending</span>
+            </div>
+            <div class="c5-plat__row">
+              <span class="c5-plat__name">SoundCloud <span class="c5-plat__note">[ destination — placeholder ]</span></span>
+              <span class="c5-plat__status">pending</span>
+            </div>
+            <div class="c5-plat__row">
+              <span class="c5-plat__name">Deezer <span class="c5-plat__note">[ destination — placeholder ]</span></span>
+              <span class="c5-plat__status">pending</span>
+            </div>
+            <div class="c5-plat__row">
+              <span class="c5-plat__name">Tidal <span class="c5-plat__note">[ destination — placeholder ]</span></span>
+              <span class="c5-plat__status">pending</span>
+            </div>
+          </div>
+        </section>
+
+      </div>
+
+      <!-- expanded release — one reusable component, driven by the card data -->
+      <div class="c5-release" role="dialog" aria-modal="true" aria-labelledby="c5-dialog-title" aria-hidden="true">
+        <div class="c5-release__panel">
+          <button type="button" class="c5-release__close" aria-label="Close release">Close <span class="c5-arrow">×</span></button>
+          <figure class="c5-release__art">
+            <img id="c5-dialog-art" src="" alt="" width="640" height="640" draggable="false" decoding="async">
+          </figure>
+          <div class="c5-release__info">
+            <p class="c5-release__kicker" id="c5-dialog-kicker"></p>
+            <h3 class="c5-release__title" id="c5-dialog-title"></h3>
+            <p class="c5-release__artist" id="c5-dialog-artist"></p>
+            <p class="c5-release__desc ph" id="c5-dialog-desc"></p>
+            <dl class="c5-release__meta">
+              <div><dt>Label</dt><dd>GRM Label</dd></div>
+              <div><dt>Recorded</dt><dd>In-house, GRM — Belgrade</dd></div>
+              <div><dt>Type</dt><dd id="c5-dialog-type"></dd></div>
+              <div><dt>Year</dt><dd id="c5-dialog-year"></dd></div>
+            </dl>
+            <p class="c5-release__listen">Listen on</p>
+            <div class="c5-release__links" id="c5-dialog-links"></div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+  </main>
+
+  <footer class="lbx-foot">
+    <div class="lbx-wrap">
+      <span>GRM Label — design playground · temporary dev route · production /label unchanged</span>
+      <a href="../label/">Back to production label →</a>
+    </div>
+  </footer>
+
+</body>
+</html>
