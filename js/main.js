@@ -720,6 +720,27 @@
         var destination = panel.getAttribute("href");
         var sourceLogo = panel.querySelector(".panel__logo--glow");
         var sourceRect = sourceLogo && sourceLogo.getBoundingClientRect();
+        // aim the committed logo at the destination page's own rendered logo
+        // rect (published by that division page, measured there with
+        // getBoundingClientRect). width/height/top/left are all already
+        // transitioned by the committed class, so only the aim point moves —
+        // duration, easing and the centering transform are untouched.
+        var aimRect = null;
+        try {
+          aimRect = JSON.parse(sessionStorage.getItem(
+            "grm-dest-logo:" + destination.replace(/\/$/, "") + ":" + innerWidth + "x" + innerHeight
+          ) || "null");
+        } catch (e) {}
+        var logoWindow = panel.querySelector(".panel__logo-window");
+        function retarget() {
+          if (!aimRect || !sourceLogo || !logoWindow) return;
+          var box = logoWindow.getBoundingClientRect();
+          sourceLogo.getBoundingClientRect(); // flush, so the transition is armed
+          sourceLogo.style.width = aimRect.width + "px";
+          sourceLogo.style.height = aimRect.height + "px";
+          sourceLogo.style.left = (aimRect.left - box.left + aimRect.width / 2) + "px";
+          sourceLogo.style.top = (aimRect.top - box.top + aimRect.height / 2) + "px";
+        }
         if (destination === "studio/") {
           sessionStorage.setItem("grm-arrival", "studio");
           if (sourceRect) {
@@ -728,6 +749,7 @@
           if (sourceLogo) {
             panel.classList.add("is-studio-logo-committed");
             sourceLogo.classList.add("is-studio-logo-committed");
+            retarget();
           }
           setTimeout(function () {
             window.location.href = destination;
@@ -747,6 +769,7 @@
           if (sourceLogo) {
             panel.classList.add("is-label-logo-committed");
             sourceLogo.classList.add("is-label-logo-committed");
+            retarget();
           }
            setTimeout(function () {
              if (sourceLogo) {
@@ -773,6 +796,7 @@
           if (sourceLogo) {
             panel.classList.add("is-liveroom-logo-committed");
             sourceLogo.classList.add("is-liveroom-logo-committed");
+            retarget();
           }
           setTimeout(function () {
             if (sourceLogo) {
@@ -816,7 +840,37 @@
     });
   });
 
-  /* ---------- STUDIO-ONLY · §8/9/11 destination-arrival reveal ----------
+  /* ---------- HOME -> DIVISION HANDOFF GEOMETRY ----------
+The Home takeover used to aim its committed logo at a hardcoded 38% of the
+Home panel, which does not line up with where the destination page actually
+renders its hero logo: the two disagreed by 13-150px of y depending on the
+viewport. Each division page publishes its own hero logo rect here — measured
+with getBoundingClientRect() once its own layout has settled, so the rendered
+destination logo is the source of truth — and the Home takeover reads it back
+to land the committed logo exactly on the destination. Keyed by viewport, so a
+resize simply misses and falls back to the previous aim point. */
+(function () {
+  var page = document.body.getAttribute("data-page");
+  if (page !== "label" && page !== "liveroom" && page !== "studio") return;
+  var logo = document.querySelector(page === "studio" ? ".studio-minimal-hero__logo" : ".division-minimal-hero__logo");
+  if (!logo) return;
+  function publish() {
+    var r = logo.getBoundingClientRect();
+    if (!r.width || !r.height) return;
+    try {
+      sessionStorage.setItem("grm-dest-logo:" + page + ":" + innerWidth + "x" + innerHeight,
+        JSON.stringify({ left: r.left, top: r.top, width: r.width, height: r.height }));
+    } catch (e) {}
+  }
+  function settled() {
+    requestAnimationFrame(function () { requestAnimationFrame(publish); });
+  }
+  if (document.fonts && document.fonts.ready) document.fonts.ready.then(settled);
+  else settled();
+  window.addEventListener("resize", settled);
+})();
+
+/* ---------- STUDIO-ONLY · §8/9/11 destination-arrival reveal ----------
      The home takeover remembers the division it commits to (grm-arrival,
      set ONLY on the takeover path, cleared on read). This block — and it
      alone — is Studio-scoped: when Studio actually arrives out of that
@@ -991,7 +1045,6 @@
           overlay.style.top = endRect.top + "px";
           overlay.style.width = endRect.width + "px";
           overlay.style.height = endRect.height + "px";
-          overlay.style.opacity = "1";
           requestAnimationFrame(function () {
             labelLogo.style.visibility = "visible";
             overlay.remove();
@@ -1062,13 +1115,7 @@
     document.body.classList.add("is-shared-logo-pending");
     document.fonts.ready.then(function () {
       requestAnimationFrame(function () {
-        var destination = logo.getBoundingClientRect();
-        document.documentElement.style.setProperty("--studio-logo-final-width", destination.width + "px");
-        document.documentElement.style.setProperty("--studio-logo-final-height", destination.height + "px");
-        document.documentElement.style.setProperty("--studio-logo-final-left", destination.left + "px");
-        document.documentElement.style.setProperty("--studio-logo-final-top", destination.top + "px");
         requestAnimationFrame(function () {
-          logo.classList.add("is-studio-logo-landed");
           document.body.classList.remove("is-shared-logo-pending");
           document.body.classList.remove("is-studio-arriving");
           setTimeout(function () { document.body.classList.add("is-studio-enter-header"); }, 140);
