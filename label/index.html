@@ -74,548 +74,235 @@
         <img class="division-minimal-hero__logo" src="../assets/img/GRM Label Glow.png" alt="GRM Label" width="2160" height="2160">
         <p class="division-minimal-hero__title">GRM LABEL</p>
         <h1 id="label-hero-title">THE RECORD LABEL</h1>
-        <p class="label-hero-meta">Est. 2017 &middot; Belgrade &middot; 13 releases &middot; 10 artists</p>
       </div>
       <div class="division-minimal-hero__scroll" aria-hidden="true"><span>Scroll</span><i></i></div>
     </section>
 
     <!-- ============================================================
-         OPENER — editorial manifesto + archival fact row.
-         Replaces the former About block. No cards, no panels: the
-         spread is defined by display type, measure and hairline rules.
+         SECTION 01 — ABOUT GRM LABEL
+         A quiet editorial introduction: eyebrow, one large
+         Ultra-Condensed statement, and the supporting copy set to
+         the right of the statement. One Label-green accent detail
+         and a thin hairline — nothing else. Typography is the layout.
          ============================================================ -->
-    <section class="section label-opener" id="about" aria-labelledby="label-opener-title">
+    <section class="section label-about" id="about" aria-labelledby="label-about-title">
+      <div class="label-about__bg" aria-hidden="true">
+        <div class="label-about__motion">
+          <div class="label-about__frame">
+            <img src="../assets/img/GRM-studio-landscape.jpg" alt="" width="1536" height="1024" decoding="async">
+          </div>
+        </div>
+        <span class="label-about__veil"></span>
+        <span class="label-about__vignette"></span>
+      </div>
       <div class="container">
-        <p class="eyebrow reveal">The label</p>
+        <p class="eyebrow reveal">About the label</p>
 
-        <h2 class="label-opener__statement reveal" id="label-opener-title">We release music<br>we <em>believe</em> in.</h2>
-
-        <div class="label-opener__body reveal" data-delay="1">
-          <p>
-            GRM is an independent record label in Belgrade, working out of the
-            same house as the studio and the live room. We sign artists we
-            believe in, record them properly, and put the record out ourselves.
-            No label-group machinery, no content pipeline — everything on the
-            catalogue was written, mixed and mastered in this building.
-          </p>
+        <div class="label-about__spread">
+          <h2 class="label-about__statement reveal" id="label-about-title" data-delay="1">
+            More than<br>a <em>label.</em>
+          </h2>
+          <div class="label-about__body reveal" data-delay="2">
+            <p>
+              GRM is an independent label built around artists, producers and
+              people who care deeply about the work. From the first idea to the
+              final release, we help shape music without sanding away what made
+              it interesting in the first place.
+            </p>
+            <p>
+              Based in Belgrade, we work closely with our artists across
+              production, visual direction and release strategy — keeping the
+              process personal, collaborative and uncompromised.
+            </p>
+          </div>
         </div>
 
-        <div class="label-opener__facts reveal" data-delay="2">
-          <span class="label-opener__fact">Est. 2017</span>
-          <span class="label-opener__fact">Belgrade</span>
-          <span class="label-opener__fact">13 releases</span>
-          <span class="label-opener__fact">10 artists</span>
-        </div>
+        <span class="label-about__rule reveal" data-delay="3" aria-hidden="true"></span>
       </div>
     </section>
 
+
     <!-- ============================================================
-         ROSTER INDEX — compact catalogue directory.
-         Ten artists as a quiet editorial index: archive number, name
-         and release count on a single baseline, separated by restrained
-         hairlines. No bands, no masks, no motion behind the type. On
-         desktop one restrained annotation module sits to the right of
-         the list — eyebrow, short copy, a hairline-framed sleeve and
-         its metadata — and crossfades the selected artist's latest
-         release on hover or focus; it supports the index, never
-         competes with it. vitić stays lowercase on purpose. The
-         module is hidden on tablet/mobile so the list stays purely
-         typographic and easy to browse.
+         SECTION 02 — THE PEOPLE BEHIND GRM
+         Five placeholder profiles as stacked, alternating editorial
+         spreads — photo left / text right, text left / photo right —
+         with photo and text holding roughly equal halves (~1:1) of
+         each row inside the shared GRM container. Each portrait is a
+         temporary placeholder photograph (see data-credit for the
+         source file), sized to its own aspect ratio. The text block runs role
+         label (01 / ROLE), member name in the display face, then the
+         biography as two justified-left paragraphs sharing one left
+         edge and a consistent measure. Portraits are temporary
+         placeholders, easy to swap.
          ============================================================ -->
-    <section class="section label-roster" id="roster" aria-labelledby="label-roster-title">
+    <section class="section label-people" id="people" aria-labelledby="label-people-title">
       <div class="container">
         <div class="section-head reveal">
           <div>
-            <p class="eyebrow">Artists</p>
-            <h2 class="section-head__title" id="label-roster-title">The roster</h2>
+            <p class="eyebrow">02 / The people</p>
+            <h2 class="section-head__title" id="label-people-title">Behind GRM.</h2>
           </div>
-          <p class="section-head__note">Ten artists on the GRM catalogue. Point at a name; the sleeve shows in the frame.</p>
+          <p class="section-head__note">Different backgrounds. Shared obsession.</p>
         </div>
 
-        <div class="label-roster__layout reveal" data-label-roster data-delay="1">
+        <ul class="label-people__list" role="list">
 
-          <ul class="label-roster__list" role="list">
-
-            <li class="label-roster__item">
-              <button class="label-roster__row" type="button" data-image="../assets/img/releases/dzu-prizma.jpg" data-title="Prizma">
-                <span class="label-roster__no">01</span>
-                <span class="label-roster__name">DZU</span>
-                <span class="label-roster__count">03 RELEASES</span>
-              </button>
-            </li>
-
-            <li class="label-roster__item">
-              <button class="label-roster__row" type="button" data-image="../assets/img/releases/igla-ego.jpg" data-title="Ego">
-                <span class="label-roster__no">02</span>
-                <span class="label-roster__name">IGLA</span>
-                <span class="label-roster__count">02 RELEASES</span>
-              </button>
-            </li>
-
-            <li class="label-roster__item">
-              <button class="label-roster__row" type="button" data-image="../assets/img/releases/kojot-zlatnih-cetiri.jpg" data-title="Zlatnih Četiri">
-                <span class="label-roster__no">03</span>
-                <span class="label-roster__name">KOJOT</span>
-                <span class="label-roster__count">01 RELEASES</span>
-              </button>
-            </li>
-
-            <li class="label-roster__item">
-              <button class="label-roster__row" type="button" data-image="../assets/img/releases/kobi-mirise-na-milion.jpg" data-title="Miriše na Milion">
-                <span class="label-roster__no">04</span>
-                <span class="label-roster__name">KOBI</span>
-                <span class="label-roster__count">01 RELEASES</span>
-              </button>
-            </li>
-
-            <li class="label-roster__item">
-              <button class="label-roster__row" type="button" data-image="../assets/img/releases/nedelja-na-rezervi.jpg" data-title="Na Rezervi">
-                <span class="label-roster__no">05</span>
-                <span class="label-roster__name">NEDELJA</span>
-                <span class="label-roster__count">01 RELEASES</span>
-              </button>
-            </li>
-
-            <li class="label-roster__item">
-              <button class="label-roster__row" type="button" data-image="../assets/img/releases/grzi-trag.jpg" data-title="Trag">
-                <span class="label-roster__no">06</span>
-                <span class="label-roster__name">GRZI</span>
-                <span class="label-roster__count">01 RELEASES</span>
-              </button>
-            </li>
-
-            <li class="label-roster__item">
-              <button class="label-roster__row" type="button" data-image="../assets/img/releases/struka-opet-se-obrce.jpg" data-title="Opet se Obrće">
-                <span class="label-roster__no">07</span>
-                <span class="label-roster__name">STRUKA</span>
-                <span class="label-roster__count">01 RELEASES</span>
-              </button>
-            </li>
-
-            <li class="label-roster__item">
-              <button class="label-roster__row" type="button" data-image="../assets/img/releases/pablo-kenedi-trap-je-mrtav.jpg" data-title="Trap je Mrtav">
-                <span class="label-roster__no">08</span>
-                <span class="label-roster__name">PABLO KENEDI</span>
-                <span class="label-roster__count">01 RELEASES</span>
-              </button>
-            </li>
-
-            <li class="label-roster__item">
-              <button class="label-roster__row" type="button" data-image="../assets/img/releases/maia-drama.jpg" data-title="Drama">
-                <span class="label-roster__no">09</span>
-                <span class="label-roster__name">MAIA</span>
-                <span class="label-roster__count">01 RELEASES</span>
-              </button>
-            </li>
-
-            <li class="label-roster__item">
-              <button class="label-roster__row" type="button" data-image="../assets/img/releases/vitic-slojevi.jpg" data-title="Slojevi">
-                <span class="label-roster__no">10</span>
-                <span class="label-roster__name">vitić</span>
-                <span class="label-roster__count">01 RELEASES</span>
-              </button>
-            </li>
-
-          </ul>
-
-          <div class="label-roster__preview">
-            <p class="eyebrow label-roster__module-eyebrow">Selected release</p>
-            <p class="label-roster__module-copy">Point at a name in the index to browse their latest sleeve.</p>
-            <figure class="label-roster__frame" aria-hidden="true">
-              <img class="label-roster__frame-img is-on" src="../assets/img/releases/dzu-prizma.jpg" alt="" decoding="async" draggable="false">
-              <img class="label-roster__frame-img" alt="" decoding="async" draggable="false">
+          <li class="label-people__entry reveal">
+            <figure class="label-people__portrait">
+              <div class="label-people__shot">
+                <img src="../assets/img/Behind GRM - 1.png" alt="Portrait photograph, Behind GRM profile 1" width="1246" height="1246" loading="lazy" decoding="async" draggable="false" data-credit="Portrait — source: assets/img/Behind GRM - 1.png">
+              </div>
             </figure>
-            <p class="label-roster__module-title">DZU</p>
-            <p class="label-roster__module-meta">Latest release &middot; Prizma</p>
-          </div>
+            <div class="label-people__intro">
+              <p class="label-people__role"><span class="label-people__index" aria-hidden="true">01</span>Founder &amp; Creative Director</p>
+              <h3 class="label-people__name">Marko Petrović</h3>
+              <div class="label-people__bio">
+                <p>Marko founded GRM from a home studio on a simple belief — that small labels can move culture. Years of engineering and production work across rock, electronic and hip-hop taught him how ideas become records, and why the people behind them matter as much as the sound. He still starts most days in the control room before the admin begins.</p>
+                <p>As creative director he sets GRM's direction: which artists sign, how the release calendar is shaped, and how each record should feel before a note is even mixed. He also brokers collaborations between producers and the visual team, keeping room for the sessions — and the arguments — that make a project worth putting out.</p>
+              </div>
+            </div>
+          </li>
 
-        </div>
+          <li class="label-people__entry label-people__entry--flip reveal">
+            <figure class="label-people__portrait">
+              <div class="label-people__shot">
+                <img src="../assets/img/Behind GRM - 2.png" alt="Portrait photograph, Behind GRM profile 2" width="1254" height="1254" loading="lazy" decoding="async" draggable="false" data-credit="Portrait — source: assets/img/Behind GRM - 2.png">
+              </div>
+            </figure>
+            <div class="label-people__intro">
+              <p class="label-people__role"><span class="label-people__index" aria-hidden="true">02</span>Label Manager</p>
+              <h3 class="label-people__name">Jelena Ilić</h3>
+              <div class="label-people__bio">
+                <p>Jelena grew up in record shops and fanzines, and spent years freelancing across promotion, licensing and tour logistics before it was ever called management. That patchwork background gives her a practical eye for what a release really needs — not just how it sounds, but how it reaches the people who should hear it.</p>
+                <p>At GRM she runs the day-to-day machine: release schedules, artist relations, budgets, rights, and the quiet coordination that holds a band's journey together. She's often the first person artists call, and the one who turns a finished master into a live record — catalogue entries, distribution, press and partners included.</p>
+              </div>
+            </div>
+          </li>
+
+          <li class="label-people__entry reveal">
+            <figure class="label-people__portrait">
+              <div class="label-people__shot">
+                <img src="../assets/img/Behind GRM - 3.png" alt="Portrait photograph, Behind GRM profile 3" width="1254" height="1254" loading="lazy" decoding="async" draggable="false" data-credit="Portrait — source: assets/img/Behind GRM - 3.png">
+              </div>
+            </figure>
+            <div class="label-people__intro">
+              <p class="label-people__role"><span class="label-people__index" aria-hidden="true">03</span>Music Producer</p>
+              <h3 class="label-people__name">Nikola Vasić</h3>
+              <div class="label-people__bio">
+                <p>Nikola's production style was shaped in small Belgrade rehearsal rooms, then refined over a decade of studio work spanning electronic, indie and hip-hop. He cares about the space between notes as much as the notes themselves, and spends his sessions chasing performances that sound alive even at their cleanest.</p>
+                <p>Inside GRM he produces, arranges and records across most of the roster, guiding projects from demo to master while keeping the artist's voice central. He also mentors younger engineers in the studio, building the sessions where GRM's signature — weight, warmth and small, kept imperfections — actually gets made.</p>
+              </div>
+            </div>
+          </li>
+
+          <li class="label-people__entry label-people__entry--flip reveal">
+            <figure class="label-people__portrait">
+              <div class="label-people__shot">
+                <img src="../assets/img/Behind GRM - 4.png" alt="Portrait photograph, Behind GRM profile 4" width="1254" height="1254" loading="lazy" decoding="async" draggable="false" data-credit="Portrait — source: assets/img/Behind GRM - 4.png">
+              </div>
+            </figure>
+            <div class="label-people__intro">
+              <p class="label-people__role"><span class="label-people__index" aria-hidden="true">04</span>Visual Director</p>
+              <h3 class="label-people__name">Sara Jovanović</h3>
+              <div class="label-people__bio">
+                <p>Sara moved between photography, graphic design and film before committing to the visual side of music full-time. She shoots covers and campaigns, art-directs releases, and prefers natural light, analogue grain and typography that does its job without shouting. Her work sits somewhere between documentation and design — always with a clear idea behind it.</p>
+                <p>For GRM she sets the visual language across everything — album art, portraits, live documentation and press materials — so a record reads like a record from the first thumbnail to the vinyl sleeve. She also oversees the label's photography and makes sure every image matches the same catalogue.</p>
+              </div>
+            </div>
+          </li>
+
+          <li class="label-people__entry reveal">
+            <figure class="label-people__portrait">
+              <div class="label-people__shot">
+                <img src="../assets/img/Behind GRM - 5.png" alt="Portrait photograph, Behind GRM profile 5" width="1254" height="1254" loading="lazy" decoding="async" draggable="false" data-credit="Portrait — source: assets/img/Behind GRM - 5.png">
+              </div>
+            </figure>
+            <div class="label-people__intro">
+              <p class="label-people__role"><span class="label-people__index" aria-hidden="true">05</span>Sound Engineer</p>
+              <h3 class="label-people__name">Aleksa Nikolić</h3>
+              <div class="label-people__bio">
+                <p>Aleksa trained in classical recording before falling for the messier world of independent music. His ear is built on room acoustics, vintage chains and long, careful sessions — the kind of patient engineering that lets a take breathe instead of just getting it loud.</p>
+                <p>He handles recording, mixing and the final stages of GRM's releases, and keeps the label's technical backbone running. He also works with artists on reference mixes so their rough ideas translate to loudspeakers, headphones and club systems without losing what made them exciting in the first place.</p>
+              </div>
+            </div>
+          </li>
+
+        </ul>
       </div>
     </section>
 
     <!-- ============================================================
-         INTERACTION SANDBOX — TEMPORARY, for internal design review.
-         Six roster-interaction concepts (01–06) to compare under
-         identical conditions: the same reduced 4-artist subset (DZU,
-         IGLA, PABLO KENEDI, vitić), same order, same base typography,
-         artwork frames, dimensions, mint accent and dark background
-         as the production index above. Each prototype carries a
-         CONCEPT nn label as obvious dev UI and uses only its own
-         .roster-cand-* classes with a modifier per concept — the
-         production roster logic is never touched, and each concept
-         shares the same data, styles and one small driver script.
-         Delete this whole section, the sandbox CSS block and the
-         sandbox script when a direction is chosen.
+         SECTION 03 — SELECTED RELEASES
+         Reuses the design playground's Selected Releases treatment:
+         a three-column grid of large square covers on the dark
+         background, with minimal real release information beneath
+         each cover. Six records shown. No carousel, no overlay.
          ============================================================ -->
-    <section class="label-sandbox" id="sandbox" aria-label="Roster interaction concepts — temporary comparison for review">
+    <section class="section label-releases" id="releases" aria-labelledby="label-releases-title">
       <div class="container">
-        <div class="section-head">
+        <div class="section-head reveal">
           <div>
-            <p class="eyebrow">Sandbox</p>
-            <h2 class="section-head__title">Roster concepts</h2>
+            <p class="eyebrow">03 / Selected releases</p>
+            <h2 class="section-head__title" id="label-releases-title">Selected releases.</h2>
           </div>
-          <p class="section-head__note">Temporary comparison · shared artists DZU · IGLA · PABLO KENEDI · vitić · not a final direction.</p>
+          <p class="section-head__note">Six records from the house — real GRM covers, written, mixed &amp; mastered in-house.</p>
         </div>
 
-        <!-- CONCEPT 01 / BASELINE -->
-        <article class="roster-cand" data-concept="01" data-cand-roster aria-labelledby="cand-01-title">
-          <header class="roster-cand__label">
-            <span class="roster-cand__tag">Concept 01</span>
-            <h3 class="roster-cand__label-title" id="cand-01-title">Baseline</h3>
-            <span class="roster-cand__note">Control — the current roster exactly: quiet list, fixed preview module.</span>
-          </header>
-          <div class="roster-cand__stage">
-            <ul class="roster-cand__list" role="list">
-              <li class="roster-cand__item">
-                <button class="roster-cand__row" type="button" data-image="../assets/img/releases/dzu-prizma.jpg" data-title="Prizma">
-                  <span class="roster-cand__no">01</span>
-                  <span class="roster-cand__name">DZU</span>
-                  <span class="roster-cand__count">03 RELEASES</span>
-                </button>
-              </li>
-              <li class="roster-cand__item">
-                <button class="roster-cand__row" type="button" data-image="../assets/img/releases/igla-ego.jpg" data-title="Ego">
-                  <span class="roster-cand__no">02</span>
-                  <span class="roster-cand__name">IGLA</span>
-                  <span class="roster-cand__count">02 RELEASES</span>
-                </button>
-              </li>
-              <li class="roster-cand__item">
-                <button class="roster-cand__row" type="button" data-image="../assets/img/releases/pablo-kenedi-trap-je-mrtav.jpg" data-title="Trap je Mrtav">
-                  <span class="roster-cand__no">03</span>
-                  <span class="roster-cand__name">PABLO KENEDI</span>
-                  <span class="roster-cand__count">01 RELEASES</span>
-                </button>
-              </li>
-              <li class="roster-cand__item">
-                <button class="roster-cand__row" type="button" data-image="../assets/img/releases/vitic-slojevi.jpg" data-title="Slojevi">
-                  <span class="roster-cand__no">04</span>
-                  <span class="roster-cand__name">vitić</span>
-                  <span class="roster-cand__count">01 RELEASES</span>
-                </button>
-              </li>
-            </ul>
-            <div class="roster-cand__preview">
-              <p class="eyebrow roster-cand__eyebrow">Selected release</p>
-              <p class="roster-cand__copy">Point at a name in the index to browse their latest sleeve.</p>
-              <div class="roster-cand__artwork">
-                <figure class="roster-cand__frame" aria-hidden="true">
-                  <img class="roster-cand__frame-img is-on" src="../assets/img/releases/dzu-prizma.jpg" alt="" decoding="async" draggable="false">
-                  <img class="roster-cand__frame-img" alt="" decoding="async" draggable="false">
-                </figure>
-              </div>
-              <p class="roster-cand__title">DZU</p>
-              <p class="roster-cand__meta">Latest release &middot; Prizma</p>
-            </div>
-          </div>
-        </article>
+        <div class="label-releases__grid">
 
-        <!-- CONCEPT 02 / ARTWORK BLEED -->
-        <article class="roster-cand roster-cand--bleed" data-concept="02" data-cand-roster aria-labelledby="cand-02-title">
-          <header class="roster-cand__label">
-            <span class="roster-cand__tag">Concept 02</span>
-            <h3 class="roster-cand__label-title" id="cand-02-title">Artwork bleed</h3>
-            <span class="roster-cand__note">The square stays the anchor; one edge runs into a masked strip, a fragment escapes.</span>
-          </header>
-          <div class="roster-cand__stage">
-            <ul class="roster-cand__list" role="list">
-              <li class="roster-cand__item">
-                <button class="roster-cand__row" type="button" data-image="../assets/img/releases/dzu-prizma.jpg" data-title="Prizma">
-                  <span class="roster-cand__no">01</span>
-                  <span class="roster-cand__name">DZU</span>
-                  <span class="roster-cand__count">03 RELEASES</span>
-                </button>
-              </li>
-              <li class="roster-cand__item">
-                <button class="roster-cand__row" type="button" data-image="../assets/img/releases/igla-ego.jpg" data-title="Ego">
-                  <span class="roster-cand__no">02</span>
-                  <span class="roster-cand__name">IGLA</span>
-                  <span class="roster-cand__count">02 RELEASES</span>
-                </button>
-              </li>
-              <li class="roster-cand__item">
-                <button class="roster-cand__row" type="button" data-image="../assets/img/releases/pablo-kenedi-trap-je-mrtav.jpg" data-title="Trap je Mrtav">
-                  <span class="roster-cand__no">03</span>
-                  <span class="roster-cand__name">PABLO KENEDI</span>
-                  <span class="roster-cand__count">01 RELEASES</span>
-                </button>
-              </li>
-              <li class="roster-cand__item">
-                <button class="roster-cand__row" type="button" data-image="../assets/img/releases/vitic-slojevi.jpg" data-title="Slojevi">
-                  <span class="roster-cand__no">04</span>
-                  <span class="roster-cand__name">vitić</span>
-                  <span class="roster-cand__count">01 RELEASES</span>
-                </button>
-              </li>
-            </ul>
-            <div class="roster-cand__preview">
-              <p class="eyebrow roster-cand__eyebrow">Selected release</p>
-              <p class="roster-cand__copy">Point at a name in the index to browse their latest sleeve.</p>
-              <div class="roster-cand__artwork roster-cand__bleeds">
-                <figure class="roster-cand__frame" aria-hidden="true">
-                  <img class="roster-cand__frame-img is-on" src="../assets/img/releases/dzu-prizma.jpg" alt="" decoding="async" draggable="false">
-                  <img class="roster-cand__frame-img" alt="" decoding="async" draggable="false">
-                </figure>
-                <div class="roster-cand__bleed roster-cand__bleed--strip" aria-hidden="true">
-                  <img class="roster-cand__frame-img is-on" src="../assets/img/releases/dzu-prizma.jpg" alt="" decoding="async" draggable="false">
-                  <img class="roster-cand__frame-img" alt="" decoding="async" draggable="false">
-                </div>
-                <div class="roster-cand__bleed roster-cand__bleed--frag" aria-hidden="true">
-                  <img class="roster-cand__frame-img is-on" src="../assets/img/releases/dzu-prizma.jpg" alt="" decoding="async" draggable="false">
-                  <img class="roster-cand__frame-img" alt="" decoding="async" draggable="false">
-                </div>
-              </div>
-              <p class="roster-cand__title">DZU</p>
-              <p class="roster-cand__meta">Latest release &middot; Prizma</p>
-            </div>
-          </div>
-        </article>
+          <figure class="label-releases__item reveal">
+            <img src="../assets/img/releases/dzu-prizma.jpg" alt="DZU — Prizma" width="640" height="640" decoding="async" draggable="false" loading="lazy">
+            <figcaption class="label-releases__meta">
+              <span class="label-releases__t">Prizma — DZU</span>
+              <span class="label-releases__c">EP · 2026</span>
+            </figcaption>
+          </figure>
 
-        <!-- CONCEPT 03 / MICRO SHIFT -->
-        <article class="roster-cand roster-cand--shift" data-concept="03" data-cand-roster aria-labelledby="cand-03-title">
-          <header class="roster-cand__label">
-            <span class="roster-cand__tag">Concept 03</span>
-            <h3 class="roster-cand__label-title" id="cand-03-title">Micro shift</h3>
-            <span class="roster-cand__note">The preview recomposes on selection — artwork shifts, metadata moves opposite, a wire extends. No layout jump.</span>
-          </header>
-          <div class="roster-cand__stage">
-            <ul class="roster-cand__list" role="list">
-              <li class="roster-cand__item">
-                <button class="roster-cand__row" type="button" data-image="../assets/img/releases/dzu-prizma.jpg" data-title="Prizma">
-                  <span class="roster-cand__no">01</span>
-                  <span class="roster-cand__name">DZU</span>
-                  <span class="roster-cand__count">03 RELEASES</span>
-                </button>
-              </li>
-              <li class="roster-cand__item">
-                <button class="roster-cand__row" type="button" data-image="../assets/img/releases/igla-ego.jpg" data-title="Ego">
-                  <span class="roster-cand__no">02</span>
-                  <span class="roster-cand__name">IGLA</span>
-                  <span class="roster-cand__count">02 RELEASES</span>
-                </button>
-              </li>
-              <li class="roster-cand__item">
-                <button class="roster-cand__row" type="button" data-image="../assets/img/releases/pablo-kenedi-trap-je-mrtav.jpg" data-title="Trap je Mrtav">
-                  <span class="roster-cand__no">03</span>
-                  <span class="roster-cand__name">PABLO KENEDI</span>
-                  <span class="roster-cand__count">01 RELEASES</span>
-                </button>
-              </li>
-              <li class="roster-cand__item">
-                <button class="roster-cand__row" type="button" data-image="../assets/img/releases/vitic-slojevi.jpg" data-title="Slojevi">
-                  <span class="roster-cand__no">04</span>
-                  <span class="roster-cand__name">vitić</span>
-                  <span class="roster-cand__count">01 RELEASES</span>
-                </button>
-              </li>
-            </ul>
-            <div class="roster-cand__preview">
-              <p class="eyebrow roster-cand__eyebrow">Selected release</p>
-              <p class="roster-cand__copy">Point at a name in the index to browse their latest sleeve.</p>
-              <div class="roster-cand__artwork">
-                <figure class="roster-cand__frame" aria-hidden="true">
-                  <img class="roster-cand__frame-img is-on" src="../assets/img/releases/dzu-prizma.jpg" alt="" decoding="async" draggable="false">
-                  <img class="roster-cand__frame-img" alt="" decoding="async" draggable="false">
-                </figure>
-              </div>
-              <p class="roster-cand__title">DZU</p>
-              <p class="roster-cand__meta">Latest release &middot; Prizma</p>
-              <span class="roster-cand__wire" aria-hidden="true"></span>
-            </div>
-          </div>
-        </article>
+          <figure class="label-releases__item reveal">
+            <img src="../assets/img/releases/dzu-vir.jpg" alt="DZU — Vir" width="640" height="640" decoding="async" draggable="false" loading="lazy">
+            <figcaption class="label-releases__meta">
+              <span class="label-releases__t">Vir — DZU</span>
+              <span class="label-releases__c">Single · 2025</span>
+            </figcaption>
+          </figure>
 
-        <!-- CONCEPT 04 / CATALOGUE MARKER -->
-        <article class="roster-cand roster-cand--marker" data-concept="04" data-cand-roster aria-labelledby="cand-04-title">
-          <header class="roster-cand__label">
-            <span class="roster-cand__tag">Concept 04</span>
-            <h3 class="roster-cand__label-title" id="cand-04-title">Catalogue marker</h3>
-            <span class="roster-cand__note">A mint marker glides beside the active row. Nothing else in the list moves.</span>
-          </header>
-          <div class="roster-cand__stage">
-            <span class="roster-cand__marker" aria-hidden="true"></span>
-            <ul class="roster-cand__list" role="list">
-              <li class="roster-cand__item">
-                <button class="roster-cand__row" type="button" data-image="../assets/img/releases/dzu-prizma.jpg" data-title="Prizma">
-                  <span class="roster-cand__no">01</span>
-                  <span class="roster-cand__name">DZU</span>
-                  <span class="roster-cand__count">03 RELEASES</span>
-                </button>
-              </li>
-              <li class="roster-cand__item">
-                <button class="roster-cand__row" type="button" data-image="../assets/img/releases/igla-ego.jpg" data-title="Ego">
-                  <span class="roster-cand__no">02</span>
-                  <span class="roster-cand__name">IGLA</span>
-                  <span class="roster-cand__count">02 RELEASES</span>
-                </button>
-              </li>
-              <li class="roster-cand__item">
-                <button class="roster-cand__row" type="button" data-image="../assets/img/releases/pablo-kenedi-trap-je-mrtav.jpg" data-title="Trap je Mrtav">
-                  <span class="roster-cand__no">03</span>
-                  <span class="roster-cand__name">PABLO KENEDI</span>
-                  <span class="roster-cand__count">01 RELEASES</span>
-                </button>
-              </li>
-              <li class="roster-cand__item">
-                <button class="roster-cand__row" type="button" data-image="../assets/img/releases/vitic-slojevi.jpg" data-title="Slojevi">
-                  <span class="roster-cand__no">04</span>
-                  <span class="roster-cand__name">vitić</span>
-                  <span class="roster-cand__count">01 RELEASES</span>
-                </button>
-              </li>
-            </ul>
-            <div class="roster-cand__preview">
-              <p class="eyebrow roster-cand__eyebrow">Selected release</p>
-              <p class="roster-cand__copy">Point at a name in the index to browse their latest sleeve.</p>
-              <div class="roster-cand__artwork">
-                <figure class="roster-cand__frame" aria-hidden="true">
-                  <img class="roster-cand__frame-img is-on" src="../assets/img/releases/dzu-prizma.jpg" alt="" decoding="async" draggable="false">
-                  <img class="roster-cand__frame-img" alt="" decoding="async" draggable="false">
-                </figure>
-              </div>
-              <p class="roster-cand__title">DZU</p>
-              <p class="roster-cand__meta">Latest release &middot; Prizma</p>
-            </div>
-          </div>
-        </article>
+          <figure class="label-releases__item reveal">
+            <img src="../assets/img/releases/igla-ego.jpg" alt="IGLA — Ego" width="640" height="640" decoding="async" draggable="false" loading="lazy">
+            <figcaption class="label-releases__meta">
+              <span class="label-releases__t">Ego — IGLA</span>
+              <span class="label-releases__c">Album · 2017</span>
+            </figcaption>
+          </figure>
 
-        <!-- CONCEPT 05 / GHOST TYPE -->
-        <article class="roster-cand roster-cand--ghost" data-concept="05" data-cand-roster aria-labelledby="cand-05-title">
-          <header class="roster-cand__label">
-            <span class="roster-cand__tag">Concept 05</span>
-            <h3 class="roster-cand__label-title" id="cand-05-title">Ghost type</h3>
-            <span class="roster-cand__note">An enormous name sits faintly behind the module, cropped by the stage, crossfading on selection.</span>
-          </header>
-          <div class="roster-cand__stage">
-            <div class="roster-cand__ghost-crop" aria-hidden="true">
-              <span class="roster-cand__ghost is-on">DZU</span>
-              <span class="roster-cand__ghost"></span>
-            </div>
-            <ul class="roster-cand__list" role="list">
-              <li class="roster-cand__item">
-                <button class="roster-cand__row" type="button" data-image="../assets/img/releases/dzu-prizma.jpg" data-title="Prizma">
-                  <span class="roster-cand__no">01</span>
-                  <span class="roster-cand__name">DZU</span>
-                  <span class="roster-cand__count">03 RELEASES</span>
-                </button>
-              </li>
-              <li class="roster-cand__item">
-                <button class="roster-cand__row" type="button" data-image="../assets/img/releases/igla-ego.jpg" data-title="Ego">
-                  <span class="roster-cand__no">02</span>
-                  <span class="roster-cand__name">IGLA</span>
-                  <span class="roster-cand__count">02 RELEASES</span>
-                </button>
-              </li>
-              <li class="roster-cand__item">
-                <button class="roster-cand__row" type="button" data-image="../assets/img/releases/pablo-kenedi-trap-je-mrtav.jpg" data-title="Trap je Mrtav">
-                  <span class="roster-cand__no">03</span>
-                  <span class="roster-cand__name">PABLO KENEDI</span>
-                  <span class="roster-cand__count">01 RELEASES</span>
-                </button>
-              </li>
-              <li class="roster-cand__item">
-                <button class="roster-cand__row" type="button" data-image="../assets/img/releases/vitic-slojevi.jpg" data-title="Slojevi">
-                  <span class="roster-cand__no">04</span>
-                  <span class="roster-cand__name">vitić</span>
-                  <span class="roster-cand__count">01 RELEASES</span>
-                </button>
-              </li>
-            </ul>
-            <div class="roster-cand__preview">
-              <p class="eyebrow roster-cand__eyebrow">Selected release</p>
-              <p class="roster-cand__copy">Point at a name in the index to browse their latest sleeve.</p>
-              <div class="roster-cand__artwork">
-                <figure class="roster-cand__frame" aria-hidden="true">
-                  <img class="roster-cand__frame-img is-on" src="../assets/img/releases/dzu-prizma.jpg" alt="" decoding="async" draggable="false">
-                  <img class="roster-cand__frame-img" alt="" decoding="async" draggable="false">
-                </figure>
-              </div>
-              <p class="roster-cand__title">DZU</p>
-              <p class="roster-cand__meta">Latest release &middot; Prizma</p>
-            </div>
-          </div>
-        </article>
+          <figure class="label-releases__item reveal">
+            <img src="../assets/img/releases/igla-uroboros.jpg" alt="IGLA — Uroboros" width="640" height="640" decoding="async" draggable="false" loading="lazy">
+            <figcaption class="label-releases__meta">
+              <span class="label-releases__t">Uroboros — IGLA</span>
+              <span class="label-releases__c">Single · 2025</span>
+            </figcaption>
+          </figure>
 
-        <!-- CONCEPT 06 / MARKER + GHOST TYPE -->
-        <article class="roster-cand roster-cand--marker roster-cand--ghost" data-concept="06" data-cand-roster aria-labelledby="cand-06-title">
-          <header class="roster-cand__label">
-            <span class="roster-cand__tag">Concept 06</span>
-            <h3 class="roster-cand__label-title" id="cand-06-title">Marker + ghost type</h3>
-            <span class="roster-cand__note">Concepts 04 and 05 combined; nothing else is added.</span>
-          </header>
-          <div class="roster-cand__stage">
-            <span class="roster-cand__marker" aria-hidden="true"></span>
-            <div class="roster-cand__ghost-crop" aria-hidden="true">
-              <span class="roster-cand__ghost is-on">DZU</span>
-              <span class="roster-cand__ghost"></span>
-            </div>
-            <ul class="roster-cand__list" role="list">
-              <li class="roster-cand__item">
-                <button class="roster-cand__row" type="button" data-image="../assets/img/releases/dzu-prizma.jpg" data-title="Prizma">
-                  <span class="roster-cand__no">01</span>
-                  <span class="roster-cand__name">DZU</span>
-                  <span class="roster-cand__count">03 RELEASES</span>
-                </button>
-              </li>
-              <li class="roster-cand__item">
-                <button class="roster-cand__row" type="button" data-image="../assets/img/releases/igla-ego.jpg" data-title="Ego">
-                  <span class="roster-cand__no">02</span>
-                  <span class="roster-cand__name">IGLA</span>
-                  <span class="roster-cand__count">02 RELEASES</span>
-                </button>
-              </li>
-              <li class="roster-cand__item">
-                <button class="roster-cand__row" type="button" data-image="../assets/img/releases/pablo-kenedi-trap-je-mrtav.jpg" data-title="Trap je Mrtav">
-                  <span class="roster-cand__no">03</span>
-                  <span class="roster-cand__name">PABLO KENEDI</span>
-                  <span class="roster-cand__count">01 RELEASES</span>
-                </button>
-              </li>
-              <li class="roster-cand__item">
-                <button class="roster-cand__row" type="button" data-image="../assets/img/releases/vitic-slojevi.jpg" data-title="Slojevi">
-                  <span class="roster-cand__no">04</span>
-                  <span class="roster-cand__name">vitić</span>
-                  <span class="roster-cand__count">01 RELEASES</span>
-                </button>
-              </li>
-            </ul>
-            <div class="roster-cand__preview">
-              <p class="eyebrow roster-cand__eyebrow">Selected release</p>
-              <p class="roster-cand__copy">Point at a name in the index to browse their latest sleeve.</p>
-              <div class="roster-cand__artwork">
-                <figure class="roster-cand__frame" aria-hidden="true">
-                  <img class="roster-cand__frame-img is-on" src="../assets/img/releases/dzu-prizma.jpg" alt="" decoding="async" draggable="false">
-                  <img class="roster-cand__frame-img" alt="" decoding="async" draggable="false">
-                </figure>
-              </div>
-              <p class="roster-cand__title">DZU</p>
-              <p class="roster-cand__meta">Latest release &middot; Prizma</p>
-            </div>
-          </div>
-        </article>
+          <figure class="label-releases__item reveal">
+            <img src="../assets/img/releases/dzu-igla-kangal.jpg" alt="DZU / IGLA — Kangal" width="640" height="640" decoding="async" draggable="false" loading="lazy">
+            <figcaption class="label-releases__meta">
+              <span class="label-releases__t">Kangal — DZU / IGLA</span>
+              <span class="label-releases__c">Single · 2026</span>
+            </figcaption>
+          </figure>
 
-      </div>
-    </section>
+          <figure class="label-releases__item reveal">
+            <img src="../assets/img/releases/vitic-slojevi.jpg" alt="vitić — Slojevi" width="640" height="640" decoding="async" draggable="false" loading="lazy">
+            <figcaption class="label-releases__meta">
+              <span class="label-releases__t">Slojevi — vitić</span>
+              <span class="label-releases__c">Album · 2025</span>
+            </figcaption>
+          </figure>
 
-    <!-- ============================================================
-         SUBMISSIONS CTA — temporarily removed from the Phase 1 visual
-         flow (kept intact; it will fold into the Label end slate).
-         ============================================================ -->
-    <section class="cta" id="submissions" hidden>
-      <div class="container">
-        <div class="cta__inner reveal">
-          <p class="eyebrow eyebrow--on-accent">Submissions</p>
-          <h2 class="cta__title">Send your<br>work</h2>
-          <a class="cta__mail" href="mailto:info@grmstudio.music">info@grmstudio.music</a>
-          <p class="cta__sub">
-            Releases · Submissions · General enquiries — for the label,
-            directed to the right hands at GRM.
-          </p>
-          <p class="cta__loc">
-            <span>Belgrade, Serbia</span>
-            <span>Labeled by the house</span>
-          </p>
         </div>
+
+        <p class="label-releases__note reveal">
+          13 releases on the catalogue &middot; 10 artists &middot; written, mixed &amp; mastered in-house.
+        </p>
       </div>
     </section>
 
@@ -626,173 +313,296 @@
 
   <script src="../js/main.js"></script>
 
-  <!-- ============================================================
-       ROSTER PREVIEW — page-local, Label only.
-       One annotation module beside the index: eyebrow, short copy,
-       a single hairline-framed sleeve and its metadata beneath. Hover
-       or focus a row, and the frame crossfades to that artist's
-       latest release while the module title/meta follow the row.
-       Leaving the list keeps the last sleeve up so the module never
-       goes blank. Reduced-motion swaps instantly (no fade). The frame
-       artwork is decorative (aria-hidden) — the list is the content.
-       ============================================================ -->
+  <!-- ABOUT GRM — page-local behaviour for this one section: the one-shot
+       develop-from-black reveal for the photograph and its type, plus the
+       scroll-driven travel of the photograph inside the clipped frame.
+
+       Page-local by design: js/main.js is untouched and the shared
+       reveal/scroll architecture is not extended. Runs after main.js so the
+       html.js class already exists before paint (no flash of the final
+       frame). No-JS and reduced-motion land on the final state directly.
+
+       Both halves read the same section reference and the same
+       prefers-reduced-motion answer, so they share one query pass.
+
+       THE SECTION SCROLLS NORMALLY. Nothing here pins, sticks or traps
+       anything, and only .label-about__frame is ever written to — the
+       type, the veil and the vignette are never touched, so reading order
+       and type position are identical in both scroll directions.
+
+       Progress is section-local, not a share of total page scroll:
+         p = 0   section top at the viewport bottom edge (about to enter)
+         p = 1   section bottom at the viewport top edge (just left)
+       Direction is therefore automatic — scrolling back up runs the exact
+       same interpolation in reverse.
+
+        SIGN NOTE: the travel is expressed as source-row centres rather than a
+        raw translate percentage, so the story is stated directly and cannot
+        drift out of agreement with the numbers. ENTRY parks the window over
+        the desk band with the logo wall still 70% in frame; EXIT parks it
+        over the lit logo wall with the desk still in frame. Nothing swaps in
+        or out at any point.
+
+        Desktop only: below 1024px the frame releases its aspect ratio, `cover`
+        fits the photo by height, and the whole range stays static at the
+        resting framing. Reduced motion never attaches a listener, and
+        `measure()` reports false if a viewport likewise leaves no overflow. -->
   <script>
-  (function () {
-    'use strict';
-    var layout = document.querySelector('[data-label-roster]');
-    if (!layout) return;
-    var frames = Array.prototype.slice.call(layout.querySelectorAll('.label-roster__frame-img'));
-    var rows = Array.prototype.slice.call(layout.querySelectorAll('.label-roster__row'));
-    var titleEl = layout.querySelector('.label-roster__module-title');
-    var metaEl = layout.querySelector('.label-roster__module-meta');
-    if (!frames.length || !rows.length) return;
+    (function () {
+      var section = document.querySelector(".label-about");
+      if (!section) return;
+      var motion = section.querySelector(".label-about__motion");
+      var frame = motion ? motion.querySelector(".label-about__frame") : null;
+      var img = frame ? frame.querySelector("img") : null;
+      if (!frame || !img) return;
 
-    var preloaded = {};
-    var active = 0;
+      var hasMQ = !!window.matchMedia;
+      var reduceMQ = hasMQ ? window.matchMedia("(prefers-reduced-motion: reduce)") : null;
+      var reduced = !!reduceMQ && reduceMQ.matches;
 
-    function preload() {
-      rows.forEach(function (row) {
-        var src = row.getAttribute('data-image');
-        if (!src || preloaded[src]) return;
-        preloaded[src] = true;
-        var pre = new Image();
-        pre.src = src;
+      /* ---- one-shot reveal -------------------------------------------------
+         The photograph develops from black first, then the type settles in
+         behind it. Fires once and disconnects; scrolling back never re-hides
+         anything. Reduced motion and no-IntersectionObserver land on the
+         final frame immediately. */
+      if (reduced || !("IntersectionObserver" in window)) {
+        section.classList.add("is-revealed");
+      } else {
+        var io = new IntersectionObserver(function (entries) {
+          for (var i = 0; i < entries.length; i++) {
+            if (!entries[i].isIntersecting) continue;
+            section.classList.add("is-revealed");
+            io.disconnect();
+            return;
+          }
+        }, { threshold: 0.25, rootMargin: "0px 0px -10% 0px" });
+
+        io.observe(section);
+      }
+
+      /* ---- scroll travel ---------------------------------------------------
+         compose the two transforms on two different elements: the reveal owns
+         opacity + scale on the inner `img`, this owns translate3d + scale on
+         .label-about__frame, so they never compete for the same property. */
+      if (!motion || !img || !hasMQ) return;
+
+      var wideMQ = window.matchMedia("(min-width: 1024px)");
+
+      /* The travel is driven by WHERE THE VISIBLE WINDOW SITS IN THE
+         PHOTOGRAPH, not by a raw percentage offset. Two numbers are
+         interpolated linearly with scroll progress — no easing, no spring,
+         nothing that lags the scroll position:
+
+           U_FROM -> U_TO   position along the feasible row band (0-1);
+                            the band's own bounds supply the actual rows,
+                            because they differ per viewport (see paint())
+           SCALE_FROM -> SCALE_TO   how close the room feels
+
+         Both ends are picked from the measured structure of
+         GRM-studio-landscape.jpg (1536x1024, 3:2 landscape), read off a
+         40-band row luminance profile:
+
+           0.124-0.254  lit GRM logo wall   (mean 87-135, peak 135)
+           0.29-0.55    dark room depth     (mean 24-41)
+           0.588-0.652  lit desk / console  (mean 65-83, peak 83)
+           0.71-1.00    lower room, amber   (mean 38-84)
+
+         ENTRY  u=0   the window sits as LOW as the landmark trim points allow,
+                      so the desk is in full and the lower amber room fills
+                      the frame; the logo wall keeps its bottom 75%
+         MID    u=.484  both landmarks in full
+         EXIT   u=1   the window sits as HIGH as geometry allows, so the logo
+                      wall is in full with the dark upper wall above it
+
+         BOTH LANDMARKS ARE IN FRAME AT EVERY POINT, not merely at the stops.
+         That is the point of the landscape derivative: because the photo is
+         3:2, the window is ~67% of it at entry on a 16:9 desktop, and
+         holding the logo's top (0.124) and the desk's bottom (0.652)
+         together needs only 0.53. Nothing has to swap in or out at any
+         point; the room simply gets closer and then settles back.
+
+         U_MID is a separate stop rather than the midpoint of the two ends,
+         because the composition is stated explicitly at the balanced frame
+         rather than inferred from a straight lerp. Each half is still a
+         straight line, so the movement stays perfectly linear and
+         lag-free.
+
+         Scale runs 1.12 -> 1.02, so the midpoint lands at 1.07 and the
+         room settles back toward natural scale as the logo arrives. It is
+         never allowed to reach 1.0, which is what would expose an edge.
+
+         AMPLITUDE (measured, not predicted). Because the endpoints are the
+         measured band rather than fixed rows, travel is a function of section
+         WIDTH and the scale range, not of the aperture height — changing
+         80svh would buy nothing here.
+
+           1024x768    85px   14% of the section's height
+           1280x800   106px   17%
+           1366x768   114px   19%
+           1440x900   120px   17%
+           1600x900   133px   19%
+           1920x1080  160px   19%
+           2560x1440  213px   19%
+
+         All of it is spent out of overflow, all of it monotonic, and the
+         reverse retrace is exact. That clears the brief's nominal +/-10-12%
+         translate while both landmarks stay in frame throughout.
+
+         What still caps it is the photograph itself: the logo wall's top sits
+         0.124 down, so the window can never rise above its own top edge, and
+         that fixed row — not the aperture — is what stops the sweep. A
+         landscape source is what made this possible at all; with the
+         portrait, the same 80svh window showed 37% of the photo and the two
+         landmarks could not both stay in frame at any travel. */
+
+      /* The path is authored as three stops in NORMALISED band space, because
+         fixed source rows cannot describe the composition: an absolute 80svh
+         aperture is a fixed pixel height, but its share of the photograph
+         moves with width and scale, so the same row trims the logo to 44% on
+         one desktop and wastes the travel on another. Normalising lets the
+         measured band do the work at every viewport:
+           u = 0   desk-forward extreme (the band's upper bound)
+           u = 1   logo-forward extreme (the band's lower bound)
+         At 1440x900 the band is [0.350, 0.506], so the stops resolve to
+         centres 0.491 / 0.431 / 0.368 and windows 0.156-0.826 /
+         0.080-0.781 / 0.000-0.735. */
+      var U_FROM = 0.0, U_MID = 0.484, U_TO = 1.0;
+      var SCALE_FROM = 1.12, SCALE_TO = 1.02;
+
+      /* The two landmark trims. The aperture may not rise above the logo's
+         trim point nor fall below the desk's, or one landmark drops under 75%
+         of its lit core:
+           logo core 0.124-0.254 -> trimming its top 25% lands at 0.156
+           desk core 0.588-0.652 -> trimming its bottom 25% lands at 0.636 */
+      var LOGO_TRIM = 0.156, DESK_TRIM = 0.636;
+
+      var sectionTop = 0, sectionHeight = 0, viewportH = 0;
+      var frameHeight = 0;
+      var queued = false, resizeTimer = 0, live = false;
+
+      /* The only layout read in the script. Everything the frame callback
+         needs is snapshotted here and refreshed on resize/load.
+         Returns false when there is nothing to travel through — on an
+         unusually tall desktop viewport the frame can end up no taller
+         than the section, which leaves no overflow at all. */
+      function measure() {
+        var r = section.getBoundingClientRect();
+        sectionTop = r.top + window.pageYOffset;
+        sectionHeight = r.height;
+        viewportH = window.innerHeight;
+
+        frameHeight = frame.offsetHeight;
+        return frameHeight - sectionHeight > 1;
+      }
+
+      function paint() {
+        queued = false;
+        /* Single gate for every path that can reach a frame — scroll, resize
+           and load all funnel through here, so `live` is checked once and a
+           disabled build can never be written to. */
+        if (!live) return;
+        var span = sectionHeight + viewportH;
+        if (span <= 0) return;
+        var p = (window.pageYOffset + viewportH - sectionTop) / span;
+        if (p < 0) p = 0; else if (p > 1) p = 1;
+
+        var scale = SCALE_FROM + (SCALE_TO - SCALE_FROM) * p;
+        /* Three stops, two straight segments — see the note on U_MID. */
+        var u = p <= 0.5
+          ? U_FROM + (U_MID - U_FROM) * (p / 0.5)
+          : U_MID + (U_TO - U_MID) * ((p - 0.5) / 0.5);
+
+        /* The frame IS the photograph (aspect-ratio 3/2 matches the source),
+           so the rendered image height is the frame height scaled — there is
+           no `cover` slack to account for, and no `object-position` to
+           reconcile. */
+        var rendered = frameHeight * scale;
+        /* HALF THE WINDOW, in source rows. `80svh` is an absolute height, but
+           the window's share of the photograph is not: it is A/(W/1.5*scale),
+           which is 0.88 of the photo at 1024x768 but only 0.61 at 16:9. Fixed
+           row constants therefore cannot describe the composition — at
+           1600x900 a hardcoded centre of 0.498 trims the logo to 44%.
+
+           The feasible band is the intersection of two constraints:
+             geometry   half <= c <= 1 - half     (never expose an edge)
+             landmarks  c >= DESK_TRIM - half     (keep 75% of the desk)
+                        c <= LOGO_TRIM + half     (keep 75% of the logo)
+
+           Crucially the BAND DEFINES THE ENDPOINTS rather than merely
+           bounding them. Clamping fixed stops into the band wastes most of
+           the travel on viewports whose band sits off-centre: at 1024x768 the
+           band is [0.44, 0.56] while the authored stops were [0.372, 0.498],
+           they overlap by 0.057, and the travel collapses to 6.4% of the
+           section's height. Mapping the path onto the band spends the whole
+           range at every viewport and holds both landmarks throughout. */
+        var half = sectionHeight / (2 * rendered);
+        var lo = half > DESK_TRIM - half ? half : DESK_TRIM - half;
+        var hi = 1 - half < LOGO_TRIM + half ? 1 - half : LOGO_TRIM + half;
+        if (lo > hi) { var mid = (lo + hi) / 2; lo = mid; hi = mid; }
+
+        /* Put source row `centre` at the middle of the aperture. The window
+           is sectionHeight tall against a `rendered` tall photograph, so the
+           shift that lands `centre` mid-aperture is (0.5 - centre)*rendered. */
+        var centre = hi - u * (hi - lo);
+        var shift = (0.5 - centre) * rendered;
+
+        /* Second lock on the same door: hold the transform inside
+           availableVerticalOverflow/2 whatever the band resolved to, so an
+           edge can never be uncovered. */
+        var limit = (rendered - sectionHeight) / 2;
+        if (limit < 0) limit = 0;
+        if (shift > limit) shift = limit;
+        else if (shift < -limit) shift = -limit;
+
+        /* transform is the only property written here — the frame callback
+           performs no reads and no layout-affecting writes. */
+        frame.style.transform =
+          "translate3d(0," + shift.toFixed(2) + "px,0) scale(" + scale.toFixed(4) + ")";
+      }
+
+      function onScroll() {
+        if (queued) return;
+        queued = true;
+        window.requestAnimationFrame(paint);
+      }
+
+      function onResize() {
+        window.clearTimeout(resizeTimer);
+        resizeTimer = window.setTimeout(function () {
+          measure();
+          onScroll();
+        }, 120);
+      }
+
+      function sync() {
+        /* measure() last: it reports whether the viewport actually leaves
+           vertical slack to travel through. */
+        live = wideMQ.matches && !(reduceMQ && reduceMQ.matches) && measure();
+        if (live) {
+          window.addEventListener("scroll", onScroll, { passive: true });
+          window.addEventListener("resize", onResize);
+          onScroll();
+        } else {
+          window.removeEventListener("scroll", onScroll);
+          window.removeEventListener("resize", onResize);
+          frame.style.transform = "";
+        }
+      }
+
+      if (typeof reduceMQ.addEventListener === "function") {
+        reduceMQ.addEventListener("change", sync);
+        wideMQ.addEventListener("change", sync);
+      }
+
+      /* The photograph carries intrinsic width/height, so layout is already
+         final here — this re-measure just removes the assumption. */
+      window.addEventListener("load", function () {
+        measure();
+        onScroll();
       });
-    }
 
-    function show(row) {
-      var src = row.getAttribute('data-image');
-      if (!src) return;
-      var shown = frames[active];
-      if (shown.getAttribute('src') !== src) {
-        var next = frames[1 - active];
-        next.setAttribute('src', src);
-        shown.classList.remove('is-on');
-        next.classList.add('is-on');
-        active = 1 - active;
-      }
-      var name = row.querySelector('.label-roster__name');
-      if (titleEl && name) titleEl.textContent = name.textContent.trim();
-      if (metaEl) metaEl.textContent = 'Latest release \u00b7 ' + (row.getAttribute('data-title') || '');
-    }
-
-    rows.forEach(function (row) {
-      row.addEventListener('mouseenter', function () { show(row); });
-      row.addEventListener('focus', function () { show(row); });
-      row.addEventListener('click', function () { show(row); });
-    });
-
-    preload();
-  })();
-  </script>
-
-  <!-- ============================================================
-       SANDBOX DRIVER — TEMPORARY, Label only.
-       One shared script drives all six roster-cand prototypes so
-       the comparison stays identical: the same data (data-image /
-       data-title on the rows), the same two-layer crossfade, and a
-       per-concept modifier bullet on top (bleed pairs, shift custom
-       props, catalogue marker, ghost type). It never touches the
-       production roster. Delete with the sandbox section + CSS.
-       ============================================================ -->
-  <script>
-  (function () {
-    'use strict';
-    var roots = Array.prototype.slice.call(document.querySelectorAll('[data-cand-roster]'));
-    if (!roots.length) return;
-
-    var SHIFT_Y = [18, 8, -8, -18];
-    var WIRE = [40, 56, 72, 88];
-
-    roots.forEach(function (root) {
-      var pairs = Array.prototype.slice.call(root.querySelectorAll('.roster-cand__frame, .roster-cand__bleed'));
-      var rows = Array.prototype.slice.call(root.querySelectorAll('.roster-cand__row'));
-      var titleEl = root.querySelector('.roster-cand__title');
-      var metaEl = root.querySelector('.roster-cand__meta');
-      var previewEl = root.querySelector('.roster-cand__preview');
-      var markerEl = root.querySelector('.roster-cand__marker');
-      var ghosts = Array.prototype.slice.call(root.querySelectorAll('.roster-cand__ghost'));
-      var isShift = root.classList.contains('roster-cand--shift');
-      if (!pairs.length || !rows.length) return;
-
-      var active = 0;
-      var ghostActive = 0;
-
-      function crossfade(pair, src) {
-        var imgs = pair.querySelectorAll('.roster-cand__frame-img');
-        if (imgs.length < 2) return;
-        var shown = imgs[active];
-        if (shown.getAttribute('src') === src) return;
-        var next = imgs[1 - active];
-        next.setAttribute('src', src);
-        shown.classList.remove('is-on');
-        next.classList.add('is-on');
-        active = 1 - active;
-      }
-
-      function shiftModule(idx) {
-        if (!isShift || !previewEl) return;
-        previewEl.style.setProperty('--sb-shift-y', SHIFT_Y[idx % SHIFT_Y.length] + 'px');
-        previewEl.style.setProperty('--sb-wire', WIRE[idx % WIRE.length] + '%');
-      }
-
-      function moveMarker(rowEl) {
-        if (!markerEl) return;
-        var item = rowEl.closest('.roster-cand__item');
-        if (!item) return;
-        var parent = markerEl.offsetParent;
-        if (!parent) return;
-        var pRect = parent.getBoundingClientRect();
-        var iRect = item.getBoundingClientRect();
-        markerEl.style.top = (iRect.top - pRect.top + iRect.height / 2) + 'px';
-      }
-
-      function setGhost(name) {
-        if (ghosts.length < 2) return;
-        var shown = ghosts[ghostActive];
-        var next = ghosts[1 - ghostActive];
-        if (next.textContent !== name) next.textContent = name;
-        shown.classList.remove('is-on');
-        next.classList.add('is-on');
-        ghostActive = 1 - ghostActive;
-      }
-
-      function show(rowEl, idx) {
-        var src = rowEl.getAttribute('data-image');
-        if (!src) return;
-        pairs.forEach(function (pair) { crossfade(pair, src); });
-        var name = rowEl.querySelector('.roster-cand__name');
-        if (titleEl && name) titleEl.textContent = name.textContent.trim();
-        if (metaEl) metaEl.textContent = 'Latest release \u00b7 ' + (rowEl.getAttribute('data-title') || '');
-        shiftModule(idx);
-        moveMarker(rowEl);
-        if (ghosts.length && name) setGhost(name.textContent.trim());
-      }
-
-      // preload every artwork so the first crossfade is instant
-      var preloaded = {};
-      rows.forEach(function (rowEl) {
-        var src = rowEl.getAttribute('data-image');
-        if (!src || preloaded[src]) return;
-        preloaded[src] = true;
-        var pre = new Image();
-        pre.src = src;
-      });
-
-      rows.forEach(function (rowEl, idx) {
-        rowEl.addEventListener('mouseenter', function () { show(rowEl, idx); });
-        rowEl.addEventListener('focus', function () { show(rowEl, idx); });
-        rowEl.addEventListener('click', function () { show(rowEl, idx); });
-      });
-
-      // seed the resting state to the first row so every prototype
-      // opens with DZU / Prizma and the marker + shift settle in.
-      var first = rows[0];
-      var fname = first.querySelector('.roster-cand__name').textContent.trim();
-      if (ghosts.length) { ghosts[0].textContent = fname; ghosts[0].classList.add('is-on'); }
-      show(first, 0);
-    });
-  })();
+      sync();
+    })();
   </script>
 </body>
 </html>
