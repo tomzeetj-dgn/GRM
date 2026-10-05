@@ -991,6 +991,7 @@
           overlay.style.top = endRect.top + "px";
           overlay.style.width = endRect.width + "px";
           overlay.style.height = endRect.height + "px";
+          overlay.style.opacity = "1";
           requestAnimationFrame(function () {
             labelLogo.style.visibility = "visible";
             overlay.remove();
