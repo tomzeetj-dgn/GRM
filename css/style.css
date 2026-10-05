@@ -18,8 +18,7 @@
    any browser synthesis. */
 @font-face {
   font-family: "UltraCondensedSansSerif";
-  src: url("../assets/fonts/UltraCondensedSansSerif.woff2") format("woff2"),
-       url("../assets/fonts/UltraCondensedSansSerif.ttf") format("truetype");
+  src: url("../assets/fonts/UltraCondensedSansSerif-Serbian.ttf") format("truetype");
   font-weight: 100 900;
   font-stretch: 62.5% 125%;
   font-display: swap;
@@ -45,6 +44,11 @@
   /* ---------- TYPOGRAPHY ---------- */
   --font-display: "UltraCondensedSansSerif", "Archivo", "Arial Narrow", sans-serif;
   --font-body:    "Inter", "Helvetica Neue", Arial, sans-serif;
+
+  /* Production discipline lockups (SOUND / VISUAL) share ONE heading
+     scale and ONE heading→capability gap, so the two primary
+     disciplines can never drift apart typographically. */
+  --discipline-caps-gap: clamp(14px, 1.9vh, 22px);
 
   --f-display-xl: clamp(3.3rem, 9vw, 8rem);      /* hero of statements */
   --f-display-lg: clamp(2.5rem, 5.6vw, 5rem);    /* section titles     */
@@ -2411,26 +2415,46 @@ body[data-page="studio"].is-studio-arriving .page-hero__inner > *:nth-child(3) {
    <video>). The driver only moves the masks; it is agnostic to
    the media object itself.
    ============================================================ */
-.production-visual{position:relative;background:var(--bg);padding:clamp(104px,14vh,176px) 0 0}
+/* Reordered: Visual now follows the Sound release carousel rather than the
+   hero. Its top padding stacks ON TOP of `.grm-sound`'s bottom padding, so it
+   is reduced from the old hero→Visual value to avoid doubled dead space
+   before the showreel while still resetting the eye after the moving archive.
+   It gains a bottom padding it never needed before: with Sound no longer the
+   closing section, nothing else supplies breathing room before the end slate,
+   so this restores the same bottom rhythm the page previously ended on. */
+.production-visual{
+  position:relative;
+  background:var(--bg);
+  padding:clamp(72px,10vh,124px) 0 clamp(56px,9vh,110px);
+}
 
 /* ============================================================
-   GRM PRODUCTION — DISCIPLINE INTRO (SOUND ONLY)
-   The standalone intro anatomy: `.discipline__name` is the large
-   condensed display name with the horizontal capability line
-   (`RECORDING · COMPOSITION · …`) directly beneath it, sharing the
-   same left axis — a single left-aligned editorial lockup. VISUAL
-   does NOT use this standalone lockup anymore: its identity lives
-   INSIDE the showreel frame (see `.visual-block__identity` below),
-   in the same revealed plane as the footage.
+   GRM PRODUCTION — DISCIPLINE INTRO (SHARED: SOUND + VISUAL)
+   One lockup for the page's two primary disciplines. `.discipline__name`
+   is the large condensed display name. VISUAL carries the identical name —
+   same face, size, weight, line-height and tracking — so the two read as
+   equals; ORDER (Sound first) communicates priority, never a larger heading.
+   Only VISUAL keeps a capability line beneath its name, since it has no
+   discipline tiles of its own; SOUND states its four disciplines through the
+   tiles directly beneath it, so it no longer repeats them.
+
+   VISUAL's lockup is positioned inside the showreel frame rather than
+   in standalone flow, but it consumes this one shared rule, so there is
+   no second heading scale to drift. The frame's cinematic safe area
+   absorbs the larger name (see `.visual-block__identity`).
+
+   SOUND leads on size, so SOUND's approved scale is the one applied:
+   the two now measure identically at every breakpoint.
    ============================================================ */
 .discipline{
   width:var(--container);
   margin-inline:auto;
   display:grid;
   grid-template-columns:minmax(0,1fr);
-  gap:clamp(14px,1.9vh,22px);
+  gap:var(--discipline-caps-gap);
 }
-.discipline__name{
+.discipline__name,
+.visual-block__identity-name{
   margin:0;
   color:var(--text);
   font-family:var(--font-display);
@@ -2441,19 +2465,27 @@ body[data-page="studio"].is-studio-arriving .page-hero__inner > *:nth-child(3) {
   letter-spacing:.01em;
   text-transform:uppercase;
 }
-.discipline__caps{
+.visual-block__identity-caps{
   margin:0;
   padding:0;
   max-width:100%;
-  color:var(--text-muted);
   font-family:var(--font-body);
   font-size:clamp(.72rem,1vw,.82rem);
-  font-weight:500;
+  font-weight:600;
   letter-spacing:.12em;
   line-height:1.9;
   text-transform:uppercase;
 }
-.discipline--sound{margin-bottom:clamp(16px,2.4vh,32px)}
+/* VISUAL is the only chapter left with a capability line: SOUND states its
+   disciplines through the four tiles immediately beneath it, so its line was
+   removed as redundant. VISUAL has no such tiles — the line still carries the
+   explanatory role — and it sits on moving footage, so it keeps the lighter,
+   higher-contrast body colour for legibility. */
+.visual-block__identity-caps{color:rgba(236,233,226,.86)}
+/* SOUND no longer has a capability line, so this margin is now the whole
+   heading→tiles gap. Raised from the old clamp(16px,2.4vh,32px) (which only
+   had to clear the removed line) so SOUND still reads as the section heading. */
+.discipline--sound{margin-bottom:clamp(34px,4.8vh,56px)}
 
 /* --- SOUND PHOTO STRIP ---------------------------------------
    SOUND's index on this page is ONE horizontal photographic
@@ -2630,24 +2662,42 @@ body[data-page="studio"].is-studio-arriving .page-hero__inner > *:nth-child(3) {
   pointer-events:none;
 }
 /* Art direction — energy-fit per frame on the portrait sources so each
-   subject survives its cover crop. Tuned per frame after QA:
-   recording keeps the mic heads safe (57), composition biases to the
-   keys (58), beat making holds the pad bank with its light (56),
-   engineering centers the console band (50). */
-.grm-photo--recording img{object-position:center 57%}
-.grm-photo--composition img{object-position:center 58%}
-.grm-photo--beatmaking img{object-position:center 56%}
-.grm-photo--engineering img{object-position:center 50%}
+   subject survives its cover crop. The 4x1 desktop tiles are far taller than
+   they are wide (aspect ~0.44 at rest, ~0.70 expanded, ~0.35 when a
+   neighbour is compressed), so a portrait placeholder is cropped on the X
+   axis: the full image height stays visible and these values slide the
+   63%-wide window onto the measured face / activity band in all three
+   states. Recording centres face and mic (81), composition the player (61),
+   beat making the operator at frame right (100), engineering the desk and
+   upper body (55). */
+.grm-photo--recording img{object-position:81% center}
+.grm-photo--composition img{object-position:61% center}
+.grm-photo--beatmaking img{object-position:100% center}
+.grm-photo--engineering img{object-position:55% center}
 
 /* Reveal pipeline — motion only; gated so reduced motion and no-JS
-   both render the untouched static strip. All four expose left to
-   right — the strip opens as one horizontal composition. */
+   both render the untouched static strip. Each discipline now opens
+   TOP TO BOTTOM: the clip starts fully retracted from the BOTTOM edge
+   (inset 0 0 100% 0) and settles to inset(0), so the kept region
+   starts at the tile's top edge and grows DOWNWARD — the photograph
+   appears top-first, in reading order. (Retracting the top inset
+   instead — inset 100% 0 0 0 — would pin the bottom edge and reveal
+   UPWARD, the opposite of the brief.) The image is pre-lifted and
+   slightly scaled, then settles — the same soft settle the previous
+   horizontal version used, rotated onto the vertical axis.
+
+   The four remain ONE BY ONE: transition-delay is unchanged at
+   0/130/260/390ms, so in DOM order (recording -> composition ->
+   beatmaking -> engineering) each tile finishes its reveal before the
+   next begins its travel. On the mobile 2x2 grid that DOM order is
+   also reading order — top-left, top-right, then the bottom row — so
+   the sequence reads strictly top to bottom there too. */
 @media (prefers-reduced-motion: no-preference){
-  .grm-sound--reveal-ready .grm-photo{clip-path:inset(0 100% 0 0)}
-  .grm-sound--reveal-ready .grm-photo--recording img{transform:scale(1.03) translate3d(-10px,0,0)}
-  .grm-sound--reveal-ready .grm-photo--composition img{transform:scale(1.03) translate3d(-9px,0,0)}
-  .grm-sound--reveal-ready .grm-photo--beatmaking img{transform:scale(1.03) translate3d(-9px,0,0)}
-  .grm-sound--reveal-ready .grm-photo--engineering img{transform:scale(1.03) translate3d(-10px,0,0)}
+  .grm-sound--reveal-ready .grm-photo{clip-path:inset(0 0 100% 0)}
+  .grm-sound--reveal-ready .grm-photo--recording img{transform:scale(1.03) translate3d(0,-10px,0)}
+  .grm-sound--reveal-ready .grm-photo--composition img{transform:scale(1.03) translate3d(0,-9px,0)}
+  .grm-sound--reveal-ready .grm-photo--beatmaking img{transform:scale(1.03) translate3d(0,-9px,0)}
+  .grm-sound--reveal-ready .grm-photo--engineering img{transform:scale(1.03) translate3d(0,-10px,0)}
 
   .grm-sound--reveal-ready .grm-photo,
   .grm-sound--reveal-ready .grm-photo img{
@@ -2785,8 +2835,9 @@ body[data-page="studio"].is-studio-arriving .page-hero__inner > *:nth-child(3) {
     padding:clamp(9px,2.6vw,13px) 2px 0;
     transition:none;
   }
-  /* Mobile crops are flatter boxes (Y-limited) — different bands than
-     desktop, biased to each subject. */
+  /* Mobile crops are flatter boxes (16/10 against a portrait source), so the
+     whole image height is shown and the crop is X-limited instead — these
+     values slide that window onto the measured face / activity band. */
   .grm-photo__desc{
     order:1;
     opacity:1;
@@ -2807,10 +2858,10 @@ body[data-page="studio"].is-studio-arriving .page-hero__inner > *:nth-child(3) {
     margin:0;
     text-shadow:none;
   }
-  .grm-photo--recording img{object-position:center 60%}
-  .grm-photo--composition img{object-position:center 62%}
-  .grm-photo--beatmaking img{object-position:center 64%}
-  .grm-photo--engineering img{object-position:center 55%}
+  .grm-photo--recording img{object-position:center 48%}
+  .grm-photo--composition img{object-position:center 33%}
+  .grm-photo--beatmaking img{object-position:center 10%}
+  .grm-photo--engineering img{object-position:center 41%}
 }
 
 /* Tablet-landscape and other touch widths above 900px fall back to the
@@ -2865,26 +2916,22 @@ body[data-page="studio"].is-studio-arriving .page-hero__inner > *:nth-child(3) {
     margin:0;
     text-shadow:none;
   }
+  /* Same 16/10 image box as the phone branch, so this is X-limited crop
+     art direction too — the desktop Y values would do nothing here. */
+  .grm-photo--recording img{object-position:center 48%}
+  .grm-photo--composition img{object-position:center 33%}
+  .grm-photo--beatmaking img{object-position:center 10%}
+  .grm-photo--engineering img{object-position:center 41%}
 }
 
-/* --- RELEASES EYEBROW ------------------------------------------
-   One quiet editorial label above the plaque wall, on the same
-   container axis as the SOUND lockup. It owns the small vertical
-   rhythm between strip and plaques, so the archive itself does not
-   shift: the eyebrow sits tightly above the row and deliberately
-   stays smaller and quieter than SOUND — a footnote, not a chapter. */
-.grm-sound__eyebrow{
-  width:var(--container);
-  margin:clamp(12px,2vh,20px) auto clamp(10px,1.4vh,16px);
-  color:var(--text-muted);
-  font-family:var(--font-body);
-  font-size:.6rem;
-  font-weight:500;
-  letter-spacing:.26em;
-  line-height:1;
-  text-transform:uppercase;
-}
-
+/* --- ARCHIVE SPACING ---------------------------------------------
+   The RELEASES eyebrow is gone; the plaque archive now speaks for
+   itself. What remains is the pause it used to own: the top margin
+   below is the entire Sound-tiles → carousel break, so the enlarged
+   clamp(17px,2.8vh,28px) editorial pause (+40%) survives the
+   deletion unchanged. The row below carries its own padding-block
+   for the plaques' shadows, so there is no second margin and no
+   collapsed, cramped handoff — just the one considered gap. */
 /* --- APERTURE: scroll-triggered, time-based reveal ------------- */
 /* No pin runway: the wrapper is a plain block in document flow. */
 .showreel-aperture{position:relative}
@@ -2965,28 +3012,6 @@ html:not(.js) .showreel-aperture__mask{display:none}
     radial-gradient(130% 95% at 20% 13%,rgba(0,0,0,.38) 0%,rgba(0,0,0,.2) 32%,rgba(0,0,0,.06) 60%,rgba(0,0,0,0) 80%),
     radial-gradient(64% 52% at 84% 92%,rgba(0,0,0,.28) 0%,rgba(0,0,0,.13) 44%,rgba(0,0,0,0) 72%);
 }
-.visual-block__meta{
-  position:absolute;
-  left:0;
-  right:0;
-  display:flex;
-  justify-content:space-between;
-  align-items:center;
-  gap:10px 24px;
-  pointer-events:none;
-}
-.visual-block__meta--top{
-  top:0;
-  justify-content:flex-end;
-  padding:clamp(14px,1.8vw,22px) clamp(16px,2.1vw,28px);
-}
-.visual-block__house{
-  color:var(--text-muted);
-  font-size:.64rem;
-  font-weight:500;
-  letter-spacing:.24em;
-  text-transform:uppercase;
-}
 /* --- VISUAL IDENTITY INSIDE THE FRAME --------------------------
    The chapter's identity lives INSIDE the reveal plane. Same
    editorial anatomy as the shared `.discipline` intro — condensed
@@ -3000,10 +3025,13 @@ html:not(.js) .showreel-aperture__mask{display:none}
    object: no separate text transition exists anywhere. No box, no
    panel, no shadow — the localized exposure field (media::before)
    quietly does the legibility work behind plain type. The lockup
-   is inset into the cinematic safe area, VISUAL breathing ~12px
-   optically above the capabilities. Typography carries the same
-   face/weight/caps as the standalone intro; size is optically
-   reduced inside the frame and never exceeds it. */
+   is inset into the cinematic safe area, VISUAL breathing optically
+   above the capabilities.
+
+   The heading itself is NOT redefined here — it consumes the one shared
+   discipline rule (`.discipline__name, .visual-block__identity-name`)
+   so SOUND and VISUAL are typographically identical. Only the safe-area
+   inset and the contextual capability colour are local to this frame. */
 .visual-block__identity{
   position:absolute;
   top:clamp(46px,6.4vh,64px);
@@ -3012,43 +3040,13 @@ html:not(.js) .showreel-aperture__mask{display:none}
   pointer-events:none;
   max-width:calc(100% - clamp(104px,11.2vw,156px));
 }
-.visual-block__identity-name{
-  margin:0;
-  color:var(--text);
-  font-family:var(--font-display);
-  font-stretch:62.5%;
-  font-weight:900;
-  font-size:clamp(2.5rem,5.2vw,5.25rem);
-  line-height:.84;
-  letter-spacing:.01em;
-  text-transform:uppercase;
-}
-.visual-block__identity-caps{
-  margin:0;
-  padding:0;
-  max-width:100%;
-  color:rgba(236,233,226,.86);
-  font-family:var(--font-body);
-  font-size:clamp(.7rem,.95vw,.82rem);
-  font-weight:600;
-  letter-spacing:.1em;
-  line-height:1.9;
-  text-transform:uppercase;
-  margin-top:clamp(8px,1.2vh,13px);
-}
+/* Shared heading→capability gap, same token SOUND uses. */
+.visual-block__identity-caps{margin-top:var(--discipline-caps-gap)}
 @media (max-width:760px){
   .visual-block__identity{
     top:clamp(24px,5.4vh,34px);
     left:clamp(24px,5.8vw,36px);
     max-width:calc(100% - clamp(48px,11.6vw,72px));
-  }
-  .visual-block__identity-name{
-    font-size:clamp(1.5rem,8vw,2.25rem);
-  }
-  .visual-block__identity-caps{
-    font-size:clamp(.6rem,3.2vw,.72rem);
-    letter-spacing:.09em;
-    margin-top:clamp(7px,1.1vh,10px);
   }
   .visual-block__media::before{
     background:
@@ -3116,11 +3114,66 @@ html:not(.js) .showreel-aperture__mask{display:none}
   position:relative;
   overflow:hidden;
   width:100%;
+  /* The editorial pause the RELEASES eyebrow used to own. The tile strip
+     carries no bottom margin, so this IS the whole Sound-tiles -> archive
+     break, kept at the enlarged clamp(17px,2.8vh,28px) (+40%) so the
+     handoff survives the heading's deletion unchanged: capabilities
+     conclude, one considered pause, archive begins. The row's own
+     padding-block below serves the plaque shadows, so no second margin
+     is introduced and nothing collapses upward. */
+  margin-top:clamp(17px,2.8vh,28px);
   padding-block:clamp(8px,1.4vh,14px);
   cursor:pointer;
   -webkit-user-select:none;
   user-select:none;
   touch-action:pan-y;
+}
+/* --- PLAQUE ENTRANCE: prepared state before trigger (no-JS remains visible) */
+.grm-sound--releases-prepared .grm-plaque__inner{
+  opacity:0;
+  transform:translateY(12px);
+}
+.grm-sound--releases-prepared .grm-plaque__reveal{
+  opacity:0;
+  transform:translateY(12px);
+}
+/* --- PLAQUE ENTRANCE: visible set reveals one-by-one (slow) --- */
+.grm-sound--releases-in .grm-plaque__inner{
+  /* One-by-one reveal on the inner visual layer; rail geometry untouched */
+  animation:grm-plaque-in 1100ms cubic-bezier(.22,1,.36,1) both;
+  animation-delay:min(calc(var(--r-i,0) * 250ms + 300ms), calc(6 * 250ms + 300ms));
+}
+.grm-sound--releases-in .grm-plaque__reveal{
+  animation:grm-plaque-in 1100ms cubic-bezier(.22,1,.36,1) both;
+  animation-delay:min(calc(var(--r-i,0) * 250ms + 300ms), calc(6 * 250ms + 300ms));
+}
+@keyframes grm-plaque-in{
+  from{opacity:0;transform:translateY(12px)}
+  to{opacity:1;transform:none}
+}
+@media (max-width:900px){
+  .grm-sound--releases-in .grm-plaque__inner{
+    animation-duration:900ms;
+    animation-delay:min(calc(var(--r-i,0) * 180ms + 240ms), calc(6 * 180ms + 240ms));
+  }
+  .grm-sound--releases-in .grm-plaque__reveal{
+    animation-duration:900ms;
+    animation-delay:min(calc(var(--r-i,0) * 180ms + 240ms), calc(6 * 180ms + 240ms));
+  }
+  @keyframes grm-plaque-in{
+    from{opacity:0;transform:translateY(8px)}
+    to{opacity:1;transform:none}
+  }
+}
+@media (prefers-reduced-motion:reduce){
+  .grm-sound--releases-prepared .grm-plaque__inner,
+  .grm-sound--releases-prepared .grm-plaque__reveal,
+  .grm-sound--releases-in .grm-plaque__inner,
+  .grm-sound--releases-in .grm-plaque__reveal{
+    animation:none;
+    opacity:1;
+    transform:none;
+  }
 }
 .grm-sound__track{
   display:flex;
@@ -3138,6 +3191,58 @@ html:not(.js) .showreel-aperture__mask{display:none}
 .grm-sound__row img{-webkit-user-drag:none;user-select:none;-webkit-touch-callout:none}
 .grm-sound--js .grm-sound__row{overflow-x:hidden}
 
+/* --- EDGE DARKNESS MASKS -----------------------------------------
+   Pure-black lateral fades tied to the carousel VIEWPORT, never to
+   the plaques: two ::before/::after pseudo-elements on .grm-sound__row
+   so no extra DOM, no wrapper around the rail, and the infinite-loop
+   geometry in .grm-sound__set / .grm-plaque is completely untouched.
+
+   Each mask is a horizontal gradient from the page background at the
+   viewport edge to fully transparent inboard, so the outermost plaque
+   dissolves into black while the next one in stays readable. No blur,
+   no glow, no colour cast, no vignette over the section — the centre
+   band is left entirely clear.
+
+   pointer-events:none means the masks can never intercept drag,
+   swipe, clicks or the Spotify links underneath. */
+.grm-sound__row::before,
+.grm-sound__row::after{
+  content:"";
+  position:absolute;
+  top:0;
+  bottom:0;
+  z-index:2;
+  width:var(--archive-mask-w,10vw);
+  pointer-events:none;
+}
+.grm-sound__row::before{
+  left:0;
+  background:linear-gradient(to right,
+    var(--bg) 0%,
+    var(--bg) 34%,
+    rgba(0,0,0,.62) 62%,
+    rgba(0,0,0,.22) 84%,
+    transparent 100%);
+}
+.grm-sound__row::after{
+  right:0;
+  background:linear-gradient(to left,
+    var(--bg) 0%,
+    var(--bg) 34%,
+    rgba(0,0,0,.62) 62%,
+    rgba(0,0,0,.22) 84%,
+    transparent 100%);
+}
+@media (max-width:900px){
+  .grm-sound__row{--archive-mask-w:8vw}
+}
+@media (max-width:560px){
+  /* Mobile plaques are a much larger share of the viewport, so the mask
+     needs a slightly higher vw to still soften the edge without
+     swallowing the plaque itself. */
+  .grm-sound__row{--archive-mask-w:12vw}
+}
+
 /* --- REDUCED MOTION: no drifting carousel, native scroll available -- */
 @media (prefers-reduced-motion: reduce) {
   .grm-sound__row{
@@ -3148,72 +3253,389 @@ html:not(.js) .showreel-aperture__mask{display:none}
 }
 
 /* ============================================================
-   GRM PRODUCTION — END SLATE
-   The page winds down into a quiet production credit rather than
-   a manifesto: one identifier, one structural rule, one metadata
-   row, one action. Static by design — the motion moments are
-   spent, and the ending reads like the closing line of a studio
-   filing instead of a campaign CTA.
-   ============================================================ */
-.grm-end{
+   GRM PRODUCTION — CLOSING STATEMENT · DARK MATERIAL CARD
+   The card is a physical dark studio object sitting INSIDE the
+   black page: it never touches the viewport edge. Composition is
+   one plate, not two panels — the photograph is clipped by the
+   card's own radius and dissolves into the casing through a
+   directional black gradient, so there is no seam, no divider
+   and no visible rectangular photo edge.
+
+   ANATOMY
+     .grm-cta             section. Owns only the chapter spacing
+                          above the card; the closing margin below
+                          is left to the existing --sec rhythm and
+                          the footer's own margin so no new void
+                          is introduced.
+     .grm-cta__card       the plate. Charcoal casing, 1px warm
+                          edge, 6px radius, inset top highlight +
+                          outer shadow so it reads as sitting ON the
+                          page rather than floating in it.
+     .grm-cta__bolt       four corner fasteners. Absolutely placed,
+                          so they cannot affect layout. Dark metal
+                          with a single slot highlight.
+     .grm-cta__media      the photograph. Right 57% of the card,
+                          clipped by the card radius; art-direction
+                          bias 78% favours the grooves and tonearm.
+     .grm-cta__inner      the typographic field, optically centred
+                          and a touch above true centre. Carries NO
+                          horizontal padding of its own.
+     .grm-cta__copy       the LEFT PANEL. Exactly 43% of the plate --
+                          the complement of the photograph's 57% -- so
+                          its right edge abuts the image boundary and
+                          can never overlap it. Owns the single shared
+                          padding-inline that makes the left and right
+                          interior insets identical by construction.
+     .grm-cta__eyebrow    small tracked utility line.
+     .grm-cta__title      the two-line Ultra Condensed statement.
+     .grm-cta__contact    the contact sign-off: label over value, one
+                          vertical stack, every value a real anchor.
+
+   CONTACT PLATE
+     There is no button. START A PROJECT, its hairline rule, its arrow
+     and its hover behaviour are gone -- the plate now closes as a
+     contact sign-off. The values are real links (mailto:, tel:, and a
+     Maps search that opens in a new tab), set in the normal sans at
+     body size and deliberately quiet so that IDEAS / IN GOOD HANDS.
+     remains the loudest thing on the plate. No pill, no card, no icon,
+     no background box, no rule.
+
+   MATERIAL
+     The casing is never a flat #000. Three things prevent that:
+     a soft top-left light and a faint warm bottom-right bounce, a
+     1-in-3px machined pass at ~1.4% white, and a desaturated
+     fractal-noise film at 5% that sits ABOVE the photograph (so
+     the image gains analog grain) but BELOW the type (so the
+     lettering stays perfectly clean). No external asset, no
+     dependency, no glass, no blur, no glow.
+
+   ASSET — assets/img/production/cta-turntable-placeholder.jpg
+   ---------------------------------------------------------------------------
+   The approved turntable frame is STILL OUTSTANDING. What is installed now is
+   a temporary stand-in, chosen for a dark, near-monochrome, CC0 licence so it
+   cannot tint this monochrome page or create an attribution/share-alike
+   obligation on the client site:
+
+     "Top view of a turntable" by Mink Mingle, via Unsplash, distributed on
+     Wikimedia Commons as CC0 (public domain).
+     https://commons.wikimedia.org/wiki/File:Top_view_of_a_turntable_(Unsplash).jpg
+     Derived to 2200x1466 JPEG; EXIF/XMP/IPTC stripped.
+
+   It is deliberately a PLACEHOLDER filename. Drop the approved frame at the
+   same path and it takes over with no code change. Re-measure the right-edge
+   ramp afterwards — a brighter subject shows up first along the plate's
+   right-hand field. The copy no longer overlaps that field (the left panel
+   stops exactly at the 43% boundary), so a brighter frame can no longer
+   compete with the type.
+
+   MOTION — static by design this pass. Nothing in the card animates
+   except a contact value's own colour on hover/focus.
+   ======================================================================= */
+.grm-cta{
+  padding:clamp(120px,14vh,180px) 0 clamp(8px,2vh,24px);
   background:var(--bg);
-  padding:clamp(8px,2vh,24px) var(--gutter) clamp(56px,9vh,120px);
 }
-.grm-end__inner{
-  width:min(1260px,100%);
+.grm-cta__card{
+  position:relative;
+  display:flex;
+  overflow:hidden;
+  width:var(--container);
+  margin-inline:auto;
+  min-height:clamp(430px,52vh,560px);
+  border:1px solid rgba(146,124,88,.18);
+  border-radius:6px;
+  background-color:#0b0a09;
+  background-image:
+    radial-gradient(122% 132% at 8% -12%,rgba(255,236,208,.055),transparent 58%),
+    radial-gradient(100% 124% at 104% 112%,rgba(255,198,130,.03),transparent 62%),
+    repeating-linear-gradient(102deg,rgba(255,255,255,.014) 0 1px,transparent 1px 3px),
+    linear-gradient(180deg,#100e0d 0%,#0b0a09 52%,#070606 100%);
+  box-shadow:
+    inset 0 1px 0 rgba(255,238,214,.055),
+    inset 0 -1px 0 rgba(0,0,0,.55),
+    inset 1px 0 0 rgba(255,238,214,.018),
+    inset -1px 0 0 rgba(0,0,0,.4),
+    0 0 0 1px rgba(0,0,0,.55),
+    0 24px 48px -28px rgba(0,0,0,.95);
 }
-.grm-end__title{
+/* Film grain: above the photograph, below the lettering. */
+.grm-cta__card::after{
+  content:"";
+  position:absolute;
+  inset:0;
+  z-index:2;
+  border-radius:inherit;
+  pointer-events:none;
+  opacity:.05;
+  background-size:160px 160px;
+  background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='160' height='160'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='.9' numOctaves='3' stitchTiles='stitch'/%3E%3CfeColorMatrix type='saturate' values='0'/%3E%3C/filter%3E%3Crect width='160' height='160' filter='url(%23n)'/%3E%3C/svg%3E");
+}
+/* Four fasteners. Absolutely placed so they contribute zero layout
+   height, and sized to read as hardware rather than ornament. */
+.grm-cta__bolt{
+  position:absolute;
+  z-index:4;
+  width:9px;
+  height:9px;
+  border-radius:50%;
+  background:radial-gradient(circle at 34% 30%,#3c3934 0%,#1b1917 48%,#0a0908 100%);
+  box-shadow:
+    inset 0 .5px 0 rgba(255,242,222,.16),
+    inset 0 -.5px 0 rgba(0,0,0,.75),
+    0 0 0 1px rgba(0,0,0,.6);
+}
+.grm-cta__bolt::after{
+  content:"";
+  position:absolute;
+  left:1.6px;
+  right:1.6px;
+  top:50%;
+  height:1px;
+  background:rgba(0,0,0,.6);
+  box-shadow:0 1px 0 rgba(255,242,222,.07);
+  transform:translateY(-50%) rotate(-34deg);
+}
+.grm-cta__bolt--tl{top:11px;left:11px}
+.grm-cta__bolt--tr{top:11px;right:11px}
+.grm-cta__bolt--bl{bottom:11px;left:11px}
+.grm-cta__bolt--br{bottom:11px;right:11px}
+/* The photograph, clipped by the card's own radius. */
+.grm-cta__media{
+  position:absolute;
+  top:0;
+  right:0;
+  bottom:0;
+  z-index:1;
+  width:57%;
+  margin:0;
+  background-color:#0a0908;
+  background-image:url("../assets/img/production/cta-turntable-placeholder.jpg");
+  background-size:cover;
+  background-position:78% center;
+  background-repeat:no-repeat;
+  filter:brightness(.82) contrast(1.04) saturate(.96);
+}
+/* Horizontal pass: the image emerges out of the casing rather than
+   sitting beside it. Opaque at its left edge, fully clear at the
+   right, so no vertical seam can form. */
+.grm-cta__media::after{
+  content:"";
+  position:absolute;
+  inset:0;
+  background:linear-gradient(90deg,
+    #0a0908 0%,
+    rgba(10,9,8,.97) 12%,
+    rgba(10,9,8,.86) 26%,
+    rgba(10,9,8,.58) 44%,
+    rgba(10,9,8,.26) 62%,
+    rgba(10,9,8,.07) 82%,
+    rgba(10,9,8,0) 100%);
+}
+/* Vertical pass settles top and bottom into the casing. */
+.grm-cta__media::before{
+  content:"";
+  position:absolute;
+  inset:0;
+  z-index:1;
+  background:linear-gradient(180deg,
+    rgba(5,5,5,.72) 0%,
+    rgba(5,5,5,.12) 26%,
+    rgba(5,5,5,.10) 68%,
+    rgba(5,5,5,.66) 100%);
+}
+.grm-cta__inner{
+  position:relative;
+  z-index:3;
+  display:flex;
+  align-items:center;
+  width:100%;
+  /* No horizontal padding here. ALL of the interior margin belongs to
+     the copy panel, so the left and right insets are one shared value
+     and cannot drift apart. Vertically the type still sits optically
+     above true centre: heavier top than bottom. */
+  padding-block:
+    clamp(30px,2.6vw,40px)
+    clamp(24px,2.2vw,34px);
+}
+/* The left panel. 43% is exactly the complement of the 57% the photograph
+   already occupies, so its right edge ABUTS the image boundary instead of
+   overlapping it. box-sizing keeps the shared padding-inline honest: the
+   left inset (card edge -> text) and the right inset (text -> image
+   boundary) are the same number by construction, not two unrelated values
+   that merely look similar. */
+.grm-cta__copy{
+  width:43%;
+  box-sizing:border-box;
+  padding-inline:clamp(36px,4.6vw,76px);
+}
+/* Small tracked utility line. Never emphasised. */
+.grm-cta__eyebrow{
+  margin:0 0 16px;
+  color:var(--text-muted);
+  font-family:var(--font-body);
+  font-size:clamp(.8125rem,.92vw,.9375rem);
+  font-weight:600;
+  letter-spacing:.24em;
+  line-height:1;
+  text-transform:uppercase;
+}
+/* Two deliberate lines. The spans are blocks so the statement can
+   never reflow into three, and nowrap guards the long second line --
+   which is exactly why the size is capped on BOTH axes: min(5.9vw,
+   9.5vh). The width term clears the photograph boundary, the height
+   term leaves room for the contact stack inside the fixed plate. */
+.grm-cta__title{
   margin:0;
   color:var(--text);
   font-family:var(--font-display);
   font-stretch:62.5%;
   font-weight:900;
-  font-size:clamp(2.75rem,7.5vw,7.5rem);
-  line-height:.84;
-  letter-spacing:.01em;
+  font-size:clamp(3.375rem,min(5.9vw,9.5vh),5.5rem);
+  line-height:.88;
+  letter-spacing:.005em;
   text-transform:uppercase;
 }
-.grm-end__rule{
-  height:1px;
-  margin-top:clamp(16px,2vw,26px);
-  background:rgba(236,233,226,.34);
+.grm-cta__line{
+  display:block;
+  white-space:nowrap;
 }
-.grm-end__row{
+/* ---- CONTACT PLATE ---------------------------------------------
+   A contact sign-off, not a second CTA. No button, no pill, no card,
+   no icon, no background box and no rule -- the plate already supplies
+   the structure. Label over value in one vertical stack, in the normal
+   sans (never the Ultra Condensed display face) and at body size, so
+   the statement above stays unmistakably dominant. */
+.grm-cta__contact{
   display:flex;
-  justify-content:space-between;
-  align-items:baseline;
-  gap:12px 24px;
-  margin-top:clamp(12px,2vh,22px);
-  color:var(--text-muted);
+  flex-direction:column;
+  gap:14px;
+  margin:clamp(30px,2.6vw,40px) 0 0;
+}
+.grm-cta__contact-item{
+  display:flex;
+  flex-direction:column;
+  gap:3px;
+}
+.grm-cta__contact-label{
+  color:var(--text-faint);
   font-family:var(--font-body);
-  font-size:.68rem;
-  font-weight:500;
-  letter-spacing:.24em;
-  line-height:1.4;
+  font-size:10.5px;
+  font-weight:600;
+  letter-spacing:.22em;
+  line-height:1.2;
   text-transform:uppercase;
 }
-.grm-end__field{margin:0}
-.grm-end__link{
+.grm-cta__contact-value{margin:0}
+.grm-cta__contact-link{
   display:inline-block;
-  margin-top:clamp(18px,2.6vh,32px);
-  padding-bottom:7px;
-  border-bottom:1px solid var(--border);
+  width:fit-content;
+  max-width:100%;
   color:var(--text);
   font-family:var(--font-body);
-  font-size:.72rem;
-  font-weight:600;
-  letter-spacing:.28em;
-  line-height:1;
-  text-transform:uppercase;
-  transition:color 250ms ease,border-color 250ms ease;
+  font-size:15px;
+  font-weight:500;
+  line-height:1.35;
+  text-decoration:none;
+  /* The address wraps naturally rather than overflowing the panel. */
+  overflow-wrap:break-word;
+  transition:color 240ms ease;
 }
-.grm-end__link:hover,.grm-end__link:focus-visible{color:var(--accent-lite);border-color:var(--accent-lite)}
-
-@media (max-width:560px) {
-  .grm-end__row{flex-direction:column;align-items:flex-start;gap:8px}
-  .grm-end__link{padding-top:10px;padding-bottom:9px}
+/* Only the VALUE reacts: warm white to Production yellow. The label
+   above it is completely inert -- no colour change, no opacity shift,
+   no underline, no movement. Hovering a value must leave its title
+   looking exactly as it does at rest. */
+.grm-cta__contact-link:hover,
+.grm-cta__contact-link:focus-visible{color:var(--accent-lite)}
+.grm-cta__contact-link:focus-visible{
+  outline:1px solid var(--accent-lite);
+  outline-offset:4px;
+}
+@media (prefers-reduced-motion:reduce){
+  .grm-cta__contact-link{transition:none}
+}
+@media (max-width:879px){
+  /* Below 880px the plate stacks: photograph as an upper band, type
+     beneath it, so nothing is ever read across the image and the
+     headline keeps a comfortable measure. The card, its border, its
+     fasteners and its material all survive — the physical concept is
+     never dropped, only the composition changes. */
+  .grm-cta{
+    padding:clamp(72px,10vh,116px) 0 clamp(8px,2vh,20px);
+  }
+  .grm-cta__card{
+    display:block;
+    min-height:0;
+    border-radius:5px;
+  }
+  .grm-cta__bolt{
+    width:7px;
+    height:7px;
+  }
+  .grm-cta__bolt::after{
+    left:1.2px;
+    right:1.2px;
+  }
+  .grm-cta__bolt--tl,
+  .grm-cta__bolt--tr{top:9px}
+  .grm-cta__bolt--bl,
+  .grm-cta__bolt--br{bottom:9px}
+  .grm-cta__bolt--tl,
+  .grm-cta__bolt--bl{left:9px}
+  .grm-cta__bolt--tr,
+  .grm-cta__bolt--br{right:9px}
+  .grm-cta__media{
+    position:relative;
+    width:100%;
+    height:clamp(186px,30svh,300px);
+    background-position:62% center;
+  }
+  /* Axes swap: the band settles DOWN into the casing instead of left. */
+  .grm-cta__media::after{
+    background:linear-gradient(180deg,
+      rgba(10,9,8,.42) 0%,
+      rgba(10,9,8,.10) 22%,
+      rgba(10,9,8,.55) 62%,
+      #0a0908 100%);
+  }
+  .grm-cta__media::before{
+    background:linear-gradient(90deg,
+      rgba(5,5,5,.60) 0%,
+      rgba(5,5,5,.10) 26%,
+      rgba(5,5,5,.10) 74%,
+      rgba(5,5,5,.50) 100%);
+  }
+  .grm-cta__inner{
+    display:block;
+    padding-block:
+      clamp(30px,7vw,40px)
+      clamp(34px,8vw,44px);
+  }
+  /* Full width here, but the panel still owns its own padding-inline so
+     the left and right card insets match on mobile exactly too. */
+  .grm-cta__copy{
+    width:auto;
+    padding-inline:clamp(24px,7vw,32px);
+  }
+  .grm-cta__title{
+    font-size:clamp(2.625rem,12.2vw,4.5rem);
+    line-height:.9;
+  }
+  .grm-cta__contact{
+    gap:6px;
+    margin-top:clamp(28px,7vw,36px);
+  }
+  .grm-cta__contact-item{gap:0}
+  /* Comfortable tap target: the value carries the padding, not the label,
+     so the anchor clears 44px without the stack growing loose. */
+  .grm-cta__contact-link{
+    padding-block:12px;
+    font-size:16px;
+  }
 }
 
+/* Geometry / link / rail-slot box only. It paints nothing, so hiding the
+   reveal layer hides the ENTIRE plaque with zero effect on the carousel's
+   horizontal layout. */
 .grm-plaque{
   --plaque-glow:
     inset 0 1px 0 rgba(255,255,255,.06),
@@ -3221,13 +3643,22 @@ html:not(.js) .showreel-aperture__mask{display:none}
     inset 0 0 0 1px rgba(0,0,0,.38),
     0 1px 3px rgba(0,0,0,.42);
   position:relative;
+  display:block;
   width:min(400px,62vw);
   margin:0 auto;
-  display:flex;
-  flex-direction:column;
-  padding:clamp(20px,4vw,24px);
   color:var(--text);
   font-family:var(--font-body);
+}
+/* COMPLETE visual plaque: chassis, border, glow, padding, fasteners, sleeve,
+   vinyl, typography, metadata, hover treatment. This is the only element the
+   RELEASES entrance animates, so the whole object disappears together. */
+.grm-plaque__reveal{
+  position:relative;
+  display:flex;
+  flex-direction:column;
+  width:100%;
+  height:100%;
+  padding:clamp(20px,4vw,24px);
   background:
     radial-gradient(130% 70% at 50% 0%, rgba(255,255,255,.05), transparent 55%),
     repeating-linear-gradient(90deg, rgba(255,255,255,.012) 0 1px, transparent 1px 3px),
@@ -3235,10 +3666,16 @@ html:not(.js) .showreel-aperture__mask{display:none}
   border:1px solid rgba(236,233,226,.12);
   border-radius:3px;
   box-shadow:var(--plaque-glow);
-  transition:transform .45s var(--ease-out),box-shadow .45s var(--ease-out),border-color .45s var(--ease-out);
+  transition:box-shadow .45s var(--ease-out),border-color .45s var(--ease-out);
+  will-change:transform;
+}
+.grm-plaque__inner{
+  display:contents;
 }
 .grm-plaque:hover{
   transform:translateY(-3px);
+}
+.grm-plaque:hover .grm-plaque__reveal{
   border-color:rgba(236,233,226,.18);
   box-shadow:
     inset 0 1px 0 rgba(255,255,255,.08),
@@ -3337,13 +3774,16 @@ html:not(.js) .showreel-aperture__mask{display:none}
   .grm-plaque{aspect-ratio:4 / 5}
 }
 @media (max-width:560px) {
-  .grm-plaque{width:min(400px,88vw);padding:18px}
+  .grm-plaque{width:min(400px,88vw)}
+  .grm-plaque__reveal{padding:18px}
   .grm-plaque__media{width:66%}
 }
 
 @media (prefers-reduced-motion: reduce) {
   .grm-plaque{transition:none}
-  .grm-plaque:hover{transform:none;border-color:rgba(236,233,226,.12);box-shadow:var(--plaque-glow)}
+  .grm-plaque__reveal{transition:none}
+  .grm-plaque:hover{transform:none}
+  .grm-plaque:hover .grm-plaque__reveal{border-color:rgba(236,233,226,.12);box-shadow:var(--plaque-glow)}
 }
 
 /* ============================================================
@@ -3471,661 +3911,859 @@ body.theme-label{
   --label-copy:rgba(236,233,226,.78);
 }
 
-/* --- 1 · LABEL HERO METADATA -------------------------------- */
+/* --- 1 · LABEL HERO METADATA ---------------------------------------
+   The hero metadata line ("Est. 2017 · Belgrade · 13 releases · 10
+   artists") has been removed from the page. Everything that styled it went
+   with it: the descriptor, its arrival/morph states, and the coarse-pointer
+   variant. Nothing replaced it — no substitute stat line, icon or badge — so
+   the hero is now logo + title + descriptor only.
 
-body.theme-label .label-hero-meta{
-  position:relative;
-  top:calc(clamp(-168px,-17vh,-100px) - 48px);
-  margin:0;
-  color:var(--text-faint);
-  font-family:var(--font-body);
-  font-size:clamp(.58rem,.72vw,.68rem);
-  font-weight:500;
-  letter-spacing:.26em;
-  line-height:1.5;
-  text-transform:uppercase;
-  white-space:nowrap;
-  transition:opacity 1400ms ease;
-}
-/* the new line takes the 31px the scroll cue used; the cue drops
-   on Label only so the two never collide across breakpoints */
-body.theme-label .division-minimal-hero__scroll{
-  top:calc(50% + clamp(220px, 25vh, 320px) + clamp(34px, 4.6vh, 54px));
-}
+   The Label-only scroll-cue offset that used to live here is gone too. It was
+   `+clamp(34px,4.6vh,54px)`, added so the cue would clear the metadata line.
+   With the line removed the reason for the drop disappeared, and leaving it
+   would have left Label's indicator sitting lower than every other page's.
+   Label now inherits the shared `top: calc(50% + clamp(220px,25vh,320px))`
+   unmodified, exactly like Liveroom — the only other page using this hero. */
 
-/* ride the shared arrival / morph sequence with the descriptor —
-   the enter-descriptor rule sits after the entering rule so it wins
-   while both classes coexist between 820ms and 1160ms */
-body.is-division-entering .label-hero-meta,
-html.division-arrival-pending .label-hero-meta,
-html.division-morph-pending .label-hero-meta,
-html.division-morph-ui-pending .label-hero-meta{
-  opacity:0;
-}
-body.is-division-enter-descriptor .label-hero-meta{
-  opacity:1;
-}
-/* morph exit: the meta leaves with the rest of the hero UI */
-body.is-division-page-morph-exit .label-hero-meta{
-  opacity:0;
-  transition:opacity 400ms ease;
-}
+/* Two things had to line up for the cue to land on the same pixel as the rest
+   of the site, and both are load-bearing:
 
-@media (hover:none) and (pointer:coarse){
-  body.theme-label .label-hero-meta{
-    letter-spacing:.2em;
-    white-space:normal;
-    text-align:center;
-    font-size:.72rem;
-  }
+   1. The hero's HEIGHT. The cue is anchored at `top: 50%` of the hero, and on
+      desktop this hero is content-height — the lockup alone is ~1002px in a
+      900px viewport — so 50% resolves against content, not the viewport. Two
+      heroes of different heights put the same cue in different places. Label's
+      lockup is now the same height as Liveroom's (both are logo + title +
+      descriptor; the removed line was the only thing that made Label's
+      taller), so with the shared `padding-bottom: 12vh` the two heroes are
+      identical and 50% resolves identically. No height override is declared
+      here on purpose: overriding it was what desynchronised the two pages.
+
+   2. The seam below the cue. `padding-bottom` is now shared too, so it can no
+      longer be used to close the gap without moving the cue — trimming it
+      lifts the cue by half of whatever is trimmed (measured: -68px of padding
+      moved the cue up 34px and closed the gap by only 34px). The reduction is
+      therefore taken out of the seam with a negative margin, which sits
+      outside the border box and cannot affect a `top: 50%` anchor. This is
+      the same technique Liveroom already uses to lift its first section
+      (`.liveroom-room { margin-top: calc(-12vh - 16px) }`).
+
+   Desktop term is sized so the gap closes by ~25% from its original 276.5px
+   while the cue sits exactly where Liveroom's does. */
+body.theme-label .division-minimal-hero{
+  margin-bottom:-10vh;
 }
 
-/* --- 2 · EDITORIAL OPENER ----------------------------------- */
-
-.label-opener__statement{
-  margin:0;
-  max-width:19ch;
-  font-family:var(--font-display);
-  font-stretch:62.5%;
-  font-weight:900;
-  font-size:var(--f-display-xl);
-  line-height:var(--lh-display);
-  letter-spacing:.005em;
-  text-transform:uppercase;
-}
-.label-opener__statement em{
-  color:var(--accent-lite);
-  font-style:normal;
-}
-
-.label-opener{
-  padding-top:calc(var(--sec) + clamp(24px,3vh,48px));
-}
-.label-opener .eyebrow{
-  color:var(--text-muted);
-}
-
-.label-opener__body{
-  display:grid;
-  grid-template-columns:1fr minmax(0,38rem);
-  gap:clamp(24px,5vw,72px);
-  margin-top:clamp(36px,6vh,72px);
-  color:var(--label-copy);
-  font-size:clamp(1.05rem,.95vw,1.15rem);
-  line-height:1.7;
-}
-.label-opener__body p{
-  margin:0;
-  max-width:38rem;
-}
-
-.label-opener__facts{
-  display:grid;
-  grid-template-columns:repeat(4,1fr);
-  gap:0 clamp(24px,4vw,64px);
-  margin:clamp(36px,7vh,84px) 0 0;
-  border-top:1px solid var(--border-strong);
-}
-.label-opener__fact{
-  padding:clamp(18px,2.6vh,30px) 0;
-  border-bottom:1px solid var(--border);
-  font-family:var(--font-body);
-  font-size:var(--f-label);
-  font-weight:600;
-  letter-spacing:.22em;
-  text-transform:uppercase;
-  font-variant-numeric:tabular-nums;
-  color:var(--text-muted);
-  white-space:nowrap;
-}
-
-@media (max-width:760px){
-  .label-opener__body{
-    grid-template-columns:1fr;
-  }
-  .label-opener__facts{
-    grid-template-columns:1fr 1fr;
-  }
-}
-
-/* --- 3 · ROSTER INDEX — compact editorial directory ---------- */
-
-.label-roster{
-  padding-top:clamp(48px,8vh,96px);
-  padding-bottom:clamp(80px,14vh,160px);
-}
-.label-roster .section-head{
-  margin-bottom:clamp(24px,4vh,48px);
-}
-
-/* list left, one fixed preview column right — no full-width stage */
-.label-roster__layout{
-  display:grid;
-  grid-template-columns:minmax(0,1fr) auto;
-  align-items:start;
-  gap:clamp(40px,4.5vw,72px);
-}
-
-.label-roster__list{
-  margin:0;
-  padding:0;
-  list-style:none;
-  min-width:0;
-}
-.label-roster__item{
-  border-bottom:1px solid var(--border);
-}
-.label-roster__item:first-child{
-  border-top:1px solid var(--border-strong);
-}
-
-.label-roster__row{
-  display:grid;
-  grid-template-columns:clamp(32px,3.2vw,52px) minmax(0,1fr) auto;
-  align-items:baseline;
-  gap:clamp(12px,2vw,26px);
-  position:relative;
-  width:100%;
-  padding:clamp(11px,1.5vh,18px) 0;
-  border:0;
-  background:none;
-  color:inherit;
-  font:inherit;
-  text-align:left;
-  cursor:pointer;
-}
-.label-roster__row:focus-visible{
-  outline:1px solid var(--accent-lite);
-  outline-offset:4px;
-  border-radius:2px;
-}
-
-.label-roster__name{
-  font-family:var(--font-display);
-  font-stretch:62.5%;
-  font-weight:900;
-  font-size:clamp(2rem,3.5vw,3.5rem);
-  line-height:1;
-  letter-spacing:.008em;
-  white-space:nowrap;
-  overflow:hidden;
-  min-width:0;
-}
-/* vitić is lowercase in the source on purpose — no transform here */
-
-.label-roster__no,
-.label-roster__count{
-  font-family:var(--font-body);
-  font-size:var(--f-small);
-  font-weight:600;
-  letter-spacing:.16em;
-  text-transform:uppercase;
-  color:var(--text-faint);
-  white-space:nowrap;
-  transition:color 250ms ease;
-}
-.label-roster__count{
-  text-align:right;
-}
-.label-roster__row:hover .label-roster__no,
-.label-roster__row:focus-visible .label-roster__no{
-  color:var(--accent-lite);
-}
-.label-roster__row:hover .label-roster__count,
-.label-roster__row:focus-visible .label-roster__count{
-  color:var(--label-copy);
-}
-.label-roster__row:hover .label-roster__name,
-.label-roster__row:focus-visible .label-roster__name{
-  color:#ffffff;
-}
-
-/* preview — one annotation module, anchored to the list column */
-.label-roster__preview{
-  position:sticky;
-  top:clamp(16px,4vh,48px);
-  display:grid;
-  grid-template-columns:minmax(0,clamp(220px,22vw,320px));
-  gap:clamp(12px,1.8vh,20px);
-  min-width:0;
-}
-.label-roster__module-eyebrow{
-  font-size:var(--f-label);
-}
-.label-roster__module-copy{
-  margin:0;
-  max-width:26ch;
-  color:var(--text-muted);
-  font-size:var(--f-small);
-  line-height:1.5;
-}
-.label-roster__frame{
-  position:relative;
-  margin:0;
-  width:clamp(220px,22vw,320px);
-  aspect-ratio:1/1;
-  background:var(--bg);
-  border:1px solid var(--border-strong);
-  overflow:hidden;
-}
-.label-roster__frame-img{
-  position:absolute;
-  inset:0;
-  width:100%;
-  height:100%;
-  object-fit:cover;
-  opacity:0;
-  transition:opacity 250ms ease;
-}
-.label-roster__frame-img.is-on{
-  opacity:1;
-}
-.label-roster__module-title{
-  margin:0;
-  padding-top:clamp(10px,1.6vh,16px);
-  border-top:1px solid var(--border);
-  font-family:var(--font-display);
-  font-stretch:62.5%;
-  font-weight:800;
-  letter-spacing:.02em;
-  line-height:1;
-  text-transform:uppercase;
-  font-size:clamp(1.4rem,2vw,2rem);
-}
-.label-roster__module-meta{
-  margin:clamp(6px,1vh,10px) 0 0;
-  font-family:var(--font-body);
-  font-size:var(--f-label);
-  font-weight:500;
-  letter-spacing:.18em;
-  text-transform:uppercase;
-  color:var(--text-faint);
-}
-
-/* tablet/mobile — pure typographic list, no preview module */
-@media (max-width:820px){
-  .label-roster__layout{
-    grid-template-columns:1fr;
-  }
-  .label-roster__preview{
-    display:none;
-  }
-}
-
-/* reduced motion — crossfade becomes an instant swap */
-@media (prefers-reduced-motion: reduce){
-  .label-roster__frame-img{
-    transition:none;
+/* On a phone the hero is bound by `min-height:100svh` rather than by its
+   content, so its height is identical on both pages already and only the
+   shared cue offset matters. Lifting the cue to the shared position opens the
+   gap by exactly the offset that was removed, so the margin cancels it term
+   for term: the net mobile gap is unchanged from what was already approved,
+   with the indicator now level across pages. */
+@media (max-width:1023px){
+  body.theme-label .division-minimal-hero{
+    margin-bottom:calc(-1 * clamp(34px, 4.6vh, 54px));
   }
 }
 
 /* ============================================================
-   GRM LABEL — INTERACTION SANDBOX (TEMPORARY).
-   Six roster-interaction concepts (CONCEPT 01–06) for internal
-   design review only. Scoped exclusively to .label-sandbox and
-   .roster-cand-*; the production roster above is never touched.
-   Every concept shares the same base typography, artwork frame,
-   dimensions, mint accent and dark background as the production
-   index, using modifier classes (.roster-cand--bleed / --shift /
-   --marker / --ghost) so the differences come only from a small
-   per-concept layer on top of the shared core. Delete this whole
-   block, the #sandbox section and the sandbox script in
-   label/index.html when a direction is chosen.
+   GRM LABEL — PAGE STRUCTURE
+   About · The People · Selected Releases.
+   Fully scoped to the Label page (body.theme-label / .label-*).
+   Replaces the former opener, roster index and interaction
+   sandbox. No shared rule is modified above; this block only adds.
    ============================================================ */
 
-.label-sandbox{
-  padding:clamp(56px,10vh,120px) 0 clamp(96px,16vh,180px);
-  border-top:1px solid var(--border);
-  background:var(--bg);
-}
-.label-sandbox .section-head{
-  margin-bottom:clamp(24px,4vh,48px);
+/* --- 2 · ABOUT GRM LABEL ------------------------------------ */
+
+.label-about{
+  /* Mobile keeps the spacing it was approved with — the desktop retune
+     below is scoped to min-width:1024px so the phone composition is
+     untouched.
+     scoped to this section: --sec only feeds .section padding-top
+     inside this subtree, so no other section is affected. */
+  --sec:clamp(64px,12.5vh,140px);
+  border-bottom:1px solid var(--border);
+  /* padding-bottom is owned by the LOWER-THIRD rule further down this file,
+     which seats the whole content block. Declared there, not here, so there
+     is exactly one place that decides how far off the bottom the type sits. */
 }
 
-/* --- shared prototype frame ------------------------------- */
+/* Desktop-only vertical rhythm for the short aperture. Because the section
+   is now sized in viewport units rather than by its own aspect ratio, the
+   old --sec would push the copy into the bottom third of a 585px frame and
+   leave almost no room below it for the desk to pass through. Pulling the
+   top in and giving the bottom slightly MORE than the top lifts the eyebrow
+   + headline a little above true centre — measured 13-16px high at 1440,
+   1920 and 1280 — which is the optical position the shorter frame wants.
+   The section is still allowed to grow past 65svh when the copy needs the
+   room (68.7svh at 1024x768) rather than clip the headline. */
+@media (min-width:1024px){
+  .label-about{
+    --sec:clamp(32px,6vh,72px);
+    /* The former `padding-bottom:clamp(40px,9vh,108px)` is superseded. It was
+       tuned to pull the copy UP against a vertically CENTRED block; with the
+       block now deliberately seated low, a bottom gutter sized for a centred
+       composition fought the new placement. The gutter is declared once, in
+       the lower-third rule below. */
+  }
+}
 
-.roster-cand{
-  margin-top:clamp(72px,11vh,120px);
+.label-about__spread{
+  display:grid;
+  /* Two columns inside the site container, proportioned rather than
+     absolutely positioned. 1.06fr / 0.94fr resolves to ~53 / ~47 of the
+     track space after the gap, which is the territory the brief asks for.
+     It replaces `1fr / 37rem`, where the left track absorbed every pixel
+     the container had left over (786px at 1440) and so opened a ~386px
+     void between a headline that only needs 443px and the copy.
+
+     The left track must stay wider than the headline's longest line —
+     "More than" measures 443px at the 136px desktop size — because that
+     line ends in a hard <br>. The proportion keeps it comfortable at every
+     breakpoint (388px vs 317px at 1024; 647px vs 443px at 1440), so the
+     locked two-line break never re-flows. */
+  grid-template-columns:minmax(0,1.06fr) minmax(0,0.94fr);
+  gap:clamp(32px,3.2vw,56px);
+  align-items:end;
+  margin-top:clamp(36px,6vh,72px);
 }
-.roster-cand + .roster-cand{
-  margin-top:clamp(72px,11vh,120px);
-  padding-top:clamp(32px,5vh,52px);
-  border-top:1px dashed var(--accent-hair);
-}
-.roster-cand__label{
-  display:flex;
-  flex-wrap:wrap;
-  align-items:baseline;
-  gap:8px 20px;
-  margin-bottom:clamp(24px,4vh,44px);
-}
-.roster-cand__tag{
-  font-family:var(--font-body);
-  font-size:var(--f-label);
-  font-weight:600;
-  letter-spacing:.22em;
-  text-transform:uppercase;
-  color:var(--accent-lite);
-}
-.roster-cand__label-title{
+
+.label-about__statement{
   margin:0;
+  max-width:16ch;
   font-family:var(--font-display);
   font-stretch:62.5%;
-  font-weight:800;
-  font-size:clamp(1.5rem,2.2vw,2rem);
+  font-weight:900;
+  font-size:clamp(3.6rem,9.5vw,8.5rem);
   line-height:var(--lh-display);
   letter-spacing:.005em;
   text-transform:uppercase;
 }
-.roster-cand__note{
-  max-width:40ch;
-  color:var(--text-faint);
-  font-size:var(--f-small);
-  line-height:1.55;
-}
-
-/* the shared composition — mirrors the production index exactly */
-.roster-cand__stage{
-  display:grid;
-  grid-template-columns:minmax(0,1fr) auto;
-  align-items:start;
-  gap:clamp(40px,4.5vw,72px);
-  position:relative;
-}
-.roster-cand__list{
-  margin:0;
-  padding:0;
-  list-style:none;
-  min-width:0;
-}
-.roster-cand__item{
-  border-bottom:1px solid var(--border);
-}
-.roster-cand__item:first-child{
-  border-top:1px solid var(--border-strong);
-}
-.roster-cand__row{
-  display:grid;
-  grid-template-columns:clamp(32px,3.2vw,52px) minmax(0,1fr) auto;
-  align-items:baseline;
-  gap:clamp(12px,2vw,26px);
-  position:relative;
-  width:100%;
-  padding:clamp(11px,1.5vh,18px) 0;
-  border:0;
-  background:none;
-  color:inherit;
-  font:inherit;
-  text-align:left;
-  cursor:pointer;
-}
-.roster-cand__row:focus-visible{
-  outline:1px solid var(--accent-lite);
-  outline-offset:4px;
-  border-radius:2px;
-}
-.roster-cand__name{
-  font-family:var(--font-display);
-  font-stretch:62.5%;
-  font-weight:900;
-  font-size:clamp(2rem,3.5vw,3.5rem);
-  line-height:1;
-  letter-spacing:.008em;
-  white-space:nowrap;
-  overflow:hidden;
-  min-width:0;
-}
-/* vitić stays lowercase in the source on purpose — no transform here */
-.roster-cand__no,
-.roster-cand__count{
-  font-family:var(--font-body);
-  font-size:var(--f-small);
-  font-weight:600;
-  letter-spacing:.16em;
-  text-transform:uppercase;
-  color:var(--text-faint);
-  white-space:nowrap;
-  transition:color 250ms ease;
-}
-.roster-cand__count{
-  text-align:right;
-}
-.roster-cand__row:hover .roster-cand__no,
-.roster-cand__row:focus-visible .roster-cand__no{
+.label-about__statement em{
   color:var(--accent-lite);
+  font-style:normal;
 }
-.roster-cand__row:hover .roster-cand__count,
-.roster-cand__row:focus-visible .roster-cand__count{
+
+.label-about__body{
+  padding-bottom:clamp(.4rem,.8vh,.8rem);
+}
+.label-about__body p{
+  margin:0;
+  /* The column sets the measure, not a fixed cap: on the two-column
+     layouts the track is 574px at 1440 and 632px at 1920, both inside the
+     brief's 520-620 territory, and filling the track puts the text's right
+     edge exactly on the container's right margin instead of stopping a
+     stray 14px short of it. The single-column layouts re-cap the measure
+     at 35rem inside their own media query, where the track is far wider
+     than any sensible line length. */
+  max-width:100%;
   color:var(--label-copy);
+  /* capped at 19.2px rather than 20px so the two-paragraph block stays
+     no taller than the headline's — the pair is baseline-anchored. */
+  font-size:clamp(1.15rem,1.22vw,1.2rem);
+  line-height:1.6;
 }
-.roster-cand__row:hover .roster-cand__name,
-.roster-cand__row:focus-visible .roster-cand__name{
-  color:#ffffff;
-}
-
-.roster-cand__preview{
-  position:sticky;
-  top:clamp(16px,4vh,48px);
-  display:grid;
-  grid-template-columns:minmax(0,clamp(220px,22vw,320px));
-  gap:clamp(12px,1.8vh,20px);
-  min-width:0;
-}
-.roster-cand__eyebrow{
-  font-size:var(--f-label);
-}
-.roster-cand__copy{
-  margin:0;
-  max-width:26ch;
-  color:var(--text-muted);
-  font-size:var(--f-small);
-  line-height:1.5;
-}
-.roster-cand__artwork{
-  position:relative;
-}
-.roster-cand__frame{
-  position:relative;
-  margin:0;
-  width:clamp(220px,22vw,320px);
-  aspect-ratio:1/1;
-  background:var(--bg);
-  border:1px solid var(--border-strong);
-  overflow:hidden;
-}
-.roster-cand__frame-img{
-  position:absolute;
-  inset:0;
-  width:100%;
-  height:100%;
-  object-fit:cover;
-  opacity:0;
-  transition:opacity 250ms ease;
-}
-.roster-cand__frame-img.is-on{
-  opacity:1;
-}
-.roster-cand__title{
-  margin:0;
-  padding-top:clamp(10px,1.6vh,16px);
-  border-top:1px solid var(--border);
-  font-family:var(--font-display);
-  font-stretch:62.5%;
-  font-weight:800;
-  letter-spacing:.02em;
-  line-height:1;
-  text-transform:uppercase;
-  font-size:clamp(1.4rem,2vw,2rem);
-}
-.roster-cand__meta{
-  margin:clamp(6px,1vh,10px) 0 0;
-  font-family:var(--font-body);
-  font-size:var(--f-label);
-  font-weight:500;
-  letter-spacing:.18em;
-  text-transform:uppercase;
-  color:var(--text-faint);
+.label-about__body p + p{
+  margin-top:clamp(18px,1.9vh,26px);
 }
 
-/* --- CONCEPT 02 · ARTWORK BLEED --------------------------- */
-/* the square frame stays the anchor; the artwork also travels
-   through a masked horizontal strip into the gap, and a masked
-   fragment escapes the top-right corner. Both crossfade with the
-   active release like the frame itself. */
-
-.roster-cand--bleed .roster-cand__bleed{
-  position:absolute;
-  overflow:hidden;
-  pointer-events:none;
-}
-.roster-cand--bleed .roster-cand__bleed .roster-cand__frame-img{
-  object-fit:cover;
-}
-.roster-cand--bleed .roster-cand__bleed--strip{
-  top:42%;
-  left:calc(-1 * clamp(40px,4.5vw,72px));
-  width:clamp(32px,3.6vw,52px);
-  height:clamp(72px,12vh,120px);
-  transform:translateY(-50%);
-  -webkit-mask-image:linear-gradient(90deg,#000 30%,transparent 100%);
-  mask-image:linear-gradient(90deg,#000 30%,transparent 100%);
-}
-.roster-cand--bleed .roster-cand__bleed--frag{
-  top:calc(-1 * clamp(14px,2vh,18px));
-  right:calc(-1 * clamp(14px,2vw,20px));
-  width:clamp(76px,9vw,116px);
-  aspect-ratio:1/1;
-  border:1px solid var(--border-strong);
-  box-shadow:0 18px 40px rgba(0,0,0,.5);
-  -webkit-mask-image:linear-gradient(135deg,#000 55%,transparent 100%);
-  mask-image:linear-gradient(135deg,#000 55%,transparent 100%);
-}
-
-/* --- CONCEPT 03 · MICRO SHIFT ----------------------------- */
-/* the preview recomposes subtly on selection: artwork shifts,
-   title/meta move opposite, eyebrow drifts, one hairline wire
-   extends/contracts. Driven by --sb-shift-y / --sb-wire custom
-   props set in CSS by the shared driver. Transforms only — no
-   layout jump. */
-
-.roster-cand--shift .roster-cand__preview{
-  --sb-shift-y:0px;
-  --sb-wire:36%;
-}
-.roster-cand--shift .roster-cand__frame{
-  transform:translateY(var(--sb-shift-y));
-  transition:transform 420ms var(--ease-hero);
-}
-.roster-cand--shift .roster-cand__title,
-.roster-cand--shift .roster-cand__meta{
-  transform:translateY(calc(var(--sb-shift-y) * -0.5));
-  transition:transform 420ms var(--ease-hero);
-}
-.roster-cand--shift .roster-cand__eyebrow{
-  transform:translateY(calc(var(--sb-shift-y) * 0.3));
-  transition:transform 420ms var(--ease-hero);
-}
-.roster-cand--shift .roster-cand__wire{
+/* one subtle label-green accent detail */
+.label-about__rule{
   display:block;
-  height:1px;
-  margin-top:clamp(10px,1.6vh,14px);
-  background:var(--accent-hair);
-  width:var(--sb-wire);
-  transition:width 420ms var(--ease-hero);
-}
-
-/* --- CONCEPT 04 & 06 · CATALOGUE MARKER -------------------- */
-/* a mint marker glides vertically beside the active row, held in
-   the whitespace between the number and the name so no baseline
-   or text is disturbed. Smooth slide, no blink. */
-
-.roster-cand--marker .roster-cand__list{
-  position:relative;
-}
-.roster-cand--marker .roster-cand__marker{
-  position:absolute;
-  left:calc(clamp(32px,3.2vw,52px) + clamp(6px,1vw,13px));
-  top:0;
-  width:2px;
-  height:clamp(30px,4vh,42px);
+  width:64px;
+  height:2px;
+  margin-top:clamp(36px,6vh,72px);
   background:var(--accent-lite);
-  transform:translate(-50%,-50%);
-  transition:top 420ms var(--ease-hero);
-  pointer-events:none;
 }
 
-/* --- CONCEPT 05 & 06 · GHOST TYPE -------------------------- */
-/* an enormous ultra-condensed name, very low opacity (3–6%),
-   cropped by the stage, sitting behind the artwork and the
-   metadata. Crossfades between the previous and the incoming
-   name. vitić's ghost stays lowercase — no transform here. */
+/* Tablet band: the statement's locked two-line break needs ~4em of the
+   column (~38vw at this fluid size). Below ~1200px the copy column has to
+   give width back, or the headline crushes to 3-4 lines. */
+@media (min-width:1024px) and (max-width:1199px){
+  .label-about__spread{
+    grid-template-columns:minmax(0,1fr) minmax(0,30rem);
+    gap:clamp(28px,3.2vw,40px);
+  }
+}
+/* Under 1024px a locked two-line headline and an editorial measure can no
+   longer share a row — stack rather than crush the headline. The track is
+   now the full container (721px at 820), which is far too wide to read as
+   one measure, so the paragraphs re-cap at 35rem here. */
+@media (max-width:1023px){
+  .label-about__spread{
+    grid-template-columns:1fr;
+    align-items:start;
+    gap:clamp(24px,4vh,40px);
+  }
+  .label-about__body p{ max-width:38rem; }
+}
 
-.roster-cand--ghost .roster-cand__ghost-crop{
+/* --- ABOUT GRM: full-bleed atmosphere + one-shot reveal ---------------
+   Scoped to .label-about only. Nothing below this block is shared with
+   any other section, and js/main.js is not touched: the reveal is driven
+   by a page-local IntersectionObserver (label/index.html).
+
+   Structure:  section > .label-about__bg (> .label-about__motion > img
+                                                + veil + vignette)
+                      > .container (existing content, lifted to z-index 1)
+   The photograph contributes no layout dimension — the wrapper and the img
+   are absolutely positioned, so the section's height is driven purely by
+   its `aspect-ratio` and content. The wrapper is what the scroll travel
+   transforms; it sits INSIDE the clipping frame so the image can move
+   without ever exposing an edge. */
+.label-about{
+  position:relative;
+  isolation:isolate;
+  overflow:hidden;
+  overflow:clip;
+  /* WIDE CINEMATIC APERTURE — a shallow strip the room travels behind.
+
+     The section is sized in viewport units, not by an aspect ratio:
+     `min-height:80svh` sets the visible frame to 1440x720 (a 2:1 strip) at
+     1440x900. It is a MIN-height on purpose — on a short or narrow viewport
+     the copy needs ~400-415px plus padding, and the frame is allowed to grow
+     past 80svh rather than clip the headline.
+
+     THE PHOTOGRAPH IS LANDSCAPE (GRM-studio-landscape, 1536x1024, 3:2) and
+     that is what makes this frame work. Because the section is far wider than
+     3:2, `cover` fits the photo by WIDTH: at 1440 it renders 1440x960, so the
+     720px aperture shows 720/960 = 75% of the photograph's height. The
+     remaining 25% is the overscan the scroll travel is spent out of — and it
+     is spent entirely out of overscan, never out of the frame.
+
+     A portrait source could not do this at this aperture: 1086x1448 rendered
+     1440x1920, so a 720px window would have shown only 37% of the photo, and
+     the logo wall (rows 0.12-0.25) and the desk (rows 0.59-0.65) sit 0.53
+     apart — they cannot both be in a window under half the photo's height.
+
+     `width:100%` remains load-bearing and must not be dropped: the old
+     `aspect-ratio:0.7895` + `max-height:200svh` pair let CSS re-solve
+     WIDTH from a clamped height and left an unpainted strip at the right
+     edge — 19px at 1440, 215px at 1920. An explicit width stops that. */
+  width:100%;
+  min-height:80svh;
+  /* LOWER-THIRD COMPOSITION. The copy is no longer centred in the aperture.
+     It is seated low, behind a defined bottom gutter, so the top ~38% of the
+     plate stays pure photograph and the room, the lit GRM logo and the
+     ceiling register BEFORE any type appears — photo first, message second.
+
+     `justify-content:flex-end` + `padding-bottom` moves the WHOLE block as
+     one composition: eyebrow, the two-column spread and the green rule keep
+     their internal relationship and their shared container, and none of them
+     is pushed independently. The padding is what keeps this from becoming
+     bottom-aligned — the block is seated, not glued to the edge.
+
+     `padding-bottom` is inside the border box, so `min-height:80svh` still
+     describes the whole aperture, and .label-about__bg is absolutely
+     positioned against the PADDING box, so the photograph still spans the
+     full section — the gutter does not crop it. */
+  display:flex;
+  flex-direction:column;
+  justify-content:flex-end;
+  padding-bottom:clamp(40px,6svh,72px);
+}
+/* No local width override on .label-about > .container: it deliberately
+   inherits the SHARED site container — `var(--container)` =
+   min(1400px, 100% - 2 * var(--gutter)) centred with margin-inline:auto —
+   exactly as .label-people and .label-releases do. It used to be forced to
+   width:100%, which threw the site gutter away entirely and put the
+   eyebrow and headline hard against the viewport edge at x=0 on every
+   width; the right edge then fell wherever the grid happened to end,
+   leaving a dead strip that was 51px at 1440 but 247px at 1920.
+
+   Nothing about the photograph depends on this. .label-about__bg is a
+   sibling of .container, not a child, and is absolutely positioned with
+   inset:0 against the section — so the image still spans 100% of the
+   section's width and height while the type respects the site margins. */
+
+.label-about__bg{
   position:absolute;
   inset:0;
   z-index:0;
   overflow:hidden;
   pointer-events:none;
-  user-select:none;
 }
-.roster-cand--ghost .roster-cand__list,
-.roster-cand--ghost .roster-cand__preview{
+.label-about__bg img{
+  position:absolute;
+  inset:0;
+  width:100%;
+  height:100%;
+  object-fit:cover;
+  /* ART DIRECTION — source is GRM-studio-landscape (1536x1024, 3:2
+     landscape). Inside .label-about__frame, whose aspect-ratio is the
+     SAME 3:2, `cover` is an exact fit: there is no slack inside the box at
+     all, which is what lets the script treat the frame's height as the
+     rendered photo height without measuring. All framing is owned by the
+     frame's transform. Mobile drops the frame's aspect ratio so `cover`
+     fits by height there instead. */
+  object-position:50% 50%;
+  /* Final state is the base rule, mirroring the site's own `.reveal`
+     convention (visible by default, concealed only under `html.js`).
+     Without JS the photograph is therefore fully visible. */
+  transform:none;
+  opacity:1;
+}
+
+/* --- scroll-driven background motion -------------------------------
+   Two layers, because the scroll transform and the one-shot reveal
+   transform must never touch the same element:
+
+     .label-about__motion   the CLIP. `inset:0` + overflow:hidden. Never
+                            transformed.
+     .label-about__frame    the moving photograph. Carries the scroll
+                            `translate3d()` + `scale()`.
+     img                    carries the reveal (opacity + scale).
+
+   THE FRAME IS SIZED TO THE PHOTOGRAPH, NOT TO THE SECTION. It is
+   `width:100%` with `aspect-ratio:3/2` — exactly the source's 1536x1024 —
+   centred on the aperture by a negative percentage margin (which resolves
+   against the wrapper's WIDTH, so -33.3333% is precisely -frameHeight/2).
+   At 1440 it is therefore 1440x960 inside a 720px aperture.
+
+   That makes the travel exact rather than approximate:
+     renderedImageHeight      = frameHeight * scale
+     availableVerticalOverflow = renderedImageHeight - sectionHeight
+   at 1440x900 with scale 1.12 that is 1075 - 720 = 355px of overscan, and
+   the hard clamp in the script holds the translate inside
+   +/-overflow/2 = +/-177.6px, so no edge can ever be uncovered.
+
+   `translate3d(0,4.82%,0)` is the RESTING frame and is also what no-JS,
+   reduced-motion and any pre-script paint see. It parks a FIXED source row
+   0.452 at every viewport — deliberately not the same row as the script's
+   midpoint stop, because that one is resolved per viewport from the measured
+   band (0.431 at 1440, 0.398 at 1920) while CSS cannot be. Row 0.452 is the
+   single row that holds the lit logo wall (0.124-0.254) and the lit desk band
+   (0.588-0.652) in full across the whole desktop range, verified from 1024 to
+   2560 wide. The script's first paint then takes over and moves to the
+   viewport-exact band, so the still is only ever seen for a frame.
+
+   A percentage is used rather than a viewport unit because translate resolves
+   against the ELEMENT's own height — the frame — which is exactly the
+   quantity the composition is expressed in, and unlike `vw` it is unaffected
+   by a classic scrollbar. Mobile overrides it to `none`, because there the
+   frame is released to the section's own box and `cover` is centred already. */
+.label-about__motion{
+  position:absolute;
+  inset:0;
+  overflow:hidden;
+}
+.label-about__frame{
+  position:absolute;
+  left:0;
+  top:50%;
+  width:100%;
+  aspect-ratio:3/2;
+  margin-top:-33.3333%;
+  transform-origin:50% 50%;
+  transform:translate3d(0,4.82%,0) scale(1);
+}
+/* Promoted only where motion is actually enabled (desktop, motion
+   allowed) so narrow viewports never hold a compositor layer they
+   don't use. */
+@media (min-width:1024px){
+  .label-about__frame{ will-change:transform; }
+}
+/* Flat global exposure — the floor the local shaping works on top of.
+   Under `html.js` it starts at .94 and eases to this value, so the room
+   develops out of the page's own black rather than cross-fading up.
+   background-color so it can interpolate. */
+.label-about__veil{
+  position:absolute;
+  inset:0;
+  /* The FLAT component is now almost nothing. Exposure is carried entirely by
+     the vertical ramp in .label-about__vignette; a flat .46 wash darkened the
+     whole plate — ceiling, spotlight and lit logo wall included — which is
+     precisely the "globally darken the photograph to protect the text" the
+     brief rules out. This layer survives only because the entrance reveal
+     needs a black field to lift away from. */
+  background-color:rgba(0,0,0,.05);
+}
+/* Local exposure — VERTICAL PRIMARY. The mask philosophy has changed with the
+   composition. The old treatment was horizontal: a left-deep / centre-open /
+   right-moderate ramp reaching .70 at the left edge, which protected the two
+   text columns but crushed the room's outer walls and, combined with a flat
+   .46 veil, left the top of the plate no more open than the middle. Type and
+   photograph were fighting over the same territory.
+
+   Now the primary axis is vertical, and it is the only one doing real work.
+   The photograph is held almost untouched through the top third, then falls
+   into black on a long, heavily-overlapped ramp:
+
+       0-20%   .00   ceiling, spotlights, upper wall — pure photograph
+       30%     .02
+       38%     .07   eyebrow enters the ramp
+       45%     .13
+       52%     .19
+       60%     .30   central screen / speakers still readable
+       68%     .43
+       75%     .58
+       82%     .70   body copy sits here
+       90%     .79
+       96%     .855
+       100%    .89   near-black photographic atmosphere, NOT flat black
+
+   Stop density is high and the overlaps are wide on purpose: there must be
+   no discernible boundary anywhere. The bottom is .89 rather than 1.0 so the
+   studio shapes, light and depth still survive under the type — the brief
+   asks for the photograph to be subdued behind the copy, not erased.
+
+   The horizontal layer is demoted to what the brief allows: a secondary,
+   very light edge shaping (.10 at the margins, fully open at the centre) that
+   only keeps the eye inside the frame. Any real protection for the copy now
+   comes from the vertical ramp, because the copy sits in the lower third.
+
+   Pure black throughout: no tint, no blur, no panels, no backdrop-filter, no
+   text shadow. Readability here is exposure control only. */
+.label-about__vignette{
+  position:absolute;
+  inset:0;
+  background-image:
+    linear-gradient(90deg,
+      rgba(0,0,0,.10) 0%,
+      rgba(0,0,0,.06) 14%,
+      rgba(0,0,0,.02) 32%,
+      rgba(0,0,0,0) 50%,
+      rgba(0,0,0,.02) 68%,
+      rgba(0,0,0,.06) 86%,
+      rgba(0,0,0,.10) 100%),
+    linear-gradient(180deg,
+      rgba(0,0,0,0) 0%,
+      rgba(0,0,0,0) 20%,
+      rgba(0,0,0,.02) 30%,
+      rgba(0,0,0,.07) 38%,
+      rgba(0,0,0,.13) 45%,
+      rgba(0,0,0,.19) 52%,
+      rgba(0,0,0,.30) 60%,
+      rgba(0,0,0,.43) 68%,
+      rgba(0,0,0,.58) 75%,
+      rgba(0,0,0,.70) 82%,
+      rgba(0,0,0,.79) 90%,
+      rgba(0,0,0,.855) 96%,
+      rgba(0,0,0,.89) 100%);
+}
+
+.label-about > .container{
   position:relative;
   z-index:1;
 }
-.roster-cand--ghost .roster-cand__ghost{
-  position:absolute;
-  left:clamp(8px,1vw,16px);
-  bottom:0;
-  font-family:var(--font-display);
-  font-stretch:62.5%;
-  font-weight:900;
-  font-size:clamp(9rem,21vw,16rem);
-  line-height:.78;
-  letter-spacing:.01em;
-  text-transform:none;
-  color:var(--text);
-  white-space:nowrap;
+
+/* --- one-shot entrance -----------------------------------------------
+   Image develops from black first (0ms), then the type settles behind it.
+   .container is in the selector purely to outrank the global
+   `html.js .reveal` / `html.js .reveal.in-view` pair without editing it. */
+html.js .label-about .label-about__bg img{
+  opacity:.06;
+  transform:scale(1.04);
+  transition:opacity 1500ms cubic-bezier(.22,1,.36,1),
+             transform 1500ms cubic-bezier(.22,1,.36,1);
+}
+html.js .label-about.is-revealed .label-about__bg img{
+  opacity:1;
+  transform:scale(1);
+}
+/* the darkness lifts from .94 to .05 over the same 1500ms — the exposure
+   layer itself relaxes, so the room emerges out of black instead of simply
+   cross-fading up as a flat picture */
+html.js .label-about .label-about__veil{
+  background-color:rgba(0,0,0,.94);
+  transition:background-color 1500ms cubic-bezier(.22,1,.36,1);
+}
+html.js .label-about.is-revealed .label-about__veil{
+  background-color:rgba(0,0,0,.05);
+}
+html.js .label-about .container .reveal{
   opacity:0;
-  transform:translateY(clamp(16px,2.4vh,26px));
-  transition:opacity 320ms ease,transform 420ms var(--ease-hero);
+  transform:translateY(8px);
+  transition:opacity 900ms var(--ease-out),transform 900ms var(--ease-out);
 }
-.roster-cand--ghost .roster-cand__ghost.is-on{
-  opacity:.045;
-  transform:translateY(clamp(2px,0.4vh,4px));
+html.js .label-about.is-revealed .container .reveal{
+  opacity:1;
+  transform:none;
 }
+/* stagger — background 0ms, then the type settles behind it */
+html.js .label-about.is-revealed .eyebrow{ transition-delay:180ms; }
+html.js .label-about.is-revealed .label-about__statement{ transition-delay:280ms; }
+html.js .label-about.is-revealed .label-about__body{ transition-delay:420ms; }
+html.js .label-about.is-revealed .label-about__rule{ transition-delay:520ms; }
 
-/* --- tablet / mobile — simplify ---------------------------- */
-/* same rule as the production index: preview module hidden, list
-   goes full width; experimental devices (bleed, ghost) are turned
-   off and nothing can overflow horizontally. */
+  /* Narrow viewports are taller than they are wide, so `cover` fits by height
+     and the full photo height survives anyway. The desktop lower-third
+     placement is deliberately NOT inherited here: with `min-height:0` the
+     plate is exactly as tall as the stacked copy, so seating the block on
+     flex-end would only add a dead gutter with nothing to balance it. The
+     block returns to natural flow, the padding-bottom from the base rule is
+     kept as genuine breathing room, and the photo simply runs above the type
+     — the brief's "keep the photo visible above the text where possible".
 
-@media (max-width:820px){
-  .roster-cand__stage{
-    grid-template-columns:1fr;
+     The mask philosophy is still vertical-primary, but retuned for a tall
+     plate where the copy fills nearly all of it. The top quarter stays open
+     so the room and logo read, and the ramp then climbs steadily through the
+     stacked copy instead of staying open until the midpoint — which is what
+     holds the lit desk/console band (59-65% of the plate, directly behind
+     the body copy) back without touching the logo or the eyebrow.
+
+     The horizontal layer stays a little firmer than the desktop's because on
+     mobile the type is full-bleed and the photo's side walls are cropped away
+     anyway: with no free side margin there is nothing for the vertical ramp
+     to protect at the edges. It remains secondary to the vertical. */
+@media (max-width:1023px){
+  .label-about{
+    min-height:0;
+    justify-content:flex-start;
+    /* Restores the mobile spacing this section was approved with. The base
+       rule's larger desktop gutter is a lower-third OFFSET for a section with
+       free space; on a phone `min-height:0` means there is no free space to
+       offset from, so inheriting it would just push the whole composition
+       down for no compositional gain. Kept as a modest bottom cushion. */
+    padding-bottom:clamp(24px,4vh,48px);
   }
-  .roster-cand__preview{
-    display:none;
+  .label-about__bg img{ object-position:50% 50%; }
+  /* Motion is desktop-only, and here it is not merely switched off but
+     STRUCTURALLY ABSENT: the frame's aspect ratio is released so it fills
+     the section box, `cover` fits the photo by height on a tall plate, and
+     no transform is ever applied (the page-local script gates on
+     min-width:1024px). Framing is the resting one — source rows
+     0.125-0.875 — which keeps the lit logo wall (0.12-0.25) and the lit
+     desk band (0.59-0.65) both in view. A phone crops the sides of a 3:2
+     photograph rather than its top and bottom, so the two landmarks
+     survive the narrow crop intact; that is worth the whole reason the
+     landscape derivative exists. */
+  .label-about__frame{
+    inset:0;
+    aspect-ratio:auto;
+    margin-top:0;
+    transform:none;
+    will-change:auto;
   }
-  .roster-cand--bleed .roster-cand__bleed{
-    display:none;
+  .label-about__veil{ background-color:rgba(0,0,0,.06); }
+  /* Narrow viewports fit the photo by HEIGHT, so the whole photograph is on
+     show and `object-position` is inert vertically — the only available tool
+     is exposure, exactly as before. What changes is the shape of that
+     exposure: still vertical-primary, but spread over a tall plate where the
+     stacked copy fills nearly all of it, so the ramp climbs earlier and
+     steadier than the desktop's and reaches a lower final value.
+
+     The top quarter is held open so the room and the lit GRM wall still read
+     above the type. The eyebrow lands inside that quarter, so the ramp is
+     kept near zero through roughly 24% and the logo keeps reading as a
+     secondary discovery rather than being flattened by the mask.
+
+     Below that it is copy all the way down, and the lit desk/console band
+     (59-65% of the plate) sits directly behind the body block — the "busy
+     image behind stacked text" case. The ramp passes ~.40 at 64% to hold
+     that band back, which is what carries body contrast on mobile.
+
+     The horizontal layer stays a little firmer than the desktop's .10
+     because on mobile the type is full-bleed and the photo's side walls are
+     cropped away anyway: there is no free margin for the vertical ramp to
+     protect. It remains secondary to the vertical. */
+  .label-about__vignette{
+    background-image:
+      linear-gradient(90deg,
+        rgba(0,0,0,.22) 0%,
+        rgba(0,0,0,.10) 28%,
+        rgba(0,0,0,.03) 50%,
+        rgba(0,0,0,.10) 72%,
+        rgba(0,0,0,.22) 100%),
+      linear-gradient(180deg,
+        rgba(0,0,0,0) 0%,
+        rgba(0,0,0,0) 14%,
+        rgba(0,0,0,.02) 24%,
+        rgba(0,0,0,.07) 32%,
+        rgba(0,0,0,.14) 40%,
+        rgba(0,0,0,.23) 48%,
+        rgba(0,0,0,.32) 56%,
+        rgba(0,0,0,.40) 64%,
+        rgba(0,0,0,.50) 72%,
+        rgba(0,0,0,.59) 80%,
+        rgba(0,0,0,.67) 88%,
+        rgba(0,0,0,.73) 95%,
+        rgba(0,0,0,.76) 100%);
   }
-  .roster-cand--ghost .roster-cand__ghost-crop{
-    display:none;
-  }
+  html.js .label-about .label-about__veil{ background-color:rgba(0,0,0,.94); }
+  html.js .label-about.is-revealed .label-about__veil{ background-color:rgba(0,0,0,.06); }
 }
-
-/* --- reduced motion — everything becomes an instant swap ---- */
 
 @media (prefers-reduced-motion: reduce){
-  .roster-cand__frame-img,
-  .roster-cand--shift .roster-cand__frame,
-  .roster-cand--shift .roster-cand__title,
-  .roster-cand--shift .roster-cand__meta,
-  .roster-cand--shift .roster-cand__eyebrow,
-  .roster-cand--shift .roster-cand__wire,
-  .roster-cand--marker .roster-cand__marker,
-  .roster-cand--ghost .roster-cand__ghost{
+  html.js .label-about .label-about__bg img{
+    opacity:1;
+    transform:none;
+    transition:none;
+  }
+  /* The veil needs no value here: reduced-motion gets .is-revealed added
+     immediately, so the desktop .72 / mobile .76 pair applies on its own.
+     Only the transition is neutralised. */
+  html.js .label-about .label-about__veil{
+    transition:none;
+  }
+  html.js .label-about .container .reveal{
+    opacity:1;
+    transform:none;
+    transition:none;
+  }
+  /* The scroll travel is a motion effect, so reduced-motion keeps the resting
+     composition and never attaches a listener. Only the compositor hint is
+     dropped — the transform above is the composed still frame, not motion. */
+  .label-about__frame{ will-change:auto; }
+}
+
+/* --- 3 · THE PEOPLE BEHIND GRM ------------------------------
+   Five stacked, alternating editorial spreads inside the shared
+   GRM container — photo left / text right, then text left / photo
+   right. Photo and text each hold roughly one half of the row
+   (≈1:1). Each portrait is a REAL transparent cutout (subject
+   lifted from its photo via segmentation, saved as alpha PNG) —
+   no simulated background removal — floating on the page
+   background. The text column carries a numbered green role
+   label (01 / ROLE), the name in the display face and a biography
+   set as two left-aligned paragraphs on a consistent measure. No
+   cards or boxes; only a hairline between spreads. */
+
+.label-people__list{
+  display:grid;
+  margin:0;
+  padding:0;
+  list-style:none;
+}
+
+.label-people__entry{
+  display:grid;
+  grid-template-columns:repeat(2,minmax(0,1fr));
+  column-gap:clamp(32px,4vw,72px);
+  align-items:center;
+  padding:clamp(32px,5.2vh,54px) 0;
+  min-width:0;
+}
+.label-people__entry + .label-people__entry{
+  border-top:1px solid var(--border);
+}
+
+.label-people__portrait{
+  margin:0;
+  min-width:0;
+}
+.label-people__entry--flip .label-people__portrait{
+  grid-column:2;
+  grid-row:1;
+}
+.label-people__entry--flip .label-people__intro{
+  grid-column:1;
+  grid-row:1;
+}
+
+.label-people__shot{
+  display:flex;
+  align-items:center;
+  justify-content:center;
+}
+.label-people__shot img{
+  display:block;
+  max-width:100%;
+  height:auto;
+  object-fit:contain;
+}
+
+/* gentle reveal: the photo settles into place and colour as the
+   spread enters the viewport (existing .reveal drives this) */
+html.js .label-people__entry .label-people__shot img{
+  transform:scale(1.06);
+  filter:saturate(.82);
+  transition:transform 1100ms var(--ease-out), filter 1100ms var(--ease-out);
+}
+html.js .label-people__entry.in-view .label-people__shot img{
+  transform:scale(1);
+  filter:saturate(1);
+}
+
+/* restrained hover — scale only, no layout shift */
+@media (hover:hover){
+  html.js .label-people__entry.in-view:hover .label-people__shot img{
+    transform:scale(1.025);
+  }
+}
+
+.label-people__credit{
+  margin:clamp(10px,1.4vh,14px) 0 0;
+  color:var(--text-faint);
+  font-size:.6rem;
+  letter-spacing:.04em;
+  line-height:1.5;
+}
+
+/* the role label, name and both bio paragraphs form one cohesive
+   text block: every line shares the intro's left edge, spacing is
+   tight and deliberate, and the whole block is vertically centred
+   against its photograph. The bio keeps a consistent measure so a
+   paragraph never stretches across the full column. */
+.label-people__intro{
+  min-width:0;
+}
+
+.label-people__role{
+  margin:0 0 clamp(10px,1.6vh,14px) 0;
+  color:var(--accent-lite);
+  font-size:var(--f-label);
+  font-weight:600;
+  letter-spacing:.2em;
+  text-transform:uppercase;
+}
+.label-people__index{
+  display:inline-block;
+  color:var(--accent);
+  font-weight:700;
+}
+.label-people__index::after{
+  content:" / ";
+  color:var(--accent-lite);
+}
+
+.label-people__name{
+  margin:0 0 clamp(16px,2.4vh,24px) 0;
+  font-family:var(--font-display);
+  font-stretch:62.5%;
+  font-weight:800;
+  font-size:clamp(2.2rem,3.8vw,3.8rem);
+  line-height:0.9;
+  letter-spacing:.005em;
+  text-transform:uppercase;
+}
+.label-people__bio{
+  max-width:41ch;
+}
+.label-people__bio p{
+  margin:0 0 clamp(10px,1.5vh,14px) 0;
+  color:var(--label-copy);
+  font-size:clamp(.98rem,1.06vw,1.06rem);
+  line-height:1.75;
+}
+.label-people__bio p:last-child{
+  margin-bottom:0;
+}
+
+.label-people__note{
+  margin:clamp(40px,6vh,64px) 0 0;
+  padding-top:clamp(16px,2.2vh,24px);
+  border-top:1px solid var(--border);
+  color:var(--text-faint);
+  font-size:var(--f-small);
+  line-height:1.6;
+}
+
+/* --- 4 · SELECTED RELEASES ---------------------------------- */
+
+.label-releases{
+  padding-bottom:clamp(80px,16vh,180px);
+}
+
+.label-releases__grid{
+  display:grid;
+  grid-template-columns:repeat(3,minmax(0,1fr));
+  gap:clamp(18px,3vw,40px);
+}
+.label-releases__item{
+  margin:0;
+  position:relative;
+  transform:translateY(0);
+  transition:transform 400ms var(--ease-hero);
+}
+.label-releases__item:hover{
+  transform:translateY(-6px);
+}
+.label-releases__item img{
+  display:block;
+  width:100%;
+  aspect-ratio:1/1;
+  object-fit:cover;
+  border:1px solid var(--border-strong);
+}
+.label-releases__meta{
+  display:flex;
+  justify-content:space-between;
+  gap:14px;
+  margin-top:10px;
+  padding-top:10px;
+  border-top:1px solid var(--border);
+}
+.label-releases__t{
+  color:var(--text);
+  font-size:var(--f-small);
+  letter-spacing:.06em;
+}
+.label-releases__c{
+  color:var(--text-faint);
+  font-size:var(--f-label);
+  letter-spacing:.08em;
+  white-space:nowrap;
+  text-transform:uppercase;
+}
+.label-releases__note{
+  margin:clamp(24px,4vh,40px) 0 0;
+  color:var(--text-faint);
+  font-size:var(--f-label);
+  letter-spacing:.2em;
+  text-transform:uppercase;
+}
+
+/* --- responsive -------------------------------------------- */
+
+@media (max-width:900px){
+  /* tablet: keep the even split, ease the gap and type */
+  .label-people__entry{
+    column-gap:clamp(24px,3.5vw,40px);
+    padding:clamp(28px,4.6vh,38px) 0;
+  }
+  .label-people__name{
+    font-size:clamp(1.9rem,3.4vw,2.6rem);
+  }
+  .label-people__bio{
+    max-width:none;
+  }
+  .label-releases__grid{
+    grid-template-columns:repeat(2,minmax(0,1fr));
+  }
+}
+
+@media (max-width:620px){
+  /* mobile: stack each profile — photo, role, name, biography — on
+     the site's own gutters; the flip side is neutralised so the
+     order stays true and images stay within the viewport */
+  .label-people__entry{
+    grid-template-columns:1fr;
+    padding:clamp(28px,7vw,36px) 0;
+  }
+  .label-people__portrait,
+  .label-people__entry--flip .label-people__portrait{
+    grid-column:auto;
+    grid-row:auto;
+  }
+  .label-people__entry--flip .label-people__intro{
+    grid-column:auto;
+    grid-row:auto;
+  }
+  .label-people__intro{
+    min-width:0;
+  }
+  .label-people__role{
+    margin:clamp(12px,3vw,14px) 0 0;
+  }
+  .label-people__name{
+    margin-bottom:clamp(12px,4vw,14px);
+    font-size:clamp(1.8rem,8vw,2.2rem);
+  }
+  .label-people__bio{
+    max-width:none;
+  }
+  .label-people__credit{
+    margin-top:10px;
+  }
+  .label-releases__grid{
+    grid-template-columns:1fr;
+  }
+}
+
+@media (prefers-reduced-motion: reduce){
+  .label-people__shot img,
+  .label-releases__item{
     transition:none;
   }
 }

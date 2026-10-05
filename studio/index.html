@@ -55,6 +55,346 @@
     </section>
 
     <!-- ============================================================
+         PRODUCTION · SOUND
+         An editorial contact sheet of the work: five fixed frames of
+         the studio itself, quietly exposing one by one as the section
+         enters view — then a perfectly still composition, photographs
+         hand off to the endless wall of GRM release-archive plaques:
+         a full-bleed horizontal row drifting very slowly right-to-left,
+         seamlessly looped in pure CSS. No carousel UI, no fades, no CTA
+         — the archive simply continues past the viewport edges.
+         Hovering any plaque pauses that row's motion.
+         Thirteen logical releases, ordered chronologically (newest →
+         oldest) by their verified original release years, each carrying
+         only real archival metadata: physical sleeve + vinyl with its
+         exact Spotify cover art, artist, release title, and a quiet
+         bottom metadata axis — release type (bottom-left) opposite
+         the original release year (bottom-right). Loop clones aria-hidden.
+         ============================================================ -->
+    <section class="grm-sound" aria-label="GRM Production — Sound">
+
+      <!-- Discipline intro — SOUND. Same editorial anatomy as Visual:
+           large condensed name + one horizontal capability line beneath
+           it, sharing the same left axis; static. Arrives after the
+           controlled black breathing room from the showreel, and hands
+           off to the archive with tight spacing. -->
+      <header class="discipline discipline--sound">
+        <h2 class="discipline__name">SOUND</h2>
+      </header>
+
+      <!-- ============================================================
+           SOUND PHOTO STRIP — where VISUAL shows the work (showreel),
+           SOUND documents its making: ONE horizontal photographic
+           strip, four related disciplines on one shared axis —
+           recording, composition, beat making, engineering (equal
+           frames). Each frame carries ONE quiet editorial title
+           (bottom-left, title case, no boxes or badges); the four
+           frames read as one subdivided horizontal field between the
+           capability line and the release archive. Frames NEVER move;
+           the photographs expose themselves inside their fixed crops
+           as the strip enters the viewport (one-shot Intersection-
+           Observer, left-to-right exposure, subtle internal settle),
+           then the whole object rests completely still. Hover only
+           breathes the image inside its crop and lifts its title on
+           capable pointers — no neighbor movement, no reflow.
+           ------------------------------------------------------------
+           NO-JS: untouched frames with untouched imagery — the
+           finished static strip, never a hidden baseline.
+           ------------------------------------------------------------
+           SPACING: a moderate breath below the capability line, then
+           a small gap into the full-bleed archive — the same rhythm
+           as before, so the strip sits between capabilities and
+           plaques without dead space. The archive below is
+           untouched. -->
+      <div class="grm-photo-strip" role="group" aria-label="GRM Sound production strip — recording, composition, beat making, engineering">
+        <figure class="grm-photo grm-photo--recording">
+          <img src="../assets/img/placeholders/sound-recording-placeholder.jpg" alt="Person recording vocals at a studio microphone" decoding="async" draggable="false">
+          <figcaption class="grm-photo__text">
+            <span class="grm-photo__title">Recording</span>
+            <p class="grm-photo__desc">Vocals, instruments and performances captured with clarity.</p>
+          </figcaption>
+        </figure>
+        <figure class="grm-photo grm-photo--composition">
+          <img src="../assets/img/placeholders/sound-composition-placeholder.jpg" alt="Person composing music at a keyboard" decoding="async" draggable="false">
+          <figcaption class="grm-photo__text">
+            <span class="grm-photo__title">Composition</span>
+            <p class="grm-photo__desc">Ideas developed into melody, harmony and arrangement.</p>
+          </figcaption>
+        </figure>
+        <figure class="grm-photo grm-photo--beatmaking">
+          <img src="../assets/img/placeholders/sound-beatmaking-placeholder.jpg" alt="Producer making music at a production workstation" decoding="async" draggable="false">
+          <figcaption class="grm-photo__text">
+            <span class="grm-photo__title">Beat Making</span>
+            <p class="grm-photo__desc">Original beats shaped around the artist and the track.</p>
+          </figcaption>
+        </figure>
+        <figure class="grm-photo grm-photo--engineering">
+          <img src="../assets/img/placeholders/sound-engineering-placeholder.jpg" alt="Audio engineer working at a mixing desk" decoding="async" draggable="false">
+          <figcaption class="grm-photo__text">
+            <span class="grm-photo__title">Engineering</span>
+            <p class="grm-photo__desc">Mixing and mastering that bring the record into focus.</p>
+          </figcaption>
+        </figure>
+      </div>
+
+      <div class="grm-sound__row" data-grm-sound-row>
+        <div class="grm-sound__track" data-grm-sound-track>
+
+                <div class="grm-sound__set" role="group" aria-label="GRM Sound — release archive">
+                <a class="grm-plaque grm-plaque--v4" draggable="false" data-release-type="EP" href="https://open.spotify.com/album/2r0IEzDy97D05pKxvaHOzu?si=pwnIusorQO2Ns9NZK-AzOA" target="_blank" rel="noopener noreferrer" aria-label="Open Prizma by Dzu on Spotify"><div class="grm-plaque__reveal"><span class="grm-plaque__inner"><span class="grm-plaque__fastener grm-plaque__fastener--tl" aria-hidden="true"></span>
+                  <span class="grm-plaque__fastener grm-plaque__fastener--tr" aria-hidden="true"></span>
+                  <span class="grm-plaque__fastener grm-plaque__fastener--bl" aria-hidden="true"></span>
+                  <span class="grm-plaque__fastener grm-plaque__fastener--br" aria-hidden="true"></span>
+                  <div class="grm-plaque__media grm-plaque__media--p4" aria-hidden="true">
+                    <div class="grm-p4__vinyl"></div>
+                    <div class="grm-p4__sleeve">
+                      <img src="../assets/img/releases/dzu-prizma.jpg" alt="PRIZMA — DZU" width="640" height="640" decoding="async" draggable="false">
+                    </div>
+                  </div>
+                  <div class="grm-plaque__identity">
+                    <p class="grm-plaque__artist">DZU</p>
+                    <p class="grm-plaque__title">Prizma</p>
+                  </div>
+                  <footer class="grm-plaque__foot grm-plaque__foot--v4">
+                    <span class="grm-plaque__type">EP</span>
+                    <time class="grm-plaque__year" datetime="2026">2026</time>
+                  </footer></span></div></a>
+
+                <a class="grm-plaque grm-plaque--v4" draggable="false" data-release-type="SINGLE" href="https://open.spotify.com/track/4Eg78gfUFQhW02X9Ot3vFZ?si=89c295bb4e9a4362" target="_blank" rel="noopener noreferrer" aria-label="Open Drama by Maia on Spotify"><div class="grm-plaque__reveal"><span class="grm-plaque__inner"><span class="grm-plaque__fastener grm-plaque__fastener--tl" aria-hidden="true"></span>
+                  <span class="grm-plaque__fastener grm-plaque__fastener--tr" aria-hidden="true"></span>
+                  <span class="grm-plaque__fastener grm-plaque__fastener--bl" aria-hidden="true"></span>
+                  <span class="grm-plaque__fastener grm-plaque__fastener--br" aria-hidden="true"></span>
+                  <div class="grm-plaque__media grm-plaque__media--p4" aria-hidden="true">
+                    <div class="grm-p4__vinyl"></div>
+                    <div class="grm-p4__sleeve">
+                      <img src="../assets/img/releases/maia-drama.jpg" alt="DRAMA — MAIA" width="640" height="640" decoding="async" draggable="false">
+                    </div>
+                  </div>
+                  <div class="grm-plaque__identity">
+                    <p class="grm-plaque__artist">MAIA</p>
+                    <p class="grm-plaque__title">Drama</p>
+                  </div>
+                  <footer class="grm-plaque__foot grm-plaque__foot--v4">
+                    <span class="grm-plaque__type">SINGLE</span>
+                    <time class="grm-plaque__year" datetime="2026">2026</time>
+                  </footer></span></div></a>
+
+                <a class="grm-plaque grm-plaque--v4" draggable="false" data-release-type="EP" href="https://open.spotify.com/album/5VnCQG0pLpdFntfoq2ukA4?si=Ou1L1K0YRwKmWAbDy6xnBQ" target="_blank" rel="noopener noreferrer" aria-label="Open Zlatnih Četiri by Kojot on Spotify"><div class="grm-plaque__reveal"><span class="grm-plaque__inner"><span class="grm-plaque__fastener grm-plaque__fastener--tl" aria-hidden="true"></span>
+                  <span class="grm-plaque__fastener grm-plaque__fastener--tr" aria-hidden="true"></span>
+                  <span class="grm-plaque__fastener grm-plaque__fastener--bl" aria-hidden="true"></span>
+                  <span class="grm-plaque__fastener grm-plaque__fastener--br" aria-hidden="true"></span>
+                  <div class="grm-plaque__media grm-plaque__media--p4" aria-hidden="true">
+                    <div class="grm-p4__vinyl"></div>
+                    <div class="grm-p4__sleeve">
+                      <img src="../assets/img/releases/kojot-zlatnih-cetiri.jpg" alt="ZLATNIH ČETIRI — KOJOT" width="640" height="640" decoding="async" draggable="false">
+                    </div>
+                  </div>
+                  <div class="grm-plaque__identity">
+                    <p class="grm-plaque__artist">KOJOT</p>
+                    <p class="grm-plaque__title">Zlatnih Četiri</p>
+                  </div>
+                  <footer class="grm-plaque__foot grm-plaque__foot--v4">
+                    <span class="grm-plaque__type">EP</span>
+                    <time class="grm-plaque__year" datetime="2026">2026</time>
+                  </footer></span></div></a>
+
+                <a class="grm-plaque grm-plaque--v4" draggable="false" data-release-type="SINGLE" href="https://open.spotify.com/track/2wP6Z8Ku76PxYV87OsfbTQ?si=2f57f5ee1eb045ea" target="_blank" rel="noopener noreferrer" aria-label="Open Kangal by Dzu and Igla on Spotify"><div class="grm-plaque__reveal"><span class="grm-plaque__inner"><span class="grm-plaque__fastener grm-plaque__fastener--tl" aria-hidden="true"></span>
+                  <span class="grm-plaque__fastener grm-plaque__fastener--tr" aria-hidden="true"></span>
+                  <span class="grm-plaque__fastener grm-plaque__fastener--bl" aria-hidden="true"></span>
+                  <span class="grm-plaque__fastener grm-plaque__fastener--br" aria-hidden="true"></span>
+                  <div class="grm-plaque__media grm-plaque__media--p4" aria-hidden="true">
+                    <div class="grm-p4__vinyl"></div>
+                    <div class="grm-p4__sleeve">
+                      <img src="../assets/img/releases/dzu-igla-kangal.jpg" alt="KANGAL — DZU &amp; IGLA" width="640" height="640" decoding="async" draggable="false">
+                    </div>
+                  </div>
+                  <div class="grm-plaque__identity">
+                    <p class="grm-plaque__artist">DZU &amp; IGLA</p>
+                    <p class="grm-plaque__title">Kangal</p>
+                  </div>
+                  <footer class="grm-plaque__foot grm-plaque__foot--v4">
+                    <span class="grm-plaque__type">SINGLE</span>
+                    <time class="grm-plaque__year" datetime="2026">2026</time>
+                  </footer></span></div></a>
+
+                <a class="grm-plaque grm-plaque--v4" draggable="false" data-release-type="SINGLE" href="https://open.spotify.com/track/2wHtAgcDB8vefC3fCVDRSF?si=e916bfab8d6e4de2" target="_blank" rel="noopener noreferrer" aria-label="Open Miriše Na Milion by Kobi on Spotify"><div class="grm-plaque__reveal"><span class="grm-plaque__inner"><span class="grm-plaque__fastener grm-plaque__fastener--tl" aria-hidden="true"></span>
+                  <span class="grm-plaque__fastener grm-plaque__fastener--tr" aria-hidden="true"></span>
+                  <span class="grm-plaque__fastener grm-plaque__fastener--bl" aria-hidden="true"></span>
+                  <span class="grm-plaque__fastener grm-plaque__fastener--br" aria-hidden="true"></span>
+                  <div class="grm-plaque__media grm-plaque__media--p4" aria-hidden="true">
+                    <div class="grm-p4__vinyl"></div>
+                    <div class="grm-p4__sleeve">
+                      <img src="../assets/img/releases/kobi-mirise-na-milion.jpg" alt="MIRIŠE NA MILION — KOBI" width="640" height="640" decoding="async" draggable="false">
+                    </div>
+                  </div>
+                  <div class="grm-plaque__identity">
+                    <p class="grm-plaque__artist">KOBI</p>
+                    <p class="grm-plaque__title">Miriše Na Milion</p>
+                  </div>
+                  <footer class="grm-plaque__foot grm-plaque__foot--v4">
+                    <span class="grm-plaque__type">SINGLE</span>
+                    <time class="grm-plaque__year" datetime="2025">2025</time>
+                  </footer></span></div></a>
+
+                <a class="grm-plaque grm-plaque--v4" draggable="false" data-release-type="SINGLE" href="https://open.spotify.com/track/4zoA2yETyq5Cm7eOE3ndEz?si=56f1196d50364f91" target="_blank" rel="noopener noreferrer" aria-label="Open Na Rezervi by Nedelja on Spotify"><div class="grm-plaque__reveal"><span class="grm-plaque__inner"><span class="grm-plaque__fastener grm-plaque__fastener--tl" aria-hidden="true"></span>
+                  <span class="grm-plaque__fastener grm-plaque__fastener--tr" aria-hidden="true"></span>
+                  <span class="grm-plaque__fastener grm-plaque__fastener--bl" aria-hidden="true"></span>
+                  <span class="grm-plaque__fastener grm-plaque__fastener--br" aria-hidden="true"></span>
+                  <div class="grm-plaque__media grm-plaque__media--p4" aria-hidden="true">
+                    <div class="grm-p4__vinyl"></div>
+                    <div class="grm-p4__sleeve">
+                      <img src="../assets/img/releases/nedelja-na-rezervi.jpg" alt="NA REZERVI — NEDELJA" width="640" height="640" decoding="async" draggable="false">
+                    </div>
+                  </div>
+                  <div class="grm-plaque__identity">
+                    <p class="grm-plaque__artist">NEDELJA</p>
+                    <p class="grm-plaque__title">Na Rezervi</p>
+                  </div>
+                  <footer class="grm-plaque__foot grm-plaque__foot--v4">
+                    <span class="grm-plaque__type">SINGLE</span>
+                    <time class="grm-plaque__year" datetime="2025">2025</time>
+                  </footer></span></div></a>
+
+                <a class="grm-plaque grm-plaque--v4" draggable="false" data-release-type="SINGLE" href="https://open.spotify.com/track/3koyxRkyATnAVv9TSbDrl5?si=53cbd0a3419a4437" target="_blank" rel="noopener noreferrer" aria-label="Open Uroboros by Igla on Spotify"><div class="grm-plaque__reveal"><span class="grm-plaque__inner"><span class="grm-plaque__fastener grm-plaque__fastener--tl" aria-hidden="true"></span>
+                  <span class="grm-plaque__fastener grm-plaque__fastener--tr" aria-hidden="true"></span>
+                  <span class="grm-plaque__fastener grm-plaque__fastener--bl" aria-hidden="true"></span>
+                  <span class="grm-plaque__fastener grm-plaque__fastener--br" aria-hidden="true"></span>
+                  <div class="grm-plaque__media grm-plaque__media--p4" aria-hidden="true">
+                    <div class="grm-p4__vinyl"></div>
+                    <div class="grm-p4__sleeve">
+                      <img src="../assets/img/releases/igla-uroboros.jpg" alt="UROBOROS — IGLA" width="640" height="640" decoding="async" draggable="false">
+                    </div>
+                  </div>
+                  <div class="grm-plaque__identity">
+                    <p class="grm-plaque__artist">IGLA</p>
+                    <p class="grm-plaque__title">Uroboros</p>
+                  </div>
+                  <footer class="grm-plaque__foot grm-plaque__foot--v4">
+                    <span class="grm-plaque__type">SINGLE</span>
+                    <time class="grm-plaque__year" datetime="2025">2025</time>
+                  </footer></span></div></a>
+
+                <a class="grm-plaque grm-plaque--v4" draggable="false" data-release-type="SINGLE" href="https://open.spotify.com/track/4qXzB05S0sCJVscMRKlhMR?si=5078ef9b86534148" target="_blank" rel="noopener noreferrer" aria-label="Open Vir by Dzu on Spotify"><div class="grm-plaque__reveal"><span class="grm-plaque__inner"><span class="grm-plaque__fastener grm-plaque__fastener--tl" aria-hidden="true"></span>
+                  <span class="grm-plaque__fastener grm-plaque__fastener--tr" aria-hidden="true"></span>
+                  <span class="grm-plaque__fastener grm-plaque__fastener--bl" aria-hidden="true"></span>
+                  <span class="grm-plaque__fastener grm-plaque__fastener--br" aria-hidden="true"></span>
+                  <div class="grm-plaque__media grm-plaque__media--p4" aria-hidden="true">
+                    <div class="grm-p4__vinyl"></div>
+                    <div class="grm-p4__sleeve">
+                      <img src="../assets/img/releases/dzu-vir.jpg" alt="VIR — DZU" width="640" height="640" decoding="async" draggable="false">
+                    </div>
+                  </div>
+                  <div class="grm-plaque__identity">
+                    <p class="grm-plaque__artist">DZU</p>
+                    <p class="grm-plaque__title">Vir</p>
+                  </div>
+                  <footer class="grm-plaque__foot grm-plaque__foot--v4">
+                    <span class="grm-plaque__type">SINGLE</span>
+                    <time class="grm-plaque__year" datetime="2025">2025</time>
+                  </footer></span></div></a>
+
+                <a class="grm-plaque grm-plaque--v4" draggable="false" data-release-type="ALBUM" href="https://open.spotify.com/album/3UwgT9Q264REblojL5sio9?si=EaUlW150RMqUhZ5wZssaIA" target="_blank" rel="noopener noreferrer" aria-label="Open slojevi by vitić on Spotify"><div class="grm-plaque__reveal"><span class="grm-plaque__inner"><span class="grm-plaque__fastener grm-plaque__fastener--tl" aria-hidden="true"></span>
+                  <span class="grm-plaque__fastener grm-plaque__fastener--tr" aria-hidden="true"></span>
+                  <span class="grm-plaque__fastener grm-plaque__fastener--bl" aria-hidden="true"></span>
+                  <span class="grm-plaque__fastener grm-plaque__fastener--br" aria-hidden="true"></span>
+                  <div class="grm-plaque__media grm-plaque__media--p4" aria-hidden="true">
+                    <div class="grm-p4__vinyl"></div>
+                    <div class="grm-p4__sleeve">
+                      <img src="../assets/img/releases/vitic-slojevi.jpg" alt="SLOJEVI — vitić" width="640" height="640" decoding="async" draggable="false">
+                    </div>
+                  </div>
+                  <div class="grm-plaque__identity">
+                    <p class="grm-plaque__artist">vitić</p>
+                    <p class="grm-plaque__title">slojevi</p>
+                  </div>
+                  <footer class="grm-plaque__foot grm-plaque__foot--v4">
+                    <span class="grm-plaque__type">ALBUM</span>
+                    <time class="grm-plaque__year" datetime="2025">2025</time>
+                  </footer></span></div></a>
+
+                <a class="grm-plaque grm-plaque--v4" draggable="false" data-release-type="SINGLE" href="https://open.spotify.com/track/7g7bC2g5iaVSv0NBIW48ns?si=a119937e13874deb" target="_blank" rel="noopener noreferrer" aria-label="Open Trag by Grzi on Spotify"><div class="grm-plaque__reveal"><span class="grm-plaque__inner"><span class="grm-plaque__fastener grm-plaque__fastener--tl" aria-hidden="true"></span>
+                  <span class="grm-plaque__fastener grm-plaque__fastener--tr" aria-hidden="true"></span>
+                  <span class="grm-plaque__fastener grm-plaque__fastener--bl" aria-hidden="true"></span>
+                  <span class="grm-plaque__fastener grm-plaque__fastener--br" aria-hidden="true"></span>
+                  <div class="grm-plaque__media grm-plaque__media--p4" aria-hidden="true">
+                    <div class="grm-p4__vinyl"></div>
+                    <div class="grm-p4__sleeve">
+                      <img src="../assets/img/releases/grzi-trag.jpg" alt="TRAG — GRZI" width="640" height="640" decoding="async" draggable="false">
+                    </div>
+                  </div>
+                  <div class="grm-plaque__identity">
+                    <p class="grm-plaque__artist">GRZI</p>
+                    <p class="grm-plaque__title">Trag</p>
+                  </div>
+                  <footer class="grm-plaque__foot grm-plaque__foot--v4">
+                    <span class="grm-plaque__type">SINGLE</span>
+                    <time class="grm-plaque__year" datetime="2025">2025</time>
+                  </footer></span></div></a>
+
+                <a class="grm-plaque grm-plaque--v4" draggable="false" data-release-type="EP" href="https://open.spotify.com/album/1UbIaqnO17XlhGllLhNZ9Y?si=BUuPho-3QHyk512EqJGXMA" target="_blank" rel="noopener noreferrer" aria-label="Open Opet se obrce by Struka on Spotify"><div class="grm-plaque__reveal"><span class="grm-plaque__inner"><span class="grm-plaque__fastener grm-plaque__fastener--tl" aria-hidden="true"></span>
+                  <span class="grm-plaque__fastener grm-plaque__fastener--tr" aria-hidden="true"></span>
+                  <span class="grm-plaque__fastener grm-plaque__fastener--bl" aria-hidden="true"></span>
+                  <span class="grm-plaque__fastener grm-plaque__fastener--br" aria-hidden="true"></span>
+                  <div class="grm-plaque__media grm-plaque__media--p4" aria-hidden="true">
+                    <div class="grm-p4__vinyl"></div>
+                    <div class="grm-p4__sleeve">
+                      <img src="../assets/img/releases/struka-opet-se-obrce.jpg" alt="OPET SE OBRCE — STRUKA" width="640" height="640" decoding="async" draggable="false">
+                    </div>
+                  </div>
+                  <div class="grm-plaque__identity">
+                    <p class="grm-plaque__artist">STRUKA</p>
+                    <p class="grm-plaque__title">Opet se obrce</p>
+                  </div>
+                  <footer class="grm-plaque__foot grm-plaque__foot--v4">
+                    <span class="grm-plaque__type">EP</span>
+                    <time class="grm-plaque__year" datetime="2019">2019</time>
+                  </footer></span></div></a>
+
+                <a class="grm-plaque grm-plaque--v4" draggable="false" data-release-type="ALBUM" href="https://open.spotify.com/album/0H6sCfN8fX4gc5plO2E4dx?si=AVvZizkNQxWYRCpZvJdzyg" target="_blank" rel="noopener noreferrer" aria-label="Open Trap je mrtav by Pablo Kenedi on Spotify"><div class="grm-plaque__reveal"><span class="grm-plaque__inner"><span class="grm-plaque__fastener grm-plaque__fastener--tl" aria-hidden="true"></span>
+                  <span class="grm-plaque__fastener grm-plaque__fastener--tr" aria-hidden="true"></span>
+                  <span class="grm-plaque__fastener grm-plaque__fastener--bl" aria-hidden="true"></span>
+                  <span class="grm-plaque__fastener grm-plaque__fastener--br" aria-hidden="true"></span>
+                  <div class="grm-plaque__media grm-plaque__media--p4" aria-hidden="true">
+                    <div class="grm-p4__vinyl"></div>
+                    <div class="grm-p4__sleeve">
+                      <img src="../assets/img/releases/pablo-kenedi-trap-je-mrtav.jpg" alt="TRAP JE MRTAV — PABLO KENEDI" width="640" height="640" decoding="async" draggable="false">
+                    </div>
+                  </div>
+                  <div class="grm-plaque__identity">
+                    <p class="grm-plaque__artist">PABLO KENEDI</p>
+                    <p class="grm-plaque__title">Trap je mrtav</p>
+                  </div>
+                  <footer class="grm-plaque__foot grm-plaque__foot--v4">
+                    <span class="grm-plaque__type">ALBUM</span>
+                    <time class="grm-plaque__year" datetime="2019">2019</time>
+                  </footer></span></div></a>
+
+                <a class="grm-plaque grm-plaque--v4" draggable="false" data-release-type="ALBUM" href="https://open.spotify.com/album/1CvD7hkwJMaM1mxNiyM0H1?si=8YFdt-dKRr6wyypY082ggQ" target="_blank" rel="noopener noreferrer" aria-label="Open Ego by Igla on Spotify"><div class="grm-plaque__reveal"><span class="grm-plaque__inner"><span class="grm-plaque__fastener grm-plaque__fastener--tl" aria-hidden="true"></span>
+                  <span class="grm-plaque__fastener grm-plaque__fastener--tr" aria-hidden="true"></span>
+                  <span class="grm-plaque__fastener grm-plaque__fastener--bl" aria-hidden="true"></span>
+                  <span class="grm-plaque__fastener grm-plaque__fastener--br" aria-hidden="true"></span>
+                  <div class="grm-plaque__media grm-plaque__media--p4" aria-hidden="true">
+                    <div class="grm-p4__vinyl"></div>
+                    <div class="grm-p4__sleeve">
+                      <img src="../assets/img/releases/igla-ego.jpg" alt="EGO — IGLA" width="640" height="640" decoding="async" draggable="false">
+                    </div>
+                  </div>
+                  <div class="grm-plaque__identity">
+                    <p class="grm-plaque__artist">IGLA</p>
+                    <p class="grm-plaque__title">Ego</p>
+                  </div>
+                  <footer class="grm-plaque__foot grm-plaque__foot--v4">
+                    <span class="grm-plaque__type">ALBUM</span>
+                    <time class="grm-plaque__year" datetime="2017">2017</time>
+                  </footer></span></div></a>
+              </div>
+
+        </div>
+      </div>
+
+    </section>
+
+    <!-- ============================================================
          PRODUCTION · VISUAL
          The showreel IS the Visual section. One frame, one aperture,
          one reveal: VISUAL + FILM · PHOTOGRAPHY · EDITING · VFX ·
@@ -104,10 +444,6 @@
                 <p class="visual-block__identity-caps">FILM · PHOTOGRAPHY · EDITING · VFX · COLOR · MOTION</p>
               </div>
 
-              <span class="visual-block__meta visual-block__meta--top">
-                <span class="visual-block__house">GRM / PRODUCTION</span>
-              </span>
-
               <!-- VIEW OUR WORK — a quiet editorial overlay, bottom-right
                    inside the cinematic field, NOT separate UI chrome. Same
                    revealed plane as the video/identity (below the aperture
@@ -128,398 +464,87 @@
     </section>
 
     <!-- ============================================================
-         PRODUCTION · SOUND
-         An editorial contact sheet of the work: five fixed frames of
-         the studio itself, quietly exposing one by one as the section
-         enters view — then a perfectly still composition, photographs
-         hand off to the endless wall of GRM release-archive plaques:
-         a full-bleed horizontal row drifting very slowly right-to-left,
-         seamlessly looped in pure CSS. No carousel UI, no fades, no CTA
-         — the archive simply continues past the viewport edges.
-         Hovering any plaque pauses that row's motion.
-         Thirteen logical releases, ordered chronologically (newest →
-         oldest) by their verified original release years, each carrying
-         only real archival metadata: physical sleeve + vinyl with its
-         exact Spotify cover art, artist, release title, and a quiet
-         bottom metadata axis — release type (bottom-left) opposite
-         the original release year (bottom-right). Loop clones aria-hidden.
+         PRODUCTION · CLOSING STATEMENT
+         Replaces the SOUND / VISUAL / BOTH chooser, and before that the
+         single "READY WHEN YOU ARE." CTA, and before that the giant
+         "LET'S MAKE / SOMETHING." lockup over a full-bleed photograph
+         at 82svh. All three layouts are gone with no residue.
+
+         What remains is the approved editorial reference: a dark
+         typographic field on the left, a cinematic turntable close-up
+         bleeding in from the right, and one small utility-weight CTA.
+         The image is held by a directional black gradient rather than
+         an edge, a panel or a rule, so it emerges from the page
+         darkness instead of sitting beside it as a pasted rectangle.
+
+         The copy is the eyebrow, the two-line statement and the contact
+         sign-off. No button, no paragraph, no service list, no
+         secondary action.
+
+         The image path is an intentionally named PLACEHOLDER. The
+         approved dark turntable frame is not yet in the project, so a
+         temporary CC0 stand-in ("Top view of a turntable", Mink
+         Mingle, via Unsplash on Wikimedia Commons) is installed at that
+         exact path for now. Drop the approved file at the same path and
+         it takes over with no code change; full provenance is recorded
+         in the CSS comment above .grm-cta.
          ============================================================ -->
-    <section class="grm-sound" aria-label="GRM Production — Sound">
+    <section class="grm-cta" aria-labelledby="grm-cta-title">
 
-      <!-- Discipline intro — SOUND. Same editorial anatomy as Visual:
-           large condensed name + one horizontal capability line beneath
-           it, sharing the same left axis; static. Arrives after the
-           controlled black breathing room from the showreel, and hands
-           off to the archive with tight spacing. -->
-      <header class="discipline discipline--sound">
-        <h2 class="discipline__name">SOUND</h2>
-        <p class="discipline__caps">RECORDING · COMPOSITION · BEAT MAKING · ENGINEERING</p>
-      </header>
+      <div class="grm-cta__card">
 
-      <!-- ============================================================
-           SOUND PHOTO STRIP — where VISUAL shows the work (showreel),
-           SOUND documents its making: ONE horizontal photographic
-           strip, four related disciplines on one shared axis —
-           recording, composition, beat making, engineering (equal
-           frames). Each frame carries ONE quiet editorial title
-           (bottom-left, title case, no boxes or badges); the four
-           frames read as one subdivided horizontal field between the
-           capability line and the release archive. Frames NEVER move;
-           the photographs expose themselves inside their fixed crops
-           as the strip enters the viewport (one-shot Intersection-
-           Observer, left-to-right exposure, subtle internal settle),
-           then the whole object rests completely still. Hover only
-           breathes the image inside its crop and lifts its title on
-           capable pointers — no neighbor movement, no reflow.
-           ------------------------------------------------------------
-           NO-JS: untouched frames with untouched imagery — the
-           finished static strip, never a hidden baseline.
-           ------------------------------------------------------------
-           SPACING: a moderate breath below the capability line, then
-           a small gap into the full-bleed archive — the same rhythm
-           as before, so the strip sits between capabilities and
-           plaques without dead space. The archive below is
-           untouched. -->
-      <div class="grm-photo-strip" role="group" aria-label="GRM Sound production strip — recording, composition, beat making, engineering">
-        <figure class="grm-photo grm-photo--recording">
-          <img src="../assets/img/GRM Production - 7.png" alt="Vocal recording setup at GRM Production" decoding="async" draggable="false">
-          <figcaption class="grm-photo__text">
-            <span class="grm-photo__title">Recording</span>
-            <p class="grm-photo__desc">Vocals, instruments and performances captured with clarity.</p>
-          </figcaption>
-        </figure>
-        <figure class="grm-photo grm-photo--composition">
-          <img src="../assets/img/GRM Production - 3.png" alt="Keyboard and production workstation" decoding="async" draggable="false">
-          <figcaption class="grm-photo__text">
-            <span class="grm-photo__title">Composition</span>
-            <p class="grm-photo__desc">Ideas developed into melody, harmony and arrangement.</p>
-          </figcaption>
-        </figure>
-        <figure class="grm-photo grm-photo--beatmaking">
-          <img src="../assets/img/GRM Production - 6.png" alt="Beat making workstation at GRM Production" decoding="async" draggable="false">
-          <figcaption class="grm-photo__text">
-            <span class="grm-photo__title">Beat Making</span>
-            <p class="grm-photo__desc">Original beats shaped around the artist and the track.</p>
-          </figcaption>
-        </figure>
-        <figure class="grm-photo grm-photo--engineering">
-          <img src="../assets/img/GRM Production - 2.png" alt="GRM Production control room" decoding="async" draggable="false">
-          <figcaption class="grm-photo__text">
-            <span class="grm-photo__title">Engineering</span>
-            <p class="grm-photo__desc">Mixing and mastering that bring the record into focus.</p>
-          </figcaption>
-        </figure>
-      </div>
+        <span class="grm-cta__bolt grm-cta__bolt--tl" aria-hidden="true"></span>
+        <span class="grm-cta__bolt grm-cta__bolt--tr" aria-hidden="true"></span>
+        <span class="grm-cta__bolt grm-cta__bolt--bl" aria-hidden="true"></span>
+        <span class="grm-cta__bolt grm-cta__bolt--br" aria-hidden="true"></span>
 
-      <!-- A single quiet eyebrow over the physical body of work: production
-           process imagery hands off to finished, released output. Kept
-           deliberately small — it belongs to the plaques, not the strip,
-           and must never read as a second chapter heading. -->
-      <p class="grm-sound__eyebrow">Releases</p>
+        <figure class="grm-cta__media" role="img" aria-label="Top view of a vinyl record on a turntable, lit with warm bronze highlights."></figure>
 
-      <div class="grm-sound__row" data-grm-sound-row>
-        <div class="grm-sound__track" data-grm-sound-track>
+        <div class="grm-cta__inner">
 
-                <div class="grm-sound__set" role="group" aria-label="GRM Sound — release archive">
-                <a class="grm-plaque grm-plaque--v4" draggable="false" data-release-type="EP" href="https://open.spotify.com/album/2r0IEzDy97D05pKxvaHOzu?si=pwnIusorQO2Ns9NZK-AzOA" target="_blank" rel="noopener noreferrer" aria-label="Open Prizma by Dzu on Spotify">
-                  <span class="grm-plaque__fastener grm-plaque__fastener--tl" aria-hidden="true"></span>
-                  <span class="grm-plaque__fastener grm-plaque__fastener--tr" aria-hidden="true"></span>
-                  <span class="grm-plaque__fastener grm-plaque__fastener--bl" aria-hidden="true"></span>
-                  <span class="grm-plaque__fastener grm-plaque__fastener--br" aria-hidden="true"></span>
-                  <div class="grm-plaque__media grm-plaque__media--p4" aria-hidden="true">
-                    <div class="grm-p4__vinyl"></div>
-                    <div class="grm-p4__sleeve">
-                      <img src="../assets/img/releases/dzu-prizma.jpg" alt="PRIZMA — DZU" width="640" height="640" decoding="async" draggable="false">
-                    </div>
-                  </div>
-                  <div class="grm-plaque__identity">
-                    <p class="grm-plaque__artist">DZU</p>
-                    <p class="grm-plaque__title">Prizma</p>
-                  </div>
-                  <footer class="grm-plaque__foot grm-plaque__foot--v4">
-                    <span class="grm-plaque__type">EP</span>
-                    <time class="grm-plaque__year" datetime="2026">2026</time>
-                  </footer>
-                </a>
+          <div class="grm-cta__copy">
 
-                <a class="grm-plaque grm-plaque--v4" draggable="false" data-release-type="SINGLE" href="https://open.spotify.com/track/4Eg78gfUFQhW02X9Ot3vFZ?si=89c295bb4e9a4362" target="_blank" rel="noopener noreferrer" aria-label="Open Drama by Maia on Spotify">
-                  <span class="grm-plaque__fastener grm-plaque__fastener--tl" aria-hidden="true"></span>
-                  <span class="grm-plaque__fastener grm-plaque__fastener--tr" aria-hidden="true"></span>
-                  <span class="grm-plaque__fastener grm-plaque__fastener--bl" aria-hidden="true"></span>
-                  <span class="grm-plaque__fastener grm-plaque__fastener--br" aria-hidden="true"></span>
-                  <div class="grm-plaque__media grm-plaque__media--p4" aria-hidden="true">
-                    <div class="grm-p4__vinyl"></div>
-                    <div class="grm-p4__sleeve">
-                      <img src="../assets/img/releases/maia-drama.jpg" alt="DRAMA — MAIA" width="640" height="640" decoding="async" draggable="false">
-                    </div>
-                  </div>
-                  <div class="grm-plaque__identity">
-                    <p class="grm-plaque__artist">MAIA</p>
-                    <p class="grm-plaque__title">Drama</p>
-                  </div>
-                  <footer class="grm-plaque__foot grm-plaque__foot--v4">
-                    <span class="grm-plaque__type">SINGLE</span>
-                    <time class="grm-plaque__year" datetime="2026">2026</time>
-                  </footer>
-                </a>
+            <p class="grm-cta__eyebrow">Sound meets visual &mdash;</p>
 
-                <a class="grm-plaque grm-plaque--v4" draggable="false" data-release-type="EP" href="https://open.spotify.com/album/5VnCQG0pLpdFntfoq2ukA4?si=Ou1L1K0YRwKmWAbDy6xnBQ" target="_blank" rel="noopener noreferrer" aria-label="Open Zlatnih Četiri by Kojot on Spotify">
-                  <span class="grm-plaque__fastener grm-plaque__fastener--tl" aria-hidden="true"></span>
-                  <span class="grm-plaque__fastener grm-plaque__fastener--tr" aria-hidden="true"></span>
-                  <span class="grm-plaque__fastener grm-plaque__fastener--bl" aria-hidden="true"></span>
-                  <span class="grm-plaque__fastener grm-plaque__fastener--br" aria-hidden="true"></span>
-                  <div class="grm-plaque__media grm-plaque__media--p4" aria-hidden="true">
-                    <div class="grm-p4__vinyl"></div>
-                    <div class="grm-p4__sleeve">
-                      <img src="../assets/img/releases/kojot-zlatnih-cetiri.jpg" alt="ZLATNIH ČETIRI — KOJOT" width="640" height="640" decoding="async" draggable="false">
-                    </div>
-                  </div>
-                  <div class="grm-plaque__identity">
-                    <p class="grm-plaque__artist">KOJOT</p>
-                    <p class="grm-plaque__title">Zlatnih Četiri</p>
-                  </div>
-                  <footer class="grm-plaque__foot grm-plaque__foot--v4">
-                    <span class="grm-plaque__type">EP</span>
-                    <time class="grm-plaque__year" datetime="2026">2026</time>
-                  </footer>
-                </a>
+            <h2 class="grm-cta__title" id="grm-cta-title">
+              <span class="grm-cta__line">Ideas</span>
+              <span class="grm-cta__line">In good hands.</span>
+            </h2>
 
-                <a class="grm-plaque grm-plaque--v4" draggable="false" data-release-type="SINGLE" href="https://open.spotify.com/track/2wP6Z8Ku76PxYV87OsfbTQ?si=2f57f5ee1eb045ea" target="_blank" rel="noopener noreferrer" aria-label="Open Kangal by Dzu and Igla on Spotify">
-                  <span class="grm-plaque__fastener grm-plaque__fastener--tl" aria-hidden="true"></span>
-                  <span class="grm-plaque__fastener grm-plaque__fastener--tr" aria-hidden="true"></span>
-                  <span class="grm-plaque__fastener grm-plaque__fastener--bl" aria-hidden="true"></span>
-                  <span class="grm-plaque__fastener grm-plaque__fastener--br" aria-hidden="true"></span>
-                  <div class="grm-plaque__media grm-plaque__media--p4" aria-hidden="true">
-                    <div class="grm-p4__vinyl"></div>
-                    <div class="grm-p4__sleeve">
-                      <img src="../assets/img/releases/dzu-igla-kangal.jpg" alt="KANGAL — DZU &amp; IGLA" width="640" height="640" decoding="async" draggable="false">
-                    </div>
-                  </div>
-                  <div class="grm-plaque__identity">
-                    <p class="grm-plaque__artist">DZU &amp; IGLA</p>
-                    <p class="grm-plaque__title">Kangal</p>
-                  </div>
-                  <footer class="grm-plaque__foot grm-plaque__foot--v4">
-                    <span class="grm-plaque__type">SINGLE</span>
-                    <time class="grm-plaque__year" datetime="2026">2026</time>
-                  </footer>
-                </a>
+            <!-- Contact sign-off. There is deliberately NO button here: no
+                 pill, no rule, no arrow, no background box. Label over value
+                 in one quiet vertical stack, so IDEAS / IN GOOD HANDS. stays
+                 the loudest thing on the plate. Every value is a real link.
+                 Canonical details: email from the shared footer (js/main.js),
+                 phone and address from the GRM Liveroom contact block. -->
+            <dl class="grm-cta__contact">
 
-                <a class="grm-plaque grm-plaque--v4" draggable="false" data-release-type="SINGLE" href="https://open.spotify.com/track/2wHtAgcDB8vefC3fCVDRSF?si=e916bfab8d6e4de2" target="_blank" rel="noopener noreferrer" aria-label="Open Miriše Na Milion by Kobi on Spotify">
-                  <span class="grm-plaque__fastener grm-plaque__fastener--tl" aria-hidden="true"></span>
-                  <span class="grm-plaque__fastener grm-plaque__fastener--tr" aria-hidden="true"></span>
-                  <span class="grm-plaque__fastener grm-plaque__fastener--bl" aria-hidden="true"></span>
-                  <span class="grm-plaque__fastener grm-plaque__fastener--br" aria-hidden="true"></span>
-                  <div class="grm-plaque__media grm-plaque__media--p4" aria-hidden="true">
-                    <div class="grm-p4__vinyl"></div>
-                    <div class="grm-p4__sleeve">
-                      <img src="../assets/img/releases/kobi-mirise-na-milion.jpg" alt="MIRIŠE NA MILION — KOBI" width="640" height="640" decoding="async" draggable="false">
-                    </div>
-                  </div>
-                  <div class="grm-plaque__identity">
-                    <p class="grm-plaque__artist">KOBI</p>
-                    <p class="grm-plaque__title">Miriše Na Milion</p>
-                  </div>
-                  <footer class="grm-plaque__foot grm-plaque__foot--v4">
-                    <span class="grm-plaque__type">SINGLE</span>
-                    <time class="grm-plaque__year" datetime="2025">2025</time>
-                  </footer>
-                </a>
-
-                <a class="grm-plaque grm-plaque--v4" draggable="false" data-release-type="SINGLE" href="https://open.spotify.com/track/4zoA2yETyq5Cm7eOE3ndEz?si=56f1196d50364f91" target="_blank" rel="noopener noreferrer" aria-label="Open Na Rezervi by Nedelja on Spotify">
-                  <span class="grm-plaque__fastener grm-plaque__fastener--tl" aria-hidden="true"></span>
-                  <span class="grm-plaque__fastener grm-plaque__fastener--tr" aria-hidden="true"></span>
-                  <span class="grm-plaque__fastener grm-plaque__fastener--bl" aria-hidden="true"></span>
-                  <span class="grm-plaque__fastener grm-plaque__fastener--br" aria-hidden="true"></span>
-                  <div class="grm-plaque__media grm-plaque__media--p4" aria-hidden="true">
-                    <div class="grm-p4__vinyl"></div>
-                    <div class="grm-p4__sleeve">
-                      <img src="../assets/img/releases/nedelja-na-rezervi.jpg" alt="NA REZERVI — NEDELJA" width="640" height="640" decoding="async" draggable="false">
-                    </div>
-                  </div>
-                  <div class="grm-plaque__identity">
-                    <p class="grm-plaque__artist">NEDELJA</p>
-                    <p class="grm-plaque__title">Na Rezervi</p>
-                  </div>
-                  <footer class="grm-plaque__foot grm-plaque__foot--v4">
-                    <span class="grm-plaque__type">SINGLE</span>
-                    <time class="grm-plaque__year" datetime="2025">2025</time>
-                  </footer>
-                </a>
-
-                <a class="grm-plaque grm-plaque--v4" draggable="false" data-release-type="SINGLE" href="https://open.spotify.com/track/3koyxRkyATnAVv9TSbDrl5?si=53cbd0a3419a4437" target="_blank" rel="noopener noreferrer" aria-label="Open Uroboros by Igla on Spotify">
-                  <span class="grm-plaque__fastener grm-plaque__fastener--tl" aria-hidden="true"></span>
-                  <span class="grm-plaque__fastener grm-plaque__fastener--tr" aria-hidden="true"></span>
-                  <span class="grm-plaque__fastener grm-plaque__fastener--bl" aria-hidden="true"></span>
-                  <span class="grm-plaque__fastener grm-plaque__fastener--br" aria-hidden="true"></span>
-                  <div class="grm-plaque__media grm-plaque__media--p4" aria-hidden="true">
-                    <div class="grm-p4__vinyl"></div>
-                    <div class="grm-p4__sleeve">
-                      <img src="../assets/img/releases/igla-uroboros.jpg" alt="UROBOROS — IGLA" width="640" height="640" decoding="async" draggable="false">
-                    </div>
-                  </div>
-                  <div class="grm-plaque__identity">
-                    <p class="grm-plaque__artist">IGLA</p>
-                    <p class="grm-plaque__title">Uroboros</p>
-                  </div>
-                  <footer class="grm-plaque__foot grm-plaque__foot--v4">
-                    <span class="grm-plaque__type">SINGLE</span>
-                    <time class="grm-plaque__year" datetime="2025">2025</time>
-                  </footer>
-                </a>
-
-                <a class="grm-plaque grm-plaque--v4" draggable="false" data-release-type="SINGLE" href="https://open.spotify.com/track/4qXzB05S0sCJVscMRKlhMR?si=5078ef9b86534148" target="_blank" rel="noopener noreferrer" aria-label="Open Vir by Dzu on Spotify">
-                  <span class="grm-plaque__fastener grm-plaque__fastener--tl" aria-hidden="true"></span>
-                  <span class="grm-plaque__fastener grm-plaque__fastener--tr" aria-hidden="true"></span>
-                  <span class="grm-plaque__fastener grm-plaque__fastener--bl" aria-hidden="true"></span>
-                  <span class="grm-plaque__fastener grm-plaque__fastener--br" aria-hidden="true"></span>
-                  <div class="grm-plaque__media grm-plaque__media--p4" aria-hidden="true">
-                    <div class="grm-p4__vinyl"></div>
-                    <div class="grm-p4__sleeve">
-                      <img src="../assets/img/releases/dzu-vir.jpg" alt="VIR — DZU" width="640" height="640" decoding="async" draggable="false">
-                    </div>
-                  </div>
-                  <div class="grm-plaque__identity">
-                    <p class="grm-plaque__artist">DZU</p>
-                    <p class="grm-plaque__title">Vir</p>
-                  </div>
-                  <footer class="grm-plaque__foot grm-plaque__foot--v4">
-                    <span class="grm-plaque__type">SINGLE</span>
-                    <time class="grm-plaque__year" datetime="2025">2025</time>
-                  </footer>
-                </a>
-
-                <a class="grm-plaque grm-plaque--v4" draggable="false" data-release-type="ALBUM" href="https://open.spotify.com/album/3UwgT9Q264REblojL5sio9?si=EaUlW150RMqUhZ5wZssaIA" target="_blank" rel="noopener noreferrer" aria-label="Open slojevi by vitić on Spotify">
-                  <span class="grm-plaque__fastener grm-plaque__fastener--tl" aria-hidden="true"></span>
-                  <span class="grm-plaque__fastener grm-plaque__fastener--tr" aria-hidden="true"></span>
-                  <span class="grm-plaque__fastener grm-plaque__fastener--bl" aria-hidden="true"></span>
-                  <span class="grm-plaque__fastener grm-plaque__fastener--br" aria-hidden="true"></span>
-                  <div class="grm-plaque__media grm-plaque__media--p4" aria-hidden="true">
-                    <div class="grm-p4__vinyl"></div>
-                    <div class="grm-p4__sleeve">
-                      <img src="../assets/img/releases/vitic-slojevi.jpg" alt="SLOJEVI — vitić" width="640" height="640" decoding="async" draggable="false">
-                    </div>
-                  </div>
-                  <div class="grm-plaque__identity">
-                    <p class="grm-plaque__artist">vitić</p>
-                    <p class="grm-plaque__title">slojevi</p>
-                  </div>
-                  <footer class="grm-plaque__foot grm-plaque__foot--v4">
-                    <span class="grm-plaque__type">ALBUM</span>
-                    <time class="grm-plaque__year" datetime="2025">2025</time>
-                  </footer>
-                </a>
-
-                <a class="grm-plaque grm-plaque--v4" draggable="false" data-release-type="SINGLE" href="https://open.spotify.com/track/7g7bC2g5iaVSv0NBIW48ns?si=a119937e13874deb" target="_blank" rel="noopener noreferrer" aria-label="Open Trag by Grzi on Spotify">
-                  <span class="grm-plaque__fastener grm-plaque__fastener--tl" aria-hidden="true"></span>
-                  <span class="grm-plaque__fastener grm-plaque__fastener--tr" aria-hidden="true"></span>
-                  <span class="grm-plaque__fastener grm-plaque__fastener--bl" aria-hidden="true"></span>
-                  <span class="grm-plaque__fastener grm-plaque__fastener--br" aria-hidden="true"></span>
-                  <div class="grm-plaque__media grm-plaque__media--p4" aria-hidden="true">
-                    <div class="grm-p4__vinyl"></div>
-                    <div class="grm-p4__sleeve">
-                      <img src="../assets/img/releases/grzi-trag.jpg" alt="TRAG — GRZI" width="640" height="640" decoding="async" draggable="false">
-                    </div>
-                  </div>
-                  <div class="grm-plaque__identity">
-                    <p class="grm-plaque__artist">GRZI</p>
-                    <p class="grm-plaque__title">Trag</p>
-                  </div>
-                  <footer class="grm-plaque__foot grm-plaque__foot--v4">
-                    <span class="grm-plaque__type">SINGLE</span>
-                    <time class="grm-plaque__year" datetime="2025">2025</time>
-                  </footer>
-                </a>
-
-                <a class="grm-plaque grm-plaque--v4" draggable="false" data-release-type="EP" href="https://open.spotify.com/album/1UbIaqnO17XlhGllLhNZ9Y?si=BUuPho-3QHyk512EqJGXMA" target="_blank" rel="noopener noreferrer" aria-label="Open Opet se obrce by Struka on Spotify">
-                  <span class="grm-plaque__fastener grm-plaque__fastener--tl" aria-hidden="true"></span>
-                  <span class="grm-plaque__fastener grm-plaque__fastener--tr" aria-hidden="true"></span>
-                  <span class="grm-plaque__fastener grm-plaque__fastener--bl" aria-hidden="true"></span>
-                  <span class="grm-plaque__fastener grm-plaque__fastener--br" aria-hidden="true"></span>
-                  <div class="grm-plaque__media grm-plaque__media--p4" aria-hidden="true">
-                    <div class="grm-p4__vinyl"></div>
-                    <div class="grm-p4__sleeve">
-                      <img src="../assets/img/releases/struka-opet-se-obrce.jpg" alt="OPET SE OBRCE — STRUKA" width="640" height="640" decoding="async" draggable="false">
-                    </div>
-                  </div>
-                  <div class="grm-plaque__identity">
-                    <p class="grm-plaque__artist">STRUKA</p>
-                    <p class="grm-plaque__title">Opet se obrce</p>
-                  </div>
-                  <footer class="grm-plaque__foot grm-plaque__foot--v4">
-                    <span class="grm-plaque__type">EP</span>
-                    <time class="grm-plaque__year" datetime="2019">2019</time>
-                  </footer>
-                </a>
-
-                <a class="grm-plaque grm-plaque--v4" draggable="false" data-release-type="ALBUM" href="https://open.spotify.com/album/0H6sCfN8fX4gc5plO2E4dx?si=AVvZizkNQxWYRCpZvJdzyg" target="_blank" rel="noopener noreferrer" aria-label="Open Trap je mrtav by Pablo Kenedi on Spotify">
-                  <span class="grm-plaque__fastener grm-plaque__fastener--tl" aria-hidden="true"></span>
-                  <span class="grm-plaque__fastener grm-plaque__fastener--tr" aria-hidden="true"></span>
-                  <span class="grm-plaque__fastener grm-plaque__fastener--bl" aria-hidden="true"></span>
-                  <span class="grm-plaque__fastener grm-plaque__fastener--br" aria-hidden="true"></span>
-                  <div class="grm-plaque__media grm-plaque__media--p4" aria-hidden="true">
-                    <div class="grm-p4__vinyl"></div>
-                    <div class="grm-p4__sleeve">
-                      <img src="../assets/img/releases/pablo-kenedi-trap-je-mrtav.jpg" alt="TRAP JE MRTAV — PABLO KENEDI" width="640" height="640" decoding="async" draggable="false">
-                    </div>
-                  </div>
-                  <div class="grm-plaque__identity">
-                    <p class="grm-plaque__artist">PABLO KENEDI</p>
-                    <p class="grm-plaque__title">Trap je mrtav</p>
-                  </div>
-                  <footer class="grm-plaque__foot grm-plaque__foot--v4">
-                    <span class="grm-plaque__type">ALBUM</span>
-                    <time class="grm-plaque__year" datetime="2019">2019</time>
-                  </footer>
-                </a>
-
-                <a class="grm-plaque grm-plaque--v4" draggable="false" data-release-type="ALBUM" href="https://open.spotify.com/album/1CvD7hkwJMaM1mxNiyM0H1?si=8YFdt-dKRr6wyypY082ggQ" target="_blank" rel="noopener noreferrer" aria-label="Open Ego by Igla on Spotify">
-                  <span class="grm-plaque__fastener grm-plaque__fastener--tl" aria-hidden="true"></span>
-                  <span class="grm-plaque__fastener grm-plaque__fastener--tr" aria-hidden="true"></span>
-                  <span class="grm-plaque__fastener grm-plaque__fastener--bl" aria-hidden="true"></span>
-                  <span class="grm-plaque__fastener grm-plaque__fastener--br" aria-hidden="true"></span>
-                  <div class="grm-plaque__media grm-plaque__media--p4" aria-hidden="true">
-                    <div class="grm-p4__vinyl"></div>
-                    <div class="grm-p4__sleeve">
-                      <img src="../assets/img/releases/igla-ego.jpg" alt="EGO — IGLA" width="640" height="640" decoding="async" draggable="false">
-                    </div>
-                  </div>
-                  <div class="grm-plaque__identity">
-                    <p class="grm-plaque__artist">IGLA</p>
-                    <p class="grm-plaque__title">Ego</p>
-                  </div>
-                  <footer class="grm-plaque__foot grm-plaque__foot--v4">
-                    <span class="grm-plaque__type">ALBUM</span>
-                    <time class="grm-plaque__year" datetime="2017">2017</time>
-                  </footer>
-                </a>
+              <div class="grm-cta__contact-item">
+                <dt class="grm-cta__contact-label">Email</dt>
+                <dd class="grm-cta__contact-value">
+                  <a class="grm-cta__contact-link" href="mailto:info@grmstudio.music">info@grmstudio.music</a>
+                </dd>
               </div>
 
+              <div class="grm-cta__contact-item">
+                <dt class="grm-cta__contact-label">Phone</dt>
+                <dd class="grm-cta__contact-value">
+                  <a class="grm-cta__contact-link" href="tel:+381636465666">+381 63 646 5666</a>
+                </dd>
+              </div>
+
+              <div class="grm-cta__contact-item">
+                <dt class="grm-cta__contact-label">Address</dt>
+                <dd class="grm-cta__contact-value">
+                  <a class="grm-cta__contact-link" href="https://maps.google.com/?q=Blagoja%20Parovi%C4%87a%2019a%2C%20Beograd" target="_blank" rel="noopener noreferrer">Blagoja Parovi&#263;a 19a, Beograd</a>
+                </dd>
+              </div>
+
+            </dl>
+
+          </div>
+
         </div>
-      </div>
-
-    </section>
-
-    <!-- ============================================================
-         PRODUCTION · END SLATE
-         A quiet production credit rather than a campaign statement.
-         No manifesto, no giant display moment, no motion — the page
-         winds down into this information plate before the footer.
-         ============================================================ -->
-    <section class="grm-end" aria-labelledby="grm-end-title">
-
-      <div class="grm-end__inner">
-
-        <h2 class="grm-end__title" id="grm-end-title">GRM Production</h2>
-
-        <div class="grm-end__rule" aria-hidden="true"></div>
-
-        <div class="grm-end__row">
-          <p class="grm-end__field">SOUND / VISUAL</p>
-          <p class="grm-end__field grm-end__field--right">BELGRADE, SERBIA</p>
-        </div>
-
-        <a class="grm-end__link" href="mailto:info@grmstudio.music">START A PROJECT</a>
 
       </div>
 
@@ -570,6 +595,53 @@
       }, { threshold: 0.25, rootMargin: "0px 0px -10% 0px" });
 
       observer.observe(strip);
+    })();
+
+    /* RELEASES entrance (slow, one-by-one, left-to-right). One-shot. */
+    (function () {
+      "use strict";
+      if (!document.body || document.body.getAttribute("data-page") !== "studio") return;
+      var section = document.querySelector(".grm-sound");
+      var row = section ? section.querySelector(".grm-sound__row") : null;
+      if (!section || !row) return;
+      if (!("IntersectionObserver" in window)) return;
+      if (window.matchMedia("(prefers-reduced-motion: reduce)").matches) return;
+      section.classList.add("grm-sound--releases-prepared");
+      var observer = new IntersectionObserver(function (entries) {
+        for (var i = 0; i < entries.length; i++) {
+          if (!entries[i].isIntersecting) continue;
+          observer.disconnect();
+          var vw = window.innerWidth;
+          var all = section.querySelectorAll(".grm-plaque");
+          var visible = [];
+          for (var j = 0; j < all.length; j++) {
+            var r = all[j].getBoundingClientRect();
+            if (r.width > 0 && r.height > 0 && r.right > 0 && r.left < vw && r.bottom > 0 && r.top < window.innerHeight) {
+              visible.push({ el: all[j], left: r.left });
+            }
+          }
+          visible.sort(function (a,b){ return a.left - b.left; });
+          for (var k = 0; k < visible.length; k++) {
+            var inner = visible[k].el.querySelector(".grm-plaque__reveal") || visible[k].el.querySelector(".grm-plaque__inner") || visible[k].el;
+            inner.classList.add("grm-releases--item");
+            inner.style.setProperty("--r-i", String(k));
+          }
+          section.classList.add("grm-sound--releases-in");
+          var cleanup = 300 + (visible.length > 0 ? (visible.length - 1) * 250 : 0) + 1100 + 160;
+          if (cleanup < 2400) cleanup = 2400;
+          window.setTimeout(function () {
+            section.classList.remove("grm-sound--releases-in");
+            section.classList.remove("grm-sound--releases-prepared");
+            for (var m = 0; m < visible.length; m++) {
+              var inner2 = visible[m].el.querySelector(".grm-plaque__reveal") || visible[m].el.querySelector(".grm-plaque__inner") || visible[m].el;
+              inner2.classList.remove("grm-releases--item");
+              inner2.style.removeProperty("--r-i");
+            }
+          }, cleanup);
+          return;
+        }
+      }, { threshold: 0.15, rootMargin: "0px 0px -12% 0px" });
+      observer.observe(row);
     })();
   </script>
 
