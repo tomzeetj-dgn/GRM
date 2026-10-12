@@ -258,7 +258,11 @@ are never touched above those queries.
   `pageshow` bfcache return the lock re-arms and the isolation state is fully
   torn down so the home is never left hidden.
 - Destination rect source of truth: the division pages' published
-  `grm-dest-logo:<page>:<w>x<h>` (sessionStorage). On a cold first tap the real
+  `grm-dest-logo:v2:<page>:<w>x<h>` (sessionStorage, prefix held in the shared
+  `DEST_LOGO_KEY` const so the reader — Home — and the writer — the division
+  pages — can never diverge). The `:vN` version is bumped whenever the
+  destination hero geometry changes, so a stale pre-change rect can never
+  survive as the morph target. On a cold first tap the real
   page is rendered in an offscreen same-origin iframe and the logo rect is read
   the moment the stylesheet lays it out, before the heavy artwork loads; the
   frame is removed immediately, cancelling those image loads. Rects are cached
@@ -271,4 +275,31 @@ are never touched above those queries.
   instantly (default link behaviour); all panel info still renders.
 - Split of the layer is capability-aware, not width-only; tablet-landscape and
   desktop continue to use the locked accordion.
+
+### 8a. Mobile destination hero — centred mark
+
+The Studio/Label/Liveroom heroes are laid out on the same mobile query
+(`(max-width: 767px), (pointer: coarse) and (max-height: 560px)`) so the mark the
+Home handoff lands on sits **dead-centre** in the destination viewport, with the
+title/subtitle below it and the scroll cue near the bottom edge.
+
+- Layout, not transforms: the hero is `display: block` with
+  `min-height: 100svh` and top padding `calc(50svh − var(--logo-w) / 2)`, so the
+  mark's own box centre lands on `50svh` (the visible-viewport centre) for any
+  square mark, independent of its intrinsic size. `--logo-w` is
+  `min(clamp(400px, 58vw, 880px), 100vw − 2·var(--gutter))` — exactly the width
+  the mark already rendered — and the mark gets `aspect-ratio: 1/1`.
+- Transform-neutral: the lockup loses its desktop `translateY(-10vh)`, the mark
+  loses its `top: −38px` nudge, and the title/h1 lose their offset, so the mark
+  carries no transform of its own and the measured rect *is* the morph target —
+  zero-jump is structural, not tuned.
+- Scroll cue: the lockup is `position: static` (so the studio cue, which lives
+  inside the lockup, resolves against the hero like the division cues) and both
+  cues become `top: auto; bottom: clamp(24px, 7svh, 72px)`.
+- No header offset is used; the hero's own `100svh` viewport defines centre.
+- Landscape phone caps the mark by height as well
+  (`min(clamp(200px, 40vw, 420px), 46svh, content)`) so it still centres.
+- Desktop (≥768px) and tablet-landscape are untouched: the block is mobile-only,
+  so the locked `grid`/`place-items: center`/`translateY(-10vh)`/`top: −38px`
+  composition and the `:v2` desktop rect are unchanged.
 

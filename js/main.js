@@ -17,6 +17,12 @@
 
   var HOME_INTRO_DEBUG_REPLAY = true;
 
+  /* Destination-logo rect cache key. Bumped whenever the destination hero
+     geometry changes, so a stale pre-change rect can never survive as the
+     morph target. Home (reader) and the division pages (writer) MUST agree
+     on this version — currently the mobile-centred hero. */
+  var DEST_LOGO_KEY = "grm-dest-logo:v2";
+
   document.documentElement.classList.add("js");
 
   var prefersReduced = window.matchMedia("(prefers-reduced-motion: reduce)");
@@ -735,7 +741,7 @@
         var aimRect = null;
         try {
           aimRect = JSON.parse(sessionStorage.getItem(
-            "grm-dest-logo:" + destination.replace(/\/$/, "") + ":" + innerWidth + "x" + innerHeight
+            DEST_LOGO_KEY + ":" + destination.replace(/\/$/, "") + ":" + innerWidth + "x" + innerHeight
           ) || "null");
         } catch (e) {}
         var logoWindow = panel.querySelector(".panel__logo-window");
@@ -906,7 +912,7 @@
     var prefetched = false;
 
     function destKey(page) {
-      return "grm-dest-logo:" + page + ":" + window.innerWidth + "x" + window.innerHeight;
+      return DEST_LOGO_KEY + ":" + page + ":" + window.innerWidth + "x" + window.innerHeight;
     }
 
     /* The destination logo rect is the source of truth. Each division page
@@ -1157,7 +1163,7 @@ resize simply misses and falls back to the previous aim point. */
     var r = logo.getBoundingClientRect();
     if (!r.width || !r.height) return;
     try {
-      sessionStorage.setItem("grm-dest-logo:" + page + ":" + innerWidth + "x" + innerHeight,
+      sessionStorage.setItem(DEST_LOGO_KEY + ":" + page + ":" + innerWidth + "x" + innerHeight,
         JSON.stringify({ left: r.left, top: r.top, width: r.width, height: r.height }));
     } catch (e) {}
   }
