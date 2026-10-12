@@ -258,7 +258,7 @@ are never touched above those queries.
   `pageshow` bfcache return the lock re-arms and the isolation state is fully
   torn down so the home is never left hidden.
 - Destination rect source of truth: the division pages' published
-  `grm-dest-logo:v2:<page>:<w>x<h>` (sessionStorage, prefix held in the shared
+  `grm-dest-logo:v3:<page>:<w>x<h>` (sessionStorage, prefix held in the shared
   `DEST_LOGO_KEY` const so the reader — Home — and the writer — the division
   pages — can never diverge). The `:vN` version is bumped whenever the
   destination hero geometry changes, so a stale pre-change rect can never
@@ -299,7 +299,51 @@ title/subtitle below it and the scroll cue near the bottom edge.
 - No header offset is used; the hero's own `100svh` viewport defines centre.
 - Landscape phone caps the mark by height as well
   (`min(clamp(200px, 40vw, 420px), 46svh, content)`) so it still centres.
-- Desktop (≥768px) and tablet-landscape are untouched: the block is mobile-only,
-  so the locked `grid`/`place-items: center`/`translateY(-10vh)`/`top: −38px`
-  composition and the `:v2` desktop rect are unchanged.
+- The mobile block is mobile-only: below it, the locked
+  `grid`/`place-items: center`/`translateY(-10vh)`/`top: −38px` composition stays.
+  The mark's *width* above the mobile query is now height-aware (see *Mid-range
+  scale* below), but on landscape/laptop/desktop it resolves to the same `58vw`,
+  so those rects are unchanged.
+
+#### Text lockup under the mark
+
+The Glow artwork is square with ~23.6% transparent padding top and bottom, so the
+space the eye reads below the mark is that transparent strip **plus** the flex
+gap, not the gap alone. The mobile text lockup therefore hangs off the mark's
+*visible* base: the lockup gap is zeroed and the two gaps are set explicitly —
+title `margin-top: calc(0.39·var(--lockup-gap) − 0.61·var(--logo-pad-b))` (drops
+the perceived logo→title space ~61% from the un-tightened lockup, i.e. ~19% below
+the previous pass) and subtitle `margin-top: calc(0.85·var(--lockup-gap))`, left
+as approved — so the mark, title and subtitle read as one compact unit, title and
+subtitle moving together. `--logo-pad-b` is
+`calc(var(--logo-w) × 0.236)`, derived from the artwork, so the reduction scales
+with the mark instead of being a per-viewport magic number. The mark itself is
+untouched, so its centred rect and the morph are unchanged. The subtitle floor is
+raised a touch on mobile (`clamp(0.73rem, 1vw, 0.86rem)`, tracking `0.22em`); the
+title typography, the scroll cue position, and all arrival choreography are
+untouched. The cue is bottom-anchored and independent (unchanged).
+
+#### Mid-range scale (768–1439px) — height-aware mark
+
+Above the mobile query the mark was a pure `58vw`, so it was proportional to
+*width* at every size. On a **tall** viewport (portrait tablet, e.g. 768×1024 /
+820×1180 / 1024×1366) that left the mark only ~40–44% of the visible height while
+wide-but-short viewports (landscape/laptop/desktop) already filled 77–103%. The
+mark width is now height-aware —
+
+- Logo: `clamp(400px, max(58vw, 50svh), 880px)` (base, `.is-division-logo-landed`
+  and both heroes share the same expression, so landing never jumps). The `50svh`
+  floor only wins on tall viewports: portrait tablets grow ~15–24%, while
+  landscape/laptop (≥768×768) and desktop (≥1440) stay exactly `58vw` — verified
+  unchanged at 1024×768, 1180×820, 1280×800, 1366×768 and 1440×900.
+- Title: `clamp(1.75rem, max(10.5vw, 9svh), 6.5rem)` — grows *in relationship*
+  with the mark on tall viewports yet never exceeds the `6.5rem` (104px) desktop
+  cap, so it can't outgrow desktop or mobile.
+- Subtitle: floor raised `.68rem → .74rem` (`clamp(0.74rem, 1vw, 0.86rem)`) so the
+  mid-range minimum is legible (10.88 → 11.84px); the `.86rem` cap and the `0.24em`
+  tracking are unchanged, and the mobile `0.73rem` override is untouched.
+- Because the *destination* rect changes on tall viewports, `DEST_LOGO_KEY` is
+  bumped to `:v3`; the desktop takeover re-aims to the published rect and is
+  verified to land exactly on it at every mid-range size. The mobile handoff
+  (`--logo-w`, `58vw`) is unchanged, so its zero-jump/jitter-0 property holds.
 

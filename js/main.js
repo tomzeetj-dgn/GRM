@@ -20,8 +20,9 @@
   /* Destination-logo rect cache key. Bumped whenever the destination hero
      geometry changes, so a stale pre-change rect can never survive as the
      morph target. Home (reader) and the division pages (writer) MUST agree
-     on this version — currently the mobile-centred hero. */
-  var DEST_LOGO_KEY = "grm-dest-logo:v2";
+     on this version — currently the mobile-centred hero + height-aware
+     mid-range scale. */
+  var DEST_LOGO_KEY = "grm-dest-logo:v3";
 
   document.documentElement.classList.add("js");
 
