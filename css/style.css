@@ -4767,3 +4767,247 @@ html.js .label-people__entry.in-view .label-people__shot img{
     transition:none;
   }
 }
+
+/* ============================================================
+   GRM HOME — MOBILE STACKED DESTINATIONS
+   ------------------------------------------------------------
+   Mobile-only layer that sits ON TOP of the locked desktop hero.
+   Nothing here matches above the existing mobile hero breakpoint
+   (max-width: 767px), so the desktop accordion — geometry, hover,
+   mouseleave reset, takeover classes — is never touched.
+
+   The rejected composite-mark / anonymous-zone concept is gone.
+   On mobile the hero becomes three stacked full-width destination
+   panels. Each carries its own single-colour division logo, a large
+   editorial title, a short descriptor, a division-coloured accent
+   rule, a navigation arrow and a cinematic photographic background.
+   The whole panel (the existing .panel <a>) is the single tap target.
+   Tapping runs the approved one-object handoff: the panel's own
+   logo becomes a fixed transition object and morphs to the
+   destination page's REAL rendered logo rect, then the destination
+   arrival choreography takes over.
+   ============================================================ */
+
+/* Mobile-only layer markup is never rendered on desktop. */
+.panel__mobile { display: none; }
+
+.grm-mobile-transition-logo {
+  position: fixed;
+  z-index: 1200;
+  max-width: none;
+  object-fit: contain;
+  pointer-events: none;
+  will-change: left, top, width, height, opacity;
+}
+
+@media (max-width: 767px), (pointer: coarse) and (max-height: 560px) {
+  /* mobile home is headerless: the selector IS the whole screen — no brand
+     header, no hamburger, no border, and no reserved header height/spacer.
+     (the second selector also beats the pre-paint `home-intro-pending`
+     display:block hold, though the intro is already skipped on mobile) */
+  body[data-page="home"] { overflow: hidden; overscroll-behavior: none; }
+  html.home-intro-pending body[data-page="home"] .site-header,
+  body[data-page="home"] .site-header { display: none; }
+
+  /* the hero fills the visible mobile viewport (dvh with an svh floor and a
+     vh fallback); the old header offset is gone, so Studio starts at the
+     very top edge and Liveroom reaches the very bottom edge */
+  .hero {
+    display: block;
+    height: 100vh;
+    height: 100dvh;
+    min-height: 100svh;
+    max-height: none;
+    overflow: hidden;
+    padding-top: 0;
+  }
+  .hero__logo-stage { display: none; }
+  .hero__panels {
+    flex-direction: column;
+    height: 100%;
+    min-height: 0;
+    padding-top: 0;
+  }
+  .hero__panels .panel + .panel {
+    border-left: none;
+    border-top: 1px solid var(--border);
+  }
+
+  /* retire every desktop / composite layer */
+  .panel__logo-window,
+  .panel__content,
+  .panel::before { display: none; }
+
+  .panel {
+    display: block;
+    flex: 1 1 0;
+    height: auto;
+    min-height: 0;
+    overflow: hidden;
+    justify-content: flex-start;
+    touch-action: manipulation;
+    transition: none;
+  }
+  /* neutralise the desktop accordion's hover / expanded preview */
+  .panel.is-expanded { flex-grow: 1; }
+  .panel.is-expanded::before { display: none; }
+
+  /* ---- the panel itself ---- */
+  .panel__mobile {
+    display: block;
+    position: absolute;
+    inset: 0;
+    z-index: 0;
+  }
+  .panel__mobile-media {
+    position: absolute;
+    inset: 0;
+    background-image: var(--zone-bg);
+    background-size: cover;
+    background-position: center;
+    background-repeat: no-repeat;
+    filter: contrast(1.04) brightness(.86) saturate(.9);
+    transform: scale(1);
+    transition: transform 200ms var(--ease-hero), filter 200ms ease;
+  }
+  .panel__mobile-scrim {
+    position: absolute;
+    inset: 0;
+    background:
+      linear-gradient(180deg, rgba(5,5,5,.34) 0%, rgba(5,5,5,.08) 28%, rgba(5,5,5,.52) 66%, rgba(5,5,5,.94) 100%),
+      linear-gradient(90deg, rgba(5,5,5,.72) 0%, rgba(5,5,5,.30) 44%, rgba(5,5,5,0) 82%);
+  }
+  .panel__mobile-tint {
+    position: absolute;
+    inset: 0;
+    background: var(--zone-color, #f5cf6a);
+    opacity: .14;
+    mix-blend-mode: soft-light;
+  }
+  .panel__mobile-body {
+    position: absolute;
+    left: calc(var(--gutter) + env(safe-area-inset-left, 0px));
+    right: calc(var(--gutter) + 46px + env(safe-area-inset-right, 0px));
+    bottom: calc(clamp(20px, 4.6svh, 40px) + env(safe-area-inset-bottom, 0px));
+    z-index: 2;
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 12px;
+  }
+  .panel__mobile-logo {
+    display: block;
+    width: clamp(54px, 16vw, 84px);
+    height: auto;
+    margin-bottom: 2px;
+  }
+  .panel__mobile-title {
+    margin: 0;
+    color: var(--text);
+    font-family: var(--font-display);
+    font-size: clamp(2.6rem, 13vw, 4rem);
+    font-weight: 900;
+    line-height: .84;
+    letter-spacing: .005em;
+    text-transform: uppercase;
+  }
+  .panel__mobile-rule {
+    display: block;
+    width: 42px;
+    height: 2px;
+    background: var(--zone-color, #f5cf6a);
+  }
+  .panel__mobile-desc {
+    margin: 0;
+    color: var(--text-muted);
+    font-family: var(--font-body);
+    font-size: clamp(.7rem, 3.2vw, .8rem);
+    font-weight: 500;
+    letter-spacing: .2em;
+    line-height: 1.4;
+    text-transform: uppercase;
+  }
+  .panel__mobile-arrow {
+    position: absolute;
+    top: 50%;
+    right: var(--gutter);
+    z-index: 2;
+    display: block;
+    color: var(--text);
+    opacity: .82;
+    transform: translateY(-50%);
+    transition: transform 190ms var(--ease-hero), color 190ms ease, opacity 190ms ease;
+  }
+  .panel__mobile-arrow svg { display: block; }
+
+  /* division colour cues (background image is request-scoped to mobile) */
+  #panelProduction {
+    --zone-color: #f5cf6a;
+    --zone-bg: url("../assets/img/GRM-studio-landscape.jpg");
+  }
+  #panelHouse {
+    --zone-color: #2ee6a8;
+    --zone-bg: url("../assets/img/production/cta-turntable-placeholder.jpg");
+  }
+  #panelLive {
+    --zone-color: #ff8f56;
+    --zone-bg: url("../assets/img/Liveroom 2.png");
+  }
+
+  /* ---- immediate tap feedback (restrained) ---- */
+  .panel.is-panel-pressed .panel__mobile-media {
+    transform: scale(1.01);
+    filter: contrast(1.05) brightness(.98) saturate(.98);
+  }
+  .panel.is-panel-pressed .panel__mobile-logo,
+  .panel.is-panel-pressed .panel__mobile-title { filter: brightness(1.06); }
+  .panel.is-panel-pressed .panel__mobile-arrow {
+    transform: translate(4px, calc(-50% - 4px));
+    color: var(--zone-color, #f5cf6a);
+    opacity: 1;
+  }
+
+  /* ---- handoff: the fixed transition mark owns the object ---- */
+  .panel.is-panel-active .panel__mobile-logo { visibility: hidden; }
+
+  /* ---- post-tap isolation (phase 1): the Home hero clears to the black
+          stage around the selected mark. Every panel layer fades — the
+          selected mark itself is NOT touched here (it stays exactly where
+          it is; the fixed overlay carries that same box), so the sequence
+          reads: page clears → then the mark moves. Non-selected marks just
+          fade with the rest; no scale / drift / colour change. ---- */
+  .hero.is-mobile-isolating .panel__mobile-media,
+  .hero.is-mobile-isolating .panel__mobile-scrim,
+  .hero.is-mobile-isolating .panel__mobile-tint,
+  .hero.is-mobile-isolating .panel__mobile-title,
+  .hero.is-mobile-isolating .panel__mobile-rule,
+  .hero.is-mobile-isolating .panel__mobile-desc,
+  .hero.is-mobile-isolating .panel__mobile-arrow,
+  .hero.is-mobile-isolating .panel:not(.is-selected-panel) .panel__mobile-logo {
+    opacity: 0;
+    transition: opacity 180ms ease-out;
+  }
+  .hero.is-mobile-isolating .hero__panels .panel + .panel {
+    border-top-color: transparent;
+    transition: border-color 180ms ease-out;
+  }
+}
+
+/* Deliberate landscape-mobile treatment: three stacked bands would be too
+   shallow at a phone's landscape height, so compact the panel internals
+   instead of ever exposing the hover-dependent desktop accordion. */
+@media (pointer: coarse) and (max-height: 560px) and (orientation: landscape) {
+  .panel__mobile-body {
+    bottom: calc(14px + env(safe-area-inset-bottom, 0px));
+    gap: 8px;
+  }
+  .panel__mobile-logo { width: clamp(36px, 9vh, 52px); margin-bottom: 0; }
+  .panel__mobile-title { font-size: clamp(1.3rem, 6vh, 1.9rem); }
+  .panel__mobile-desc { font-size: clamp(.6rem, 2.6vh, .72rem); letter-spacing: .16em; }
+}
+
+@media (max-width: 767px) and (prefers-reduced-motion: reduce),
+       (pointer: coarse) and (max-height: 560px) and (prefers-reduced-motion: reduce) {
+  .panel__mobile-media,
+  .panel__mobile-arrow { transition: none; }
+}

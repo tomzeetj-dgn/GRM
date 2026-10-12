@@ -133,6 +133,13 @@
   /* One-time Home entrance presentation using the real hero layers. */
   (function () {
     if (document.body.getAttribute("data-page") !== "home") return;
+    // The entrance animation composes the desktop accordion's layered marks.
+    // On the mobile stacked-destination hero there is nothing to compose, so
+    // skip it entirely — but always clear the pre-paint hold it set in <head>.
+    if (window.matchMedia("(max-width: 767px), (pointer: coarse) and (max-height: 560px)").matches) {
+      document.documentElement.classList.remove("home-intro-pending");
+      return;
+    }
     var introLog = function (label) { console.log("[GRM INTRO] " + label, performance.now().toFixed(1), document.body.className); };
     var logState = function (label) {
       ["#panelProduction .panel__logo-window", "#panelHouse .panel__logo-window", "#panelLive .panel__logo-window", ".site-header"].forEach(function (selector) {
@@ -838,6 +845,298 @@
     document.addEventListener("focusin", function (e) {
       if (!root.contains(e.target)) settle();
     });
+  });
+
+  /* ---------- HOME · MOBILE STACKED DESTINATION SELECTOR ----------
+     Phone-only companion to the locked desktop accordion (§ above). It
+     activates at the mobile hero breakpoint and, for phones in landscape,
+     on the capability query (pointer: coarse + short viewport) — so a
+     touch-only landscape phone never gets the hover accordion. It drives
+     the stacked three-destination home. Tap choreography is two clean,
+     non-overlapping phases:
+
+        PHASE 1 · ISOLATE (~180ms)
+          → everything on the Home hero except the selected division mark
+            fades to the black stage; the selected mark does NOT move or
+            scale — it sits exactly on its resting box
+
+        PHASE 2 · MORPH (560ms)
+          → only once the stage is clear, that single mark becomes a fixed
+            transition object and scales/morphs to the destination page's
+            REAL rendered logo rect
+          → the approved destination arrival choreography takes over
+
+     The desktop accordion's own click path never runs here: this handler
+     sits in the capture phase and stops the event before it reaches it.
+     Reduced motion skips the whole handoff and lets the browser navigate
+     instantly (the default link behaviour). */
+  onReady(function () {
+    if (document.body.getAttribute("data-page") !== "home") return;
+
+    var root = document.getElementById("heroPanels");
+    var hero = document.getElementById("top");
+    if (!root || !hero) return;
+
+    var mqMobile = window.matchMedia("(max-width: 767px), (pointer: coarse) and (max-height: 560px)");
+    var DEST_PAGES = ["studio", "label", "liveroom"];
+
+    /* Mobile accessible names, applied only while the stacked layout is
+       active; the desktop accordion's authored names are captured and
+       restored verbatim, so desktop semantics are untouched. */
+    var A11Y_NAMES = { studio: "GRM Studio", label: "GRM Label", liveroom: "GRM Liveroom" };
+    var baseLabels = {};
+    Array.prototype.forEach.call(root.querySelectorAll(".panel"), function (panel) {
+      baseLabels[panel.id] = panel.getAttribute("aria-label") || "";
+    });
+    function syncPanelNames() {
+      var mobile = mqMobile.matches;
+      Array.prototype.forEach.call(root.querySelectorAll(".panel"), function (panel) {
+        var pg = (panel.getAttribute("href") || "").replace(/\/+$/, "");
+        if (mobile && A11Y_NAMES[pg]) panel.setAttribute("aria-label", A11Y_NAMES[pg]);
+        else if (baseLabels[panel.id]) panel.setAttribute("aria-label", baseLabels[panel.id]);
+      });
+    }
+    syncPanelNames();
+    if (mqMobile.addEventListener) mqMobile.addEventListener("change", syncPanelNames);
+    else if (mqMobile.addListener) mqMobile.addListener(syncPanelNames);
+
+    var destCache = {};
+    var destPending = {};
+    var transitioning = false;
+    var prefetched = false;
+
+    function destKey(page) {
+      return "grm-dest-logo:" + page + ":" + window.innerWidth + "x" + window.innerHeight;
+    }
+
+    /* The destination logo rect is the source of truth. Each division page
+       publishes its own rect (see the handoff block below) into sessionStorage
+       keyed by viewport. On a cold first tap nothing has been published yet, so
+       we render the real division page inside an offscreen same-origin frame at
+       the exact same viewport and read its hero logo rect the instant the
+       stylesheet has laid it out — long before the page's heavy artwork has
+       finished (the logo box is CSS-driven, not image-driven). The frame is
+       removed immediately, which also cancels those in-flight image loads, so
+       the measurement costs one small HTML fetch, not a hidden page load. */
+    function measureDestRect(page) {
+      return new Promise(function (resolve) {
+        var frame = document.createElement("iframe");
+        frame.setAttribute("aria-hidden", "true");
+        frame.tabIndex = -1;
+        frame.style.cssText = "position:fixed;left:-10000px;top:0;width:" +
+          window.innerWidth + "px;height:" + window.innerHeight + "px;border:0;visibility:hidden;";
+
+        var settled = false;
+        function finish(rect) {
+          if (settled) return;
+          settled = true;
+          if (frame.parentNode) frame.parentNode.removeChild(frame);
+          resolve(rect);
+        }
+
+        var tries = 0;
+        function poll() {
+          if (settled) return;
+          try {
+            var d = frame.contentDocument;
+            if (d && d.readyState && d.readyState !== "uninitialized") {
+              var el = d.querySelector(".studio-minimal-hero__logo, .division-minimal-hero__logo");
+              if (el) {
+                var r = el.getBoundingClientRect();
+                if (r.width > 1 && r.height > 1) {
+                  return finish({ left: r.left, top: r.top, width: r.width, height: r.height });
+                }
+              }
+            }
+          } catch (e) { /* cross-doc not ready yet */ }
+          if (++tries > 240) return finish(null); // ~6s ceiling
+          setTimeout(poll, 25);
+        }
+
+        frame.src = new URL(page + "/index.html", window.location.href).href;
+        document.body.appendChild(frame);
+        poll();
+      });
+    }
+
+    function getDestRect(page) {
+      if (destCache[page]) return Promise.resolve(destCache[page]);
+      if (destPending[page]) return destPending[page];
+      var stored = null;
+      try { stored = JSON.parse(sessionStorage.getItem(destKey(page)) || "null"); } catch (e) {}
+      if (stored && stored.width) {
+        destCache[page] = stored;
+        return Promise.resolve(stored);
+      }
+      destPending[page] = measureDestRect(page).then(function (rect) {
+        delete destPending[page];
+        if (rect) {
+          destCache[page] = rect;
+          try { sessionStorage.setItem(destKey(page), JSON.stringify(rect)); } catch (e) {}
+        }
+        return rect;
+      }, function () { delete destPending[page]; return null; });
+      return destPending[page];
+    }
+
+    /* Warm the three destination rects once, quietly, off the critical path. */
+    function prefetch() {
+      if (prefetched) return;
+      prefetched = true;
+      var i = 0;
+      (function next() {
+        if (i >= DEST_PAGES.length) return;
+        var page = DEST_PAGES[i++];
+        getDestRect(page).then(function () { setTimeout(next, 80); },
+                               function () { setTimeout(next, 80); });
+      })();
+    }
+
+    function makeOverlay(src, rect) {
+      var img = document.createElement("img");
+      img.className = "grm-mobile-transition-logo";
+      img.alt = "";
+      img.setAttribute("aria-hidden", "true");
+      img.src = src;
+      img.style.left = rect.left + "px";
+      img.style.top = rect.top + "px";
+      img.style.width = rect.width + "px";
+      img.style.height = rect.height + "px";
+      img.style.opacity = "0";
+      document.body.appendChild(img);
+      return img;
+    }
+
+    /* Two-phase choreography: PHASE 1 isolates the selected mark (~180ms,
+       everything else on the hero fades to black); PHASE 2 morphs that single
+       mark (560ms) to the destination logo rect. Never overlapped. */
+    var ISOLATE_MS = 180;
+    var MORPH_MS = 560;
+    var MORPH_AT = ISOLATE_MS;               // morph begins as isolation ends
+
+    function runTakeover(panel) {
+      var dest = panel.getAttribute("href");
+      var page = dest.replace(/\/+$/, "");
+      var source = panel.querySelector(".panel__mobile-logo") ||
+                   panel.querySelector(".panel__logo--glow");
+      if (!source) { window.location.href = dest; return; }
+
+      var startRect = source.getBoundingClientRect();
+
+      // PHASE 1 — the selected mark becomes a fixed object sitting on its
+      // exact resting box (pixel-identical to the in-flow logo, so it does not
+      // move), the in-flow one is hidden, and the whole hero fades around it.
+      var overlay = makeOverlay(source.currentSrc || source.src, startRect);
+      overlay.style.opacity = "1";
+      panel.classList.add("is-selected-panel", "is-panel-active");
+      hero.classList.add("is-mobile-isolating");
+
+      var navigated = false;
+      function commit() {
+        if (navigated) return;
+        navigated = true;
+        window.location.href = dest;
+      }
+
+      var t0 = performance.now();
+      var since = function () { return performance.now() - t0; };
+
+      getDestRect(page).then(function (aim) {
+        // PHASE 2 begins only after the Home content has cleared — or as soon
+        // as the destination rect is ready, if a cold measurement is slower.
+        var morphDelay = Math.max(0, MORPH_AT - since());
+
+        setTimeout(function () {
+          if (aim) {
+            overlay.getBoundingClientRect(); // flush, so the morph is armed
+            overlay.style.transition =
+              "left " + MORPH_MS + "ms cubic-bezier(0.22, 1, 0.36, 1)," +
+              "top " + MORPH_MS + "ms cubic-bezier(0.22, 1, 0.36, 1)," +
+              "width " + MORPH_MS + "ms cubic-bezier(0.22, 1, 0.36, 1)," +
+              "height " + MORPH_MS + "ms cubic-bezier(0.22, 1, 0.36, 1)";
+            overlay.style.left = aim.left + "px";
+            overlay.style.top = aim.top + "px";
+            overlay.style.width = aim.width + "px";
+            overlay.style.height = aim.height + "px";
+          }
+        }, morphDelay);
+
+        // hand the finished rect to the approved destination arrival, then
+        // commit — only AFTER the morph has actually completed, so the
+        // overlay is always sitting exactly on the destination logo rect
+        // when the arrival takes over (nothing to jump)
+        setTimeout(function () {
+          if (aim) {
+            try {
+              sessionStorage.setItem("grm-arrival", page);
+              if (page === "label") sessionStorage.setItem("grm-label-start-rect", JSON.stringify(aim));
+              if (page === "liveroom") sessionStorage.setItem("grm-liveroom-start-rect", JSON.stringify(aim));
+            } catch (e) {}
+          }
+          commit();
+        }, morphDelay + (aim ? MORPH_MS + 40 : 40));
+      });
+    }
+
+    /* Capture-phase tap: takes over from the desktop click handler on
+       mobile, and leaves the default link behaviour completely alone on
+       reduced motion. Modifier-clicks (open in new tab) fall through. */
+    root.addEventListener("click", function (e) {
+      if (!mqMobile.matches) return;
+      if (prefersReduced.matches) return;
+      var panel = e.target.closest && e.target.closest(".panel");
+      if (!panel || !root.contains(panel)) return;
+      if (e.button && e.button !== 0) return;
+      if (e.metaKey || e.ctrlKey || e.shiftKey || e.altKey) return;
+
+      e.preventDefault();
+      e.stopPropagation();               // never reach the desktop handler
+      if (transitioning) return;         // double-tap / repeat guard
+      transitioning = true;
+      runTakeover(panel);
+    }, true);
+
+    /* While a handoff owns the motion, swallow the accordion's leave reset
+       (forwarded from an ancestor capture so it always runs first). */
+    function holdDuringTakeover(e) {
+      if (transitioning) e.stopImmediatePropagation();
+    }
+    document.addEventListener("mouseleave", holdDuringTakeover, true);
+    document.addEventListener("pointerleave", holdDuringTakeover, true);
+    document.addEventListener("pointercancel", holdDuringTakeover, true);
+
+    // lock is per navigation; a bfcache return re-arms it AND must restore the
+    // home (never leave the isolation state applied, §14)
+    window.addEventListener("pageshow", function () {
+      transitioning = false;
+      hero.classList.remove("is-mobile-isolating");
+      Array.prototype.forEach.call(root.querySelectorAll(".panel"), function (p) {
+        p.classList.remove("is-selected-panel", "is-panel-active");
+      });
+      Array.prototype.forEach.call(document.querySelectorAll(".grm-mobile-transition-logo"), function (o) {
+        if (o.parentNode) o.parentNode.removeChild(o);
+      });
+    });
+
+    if (mqMobile.matches && !prefersReduced.matches) {
+      // intent: the instant a finger lands on a panel, start measuring that
+      // destination, so the morph has its target well before the tap's click
+      function warmIntent(e) {
+        var panel = e.target.closest && e.target.closest(".panel");
+        if (!panel || !root.contains(panel)) return;
+        var href = panel.getAttribute("href");
+        if (href) getDestRect(href.replace(/\/+$/, ""));
+      }
+      root.addEventListener("pointerdown", warmIntent, true);
+      root.addEventListener("touchstart", warmIntent, { capture: true, passive: true });
+
+      // and warm all three quietly in the background (idle, with a hard
+      // fallback so it is never left un-scheduled)
+      if ("requestIdleCallback" in window) {
+        window.requestIdleCallback(function () { prefetch(); }, { timeout: 1500 });
+      }
+      setTimeout(prefetch, 1500);
+    }
   });
 
   /* ---------- HOME -> DIVISION HANDOFF GEOMETRY ----------

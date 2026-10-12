@@ -14,8 +14,9 @@ Live: `https://tomzeetj-dgn.github.io/GRM/` · Local: `python3 -m http.server 80
 
 Multi-page umbrella brand. Division pages carry a shared header/footer
 (injected) plus a full-bleed division logo behind the page hero. The home
-page is hero-only (`overflow: hidden`, no nav links, no mobile menu, no
-footer — guarded by the `isHome` flag).
+page is hero-only on desktop (`overflow: hidden`, no nav links, no mobile
+menu, no footer — guarded by the `isHome` flag). On phones (§8) home becomes a
+naturally scrolling stack and the brand-only header is re-shown.
 
 | Division page | URL       | body theme      | Accent (--accent / --accent-lite) |
 | ------------- | --------- | --------------- | --------------------------------- |
@@ -208,3 +209,66 @@ script at the bottom of `label/index.html`. No shared rule is modified.
   the roster.
 - **CTA**: `#submissions` kept with the `hidden` attribute — folds into the Label end slate later
   (reversible).
+
+---
+
+## 8. Home — mobile stacked destinations
+
+Additive, phone-only layer in `css/style.css` + the
+`HOME · MOBILE STACKED DESTINATION SELECTOR` `onReady` block in `js/main.js`.
+It activates at the existing 767px hero breakpoint **or** on phones in
+landscape (`(pointer: coarse) and (max-height: 560px)`), so a touch-only
+landscape phone never receives the hover-only desktop accordion. The desktop
+accordion, hover, `settle()`, `syncLogoWindows()` and the frozen logo geometry
+are never touched above those queries.
+
+- Rest: the three `.panel` links stack as full-width destination panels that
+  together fill the entire available mobile viewport — **the selector IS the
+  screen**, headerless. Each carries `.panel__mobile` — a cinematic
+  `--zone-bg` photograph, dark scrim, division tint, the division's single-colour
+  **Glow** mark, a large condensed title, a division-colour accent rule, a short
+  descriptor and a northeast arrow. `.panel__logo-window`, `.panel__content`,
+  `.panel__zone` and `.panel::before` are all retired on the stacked layout.
+- Headerless + full viewport: on mobile Home `body[data-page="home"]
+  .site-header { display: none }` (the desktop home header is already hidden, so
+  the mobile re-show is gone) — no brand logo, nav, hamburger, border or
+  reserved height, and no spacer. `.hero` is `100vh`/`100dvh` with a
+  `min-height: 100svh` floor (tracks the collapsing/expanding browser chrome so
+  the three equal `flex: 1 1 0` bands always total the visible height); no
+  `padding-top`/header offset survives, so Studio starts at the top edge and
+  Liveroom reaches the bottom edge with no scroll. Safe-area insets are applied
+  to internal content only (`panel__mobile-body` left/right/bottom), never to the
+  outer height. A deliberate compacted landscape treatment
+  (`(pointer: coarse) and (max-height: 560px) and (orientation: landscape)`)
+  shrinks the marks/copy so the three bands still fit a shallow phone viewport
+  without ever exposing the hover-dependent desktop accordion.
+- Tap the whole panel (capture-phase listener on `#heroPanels`, so it never
+  reaches the desktop click handler). Two non-overlapping phases:
+  1. **Isolation (~180ms, `ease-out`)** — tap adds `is-mobile-isolating` to the
+     hero, which fades every panel's `media`/`scrim`/`tint`/`title`/`rule`/
+     `desc`/`arrow` to 0, fades the non-selected marks, and makes the row
+     dividers transparent, revealing the near-black `--bg`. The selected mark is
+     lifted into a fixed `.grm-mobile-transition-logo` and held **stationary** at
+     its own rect, so the stage resolves to *black + one logo*.
+  2. **Morph (560ms)** — only once the isolation has run does the fixed mark
+     ease (`--ease-hero`) from its resting box to the destination page's
+     **measured** logo rect; navigation commits 40ms after the morph completes,
+     so the arrival has nothing to jump. Total tap → destination ≈ 840ms.
+  A second tap during either phase is ignored (single per-navigation lock). On a
+  `pageshow` bfcache return the lock re-arms and the isolation state is fully
+  torn down so the home is never left hidden.
+- Destination rect source of truth: the division pages' published
+  `grm-dest-logo:<page>:<w>x<h>` (sessionStorage). On a cold first tap the real
+  page is rendered in an offscreen same-origin iframe and the logo rect is read
+  the moment the stylesheet lays it out, before the heavy artwork loads; the
+  frame is removed immediately, cancelling those image loads. Rects are cached
+  per viewport (with in-flight dedupe); prefetch warms all three on idle/1.5s and
+  on touch intent.
+- Accessibility: real links; `aria-label`s `GRM Studio` / `GRM Label` /
+  `GRM Liveroom` are applied only while the stacked layout is active, so the
+  desktop accordion's own naming is unchanged.
+- Reduced motion: the takeover is skipped entirely and the tap navigates
+  instantly (default link behaviour); all panel info still renders.
+- Split of the layer is capability-aware, not width-only; tablet-landscape and
+  desktop continue to use the locked accordion.
+
