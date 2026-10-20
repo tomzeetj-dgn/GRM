@@ -335,15 +335,6 @@
       document.documentElement.classList.remove("home-intro-pending");
       return;
     }
-    var introLog = function (label) { console.log("[GRM INTRO] " + label, performance.now().toFixed(1), document.body.className); };
-    var logState = function (label) {
-      ["#panelProduction .panel__logo-window", "#panelHouse .panel__logo-window", "#panelLive .panel__logo-window", ".site-header"].forEach(function (selector) {
-        var element = document.querySelector(selector);
-        var style = element && getComputedStyle(element);
-        console.log("[GRM INTRO] state", label, selector, style && { opacity: style.opacity, visibility: style.visibility, display: style.display });
-      });
-    };
-    introLog("init");
     var reduce = reduced();
     var seen = false;
     try { seen = sessionStorage.getItem("grm-home-intro-seen") === "1"; } catch (e) {}
@@ -388,27 +379,20 @@
       line.className = "home-intro-divider home-intro-divider--" + (index ? "right" : "left");
       panel.appendChild(line);
     });
-    introLog("running class added");
-    logState("after running class");
     requestAnimationFrame(function () {
       requestAnimationFrame(function () {
-        introLog("first paint armed");
-        logState("second frame");
         setTimeout(function () {
           document.body.classList.add("home-intro-lines");
-          introLog("dividers start");
         }, 450);
-        setTimeout(function () { document.body.classList.add("home-intro-label"); pulseGlow(pulseTargets[0]); introLog("label flash"); }, 1450);
-        setTimeout(function () { document.body.classList.add("home-intro-studio"); pulseGlow(pulseTargets[1]); introLog("studio flash"); }, 1850);
-        setTimeout(function () { document.body.classList.add("home-intro-liveroom"); pulseGlow(pulseTargets[2]); introLog("liveroom flash"); }, 2250);
+        setTimeout(function () { document.body.classList.add("home-intro-label"); pulseGlow(pulseTargets[0]); }, 1450);
+        setTimeout(function () { document.body.classList.add("home-intro-studio"); pulseGlow(pulseTargets[1]); }, 1850);
+        setTimeout(function () { document.body.classList.add("home-intro-liveroom"); pulseGlow(pulseTargets[2]); }, 2250);
         setTimeout(function () {
           document.body.classList.add("home-intro-header-visible");
-          introLog("header reveal");
         }, 3200);
         setTimeout(function () {
           document.body.classList.remove("home-intro-running", "home-intro-lines", "home-intro-label", "home-intro-studio", "home-intro-liveroom", "home-intro-header-visible");
           document.documentElement.classList.remove("home-intro-pending");
-          introLog("complete");
         }, 3650);
       });
     });
@@ -528,40 +512,6 @@
         sessionStorage.setItem("grm-morph-arrival", "studio");
         sessionStorage.setItem("grm-morph-start", JSON.stringify({ left: rect.left, top: rect.top, width: rect.width, height: rect.height }));
       }
-      setTimeout(function () { window.location.href = link.href; }, 520);
-    });
-  }());
-
-  /* Label/Liveroom division-to-division routes only. Studio -> Label above
-     remains isolated as the approved reference transition. */
-  (function () {
-    var page = document.body.getAttribute("data-page");
-    if (reduced() || (page !== "label" && page !== "liveroom")) return;
-
-    var busy = false;
-    var logo = document.querySelector(".division-minimal-hero__logo");
-
-    document.addEventListener("click", function (event) {
-      var link = event.target.closest('.site-nav a[href$="label/"]');
-      if (page !== "label") return;
-      if (!link || event.button !== 0 || event.metaKey || event.ctrlKey || event.shiftKey || event.altKey || busy) return;
-
-      var destination = link.getAttribute("href").replace(/^.*\/|\/$/g, "");
-      if (destination === page) return;
-
-      event.preventDefault();
-      busy = true;
-      var rect = logo && logo.getBoundingClientRect();
-      if (rect) {
-        sessionStorage.setItem("grm-morph-arrival", destination);
-        sessionStorage.setItem("grm-morph-start", JSON.stringify({
-          left: rect.left,
-          top: rect.top,
-          width: rect.width,
-          height: rect.height
-        }));
-      }
-      document.body.classList.add("is-division-page-morph-exit");
       setTimeout(function () { window.location.href = link.href; }, 520);
     });
   }());
@@ -946,9 +896,6 @@
           var sourceRect = sourceLogo && sourceLogo.getBoundingClientRect();
           if (destination === "studio/") {
             sessionStorage.setItem("grm-arrival", "studio");
-            if (sourceRect) {
-              sessionStorage.setItem("grm-studio-home-logo-width", String(sourceRect.width));
-            }
             if (sourceLogo) {
               panel.classList.add("is-studio-logo-committed");
               sourceLogo.classList.add("is-studio-logo-committed");
