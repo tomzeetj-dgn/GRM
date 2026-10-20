@@ -647,15 +647,34 @@
        explicit user-initiated navigation. */
     var isTransitioning = false;
 
+    /* Keeps every panel's logo window centred on the hero while the panels
+       re-layout. It writes each frame for as long as the panel geometry is
+       still moving (hover/expand/collapse/takeover flex transitions, resize)
+       and parks itself once the geometry has been still for STILL_FRAMES
+       frames; every geometry trigger calls it again, which re-arms it.
+       (It used to run every frame forever, even with nothing moving.) */
+    var STILL_FRAMES = 20;
+    var stillFrames = 0;
+    var lastGeometry = "";
     function syncLogoWindows() {
       var heroRect = hero.getBoundingClientRect();
+      var geometry = "";
       panels.forEach(function (panel) {
         var rect = panel.getBoundingClientRect();
-        panel.style.setProperty("--panel-left", (rect.left - heroRect.left) + "px");
-        panel.style.setProperty("--panel-top", (rect.top - heroRect.top) + "px");
+        var left = rect.left - heroRect.left;
+        var top = rect.top - heroRect.top;
+        panel.style.setProperty("--panel-left", left + "px");
+        panel.style.setProperty("--panel-top", top + "px");
+        geometry += left + "," + top + "," + rect.width + "," + rect.height + ";";
       });
+      stillFrames = geometry === lastGeometry ? stillFrames + 1 : 0;
+      lastGeometry = geometry;
       cancelAnimationFrame(logoFrame);
-      logoFrame = requestAnimationFrame(syncLogoWindows);
+      if (stillFrames < STILL_FRAMES) logoFrame = requestAnimationFrame(syncLogoWindows);
+    }
+    function kickLogoWindows() {
+      stillFrames = 0;
+      syncLogoWindows();
     }
 
     function setExpanded(panel, expanded, opts) {
@@ -665,7 +684,7 @@
 
       panel.classList.toggle("is-expanded", expanded);
       panel.setAttribute("aria-expanded", String(expanded));
-      syncLogoWindows();
+      kickLogoWindows();
 
       // keep only one panel open at a time (accordion semantics)
       if (expanded) {
@@ -702,8 +721,8 @@
         expand(panel);
       });
     });
-    window.addEventListener("resize", syncLogoWindows);
-    syncLogoWindows();
+    window.addEventListener("resize", kickLogoWindows);
+    kickLogoWindows();
 
     /* Warm the three destination rects so the committed logo always has its
        real target before the user can click — the same prefetch the mobile
@@ -739,6 +758,7 @@
         panel.classList.add("is-liveroom-takeover-selected");
       }
       hero.classList.add("is-takeover");
+      kickLogoWindows();
 
       // continue from the CURRENT accordion state — if this panel is already
       // expanded (hovered), expand() is a no-op, so there is NO reset; if it
@@ -1851,7 +1871,25 @@ resize simply misses and falls back to the previous aim point. */
       pos = wrap(pos + (vel * dt) / 1000);
       paint();
     }
+    /* Off-screen the drift is invisible, so the loop parks itself and the
+       observer below restarts it (from the same position) on re-entry. */
+    if (rowVisible) window.requestAnimationFrame(loop);
+    else { running = false; last = null; }
+  }
+
+  var rowVisible = true;
+  var running = false;
+  function run() {
+    if (running) return;
+    running = true;
+    last = null;
     window.requestAnimationFrame(loop);
+  }
+  if ("IntersectionObserver" in window) {
+    new IntersectionObserver(function (entries) {
+      rowVisible = entries[entries.length - 1].isIntersecting;
+      if (rowVisible) run();
+    }).observe(row);
   }
 
   function onDown(e) {
@@ -1960,7 +1998,7 @@ resize simply misses and falls back to the previous aim point. */
 
   function start() {
     fill();
-    window.requestAnimationFrame(loop);
+    run();
   }
 
   if (document.readyState === "loading") {

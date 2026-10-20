@@ -18,7 +18,8 @@
    any browser synthesis. */
 @font-face {
   font-family: "UltraCondensedSansSerif";
-  src: url("../assets/fonts/UltraCondensedSansSerif-Serbian.ttf") format("truetype");
+  src: url("../assets/fonts/UltraCondensedSansSerif-Serbian.woff2") format("woff2"),
+       url("../assets/fonts/UltraCondensedSansSerif-Serbian.ttf") format("truetype");
   font-weight: 100 900;
   font-stretch: 62.5% 125%;
   font-display: swap;
