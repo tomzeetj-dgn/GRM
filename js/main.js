@@ -22,7 +22,7 @@
      morph target. Home (reader) and the division pages (writer) MUST agree
      on this version — currently the mobile-centred hero + height-aware
      mid-range scale. */
-  var DEST_LOGO_KEY = "grm-dest-logo:v3";
+  var DEST_LOGO_KEY = "grm-dest-logo:v4";
 
   /* ---------- SHARED DESTINATION-LOGO RECT RESOLVER ----------
      One system for every Home -> division path (desktop accordion + mobile

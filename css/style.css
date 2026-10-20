@@ -5222,20 +5222,39 @@ html.js .label-people__entry.in-view .label-people__shot img{
        strip plus the flex gap — the title must hang off the visible base
        of the mark, not its box */
     --logo-pad-b: calc(var(--logo-w) * 0.236);
-    display: block;
+    /* OPTICAL CENTRING (2026-10-20). The hero is exactly one screen and
+       centres the lockup as a flex column between symmetric paddings, so
+       the centre is always 50svh. What is centred is the VISIBLE group —
+       the top of the drawn mark (below its ~23.6% transparent strip) down
+       to the bottom of the subtitle — not the logo's box: see the lockup's
+       negative margin-top below. Text height, wrapping and locale are
+       absorbed by the layout, so no per-page number is needed. */
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
     height: auto;
     min-height: 100svh;
-    padding: calc(50svh - var(--logo-w) / 2) var(--gutter) clamp(40px, 8svh, 160px);
+    padding: clamp(40px, 8svh, 160px) var(--gutter);
   }
 
   .studio-minimal-hero__lockup,
   .division-minimal-hero__lockup {
     position: static;          /* studio: hand the scroll cue back to the hero box */
     width: var(--logo-w);
-    margin: 0 auto;
+    /* the transparent strip above the drawn mark is taken out of the
+       centred size, which lifts the box by half of it (0.118 × mark) so the
+       visible mark + title + subtitle sit on the screen's centre */
+    margin: calc(-1 * var(--logo-w) * 0.236) auto 0;
     transform: none;
     gap: 0;                    /* the two text gaps are set explicitly below */
   }
+
+  /* Each mobile hero owns the whole first screen: nothing from the next
+     section may rise into it (Label's About photo used to bleed in through
+     the hero's negative margin; Liveroom's Room was pulled up under the
+     scroll cue). Mobile query only — tablet/desktop keep their rules. */
+  body.theme-label .division-minimal-hero { margin-bottom: 0; }
+  body.theme-liveroom .liveroom-room { margin-top: 0; padding-top: 72px; }
 
   .studio-minimal-hero__logo,
   .division-minimal-hero__logo {

@@ -264,7 +264,7 @@ are never touched above those queries.
   `pageshow` bfcache return the lock re-arms and the isolation state is fully
   torn down so the home is never left hidden.
 - Destination rect source of truth: the division pages' published
-  `grm-dest-logo:v3:<page>:<w>x<h>` (sessionStorage, prefix held in the shared
+  `grm-dest-logo:v4:<page>:<w>x<h>` (sessionStorage, prefix held in the shared
   `DEST_LOGO_KEY` const so the reader — Home — and the writer — the division
   pages — can never diverge). The `:vN` version is bumped whenever the
   destination hero geometry changes, so a stale pre-change rect can never
@@ -310,6 +310,27 @@ title/subtitle below it and the scroll cue near the bottom edge.
   The mark's *width* above the mobile query is now height-aware (see *Mid-range
   scale* below), but on landscape/laptop/desktop it resolves to the same `58vw`,
   so those rects are unchanged.
+
+#### Optical centring + one-screen hero (2026-10-20, supersedes the box-centring above)
+
+On the mobile query the hero is now a flex column (`justify-content:center`,
+symmetric `padding: clamp(40px,8svh,160px) var(--gutter)`, `min-height:100svh`),
+and the lockup carries `margin-top: calc(-1 * var(--logo-w) * 0.236)`. Taking the
+mark's transparent top strip out of the centred size lifts the box by half of it,
+so the VISIBLE group (top of the drawn mark → bottom of the subtitle) sits on
+50svh at every phone size, in EN and SR, whatever the subtitle wraps to
+(measured: 0.0px off-centre at 390×844, 430×932 and 844×390; previously
+72–85px low). Mark→title and title→subtitle gaps are unchanged.
+- The scroll cue stays bottom-anchored (`bottom: clamp(24px,7svh,72px)`), level on
+  all three pages.
+- Nothing from the next section enters the first screen on mobile: Label's
+  negative hero `margin-bottom` is reset to 0 and Liveroom's `.liveroom-room`
+  gets `margin-top:0; padding-top:72px` (mobile query only).
+- `DEST_LOGO_KEY` bumped to `grm-dest-logo:v4`; the mobile Home handoff lands
+  exactly on the new rect (verified 390×844, 430×932). Tablet/desktop logo rects
+  are byte-identical to before (820, 1024, 1280, 1440, 1920).
+- Known, pre-existing: on landscape phones (≈844×390) the subtitle and the scroll
+  cue still collide (they did before this change too).
 
 #### Text lockup under the mark
 
