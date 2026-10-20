@@ -4,12 +4,13 @@
 
    - header surface state on scroll
    - scroll progress hairline
-   - active-section navigation state
    - mobile menu (toggle / escape / focus)
    - scroll reveals
-   - work rail: drag-to-scroll + arrow keys
-   - studio gallery: perspective horizontal scrub
-   - hero: three-panel division index (hover / keyboard / touch)
+   - Home hero: three-panel division index (hover / keyboard / touch),
+     mobile stacked selector, logo takeovers
+   - division arrivals + division <-> division logo handoff
+   - Liveroom schedule, ghost-materialise reveal, bento hover
+   - Production showreel aperture + release-plaque carousel
    All motion respects prefers-reduced-motion.
    ============================================================ */
 (function () {
@@ -605,32 +606,6 @@
     });
   });
 
-  /* ---------- ACTIVE NAVIGATION STATE ---------- */
-  onReady(function () {
-    var links = document.querySelectorAll('.site-nav a[href^="#"]');
-    if (!links.length || !("IntersectionObserver" in window)) return;
-
-    var map = {};
-    links.forEach(function (l) { map[l.getAttribute("href").slice(1)] = l; });
-
-    var io = new IntersectionObserver(function (entries) {
-      entries.forEach(function (entry) {
-        var link = map[entry.target.id];
-        if (!link) return;
-        if (entry.isIntersecting) link.setAttribute("aria-current", "true");
-        else link.removeAttribute("aria-current");
-      });
-    }, {
-      rootMargin: "-35% 0px -55% 0px",
-      threshold: 0
-    });
-
-    ["services", "work", "studio", "equipment", "contact"].forEach(function (id) {
-      var el = document.getElementById(id);
-      if (el) io.observe(el);
-    });
-  });
-
   /* ---------- REVEALS ---------- */
   onReady(function () {
     var targets = document.querySelectorAll(".reveal");
@@ -651,106 +626,6 @@
     }, { threshold: 0.15 });
 
     targets.forEach(function (el) { io.observe(el); });
-  });
-
-  /* ---------- WORK RAIL: drag + keys ---------- */
-  onReady(function () {
-    var rail = document.getElementById("workRail");
-    if (!rail) return;
-
-    var down = false, startX = 0, startScroll = 0, moved = false;
-
-    rail.addEventListener("pointerdown", function (e) {
-      if (e.pointerType !== "mouse") return;
-      down = true;
-      moved = false;
-      startX = e.clientX;
-      startScroll = rail.scrollLeft;
-      rail.setPointerCapture(e.pointerId);
-    });
-    rail.addEventListener("pointermove", function (e) {
-      if (!down) return;
-      var dx = e.clientX - startX;
-      if (Math.abs(dx) > 4) moved = true;
-      rail.scrollLeft = startScroll - dx;
-    });
-    rail.addEventListener("pointerup", function () { down = false; });
-    rail.addEventListener("pointercancel", function () { down = false; });
-
-    // don't follow a link right after a drag gesture
-    rail.addEventListener("click", function (e) {
-      if (moved && e.target.closest("a")) {
-        e.preventDefault();
-        e.stopPropagation();
-      }
-    });
-
-    rail.addEventListener("keydown", function (e) {
-      var inc = 320;
-      if (e.key === "ArrowRight") { rail.scrollLeft += inc; e.preventDefault(); }
-      else if (e.key === "ArrowLeft") { rail.scrollLeft -= inc; e.preventDefault(); }
-    });
-  });
-
-  /* ---------- STUDIO GALLERY: perspective scrub ---------- */
-  onReady(function () {
-    var stage = document.getElementById("galleryStage");
-    if (!stage) return;
-
-    var sticky = stage.querySelector(".gallery-sticky");
-    var gallery = sticky.querySelector(".gallery");
-    var cols = gallery.querySelectorAll(".gallery__col");
-    var speeds = {};
-    cols.forEach(function (c) { speeds[c.dataset.speed] = parseFloat(c.dataset.speed) || 1; });
-
-    function maxShift() {
-      return Math.max(0, gallery.getBoundingClientRect().width - window.innerWidth);
-    }
-
-    function enabled() {
-      if (reduced()) return false;
-      return window.innerWidth > 1000;
-    }
-
-    var inited = false;
-
-    function init() {
-      if (inited) return;
-      inited = true;
-
-      function tick() {
-        var rect = stage.getBoundingClientRect();
-        var vh = window.innerHeight || document.documentElement.clientHeight;
-        var travel = Math.max(0, rect.height - vh);
-        var p = travel ? Math.min(1, Math.max(0, -rect.top / travel)) : 0;
-
-        var shift = p * maxShift();
-
-        // strip slides left; faster columns move further = depth
-        gallery.style.transform = "translate3d(" + (-shift) + "px, 0, 0)";
-        cols.forEach(function (col) {
-          var s = speeds[col.dataset.speed] || 1;
-          col.style.transform = "translate3d(" + (-(shift * (s - 1))) + "px, 0, 0)";
-        });
-      }
-
-      var ticking = false;
-      function onScroll() {
-        if (ticking) return;
-        ticking = true;
-        RAF(function () {
-          tick();
-          ticking = false;
-        });
-      }
-
-      window.addEventListener("scroll", onScroll, { passive: true });
-      window.addEventListener("resize", onScroll, { passive: true });
-      tick();
-    }
-
-    init();
-    window.addEventListener("resize", function () { if (enabled()) init(); });
   });
 
   /* ---------- HERO PANELS: three GRM worlds ----------
@@ -1770,13 +1645,6 @@ resize simply misses and falls back to the previous aim point. */
 
   onReady(function () {
     if (document.body.getAttribute("data-page") !== "studio") return;
-
-    /* The pending VIEW OUR WORK link is inert until the real YouTube URL
-       is supplied: keep it from jumping the page to the top. */
-    document.addEventListener("click", function (e) {
-      var link = e.target && e.target.closest ? e.target.closest("[data-pending-youtube]") : null;
-      if (link) { e.preventDefault(); e.stopPropagation(); }
-    });
 
     var aperture = document.querySelector("[data-showreel-aperture]");
     if (!aperture) return;
