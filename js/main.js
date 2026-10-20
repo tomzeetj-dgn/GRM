@@ -399,120 +399,45 @@
     });
   }());
 
-  /* Studio -> Label only: identity dissolve, separate from Home arrivals. */
+  /* ---------- DIVISION <-> DIVISION: source side ----------
+     The six header-nav routes between Production (studio), Label and
+     Liveroom. Clicking a division link in the desktop header stores the
+     outgoing logo rect + the destination, fades the outgoing hero text
+     (except on routes INTO Production, which never had an exit fade),
+     then navigates after 520ms. The destination side lives in
+     "DIVISION <-> DIVISION: destination side" below.
+     One table instead of six copied handlers; behaviour per route is
+     unchanged. Desktop header only (.site-nav); the <=1000px hamburger menu
+     navigates normally. Modifier/middle clicks and reduced motion fall
+     through to the browser. */
   (function () {
-    if (document.body.getAttribute("data-page") !== "studio" || reduced()) return;
-    var busy = false;
-    document.addEventListener("click", function (event) {
-      var link = event.target.closest('.site-nav a[href$="label/"]');
-      if (!link || event.button !== 0 || event.metaKey || event.ctrlKey || event.shiftKey || event.altKey || busy) return;
-      event.preventDefault();
-      busy = true;
-      var logo = document.querySelector(".studio-minimal-hero__logo");
-      var rect = logo && logo.getBoundingClientRect();
-      if (rect) {
-        sessionStorage.setItem("grm-morph-arrival", "label");
-        sessionStorage.setItem("grm-morph-start", JSON.stringify({ left: rect.left, top: rect.top, width: rect.width, height: rect.height }));
-      }
-      document.body.classList.add("is-division-morph-exit");
-      setTimeout(function () { window.location.href = link.href; }, 520);
-    });
-  }());
+    var page = document.body.getAttribute("data-page");
+    if (reduced() || (page !== "studio" && page !== "label" && page !== "liveroom")) return;
 
-  /* Liveroom -> Label only: isolated copy of the Liveroom source handoff. */
-  (function () {
-    if (document.body.getAttribute("data-page") !== "liveroom" || reduced()) return;
+    var DIVISIONS = ["studio", "label", "liveroom"];
+    var logoSelector = page === "studio" ? ".studio-minimal-hero__logo" : ".division-minimal-hero__logo";
+    var exitClass = page === "studio" ? "is-division-morph-exit" : "is-division-page-morph-exit";
     var busy = false;
-    document.addEventListener("click", function (event) {
-      var link = event.target.closest('.site-nav a[href$="label/"]');
-      if (!link || event.button !== 0 || event.metaKey || event.ctrlKey || event.shiftKey || event.altKey || busy) return;
-      event.preventDefault();
-      busy = true;
-      var logo = document.querySelector(".division-minimal-hero__logo");
-      var rect = logo && logo.getBoundingClientRect();
-      if (rect) {
-        sessionStorage.setItem("grm-morph-arrival", "label");
-        sessionStorage.setItem("grm-morph-start", JSON.stringify({ left: rect.left, top: rect.top, width: rect.width, height: rect.height }));
-      }
-      document.body.classList.add("is-division-page-morph-exit");
-      setTimeout(function () { window.location.href = link.href; }, 520);
-    });
-  }());
 
-  /* Liveroom -> Studio only: isolated copy of the Label source handoff. */
-  (function () {
-    if (document.body.getAttribute("data-page") !== "liveroom" || reduced()) return;
-    var busy = false;
     document.addEventListener("click", function (event) {
-      var link = event.target.closest('.site-nav a[href$="studio/"]');
-      if (!link || event.button !== 0 || event.metaKey || event.ctrlKey || event.shiftKey || event.altKey || busy) return;
-      event.preventDefault();
-      busy = true;
-      var logo = document.querySelector(".division-minimal-hero__logo");
-      var rect = logo && logo.getBoundingClientRect();
-      if (rect) {
-        sessionStorage.setItem("grm-morph-arrival", "studio");
-        sessionStorage.setItem("grm-morph-start", JSON.stringify({ left: rect.left, top: rect.top, width: rect.width, height: rect.height }));
-      }
-      setTimeout(function () { window.location.href = link.href; }, 520);
-    });
-  }());
+      if (busy || event.button !== 0 || event.metaKey || event.ctrlKey || event.shiftKey || event.altKey) return;
+      var link = event.target.closest(".site-nav a");
+      if (!link) return;
+      var destination = null;
+      DIVISIONS.forEach(function (d) {
+        if (d !== page && link.getAttribute("href").slice(-(d.length + 1)) === d + "/") destination = d;
+      });
+      if (!destination) return;
 
-  /* Label -> Liveroom only: isolated copy of the Label source handoff. */
-  (function () {
-    if (document.body.getAttribute("data-page") !== "label" || reduced()) return;
-    var busy = false;
-    document.addEventListener("click", function (event) {
-      var link = event.target.closest('.site-nav a[href$="liveroom/"]');
-      if (!link || event.button !== 0 || event.metaKey || event.ctrlKey || event.shiftKey || event.altKey || busy) return;
       event.preventDefault();
       busy = true;
-      var logo = document.querySelector(".division-minimal-hero__logo");
+      var logo = document.querySelector(logoSelector);
       var rect = logo && logo.getBoundingClientRect();
       if (rect) {
-        sessionStorage.setItem("grm-morph-arrival", "liveroom");
+        sessionStorage.setItem("grm-morph-arrival", destination);
         sessionStorage.setItem("grm-morph-start", JSON.stringify({ left: rect.left, top: rect.top, width: rect.width, height: rect.height }));
       }
-      document.body.classList.add("is-division-page-morph-exit");
-      setTimeout(function () { window.location.href = link.href; }, 520);
-    });
-  }());
-
-  /* Studio -> Liveroom only: isolated copy of the Studio source handoff. */
-  (function () {
-    if (document.body.getAttribute("data-page") !== "studio" || reduced()) return;
-    var busy = false;
-    document.addEventListener("click", function (event) {
-      var link = event.target.closest('.site-nav a[href$="liveroom/"]');
-      if (!link || event.button !== 0 || event.metaKey || event.ctrlKey || event.shiftKey || event.altKey || busy) return;
-      event.preventDefault();
-      busy = true;
-      var logo = document.querySelector(".studio-minimal-hero__logo");
-      var rect = logo && logo.getBoundingClientRect();
-      if (rect) {
-        sessionStorage.setItem("grm-morph-arrival", "liveroom");
-        sessionStorage.setItem("grm-morph-start", JSON.stringify({ left: rect.left, top: rect.top, width: rect.width, height: rect.height }));
-      }
-      document.body.classList.add("is-division-morph-exit");
-      setTimeout(function () { window.location.href = link.href; }, 520);
-    });
-  }());
-
-  /* Label -> Studio only: use the approved division identity handoff. */
-  (function () {
-    if (document.body.getAttribute("data-page") !== "label" || reduced()) return;
-    var busy = false;
-    document.addEventListener("click", function (event) {
-      var link = event.target.closest('.site-nav a[href$="studio/"]');
-      if (!link || event.button !== 0 || event.metaKey || event.ctrlKey || event.shiftKey || event.altKey || busy) return;
-      event.preventDefault();
-      busy = true;
-      var logo = document.querySelector(".division-minimal-hero__logo");
-      var rect = logo && logo.getBoundingClientRect();
-      if (rect) {
-        sessionStorage.setItem("grm-morph-arrival", "studio");
-        sessionStorage.setItem("grm-morph-start", JSON.stringify({ left: rect.left, top: rect.top, width: rect.width, height: rect.height }));
-      }
+      if (destination !== "studio") document.body.classList.add(exitClass);
       setTimeout(function () { window.location.href = link.href; }, 520);
     });
   }());
@@ -1132,15 +1057,28 @@ resize simply misses and falls back to the previous aim point. */
   window.addEventListener("resize", settled);
 })();
 
-/* ---------- STUDIO-ONLY · §8/9/11 destination-arrival reveal ----------
-     The home takeover remembers the division it commits to (grm-arrival,
-     set ONLY on the takeover path, cleared on read). This block — and it
-     alone — is Studio-scoped: when Studio actually arrives out of that
-     takeover (and NOT reduced motion, §24, meaning the flag was never set),
-     the hero reveals AROUND its mark: the mark stays put, the inner content
-     staggers in around it. Direct load, refresh, back-forward and reduced
-     motion all stay instant: the flag is consumed on read and it does not
-     survive those (§23/24/§29). */
+  /* ---------- DIVISION ARRIVALS (destination side) ----------
+     Two arrival paths land on a division page, both driven by one-shot
+     sessionStorage flags that are consumed on read (so refresh, direct
+     loads, Back/Forward and reduced motion never replay them):
+
+     1. Division <-> division (grm-morph-arrival): the page starts at the
+        top, then a fixed proxy of the destination's own Glow mark is laid
+        exactly on the real logo's rect (measured after fonts + layout
+        settle), the real logo shows through, and the proxy fades out over
+        700ms. Then title (+480ms), descriptor (+820ms) and scroll cue
+        (+1160ms) fade in.
+     2. Home takeover (grm-arrival): the Home page already moved the mark
+        onto this page's logo rect.
+        - Label / Liveroom: an inline <body> script painted an overlay at
+          the stored rect before first paint; here it is snapped to the real
+          logo and swapped out, then header (+140ms), title, descriptor and
+          cue fade in.
+        - Production (studio): no overlay; the real logo is already in place
+          and only the text staggers in around it.
+
+     The per-page differences (selectors, artwork, class prefixes) are data
+     in DIVISION_ARRIVAL; the timings are shared. */
 
   /* Division -> division arrivals begin at the top. html{scroll-behavior:smooth}
      would otherwise animate the reset and reveal it, so force an instant jump
@@ -1153,234 +1091,133 @@ resize simply misses and falls back to the previous aim point. */
     root.style.scrollBehavior = "";
   }
 
+  var DIVISION_ARRIVAL = {
+    studio: {
+      logo: ".studio-minimal-hero__logo", scroll: ".studio-minimal-hero__scroll",
+      glow: "GRM Studio Glow.png", proxyClass: "studio-morph-logo",
+      pending: "studio-morph-pending", uiPending: "studio-morph-ui-pending", enter: "is-studio-enter-"
+    },
+    label: {
+      logo: ".division-minimal-hero__logo", scroll: ".division-minimal-hero__scroll",
+      glow: "GRM Label Glow.png", proxyClass: "division-morph-logo",
+      pending: "division-morph-pending", uiPending: "division-morph-ui-pending", enter: "is-division-enter-",
+      overlayId: "labelTransitionLogo", startRectKey: "grm-label-start-rect"
+    },
+    liveroom: {
+      logo: ".division-minimal-hero__logo", scroll: ".division-minimal-hero__scroll",
+      glow: "GRM LiveRoom Glow.png", proxyClass: "division-morph-logo",
+      pending: "division-morph-pending", uiPending: "division-morph-ui-pending", enter: "is-division-enter-",
+      overlayId: "liveroomTransitionLogo", startRectKey: "grm-liveroom-start-rect"
+    }
+  };
+
+  /* Path 1. Returns false when the arrival cannot run (already started, or
+     no stored source rect / no logo), which also ends the ready handler. */
+  function runDivisionMorphArrival(page) {
+    var cfg = DIVISION_ARRIVAL[page];
+    var guard = "__grmMorphArrival_" + page;
+    if (window[guard]) return false;
+    window[guard] = true;
+    sessionStorage.removeItem("grm-morph-arrival");
+    var source = JSON.parse(sessionStorage.getItem("grm-morph-start") || "null");
+    sessionStorage.removeItem("grm-morph-start");
+    var target = document.querySelector(cfg.logo);
+    if (!source || !target) return false;
+    resetDivisionScrollTop();
+    document.fonts.ready.then(function () {
+      requestAnimationFrame(function () {
+        var end = target.getBoundingClientRect();
+        target.style.visibility = "hidden";
+        var morph = document.createElement("img");
+        morph.className = cfg.proxyClass;
+        morph.src = "../assets/img/" + cfg.glow;
+        morph.alt = "";
+        morph.setAttribute("aria-hidden", "true");
+        morph.style.left = end.left + "px";
+        morph.style.top = end.top + "px";
+        morph.style.width = end.width + "px";
+        morph.style.height = end.height + "px";
+        document.body.appendChild(morph);
+        void morph.getBoundingClientRect();
+        morph.style.transition = "opacity 700ms ease";
+        morph.style.opacity = "0";
+        target.style.visibility = "visible";
+        morph.addEventListener("transitionend", function () {
+          morph.remove();
+          document.documentElement.classList.remove(cfg.pending);
+          setTimeout(function () { document.body.classList.add(cfg.enter + "title"); }, 480);
+          setTimeout(function () { document.body.classList.add(cfg.enter + "descriptor"); }, 820);
+          setTimeout(function () {
+            document.body.classList.add(cfg.enter + "scroll");
+            var scrollIndicator = document.querySelector(cfg.scroll);
+            if (scrollIndicator) {
+              scrollIndicator.addEventListener("transitionend", function (event) {
+                if (event.propertyName === "opacity") {
+                  document.documentElement.classList.remove(cfg.uiPending);
+                }
+              }, { once: true });
+            }
+          }, 1160);
+        }, { once: true });
+      });
+    });
+    return true;
+  }
+
+  /* Path 2, Label / Liveroom (overlay painted pre-paint by the inline script). */
+  function runHomeOverlayArrival(page) {
+    var cfg = DIVISION_ARRIVAL[page];
+    var guard = "__grmHomeArrival_" + page;
+    if (window[guard]) return;
+    window[guard] = true;
+    if (sessionStorage.getItem("grm-arrival") !== page) return;
+    sessionStorage.removeItem("grm-arrival");
+    document.documentElement.classList.add("division-arrival-pending");
+    document.body.classList.add("is-division-entering");
+    var logo = document.querySelector(cfg.logo);
+    if (!logo) return;
+    sessionStorage.removeItem(cfg.startRectKey);
+    logo.style.visibility = "hidden";
+    var overlay = document.getElementById(cfg.overlayId);
+    if (!overlay) return;
+    overlay.style.transition = "none";
+    overlay.getBoundingClientRect();
+    document.fonts.ready.then(function () {
+      requestAnimationFrame(function () {
+        var endRect = logo.getBoundingClientRect();
+        overlay.style.transition = "none";
+        overlay.style.left = endRect.left + "px";
+        overlay.style.top = endRect.top + "px";
+        overlay.style.width = endRect.width + "px";
+        overlay.style.height = endRect.height + "px";
+        requestAnimationFrame(function () {
+          logo.style.visibility = "visible";
+          overlay.remove();
+          document.documentElement.classList.remove("division-arrival-pending");
+          setTimeout(function () { document.body.classList.add("is-division-enter-header"); }, 140);
+          setTimeout(function () { document.body.classList.add("is-division-enter-title"); }, 480);
+          setTimeout(function () { document.body.classList.add("is-division-enter-descriptor"); }, 820);
+          setTimeout(function () {
+            document.body.classList.add("is-division-enter-scroll");
+            document.body.classList.remove("is-division-entering");
+          }, 1160);
+        });
+      });
+    });
+  }
+
   onReady(function () {
-    if (document.body.getAttribute("data-page") === "label" && sessionStorage.getItem("grm-morph-arrival") === "label") {
-      if (window.__grmStudioLabelMorph) return;
-      window.__grmStudioLabelMorph = true;
-      sessionStorage.removeItem("grm-morph-arrival");
-      var source = JSON.parse(sessionStorage.getItem("grm-morph-start") || "null");
-      sessionStorage.removeItem("grm-morph-start");
-      var target = document.querySelector(".division-minimal-hero__logo");
-      if (!source || !target) return;
-      resetDivisionScrollTop();
-      document.fonts.ready.then(function () {
-        requestAnimationFrame(function () {
-          var end = target.getBoundingClientRect();
-          target.style.visibility = "hidden";
-          var morph = document.createElement("img");
-          morph.className = "division-morph-logo";
-          morph.src = "../assets/img/GRM Label Glow.png";
-          morph.alt = "";
-          morph.setAttribute("aria-hidden", "true");
-          morph.style.left = end.left + "px";
-          morph.style.top = end.top + "px";
-          morph.style.width = end.width + "px";
-          morph.style.height = end.height + "px";
-          document.body.appendChild(morph);
-          void morph.getBoundingClientRect();
-          morph.style.transition = "opacity 700ms ease";
-          morph.style.opacity = "0";
-          target.style.visibility = "visible";
-           morph.addEventListener("transitionend", function () {
-             morph.remove();
-             document.documentElement.classList.remove("division-morph-pending");
-             setTimeout(function () { document.body.classList.add("is-division-enter-title"); }, 480);
-             setTimeout(function () { document.body.classList.add("is-division-enter-descriptor"); }, 820);
-             setTimeout(function () {
-             document.body.classList.add("is-division-enter-scroll");
-             var scrollIndicator = document.querySelector(".division-minimal-hero__scroll");
-             if (scrollIndicator) {
-               scrollIndicator.addEventListener("transitionend", function (event) {
-                 if (event.propertyName === "opacity") {
-                   document.documentElement.classList.remove("division-morph-ui-pending");
-                 }
-               }, { once: true });
-             }
-             }, 1160);
-           }, { once: true });
-          void end;
-        });
-      });
+    var page = document.body.getAttribute("data-page");
+    if (DIVISION_ARRIVAL[page] && sessionStorage.getItem("grm-morph-arrival") === page) {
+      if (runDivisionMorphArrival(page) === false) return;
     }
-    if (document.body.getAttribute("data-page") === "liveroom" && sessionStorage.getItem("grm-morph-arrival") === "liveroom") {
-      if (window.__grmStudioLiveroomMorph) return;
-      window.__grmStudioLiveroomMorph = true;
-      sessionStorage.removeItem("grm-morph-arrival");
-      var source = JSON.parse(sessionStorage.getItem("grm-morph-start") || "null");
-      sessionStorage.removeItem("grm-morph-start");
-      var target = document.querySelector(".division-minimal-hero__logo");
-      if (!source || !target) return;
-      resetDivisionScrollTop();
-      document.fonts.ready.then(function () {
-        requestAnimationFrame(function () {
-          var end = target.getBoundingClientRect();
-          target.style.visibility = "hidden";
-          var morph = document.createElement("img");
-          morph.className = "division-morph-logo";
-          morph.src = "../assets/img/GRM LiveRoom Glow.png";
-          morph.alt = "";
-          morph.setAttribute("aria-hidden", "true");
-          morph.style.left = end.left + "px";
-          morph.style.top = end.top + "px";
-          morph.style.width = end.width + "px";
-          morph.style.height = end.height + "px";
-          document.body.appendChild(morph);
-          void morph.getBoundingClientRect();
-          morph.style.transition = "opacity 700ms ease";
-          morph.style.opacity = "0";
-          target.style.visibility = "visible";
-           morph.addEventListener("transitionend", function () {
-             morph.remove();
-             document.documentElement.classList.remove("division-morph-pending");
-             setTimeout(function () { document.body.classList.add("is-division-enter-title"); }, 480);
-             setTimeout(function () { document.body.classList.add("is-division-enter-descriptor"); }, 820);
-             setTimeout(function () {
-             document.body.classList.add("is-division-enter-scroll");
-             var scrollIndicator = document.querySelector(".division-minimal-hero__scroll");
-             if (scrollIndicator) {
-               scrollIndicator.addEventListener("transitionend", function (event) {
-                 if (event.propertyName === "opacity") {
-                   document.documentElement.classList.remove("division-morph-ui-pending");
-                 }
-               }, { once: true });
-             }
-             }, 1160);
-           }, { once: true });
-          void end;
-        });
-      });
-    }
-
-    if (document.body.getAttribute("data-page") === "studio" && sessionStorage.getItem("grm-morph-arrival") === "studio") {
-      if (window.__grmDivisionStudioMorph) return;
-      window.__grmDivisionStudioMorph = true;
-      sessionStorage.removeItem("grm-morph-arrival");
-      var source = JSON.parse(sessionStorage.getItem("grm-morph-start") || "null");
-      sessionStorage.removeItem("grm-morph-start");
-      var target = document.querySelector(".studio-minimal-hero__logo");
-      if (!source || !target) return;
-      resetDivisionScrollTop();
-      document.fonts.ready.then(function () {
-        requestAnimationFrame(function () {
-          var end = target.getBoundingClientRect();
-          target.style.visibility = "hidden";
-          var morph = document.createElement("img");
-          morph.className = "studio-morph-logo";
-          morph.src = "../assets/img/GRM Studio Glow.png";
-          morph.alt = "";
-          morph.setAttribute("aria-hidden", "true");
-          morph.style.left = end.left + "px";
-          morph.style.top = end.top + "px";
-          morph.style.width = end.width + "px";
-          morph.style.height = end.height + "px";
-          document.body.appendChild(morph);
-          void morph.getBoundingClientRect();
-          morph.style.transition = "opacity 700ms ease";
-          morph.style.opacity = "0";
-          target.style.visibility = "visible";
-           morph.addEventListener("transitionend", function () {
-             morph.remove();
-             document.documentElement.classList.remove("studio-morph-pending");
-             setTimeout(function () { document.body.classList.add("is-studio-enter-title"); }, 480);
-             setTimeout(function () { document.body.classList.add("is-studio-enter-descriptor"); }, 820);
-             setTimeout(function () {
-             document.body.classList.add("is-studio-enter-scroll");
-             var scrollIndicator = document.querySelector(".studio-minimal-hero__scroll");
-             if (scrollIndicator) {
-               scrollIndicator.addEventListener("transitionend", function (event) {
-                 if (event.propertyName === "opacity") {
-                   document.documentElement.classList.remove("studio-morph-ui-pending");
-                 }
-               }, { once: true });
-             }
-             }, 1160);
-           }, { once: true });
-          void end;
-        });
-      });
-    }
-
-    if (document.body.getAttribute("data-page") === "label") {
-      if (window.__grmLabelArrivalStarted) return;
-      window.__grmLabelArrivalStarted = true;
-      var labelArrival = sessionStorage.getItem("grm-arrival");
-      if (labelArrival !== "label") return;
-      sessionStorage.removeItem("grm-arrival");
-      document.documentElement.classList.add("division-arrival-pending");
-      document.body.classList.add("is-division-entering");
-      var labelLogo = document.querySelector(".division-minimal-hero__logo");
-      if (!labelLogo) return;
-      var startRect = JSON.parse(sessionStorage.getItem("grm-label-start-rect") || "null");
-      sessionStorage.removeItem("grm-label-start-rect");
-      labelLogo.style.visibility = "hidden";
-      var overlay = document.getElementById("labelTransitionLogo");
-      if (!overlay) return;
-      overlay.style.transition = "none";
-      overlay.getBoundingClientRect();
-      document.fonts.ready.then(function () {
-        requestAnimationFrame(function () {
-          var endRect = labelLogo.getBoundingClientRect();
-          overlay.style.transition = "none";
-          overlay.style.left = endRect.left + "px";
-          overlay.style.top = endRect.top + "px";
-          overlay.style.width = endRect.width + "px";
-          overlay.style.height = endRect.height + "px";
-          requestAnimationFrame(function () {
-            labelLogo.style.visibility = "visible";
-            overlay.remove();
-            document.documentElement.classList.remove("division-arrival-pending");
-            setTimeout(function () { document.body.classList.add("is-division-enter-header"); }, 140);
-            setTimeout(function () { document.body.classList.add("is-division-enter-title"); }, 480);
-            setTimeout(function () { document.body.classList.add("is-division-enter-descriptor"); }, 820);
-            setTimeout(function () {
-              document.body.classList.add("is-division-enter-scroll");
-              document.body.classList.remove("is-division-entering");
-            }, 1160);
-          });
-        });
-      });
+    if (page === "label" || page === "liveroom") {
+      runHomeOverlayArrival(page);
       return;
     }
-    if (document.body.getAttribute("data-page") === "liveroom") {
-      if (window.__grmLiveroomArrivalStarted) return;
-      window.__grmLiveroomArrivalStarted = true;
-      var liveroomArrival = sessionStorage.getItem("grm-arrival");
-      if (liveroomArrival !== "liveroom") return;
-      sessionStorage.removeItem("grm-arrival");
-      document.documentElement.classList.add("division-arrival-pending");
-      document.body.classList.add("is-division-entering");
-      var liveroomLogo = document.querySelector(".division-minimal-hero__logo");
-      if (!liveroomLogo) return;
-      var startRect = JSON.parse(sessionStorage.getItem("grm-liveroom-start-rect") || "null");
-      sessionStorage.removeItem("grm-liveroom-start-rect");
-      liveroomLogo.style.visibility = "hidden";
-      var overlay = document.getElementById("liveroomTransitionLogo");
-      if (!overlay) return;
-      document.fonts.ready.then(function () {
-        requestAnimationFrame(function () {
-          var endRect = liveroomLogo.getBoundingClientRect();
-          overlay.style.transition = "none";
-          overlay.style.left = endRect.left + "px";
-          overlay.style.top = endRect.top + "px";
-          overlay.style.width = endRect.width + "px";
-          overlay.style.height = endRect.height + "px";
-          requestAnimationFrame(function () {
-            liveroomLogo.style.visibility = "visible";
-            overlay.remove();
-            document.documentElement.classList.remove("division-arrival-pending");
-            setTimeout(function () { document.body.classList.add("is-division-enter-header"); }, 140);
-            setTimeout(function () { document.body.classList.add("is-division-enter-title"); }, 480);
-            setTimeout(function () { document.body.classList.add("is-division-enter-descriptor"); }, 820);
-            setTimeout(function () {
-              document.body.classList.add("is-division-enter-scroll");
-              document.body.classList.remove("is-division-entering");
-            }, 1160);
-          });
-        });
-      });
-      return;
-    }
-    if (document.body.getAttribute("data-page") !== "studio") return;
+    if (page !== "studio") return;
+
+    /* Path 2, Production: no overlay, the text staggers in around the mark. */
     var hero = document.querySelector(".studio-minimal-hero");
     var arrival = sessionStorage.getItem("grm-arrival");
     if (arrival) sessionStorage.removeItem("grm-arrival");
