@@ -3,12 +3,12 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>GRM — Studio · Label · Liveroom</title>
-  <meta name="description" content="GRM is an umbrella brand in Belgrade — a recording and production studio, a record label, and a live rehearsal room. Three worlds under one roof.">
+  <title data-i18n="meta.home.title">GRM — Studio · Label · Liveroom</title>
+  <meta name="description" content="GRM is an umbrella brand in Belgrade — a recording and production studio, a record label, and a live rehearsal room. Three worlds under one roof." data-i18n-content="meta.home.desc">
   <meta name="theme-color" content="#050505">
 
-  <meta property="og:title" content="GRM — Studio · Label · Liveroom">
-  <meta property="og:description" content="GRM Studio · GRM Label · GRM Liveroom — three worlds in Belgrade.">
+  <meta property="og:title" content="GRM — Studio · Label · Liveroom" data-i18n-content="meta.home.ogTitle">
+  <meta property="og:description" content="GRM Studio · GRM Label · GRM Liveroom — three worlds in Belgrade." data-i18n-content="meta.home.ogDesc">
   <meta property="og:type" content="website">
   <meta property="og:locale" content="en">
   <!-- TODO: replace with the production domain once live -->
@@ -23,6 +23,10 @@
   <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Archivo:ital,wdth,wght@0,62.5,100..900;1,62.5,100..900&family=Inter:wght@300;400;500;600&display=swap">
 
   <link rel="stylesheet" href="css/style.css">
+
+  <script src="js/translations.js"></script>
+  <script src="js/i18n.js"></script>
+
   <script>
     (function () {
       var reduce = window.matchMedia && window.matchMedia("(prefers-reduced-motion: reduce)").matches;
@@ -33,7 +37,7 @@
   </script>
 </head>
   <body data-page="home">
-  <a class="skip-link" href="#main">Skip to content</a>
+  <a class="skip-link" href="#main" data-i18n="common.skip">Skip to content</a>
   <div class="progress" id="progress" aria-hidden="true"></div>
 
   <!-- Shared header + mobile menu + footer, injected by js/main.js -->
@@ -46,13 +50,13 @@
           Hover previews a world; clicking enters it. The hero IS the
           entire homepage.
           ============================================================ -->
-    <section class="hero" id="top" aria-label="GRM — Studio, Label, Liveroom">
+    <section class="hero" id="top" aria-label="GRM — Studio, Label, Liveroom" data-i18n-aria-label="home.hero.aria">
       <div class="hero__logo-stage" aria-hidden="true"></div>
       <div class="hero__panels" id="heroPanels" data-hero="true">
 
         <a class="panel" id="panelProduction" href="studio/"
              aria-expanded="false"
-             aria-label="GRM Studio — recording, composition, production, mixing and mastering">
+             aria-label="GRM Studio — recording, composition, production, mixing and mastering" data-i18n-aria-label="home.panel.studio.aria">
           <div class="panel__logo-window panel__logo-window--studio" aria-hidden="true">
             <img src="assets/img/GRM Studio NoGlow.png" alt="">
             <img class="panel__logo--glow" src="assets/img/GRM Studio Glow.png" alt="" aria-hidden="true">
@@ -63,9 +67,9 @@
             <span class="panel__mobile-tint" aria-hidden="true"></span>
             <div class="panel__mobile-body">
               <img class="panel__mobile-logo" src="assets/img/GRM Studio Glow.png" alt="" width="2160" height="2160" aria-hidden="true">
-              <p class="panel__mobile-title">Studio</p>
+              <p class="panel__mobile-title" data-i18n="home.panel.studio.title">Studio</p>
               <span class="panel__mobile-rule" aria-hidden="true"></span>
-              <p class="panel__mobile-desc">Audio / Video Production</p>
+              <p class="panel__mobile-desc" data-i18n="home.panel.studio.desc">Audio / Video Production</p>
             </div>
             <span class="panel__mobile-arrow" aria-hidden="true">
               <svg viewBox="0 0 24 24" width="26" height="26" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="square"><path d="M6 18 18 6"></path><path d="M9 6h9v9"></path></svg>
@@ -73,15 +77,15 @@
           </div>
           <div class="panel__content">
             <div class="panel__copy">
-              <span class="panel__name">GRM Studio</span>
-              <p class="panel__tag">Audio/Video Production</p>
+              <span class="panel__name" data-i18n="home.panel.studio.name">Production</span>
+              <p class="panel__tag" data-i18n="home.panel.studio.tag">Audio/Video Production</p>
             </div>
           </div>
         </a>
 
         <a class="panel" id="panelHouse" href="label/"
              aria-expanded="false"
-             aria-label="GRM Label — GRM's record label">
+             aria-label="GRM Label — GRM's record label" data-i18n-aria-label="home.panel.label.aria">
           <div class="panel__logo-window panel__logo-window--label" aria-hidden="true">
             <img src="assets/img/GRM Label NoGlow.png" alt="">
             <img class="panel__logo--glow" src="assets/img/GRM Label Glow.png" alt="" aria-hidden="true">
@@ -92,9 +96,9 @@
             <span class="panel__mobile-tint" aria-hidden="true"></span>
             <div class="panel__mobile-body">
               <img class="panel__mobile-logo" src="assets/img/GRM Label Glow.png" alt="" width="2160" height="2160" aria-hidden="true">
-              <p class="panel__mobile-title">Label</p>
+              <p class="panel__mobile-title" data-i18n="home.panel.label.title">Label</p>
               <span class="panel__mobile-rule" aria-hidden="true"></span>
-              <p class="panel__mobile-desc">Artists &amp; Releases</p>
+              <p class="panel__mobile-desc" data-i18n="home.panel.label.desc">Artists &amp; Releases</p>
             </div>
             <span class="panel__mobile-arrow" aria-hidden="true">
               <svg viewBox="0 0 24 24" width="26" height="26" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="square"><path d="M6 18 18 6"></path><path d="M9 6h9v9"></path></svg>
@@ -102,15 +106,15 @@
           </div>
           <div class="panel__content">
             <div class="panel__copy">
-              <span class="panel__name">GRM Label</span>
-              <p class="panel__tag">GRM's record label</p>
+              <span class="panel__name" data-i18n="home.panel.label.name">Label</span>
+              <p class="panel__tag" data-i18n="home.panel.label.tag">GRM's record label</p>
             </div>
           </div>
         </a>
 
         <a class="panel" id="panelLive" href="liveroom/"
              aria-expanded="false"
-             aria-label="GRM Liveroom — rehearsal space for musicians and bands">
+             aria-label="GRM Liveroom — rehearsal space for musicians and bands" data-i18n-aria-label="home.panel.liveroom.aria">
           <div class="panel__logo-window panel__logo-window--live" aria-hidden="true">
             <img src="assets/img/GRM LiveRoom NoGlow.png" alt="">
             <img class="panel__logo--glow" src="assets/img/GRM LiveRoom Glow.png" alt="" aria-hidden="true">
@@ -121,9 +125,9 @@
             <span class="panel__mobile-tint" aria-hidden="true"></span>
             <div class="panel__mobile-body">
               <img class="panel__mobile-logo" src="assets/img/GRM LiveRoom Glow.png" alt="" width="2160" height="2160" aria-hidden="true">
-              <p class="panel__mobile-title">Liveroom</p>
+              <p class="panel__mobile-title" data-i18n="home.panel.liveroom.title">Liveroom</p>
               <span class="panel__mobile-rule" aria-hidden="true"></span>
-              <p class="panel__mobile-desc">Live Events &amp; Rehearsals</p>
+              <p class="panel__mobile-desc" data-i18n="home.panel.liveroom.desc">Live Events &amp; Rehearsals</p>
             </div>
             <span class="panel__mobile-arrow" aria-hidden="true">
               <svg viewBox="0 0 24 24" width="26" height="26" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="square"><path d="M6 18 18 6"></path><path d="M9 6h9v9"></path></svg>
@@ -131,8 +135,8 @@
           </div>
           <div class="panel__content">
             <div class="panel__copy">
-              <span class="panel__name">GRM Liveroom</span>
-              <p class="panel__tag">Rehearsal space for musicians and bands</p>
+              <span class="panel__name" data-i18n="home.panel.liveroom.name">Liveroom</span>
+              <p class="panel__tag" data-i18n="home.panel.liveroom.tag">Rehearsal space for musicians and bands</p>
             </div>
           </div>
         </a>

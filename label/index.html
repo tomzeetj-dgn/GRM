@@ -3,12 +3,12 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>GRM Label — the label</title>
-  <meta name="description" content="GRM Label is the record-label side of GRM — artists, releases and music from the GRM house.">
+  <title data-i18n="meta.label.title">GRM Label — the label</title>
+  <meta name="description" content="GRM Label is the record-label side of GRM — artists, releases and music from the GRM house." data-i18n-content="meta.label.desc">
   <meta name="theme-color" content="#050505">
 
-  <meta property="og:title" content="GRM Label — the label">
-  <meta property="og:description" content="Artists, releases and music — GRM's record label.">
+  <meta property="og:title" content="GRM Label — the label" data-i18n-content="meta.label.ogTitle">
+  <meta property="og:description" content="Artists, releases and music — GRM's record label." data-i18n-content="meta.label.ogDesc">
   <meta property="og:type" content="website">
   <meta property="og:locale" content="en">
   <meta property="og:url" content="/label/">
@@ -23,6 +23,10 @@
   <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Archivo:ital,wdth,wght@0,62.5,100..900;1,62.5,100..900&family=Inter:wght@300;400;500;600&display=swap">
 
   <link rel="stylesheet" href="../css/style.css">
+
+  <script src="../js/translations.js"></script>
+  <script src="../js/i18n.js"></script>
+
   <script>
     if (sessionStorage.getItem("grm-arrival") === "label") {
     }
@@ -58,7 +62,7 @@
   }());
 </script>
 
-  <a class="skip-link" href="#main">Skip to content</a>
+  <a class="skip-link" href="#main" data-i18n="common.skip">Skip to content</a>
   <div class="progress" id="progress" aria-hidden="true"></div>
 
   <!-- Shared header + mobile menu, injected by js/main.js -->
@@ -71,11 +75,11 @@
          ============================================================ -->
     <section class="division-minimal-hero" id="top" aria-labelledby="label-hero-title">
       <div class="division-minimal-hero__lockup">
-        <img class="division-minimal-hero__logo" src="../assets/img/GRM Label Glow.png" alt="GRM Label" width="2160" height="2160">
-        <p class="division-minimal-hero__title">GRM LABEL</p>
-        <h1 id="label-hero-title">THE RECORD LABEL</h1>
+        <img class="division-minimal-hero__logo" src="../assets/img/GRM Label Glow.png" alt="GRM Label" data-i18n-alt="label.hero.logoAlt" width="2160" height="2160">
+        <p class="division-minimal-hero__title" data-i18n="label.hero.title">LABEL</p>
+        <h1 id="label-hero-title" data-i18n="label.hero.h1">THE RECORD LABEL</h1>
       </div>
-      <div class="division-minimal-hero__scroll" aria-hidden="true"><span>Scroll</span><i></i></div>
+      <div class="division-minimal-hero__scroll" aria-hidden="true"><span data-i18n="common.scroll">Scroll</span><i></i></div>
     </section>
 
     <!-- ============================================================
@@ -96,11 +100,11 @@
         <span class="label-about__vignette"></span>
       </div>
       <div class="container">
-        <p class="eyebrow reveal">About the label</p>
+        <p class="eyebrow reveal" data-i18n="label.about.eyebrow">About the label</p>
 
         <div class="label-about__spread">
           <h2 class="label-about__statement reveal" id="label-about-title" data-delay="1">
-            More than<br>a <em>label.</em>
+            <span data-i18n="label.about.titleA">More than</span><br><span data-i18n="label.about.titleB">a </span><em data-i18n="label.about.titleC">label.</em>
           </h2>
           <div class="label-about__body reveal" data-delay="2">
             <p>
@@ -129,20 +133,21 @@
          with photo and text holding roughly equal halves (~1:1) of
          each row inside the shared GRM container. Each portrait is a
          temporary placeholder photograph (see data-credit for the
-         source file), sized to its own aspect ratio. The text block runs role
-         label (01 / ROLE), member name in the display face, then the
-         biography as two justified-left paragraphs sharing one left
-         edge and a consistent measure. Portraits are temporary
-         placeholders, easy to swap.
+         source file), sized to its own aspect ratio. The text block runs a row of
+         expertise "credit labels" (record-sleeve metadata: a dark near-square tag
+         with a hairline border and a 2px division-coloured accent edge), then the
+         member name in the display face, then the biography as two justified-left
+         paragraphs sharing one left edge and a consistent measure. Portraits are
+         temporary placeholders, easy to swap.
          ============================================================ -->
     <section class="section label-people" id="people" aria-labelledby="label-people-title">
       <div class="container">
         <div class="section-head reveal">
           <div>
-            <p class="eyebrow">02 / The people</p>
-            <h2 class="section-head__title" id="label-people-title">Behind GRM.</h2>
+            <p class="eyebrow" data-i18n="label.people.eyebrow">02 / The people</p>
+            <h2 class="section-head__title" id="label-people-title" data-i18n="label.people.title">Behind GRM.</h2>
           </div>
-          <p class="section-head__note">Different backgrounds. Shared obsession.</p>
+          <p class="section-head__note" data-i18n="label.people.note">Different backgrounds. Shared obsession.</p>
         </div>
 
         <ul class="label-people__list" role="list">
@@ -154,7 +159,14 @@
               </div>
             </figure>
             <div class="label-people__intro">
-              <p class="label-people__role"><span class="label-people__index" aria-hidden="true">01</span>Founder &amp; Creative Director</p>
+              <div class="label-people__role">
+                <ul class="label-people__credits" role="list" aria-label="Expertise" data-i18n-aria-label="label.people.credits.aria">
+                  <li class="credit-label" data-cat="neutral" data-i18n="label.people.credit.founder">Founder</li>
+                  <li class="credit-label" data-cat="label" data-i18n="label.people.credit.creativeDirection">Creative Direction</li>
+                  <li class="credit-label" data-cat="label" data-i18n="label.people.credit.anr">A&amp;R</li>
+                  <li class="credit-label" data-cat="production" data-i18n="label.people.credit.production">Production</li>
+                </ul>
+              </div>
               <h3 class="label-people__name">Marko Petrović</h3>
               <div class="label-people__bio">
                 <p>Marko founded GRM from a home studio on a simple belief — that small labels can move culture. Years of engineering and production work across rock, electronic and hip-hop taught him how ideas become records, and why the people behind them matter as much as the sound. He still starts most days in the control room before the admin begins.</p>
@@ -170,7 +182,13 @@
               </div>
             </figure>
             <div class="label-people__intro">
-              <p class="label-people__role"><span class="label-people__index" aria-hidden="true">02</span>Label Manager</p>
+              <div class="label-people__role">
+                <ul class="label-people__credits" role="list" aria-label="Expertise" data-i18n-aria-label="label.people.credits.aria">
+                  <li class="credit-label" data-cat="label" data-i18n="label.people.credit.label">Label</li>
+                  <li class="credit-label" data-cat="label" data-i18n="label.people.credit.anr">A&amp;R</li>
+                  <li class="credit-label" data-cat="label" data-i18n="label.people.credit.releases">Releases</li>
+                </ul>
+              </div>
               <h3 class="label-people__name">Jelena Ilić</h3>
               <div class="label-people__bio">
                 <p>Jelena grew up in record shops and fanzines, and spent years freelancing across promotion, licensing and tour logistics before it was ever called management. That patchwork background gives her a practical eye for what a release really needs — not just how it sounds, but how it reaches the people who should hear it.</p>
@@ -186,7 +204,13 @@
               </div>
             </figure>
             <div class="label-people__intro">
-              <p class="label-people__role"><span class="label-people__index" aria-hidden="true">03</span>Music Producer</p>
+              <div class="label-people__role">
+                <ul class="label-people__credits" role="list" aria-label="Expertise" data-i18n-aria-label="label.people.credits.aria">
+                  <li class="credit-label" data-cat="production" data-i18n="label.people.credit.production">Production</li>
+                  <li class="credit-label" data-cat="production" data-i18n="label.people.credit.audioEngineering">Audio Engineering</li>
+                  <li class="credit-label" data-cat="production" data-i18n="label.people.credit.arrangement">Arrangement</li>
+                </ul>
+              </div>
               <h3 class="label-people__name">Nikola Vasić</h3>
               <div class="label-people__bio">
                 <p>Nikola's production style was shaped in small Belgrade rehearsal rooms, then refined over a decade of studio work spanning electronic, indie and hip-hop. He cares about the space between notes as much as the notes themselves, and spends his sessions chasing performances that sound alive even at their cleanest.</p>
@@ -202,11 +226,20 @@
               </div>
             </figure>
             <div class="label-people__intro">
-              <p class="label-people__role"><span class="label-people__index" aria-hidden="true">04</span>Visual Director</p>
-              <h3 class="label-people__name">Sara Jovanović</h3>
+              <div class="label-people__role">
+                <ul class="label-people__credits" role="list" aria-label="Expertise" data-i18n-aria-label="label.people.credits.aria">
+                  <li class="credit-label" data-cat="neutral" data-i18n="label.people.credit.founder">Founder</li>
+                  <li class="credit-label" data-cat="production" data-i18n="label.people.credit.videoProductionEditing">Video Production/Editing</li>
+                  <li class="credit-label" data-cat="label" data-i18n="label.people.credit.motionDesign">Motion Design</li>
+                  <li class="credit-label" data-cat="liveroom" data-i18n="label.people.credit.liveroom">Liveroom</li>
+                </ul>
+              </div>
+              <h3 class="label-people__name">Milan “Igla” Subotić</h3>
               <div class="label-people__bio">
-                <p>Sara moved between photography, graphic design and film before committing to the visual side of music full-time. She shoots covers and campaigns, art-directs releases, and prefers natural light, analogue grain and typography that does its job without shouting. Her work sits somewhere between documentation and design — always with a clear idea behind it.</p>
-                <p>For GRM she sets the visual language across everything — album art, portraits, live documentation and press materials — so a record reads like a record from the first thumbnail to the vinyl sleeve. She also oversees the label's photography and makes sure every image matches the same catalogue.</p>
+                <p data-i18n="label.people.bio.4.1">Milan Subotić, better known by his pseudonym “Igla”, was born in Belgrade in 1991. He graduated in Psychology from the Faculty of Media and Communications (FMK) in 2019. Since 2014, he has been working in animation (motion graphics design) and video editing. He has two demo releases and one studio album, released through the record label Aristokrat Muzik.</p>
+                <p data-i18n="label.people.bio.4.2">Since 2020, he has been involved in developing visual identities and creating visuals for various events, festivals and concerts. He has also worked on visual content for a range of television channels.</p>
+                <p data-i18n="label.people.bio.4.3">He is one of the founders of GRM House, where he is responsible for video production and Live Room.</p>
+                <p data-i18n="label.people.bio.4.4">He approaches every project and client professionally, with dedication and a personal touch, aiming to understand their needs as thoroughly as possible and bring their vision to life as faithfully as possible. He believes in open communication, a friendly approach, and collaboration without unnecessary pressure, creating space for creativity and high-quality results.</p>
               </div>
             </div>
           </li>
@@ -218,7 +251,12 @@
               </div>
             </figure>
             <div class="label-people__intro">
-              <p class="label-people__role"><span class="label-people__index" aria-hidden="true">05</span>Sound Engineer</p>
+              <div class="label-people__role">
+                <ul class="label-people__credits" role="list" aria-label="Expertise" data-i18n-aria-label="label.people.credits.aria">
+                  <li class="credit-label" data-cat="production" data-i18n="label.people.credit.audioEngineering">Audio Engineering</li>
+                  <li class="credit-label" data-cat="production" data-i18n="label.people.credit.mastering">Mastering</li>
+                </ul>
+              </div>
               <h3 class="label-people__name">Aleksa Nikolić</h3>
               <div class="label-people__bio">
                 <p>Aleksa trained in classical recording before falling for the messier world of independent music. His ear is built on room acoustics, vintage chains and long, careful sessions — the kind of patient engineering that lets a take breathe instead of just getting it loud.</p>
@@ -242,16 +280,18 @@
       <div class="container">
         <div class="section-head reveal">
           <div>
-            <p class="eyebrow">03 / Selected releases</p>
-            <h2 class="section-head__title" id="label-releases-title">Selected releases.</h2>
+            <p class="eyebrow" data-i18n="label.releases.eyebrow">03 / Selected releases</p>
+            <h2 class="section-head__title" id="label-releases-title" data-i18n="label.releases.title">Selected releases.</h2>
           </div>
-          <p class="section-head__note">Six records from the house — real GRM covers, written, mixed &amp; mastered in-house.</p>
+          <p class="section-head__note" data-i18n="label.releases.note">Six records from the house — real GRM covers, written, mixed &amp; mastered in-house.</p>
         </div>
 
         <div class="label-releases__grid">
 
           <figure class="label-releases__item reveal">
-            <img src="../assets/img/releases/dzu-prizma.jpg" alt="DZU — Prizma" width="640" height="640" decoding="async" draggable="false" loading="lazy">
+            <div class="label-releases__media">
+              <img src="../assets/img/releases/dzu-prizma.jpg" alt="DZU — Prizma" width="640" height="640" decoding="async" draggable="false" loading="lazy">
+            </div>
             <figcaption class="label-releases__meta">
               <span class="label-releases__t">Prizma — DZU</span>
               <span class="label-releases__c">EP · 2026</span>
@@ -259,7 +299,9 @@
           </figure>
 
           <figure class="label-releases__item reveal">
-            <img src="../assets/img/releases/dzu-vir.jpg" alt="DZU — Vir" width="640" height="640" decoding="async" draggable="false" loading="lazy">
+            <div class="label-releases__media">
+              <img src="../assets/img/releases/dzu-vir.jpg" alt="DZU — Vir" width="640" height="640" decoding="async" draggable="false" loading="lazy">
+            </div>
             <figcaption class="label-releases__meta">
               <span class="label-releases__t">Vir — DZU</span>
               <span class="label-releases__c">Single · 2025</span>
@@ -267,7 +309,9 @@
           </figure>
 
           <figure class="label-releases__item reveal">
-            <img src="../assets/img/releases/igla-ego.jpg" alt="IGLA — Ego" width="640" height="640" decoding="async" draggable="false" loading="lazy">
+            <div class="label-releases__media">
+              <img src="../assets/img/releases/igla-ego.jpg" alt="IGLA — Ego" width="640" height="640" decoding="async" draggable="false" loading="lazy">
+            </div>
             <figcaption class="label-releases__meta">
               <span class="label-releases__t">Ego — IGLA</span>
               <span class="label-releases__c">Album · 2017</span>
@@ -275,7 +319,9 @@
           </figure>
 
           <figure class="label-releases__item reveal">
-            <img src="../assets/img/releases/igla-uroboros.jpg" alt="IGLA — Uroboros" width="640" height="640" decoding="async" draggable="false" loading="lazy">
+            <div class="label-releases__media">
+              <img src="../assets/img/releases/igla-uroboros.jpg" alt="IGLA — Uroboros" width="640" height="640" decoding="async" draggable="false" loading="lazy">
+            </div>
             <figcaption class="label-releases__meta">
               <span class="label-releases__t">Uroboros — IGLA</span>
               <span class="label-releases__c">Single · 2025</span>
@@ -283,7 +329,9 @@
           </figure>
 
           <figure class="label-releases__item reveal">
-            <img src="../assets/img/releases/dzu-igla-kangal.jpg" alt="DZU / IGLA — Kangal" width="640" height="640" decoding="async" draggable="false" loading="lazy">
+            <div class="label-releases__media">
+              <img src="../assets/img/releases/dzu-igla-kangal.jpg" alt="DZU / IGLA — Kangal" width="640" height="640" decoding="async" draggable="false" loading="lazy">
+            </div>
             <figcaption class="label-releases__meta">
               <span class="label-releases__t">Kangal — DZU / IGLA</span>
               <span class="label-releases__c">Single · 2026</span>
@@ -291,7 +339,9 @@
           </figure>
 
           <figure class="label-releases__item reveal">
-            <img src="../assets/img/releases/vitic-slojevi.jpg" alt="vitić — Slojevi" width="640" height="640" decoding="async" draggable="false" loading="lazy">
+            <div class="label-releases__media">
+              <img src="../assets/img/releases/vitic-slojevi.jpg" alt="vitić — Slojevi" width="640" height="640" decoding="async" draggable="false" loading="lazy">
+            </div>
             <figcaption class="label-releases__meta">
               <span class="label-releases__t">Slojevi — vitić</span>
               <span class="label-releases__c">Album · 2025</span>
@@ -300,7 +350,7 @@
 
         </div>
 
-        <p class="label-releases__note reveal">
+        <p class="label-releases__note reveal" data-i18n="label.releases.footnote">
           13 releases on the catalogue &middot; 10 artists &middot; written, mixed &amp; mastered in-house.
         </p>
       </div>

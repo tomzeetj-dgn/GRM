@@ -41,6 +41,15 @@
   --accent-lite:   #1ba69a;                 /* teal lift (text/lines) */
   --accent-hair:   rgba(27, 166, 154, 0.32);
 
+  /* Division identity colours — the three GRM worlds plus the neutral
+     "house" tone. Kept global (not theme-scoped) so a Label-page credit
+     can still spark Production yellow or Liveroom orange. Used as
+     restrained accents on the Behind GRM credit labels. */
+  --credit-production: #f5cf6a;             /* Production / Studio yellow */
+  --credit-label:      #2ee6a8;             /* Label green                 */
+  --credit-live:       #ff8f56;             /* Liveroom orange             */
+  --credit-neutral:    rgba(236, 233, 226, 0.5);
+
   /* ---------- TYPOGRAPHY ---------- */
   --font-display: "UltraCondensedSansSerif", "Archivo", "Arial Narrow", sans-serif;
   --font-body:    "Inter", "Helvetica Neue", Arial, sans-serif;
@@ -76,6 +85,10 @@
   --ease-hero: cubic-bezier(0.22, 1, 0.36, 1);
   --ease-panel: 650ms;
   --timing:   900ms;
+  /* Shared content-reveal stagger — the Liveroom word cadence (.lr-word,
+     80ms/word). Used by the global `.reveal` delays so Production and Label
+     inherit one cadence instead of a bespoke value. */
+  --reveal-stagger: 80ms;
   --track:    46s;                          /* marquee rail speed */
 }
 
@@ -145,7 +158,7 @@ body[data-page="liveroom"] .liveroom-content { display: none !important; }
 }
 html.home-intro-pending body > *:not(#headerMount):not(#main) { visibility: hidden; }
 html.home-intro-pending .site-header { visibility: hidden; opacity: 0; }
-html.home-intro-pending body[data-page="home"] .site-header { display: block; }
+html.home-intro-pending body[data-page="home"] .site-header { display: none; }
 body[data-page="home"].home-intro-running { pointer-events: none; }
 body[data-page="home"].home-intro-running .panel + .panel { border-left-color: transparent; }
 .home-intro-divider { position: absolute; z-index: 5; left: 0; top: 0; width: 1px; height: 100%; background: var(--border); transform: scaleY(0); pointer-events: none; }
@@ -276,17 +289,28 @@ body.theme-liveroom .live-final { padding: var(--sec) var(--gutter); }
 }
 .skip-link:focus-visible { transform: none; }
 
-/* ---------- REVEALS (visible by default when JS is off) ---------- */
+/* ---------- REVEALS (visible by default when JS is off) ----------
+   The global content-reveal motion is the Liveroom "ghost materialise"
+   (`.lr-room`, see the Liveroom block further down — that rule is the
+   source of truth). The exact values are reused verbatim here so Label and
+   Production share one motion language: a soft defocus and a 30px rise that
+   settle to sharp over 1.4s on cubic-bezier(.22,1,.3,1). The observer
+   trigger in js/main.js is likewise Liveroom's (threshold .15, no
+   rootMargin, one-shot). Only the class name differs: this `.reveal` /
+   `.in-view` pair predates the Liveroom block and other approved reveals
+   key off `.in-view`, so it is kept as the transport. */
 html.js .reveal {
   opacity: 0;
-  transform: translateY(28px);
-  transition: opacity var(--timing) var(--ease-out),
-              transform var(--timing) var(--ease-out);
+  filter: blur(24px);
+  transform: translateY(30px) scale(.99);
+  transition: opacity 1.4s cubic-bezier(.22,1,.3,1),
+              filter 1.4s cubic-bezier(.22,1,.3,1),
+              transform 1.4s cubic-bezier(.22,1,.3,1);
 }
-html.js .reveal.in-view { opacity: 1; transform: none; }
-html.js .reveal[data-delay="1"] { transition-delay: 120ms; }
-html.js .reveal[data-delay="2"] { transition-delay: 240ms; }
-html.js .reveal[data-delay="3"] { transition-delay: 360ms; }
+html.js .reveal.in-view { opacity: 1; filter: blur(0); transform: none; }
+html.js .reveal[data-delay="1"] { transition-delay: calc(var(--reveal-stagger) * 1); }
+html.js .reveal[data-delay="2"] { transition-delay: calc(var(--reveal-stagger) * 2); }
+html.js .reveal[data-delay="3"] { transition-delay: calc(var(--reveal-stagger) * 3); }
 
 /* ---------- UTILITY ---------- */
 .container {
@@ -497,16 +521,111 @@ html.js .reveal[data-delay="3"] { transition-delay: 360ms; }
   color: var(--text);
 }
 
-.site-header__social { display: flex; gap: 20px; }
-.site-header__social a {
-  font-size: var(--f-label);
-  font-weight: 500;
-  letter-spacing: 0.14em;
-  text-transform: uppercase;
-  color: var(--text-muted);
-  transition: color 250ms ease;
+/* ---------- social icon cluster (header · mobile menu · footer) ----------
+   One reusable, icon-only component rendered in three places. Recognizable
+   monochrome brand glyphs at a restrained size, with comfortable (not
+   oversized) tap targets; the anchor carries the accessible name and the SVG
+   is decorative. Order is always Instagram → YouTube → TikTok. */
+.social-links {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
 }
-.site-header__social a:hover { color: var(--text); }
+.social-links__item {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 34px;
+  height: 34px;
+  color: var(--text-muted);
+  transition: color 220ms ease;
+}
+.social-links__item:hover,
+.social-links__item:focus-visible { color: var(--text); }
+.social-links__item:focus-visible {
+  outline: 1px solid var(--accent-lite);
+  outline-offset: 2px;
+  border-radius: 3px;
+}
+.social-links__icon { display: block; width: 17px; height: 17px; fill: currentColor; }
+.social-links__icon svg { display: block; width: 100%; height: 100%; }
+
+/* header variant: the icon cluster sits left of the language switcher, with a
+   touch more air separating utilities from the cluster (the hidden ≤1000px
+   rule below takes the header cluster out of the top bar on small screens). */
+.site-header__social { padding-right: clamp(4px, 1vw, 12px); }
+
+/* right-side header controls (language + hamburger) */
+.site-header__actions {
+  display: flex;
+  align-items: center;
+  gap: clamp(14px, 2vw, 26px);
+}
+
+/* ---------- language switcher (EN / SR) ----------
+   Plain tracked type. No flags, no globe, no box: the active
+   language reads full warm white, the other stays muted. */
+.lang-switch {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  font-family: var(--font-body);
+  font-size: 0.7rem;
+  font-weight: 600;
+  letter-spacing: 0.18em;
+  line-height: 1;
+  text-transform: uppercase;
+  -webkit-user-select: none;
+  user-select: none;
+}
+.lang-switch__option {
+  appearance: none;
+  -webkit-appearance: none;
+  border: 0;
+  background: none;
+  margin: 0;
+  padding: 3px 1px;
+  font: inherit;
+  letter-spacing: inherit;
+  text-transform: inherit;
+  color: var(--text);
+  opacity: 0.45;
+  cursor: pointer;
+  transition: opacity 220ms ease;
+}
+.lang-switch__option:hover,
+.lang-switch__option:focus-visible { opacity: 0.9; }
+.lang-switch__option.is-active { opacity: 1; }
+.lang-switch__option:focus-visible {
+  outline: 1px solid var(--accent-lite);
+  outline-offset: 3px;
+}
+.lang-switch__sep {
+  color: var(--text-faint);
+  opacity: 0.55;
+  font-size: 0.85em;
+}
+
+/* Home has no header at any size, so its language switcher IS the standalone
+   overlay: small and restrained, floating top-right over the full-screen
+   panels. It is position:fixed (reserves no layout space) and safe-area aware.
+   Positioned independently of the hidden header — top is a header-safe
+   distance from the top edge, right is the page's own outer margin
+   (--gutter) — and visible at every width. */
+.lang-switch--home {
+  position: fixed;
+  top: calc(env(safe-area-inset-top, 0px) + clamp(18px, 2.8vh, 30px));
+  right: calc(env(safe-area-inset-right, 0px) + var(--gutter));
+  z-index: 900;
+}
+/* During the Home → division takeover the Home UI clears out; fade the
+   standalone switcher with it so it never lingers over the incoming
+   division (the destination page ships its own header switcher). */
+body[data-page="home"]:has(.hero.is-takeover) .lang-switch--home {
+  opacity: 0;
+  transition: opacity 220ms ease;
+  pointer-events: none;
+}
 
 /* hamburger (mobile only) */
 .site-nav-toggle {
@@ -1813,7 +1932,7 @@ html.studio-morph-ui-pending body.is-studio-enter-descriptor .studio-minimal-her
   text-transform: uppercase;
   color: var(--text-faint);
 }
-.site-footer__social { flex-direction: row; flex-wrap: wrap; gap: 18px; }
+.site-footer__social { flex-direction: row; flex-wrap: wrap; align-items: center; align-content: flex-start; gap: 18px; }
 .site-footer__social a {
   color: var(--text-muted);
   font-size: var(--f-label);
@@ -1986,6 +2105,7 @@ html.studio-morph-ui-pending body.is-studio-enter-descriptor .studio-minimal-her
   html { scroll-behavior: auto; }
   html.js .reveal {
     opacity: 1;
+    filter: none;
     transform: none;
     transition: none;
   }
@@ -2026,6 +2146,15 @@ body.theme-liveroom { --accent: #8a3d1a; --accent-deep: #4a1f0a; --accent-lite: 
    ============================================================ */
 body[data-page="home"] { overflow: hidden; }
 body[data-page="home"] .progress { display: none; }
+
+/* Home is a headerless, immersive division selector at EVERY size — the three
+   panels are the navigation. The injected header is removed entirely; because
+   .site-header is position:fixed, hiding it reserves no height and shifts no
+   geometry (the hero keeps its full 100svh). Home's only utility UI is the
+   standalone .lang-switch--home overlay, which is also the single language
+   control there. (The mobile block re-states this, and the pre-paint
+   home-intro hold was flipped to `display:none`, so the one-time entrance
+   can never flash the header back in on any size.) */
 body[data-page="home"] .site-header { display: none; }
 
 /* ============================================================
@@ -2134,9 +2263,6 @@ body[data-page="studio"].is-studio-arriving .page-hero__inner > *:nth-child(3) {
 .section__ph strong { color: var(--text); font-weight: 500; }
 
 .work-card--ph { cursor: default; }
-
-/* mobile menu socials row */
-.mobile-menu__social { display: flex; flex-wrap: wrap; gap: 12px 26px; }
 
 /* ============================================================
    RESPONSIVE — page hero + scaffold grids
@@ -2404,9 +2530,13 @@ body[data-page="studio"].is-studio-arriving .page-hero__inner > *:nth-child(3) {
    replays it. No pin, no scroll runway, no sticky geometry. Only
    the masks move (GPU transforms).
 
-   SPACING: hero (exactly 100svh) → controlled breathing room →
-   showreel (containing the Visual identity). SOUND follows with
-   its own editorial masthead + archive.
+   SPACING: the showreel is now itself one full viewport and takes the
+   shape of the screen it is viewed on: a full-bleed frame (width 100%,
+   height 100svh) whose proportions come from the viewport, so it reads
+   phone-shaped on a phone, tablet-shaped on a tablet and desktop-shaped
+   on a desktop. SOUND precedes it with its own editorial masthead +
+   archive. The section adds no padding, so the frame runs edge to edge
+   with no letterbox bands above or below it.
    Reduced motion / no JS: masks are suppressed and the whole
    composition renders fully visible, static, in flow.
 
@@ -2416,16 +2546,15 @@ body[data-page="studio"].is-studio-arriving .page-hero__inner > *:nth-child(3) {
    the media object itself.
    ============================================================ */
 /* Reordered: Visual now follows the Sound release carousel rather than the
-   hero. Its top padding stacks ON TOP of `.grm-sound`'s bottom padding, so it
-   is reduced from the old hero→Visual value to avoid doubled dead space
-   before the showreel while still resetting the eye after the moving archive.
-   It gains a bottom padding it never needed before: with Sound no longer the
-   closing section, nothing else supplies breathing room before the end slate,
-   so this restores the same bottom rhythm the page previously ended on. */
+   hero. The showreel is a full-bleed, one-viewport object (the frame IS the
+   screen: width:100%, height:100svh — see `.visual-block`), so this section
+   carries no padding of its own: no letterbox band above or below the frame,
+   and the immersive visual moment occupies exactly one screen of scroll
+   before the closing slate follows. */
 .production-visual{
   position:relative;
   background:var(--bg);
-  padding:clamp(72px,10vh,124px) 0 clamp(56px,9vh,110px);
+  padding:0;
 }
 
 /* ============================================================
@@ -2499,11 +2628,10 @@ body[data-page="studio"].is-studio-arriving .page-hero__inner > *:nth-child(3) {
    line and the release archive and matches the showreel's
    footprint: same 16:9 proportion of the container, so the four
    crops occupy a full-width hero field as tall as the Visual
-   chapter's banner. Frames NEVER move: the photographs expose themselves
-   inside their fixed crops, left to right, as the strip enters
-   view — one-shot, overlapping 1000ms clip reveals with a subtle
-   internal settle — then everything rests completely still.
-   On capable pointers, after the entrance has settled, hovering a
+   chapter's banner. The strip arrives on the shared content reveal
+   (global `.reveal` / `.in-view`, the Liveroom motion) as one object,
+   then rests completely still.
+   On capable pointers, once the strip is revealed and hovering a
    frame redistributes the grid tracks: the hovered discipline
    expands (~40) while its neighbors compress (~20/20/20), inside
    ONE fixed outer frame — gutters constant, nothing outside the
@@ -2511,15 +2639,13 @@ body[data-page="studio"].is-studio-arriving .page-hero__inner > *:nth-child(3) {
    clips. The active image also breathes a fraction and its
    title lifts a hair; neighbors keep their labels and geometry.
    ------------------------------------------------------------
-   CONCEALMENT IS JS-GATED: the closed-crop state lives under
-   .grm-sound--reveal-ready, which the page-local script adds only
-   after it initializes. Without JS the strip is untouched and fully
-   visible; with JS, the observer adds .grm-sound--strip-in, the
-   crops open (same transition-delay pipeline), the observer
-   disconnects forever, and shortly after .grm-sound--entered
-   unlocks the hover redistribution on selectors below. Reduced
-   motion simply never conceals and never redistributes — the
-   finished static strip either way. */
+   CONCEALMENT IS JS-GATED: the shared `.reveal` base state applies
+   only under `html.js`, so without JS the strip is untouched and
+   fully visible. The global observer adds `.in-view` (opacity/filter/
+   transform settle, then rests); the hover redistribution is unlocked
+   by that same `.in-view` class on the selectors below. Reduced
+   motion resolves `.reveal` to the finished state and never
+   redistributes — the finished static strip either way. */
 .grm-photo-strip{
   position:relative;
   display:grid;
@@ -2661,6 +2787,25 @@ body[data-page="studio"].is-studio-arriving .page-hero__inner > *:nth-child(3) {
   transition:opacity 600ms cubic-bezier(.22,1,.36,1);
   pointer-events:none;
 }
+/* LIVERLOOM ROOM HOVER STROKE (reused) — a 1px inset accent line that
+   fades in over 250ms on the active discipline tile. A dedicated element
+   rather than a pseudo, because .grm-photo already spends ::before and
+   ::after on the two exposure scrims. Sits above the scrims (z-index 3),
+   tracks the CURRENT tile box as the grid redistributes, and never takes
+   part in layout or intercepts the pointer. Colour follows the division
+   through var(--accent-lite), exactly like Liveroom. */
+.grm-photo__stroke{
+  position:absolute;
+  inset:0;
+  z-index:3;
+  box-shadow:inset 0 0 0 1px var(--accent-lite);
+  opacity:0;
+  transition:opacity 250ms ease;
+  pointer-events:none;
+}
+@media (prefers-reduced-motion: reduce){
+  .grm-photo__stroke{transition:none}
+}
 /* Art direction — energy-fit per frame on the portrait sources so each
    subject survives its cover crop. The 4x1 desktop tiles are far taller than
    they are wide (aspect ~0.44 at rest, ~0.70 expanded, ~0.35 when a
@@ -2675,53 +2820,9 @@ body[data-page="studio"].is-studio-arriving .page-hero__inner > *:nth-child(3) {
 .grm-photo--beatmaking img{object-position:100% center}
 .grm-photo--engineering img{object-position:55% center}
 
-/* Reveal pipeline — motion only; gated so reduced motion and no-JS
-   both render the untouched static strip. Each discipline now opens
-   TOP TO BOTTOM: the clip starts fully retracted from the BOTTOM edge
-   (inset 0 0 100% 0) and settles to inset(0), so the kept region
-   starts at the tile's top edge and grows DOWNWARD — the photograph
-   appears top-first, in reading order. (Retracting the top inset
-   instead — inset 100% 0 0 0 — would pin the bottom edge and reveal
-   UPWARD, the opposite of the brief.) The image is pre-lifted and
-   slightly scaled, then settles — the same soft settle the previous
-   horizontal version used, rotated onto the vertical axis.
-
-   The four remain ONE BY ONE: transition-delay is unchanged at
-   0/130/260/390ms, so in DOM order (recording -> composition ->
-   beatmaking -> engineering) each tile finishes its reveal before the
-   next begins its travel. On the mobile 2x2 grid that DOM order is
-   also reading order — top-left, top-right, then the bottom row — so
-   the sequence reads strictly top to bottom there too. */
-@media (prefers-reduced-motion: no-preference){
-  .grm-sound--reveal-ready .grm-photo{clip-path:inset(0 0 100% 0)}
-  .grm-sound--reveal-ready .grm-photo--recording img{transform:scale(1.03) translate3d(0,-10px,0)}
-  .grm-sound--reveal-ready .grm-photo--composition img{transform:scale(1.03) translate3d(0,-9px,0)}
-  .grm-sound--reveal-ready .grm-photo--beatmaking img{transform:scale(1.03) translate3d(0,-9px,0)}
-  .grm-sound--reveal-ready .grm-photo--engineering img{transform:scale(1.03) translate3d(0,-10px,0)}
-
-  .grm-sound--reveal-ready .grm-photo,
-  .grm-sound--reveal-ready .grm-photo img{
-    transition-duration:1000ms;
-    transition-timing-function:cubic-bezier(.22,1,.36,1);
-  }
-  .grm-sound--reveal-ready .grm-photo{transition-property:clip-path}
-  .grm-sound--reveal-ready .grm-photo img{transition-property:transform}
-  .grm-sound--reveal-ready .grm-photo--recording,
-  .grm-sound--reveal-ready .grm-photo--recording img{transition-delay:0ms}
-  .grm-sound--reveal-ready .grm-photo--composition,
-  .grm-sound--reveal-ready .grm-photo--composition img{transition-delay:130ms}
-  .grm-sound--reveal-ready .grm-photo--beatmaking,
-  .grm-sound--reveal-ready .grm-photo--beatmaking img{transition-delay:260ms}
-  .grm-sound--reveal-ready .grm-photo--engineering,
-  .grm-sound--reveal-ready .grm-photo--engineering img{transition-delay:390ms}
-
-  .grm-sound--strip-in .grm-photo{clip-path:inset(0 0 0 0)}
-  .grm-sound--strip-in .grm-photo img{transform:none}
-}
-
 /* HOVER REDISTRIBUTION — desktop, capable pointers, motion only, and
-   only AFTER the entrance has settled (.grm-sound--entered is added
-   by the page-local script once the reveal completes). Pure grid
+   only once the strip has been revealed (the shared `.reveal`/`.in-view`
+   system adds `.in-view` when the strip enters the viewport). Pure grid
    track redistribution: the hovered discipline expands (~40), the
    three neighbors compress (~20/20/20), ONE fixed outer frame, and
    the gaps (column-gap) never change. The 40/20/20/20 balance keeps
@@ -2734,25 +2835,25 @@ body[data-page="studio"].is-studio-arriving .page-hero__inner > *:nth-child(3) {
    neighbors never dim, move, or reflow. Touch/coarse pointers,
    reduced motion, and the 2x2 layout stay completely static. */
 @media (min-width:901px) and (prefers-reduced-motion: no-preference) and (hover:hover) and (pointer:fine){
-  .grm-photo-strip.grm-sound--entered:has(.grm-photo--recording:hover){
+  .grm-photo-strip.in-view:has(.grm-photo--recording:hover){
     grid-template-columns:minmax(0,40fr) minmax(0,20fr) minmax(0,20fr) minmax(0,20fr);
   }
-  .grm-photo-strip.grm-sound--entered:has(.grm-photo--composition:hover){
+  .grm-photo-strip.in-view:has(.grm-photo--composition:hover){
     grid-template-columns:minmax(0,20fr) minmax(0,40fr) minmax(0,20fr) minmax(0,20fr);
   }
-  .grm-photo-strip.grm-sound--entered:has(.grm-photo--beatmaking:hover){
+  .grm-photo-strip.in-view:has(.grm-photo--beatmaking:hover){
     grid-template-columns:minmax(0,20fr) minmax(0,20fr) minmax(0,40fr) minmax(0,20fr);
   }
-  .grm-photo-strip.grm-sound--entered:has(.grm-photo--engineering:hover){
+  .grm-photo-strip.in-view:has(.grm-photo--engineering:hover){
     grid-template-columns:minmax(0,20fr) minmax(0,20fr) minmax(0,20fr) minmax(0,40fr);
   }
-  .grm-photo-strip.grm-sound--entered .grm-photo:hover img{
+  .grm-photo-strip.in-view .grm-photo:hover img{
     transform:scale(1.018);
     transition-duration:650ms;
     transition-timing-function:cubic-bezier(.22,1,.36,1);
     transition-property:transform;
   }
-  .grm-photo-strip.grm-sound--entered .grm-photo:hover .grm-photo__title{
+  .grm-photo-strip.in-view .grm-photo:hover .grm-photo__title{
     transform:translateY(-4px);
     transition-duration:650ms;
     transition-timing-function:cubic-bezier(.22,1,.36,1);
@@ -2761,10 +2862,10 @@ body[data-page="studio"].is-studio-arriving .page-hero__inner > *:nth-child(3) {
   /* ACTIVE EXPOSURE — only the expanded tile receives the taller scrim
      (its description sits above the title). Pure opacity fade, so the
      exposure change is as smooth as the width redistribution and lands
-     in step with it. Gated by the same .grm-sound--entered / hover /
+     in step with it. Gated by the same .in-view / hover /
      fine-pointer conditions as the expansion, so reduced motion, touch
-     and the pre-entrance strip keep the rest exposure only. */
-  .grm-photo-strip.grm-sound--entered .grm-photo:hover::before{
+     and the pre-reveal strip keep the rest exposure only. */
+  .grm-photo-strip.in-view .grm-photo:hover::before{
     opacity:1;
   }
   /* Only the expanded tile reveals its description. The description row
@@ -2773,17 +2874,27 @@ body[data-page="studio"].is-studio-arriving .page-hero__inner > *:nth-child(3) {
      delay — uncovered by the expanding space, not snapped into place.
      On loss of hover the base rules revert immediately (0 delay) so
      exits never stick and tile-to-tile swaps crossfade gently. */
-  .grm-photo-strip.grm-sound--entered .grm-photo:hover .grm-photo__text{
+  .grm-photo-strip.in-view .grm-photo:hover .grm-photo__text{
     grid-template-rows:1fr auto;
     transition:grid-template-rows 380ms cubic-bezier(.22,1,.36,1) 150ms;
   }
-  .grm-photo-strip.grm-sound--entered .grm-photo:hover .grm-photo__desc{
+  .grm-photo-strip.in-view .grm-photo:hover .grm-photo__desc{
     opacity:1;
     transform:translateY(0);
     transition:
       opacity 380ms cubic-bezier(.22,1,.36,1) 150ms,
       transform 380ms cubic-bezier(.22,1,.36,1) 150ms;
   }
+}
+
+/* The active discipline tile also receives the reused Liveroom stroke.
+   Kept OUT of the reduced-motion-gated expansion block above so the
+   static state change still reads under reduced motion (stroke fades
+   instantly, layout never moves) — matching Liveroom's own reduced-
+   motion contract. No image zoom here: the strip's motion stays its
+   own. */
+@media (min-width:901px) and (hover:hover) and (pointer:fine){
+  .grm-photo-strip.in-view .grm-photo:hover .grm-photo__stroke{opacity:1}
 }
 
 /* --- Mobile/tablet: 2x2 photographic grid, still disciplined ------ */
@@ -2823,9 +2934,11 @@ body[data-page="studio"].is-studio-arriving .page-hero__inner > *:nth-child(3) {
     flex:0 0 auto;
   }
   /* The text no longer overlays anything, so the exposure scrims have no
-     job to do on this layout — the photograph is left untouched. */
+     job to do on this layout — the photograph is left untouched. The
+     stroke layer belongs to the desktop hover interaction only. */
   .grm-photo-strip .grm-photo::before,
-  .grm-photo-strip .grm-photo::after{display:none}
+  .grm-photo-strip .grm-photo::after,
+  .grm-photo-strip .grm-photo__stroke{display:none}
   .grm-photo__text{
     position:static;
     left:auto;
@@ -2967,10 +3080,21 @@ html:not(.js) .showreel-aperture__mask{display:none}
    This figure is the only media element in the Visual chapter.
    It is revealed by the aperture and IS the resting composition.
    It never moves and never scales — the masks do all the motion,
-   so continuity between pinned and resting is exact by design. */
+   so continuity between pinned and resting is exact by design.
+   It is full-bleed and takes the shape of the viewport: 100% of the
+   (already full-width) section WIDE, and one small-viewport unit TALL,
+   so its aspect ratio is the screen's aspect ratio at every size. No
+   fixed cinematic ratio, no JS measurement of the frame. */
 .visual-block{
   position:relative;
-  width:var(--showreel-frame-w,92vw);
+  width:100%;
+  /* Legacy fallback then the modern mobile-safe stable unit. `100svh`
+     is the smallest viewport height (browser chrome shown), so the frame
+     never overflows the screen the way `100vh` does on mobile, and it
+     does not resize mid-scroll the way `100dvh` would. The aperture only
+     needs the resulting height (see main.js), never the width. */
+  height:100vh;
+  height:100svh;
   color:var(--text);
   background:var(--bg-2);
   z-index:1;
@@ -2978,21 +3102,25 @@ html:not(.js) .showreel-aperture__mask{display:none}
 .visual-block__media{
   position:relative;
   width:100%;
-  aspect-ratio:16/9;
+  height:100%;
   overflow:hidden;
   display:grid;
   place-items:center;
   background:linear-gradient(180deg,var(--surface),var(--bg-2));
 }
-/* The showreel fills the fixed 16:9 media area. It never moves or
-   scales during the reveal — masks do all the motion. object-fit:cover
-   crops safely inside the overflow:hidden container. */
+/* The showreel fills the full-bleed, viewport-proportioned media area
+   (the frame takes the shape of the screen). It never moves or scales
+   during the reveal — masks do all the motion. object-fit:cover lets the
+   frame change shape while the footage keeps its native 1280x720
+   proportions and crops (never stretches) to fill it; object-position
+   keeps the existing centred framing. */
 .visual-block__video{
   position:absolute;
   inset:0;
   width:100%;
   height:100%;
   object-fit:cover;
+  object-position:center;
 }
 /* --- LOCALIZED EXPOSURE FIELD (legibility) ----------------------
    A broad, soft radial darkening that anchors to the upper-left —
@@ -3034,8 +3162,11 @@ html:not(.js) .showreel-aperture__mask{display:none}
    inset and the contextual capability colour are local to this frame. */
 .visual-block__identity{
   position:absolute;
-  top:clamp(46px,6.4vh,64px);
-  left:clamp(52px,5.6vw,78px);
+  /* Clear the fixed header (the frame now starts at the top of the
+     viewport when it is the immersive moment) plus any notch/status
+     inset, then the approved optical rhythm. */
+  top:calc(var(--header-h) + env(safe-area-inset-top, 0px) + clamp(18px,4vh,56px));
+  left:calc(clamp(52px,5.6vw,78px) + env(safe-area-inset-left, 0px));
   z-index:2;
   pointer-events:none;
   max-width:calc(100% - clamp(104px,11.2vw,156px));
@@ -3044,8 +3175,8 @@ html:not(.js) .showreel-aperture__mask{display:none}
 .visual-block__identity-caps{margin-top:var(--discipline-caps-gap)}
 @media (max-width:760px){
   .visual-block__identity{
-    top:clamp(24px,5.4vh,34px);
-    left:clamp(24px,5.8vw,36px);
+    top:calc(var(--header-h) + env(safe-area-inset-top, 0px) + clamp(12px,3.4vh,32px));
+    left:calc(clamp(24px,5.8vw,36px) + env(safe-area-inset-left, 0px));
     max-width:calc(100% - clamp(48px,11.6vw,72px));
   }
   .visual-block__media::before{
@@ -3056,8 +3187,8 @@ html:not(.js) .showreel-aperture__mask{display:none}
 }
 .visual-block__link{
   position:absolute;
-  right:clamp(20px,2.4vw,32px);
-  bottom:clamp(16px,2.2vh,26px);
+  right:calc(clamp(20px,2.4vw,32px) + env(safe-area-inset-right, 0px));
+  bottom:calc(clamp(16px,2.2vh,26px) + env(safe-area-inset-bottom, 0px));
   z-index:2;
   margin:0;
   display:inline-flex;
@@ -3078,8 +3209,8 @@ html:not(.js) .showreel-aperture__mask{display:none}
 .visual-block__link:hover i,.visual-block__link:focus-visible i{transform:translate(3px,-3px)}
 @media (max-width:760px){
   .visual-block__link{
-    right:clamp(14px,4vw,22px);
-    bottom:clamp(12px,2vh,16px);
+    right:calc(clamp(14px,4vw,22px) + env(safe-area-inset-right, 0px));
+    bottom:calc(clamp(12px,2vh,16px) + env(safe-area-inset-bottom, 0px));
     font-size:.62rem;
     letter-spacing:.22em;
   }
@@ -3127,53 +3258,6 @@ html:not(.js) .showreel-aperture__mask{display:none}
   -webkit-user-select:none;
   user-select:none;
   touch-action:pan-y;
-}
-/* --- PLAQUE ENTRANCE: prepared state before trigger (no-JS remains visible) */
-.grm-sound--releases-prepared .grm-plaque__inner{
-  opacity:0;
-  transform:translateY(12px);
-}
-.grm-sound--releases-prepared .grm-plaque__reveal{
-  opacity:0;
-  transform:translateY(12px);
-}
-/* --- PLAQUE ENTRANCE: visible set reveals one-by-one (slow) --- */
-.grm-sound--releases-in .grm-plaque__inner{
-  /* One-by-one reveal on the inner visual layer; rail geometry untouched */
-  animation:grm-plaque-in 1100ms cubic-bezier(.22,1,.36,1) both;
-  animation-delay:min(calc(var(--r-i,0) * 250ms + 300ms), calc(6 * 250ms + 300ms));
-}
-.grm-sound--releases-in .grm-plaque__reveal{
-  animation:grm-plaque-in 1100ms cubic-bezier(.22,1,.36,1) both;
-  animation-delay:min(calc(var(--r-i,0) * 250ms + 300ms), calc(6 * 250ms + 300ms));
-}
-@keyframes grm-plaque-in{
-  from{opacity:0;transform:translateY(12px)}
-  to{opacity:1;transform:none}
-}
-@media (max-width:900px){
-  .grm-sound--releases-in .grm-plaque__inner{
-    animation-duration:900ms;
-    animation-delay:min(calc(var(--r-i,0) * 180ms + 240ms), calc(6 * 180ms + 240ms));
-  }
-  .grm-sound--releases-in .grm-plaque__reveal{
-    animation-duration:900ms;
-    animation-delay:min(calc(var(--r-i,0) * 180ms + 240ms), calc(6 * 180ms + 240ms));
-  }
-  @keyframes grm-plaque-in{
-    from{opacity:0;transform:translateY(8px)}
-    to{opacity:1;transform:none}
-  }
-}
-@media (prefers-reduced-motion:reduce){
-  .grm-sound--releases-prepared .grm-plaque__inner,
-  .grm-sound--releases-prepared .grm-plaque__reveal,
-  .grm-sound--releases-in .grm-plaque__inner,
-  .grm-sound--releases-in .grm-plaque__reveal{
-    animation:none;
-    opacity:1;
-    transform:none;
-  }
 }
 .grm-sound__track{
   display:flex;
@@ -4372,12 +4456,19 @@ html.js .label-about.is-revealed .label-about__veil{
   background-color:rgba(0,0,0,.05);
 }
 html.js .label-about .container .reveal{
+  /* About carries its own coordinated develop-from-black (`.is-revealed`),
+     so it deliberately opts out of the global `.reveal` blur/rise: the
+     `filter:none` neutralises the inherited defocus and the local pair
+     keeps the section's approved, subtler settle. The generic observer may
+     still add `.in-view` here, which has no effect — the two do not stack. */
   opacity:0;
+  filter:none;
   transform:translateY(8px);
   transition:opacity 900ms var(--ease-out),transform 900ms var(--ease-out);
 }
 html.js .label-about.is-revealed .container .reveal{
   opacity:1;
+  filter:none;
   transform:none;
 }
 /* stagger — background 0ms, then the type settles behind it */
@@ -4498,6 +4589,7 @@ html.js .label-about.is-revealed .label-about__rule{ transition-delay:520ms; }
   }
   html.js .label-about .container .reveal{
     opacity:1;
+    filter:none;
     transform:none;
     transition:none;
   }
@@ -4599,22 +4691,76 @@ html.js .label-people__entry.in-view .label-people__shot img{
   min-width:0;
 }
 
+/* the credit-label row opens each profile, above the name — the tags are the
+   only colour here. */
 .label-people__role{
-  margin:0 0 clamp(10px,1.6vh,14px) 0;
-  color:var(--accent-lite);
-  font-size:var(--f-label);
+  margin:0 0 clamp(13px,1.9vh,17px) 0;
+}
+
+/* ---------- expertise credit labels ----------
+   Small printed production metadata above each member name: a dark,
+   near-square tag with a hairline border and a 2px division-coloured top
+   edge. Record-sleeve credits, not UI chips — no pill radius, no bright
+   fills, no oversized boxes. The category colour is a restrained accent on
+   the edge only; the text stays warm grey. */
+.label-people__credits{
+  min-width:0;
+  display:flex;
+  flex-wrap:wrap;
+  align-items:center;
+  gap:8px;
+  margin:0;
+  padding:0;
+  list-style:none;
+}
+.credit-label{
+  --credit-accent:var(--credit-neutral);
+  position:relative;
+  display:inline-flex;
+  align-items:center;
+  height:27px;
+  padding:0 11px;
+  border:1px solid var(--border-strong);
+  border-radius:1px;
+  background:rgba(10,10,10,.82);
+  color:var(--text-muted);
+  font-family:var(--font-body);
+  font-size:10px;
   font-weight:600;
-  letter-spacing:.2em;
+  letter-spacing:.15em;
+  line-height:1;
   text-transform:uppercase;
+  white-space:nowrap;
+  transition:color 260ms ease, border-color 260ms ease, background 260ms ease;
 }
-.label-people__index{
-  display:inline-block;
-  color:var(--accent);
-  font-weight:700;
+.credit-label::before{
+  content:"";
+  position:absolute;
+  top:0;
+  left:0;
+  right:0;
+  height:2px;
+  background:var(--credit-accent);
+  opacity:.85;
+  transition:opacity 260ms ease, filter 260ms ease;
 }
-.label-people__index::after{
-  content:" / ";
-  color:var(--accent-lite);
+.credit-label[data-cat="production"]{ --credit-accent:var(--credit-production); }
+.credit-label[data-cat="label"]{ --credit-accent:var(--credit-label); }
+.credit-label[data-cat="liveroom"]{ --credit-accent:var(--credit-live); }
+.credit-label[data-cat="neutral"]{ --credit-accent:var(--credit-neutral); }
+
+/* restrained profile-level response: hovering the profile lifts the tag
+   borders and the accent a touch. No glow, no scale, no per-tag motion. */
+@media (hover:hover){
+  .label-people__entry:hover .credit-label{
+    border-color:rgba(236,233,226,.34);
+    background:rgba(14,14,14,.9);
+    color:var(--text);
+  }
+  .label-people__entry:hover .credit-label::before{
+    opacity:1;
+    filter:brightness(1.18);
+  }
 }
 
 .label-people__name{
@@ -4669,12 +4815,41 @@ html.js .label-people__entry.in-view .label-people__shot img{
 .label-releases__item:hover{
   transform:translateY(-6px);
 }
+/* Crop wrapper — the only layer that clips, so the artwork can push in
+   without ever leaving its tile. Carries the hairline frame the <img>
+   used to own (geometry identical: the wrapper's border box is the
+   column, so the visible image area and the square outline are
+   unchanged). */
+.label-releases__media{
+  position:relative;
+  display:block;
+  overflow:hidden;
+  border:1px solid var(--border-strong);
+  background:rgba(236,233,226,.04);
+}
 .label-releases__item img{
   display:block;
   width:100%;
   aspect-ratio:1/1;
   object-fit:cover;
-  border:1px solid var(--border-strong);
+  transition:transform 600ms var(--ease-out);
+}
+/* Liveroom Room hover stroke, reused verbatim: a 1px inset accent line
+   that fades in over 250ms. Painted as a pseudo-element on the crop box
+   so it always tracks the CURRENT tile bounds as the image scales. */
+.label-releases__media::after{
+  content:"";
+  position:absolute;
+  inset:0;
+  z-index:1;
+  box-shadow:inset 0 0 0 1px var(--accent-lite);
+  opacity:0;
+  transition:opacity 250ms ease;
+  pointer-events:none;
+}
+@media (hover:hover) and (pointer:fine){
+  .label-releases__item:hover .label-releases__media::after{opacity:1}
+  .label-releases__item:hover .label-releases__media img{transform:scale(1.035)}
 }
 .label-releases__meta{
   display:flex;
@@ -4744,7 +4919,11 @@ html.js .label-people__entry.in-view .label-people__shot img{
     min-width:0;
   }
   .label-people__role{
-    margin:clamp(12px,3vw,14px) 0 0;
+    margin:clamp(14px,3.4vw,18px) 0 clamp(12px,3vw,15px);
+  }
+  .credit-label{
+    height:25px;
+    padding:0 10px;
   }
   .label-people__name{
     margin-bottom:clamp(12px,4vw,14px);
@@ -4763,7 +4942,11 @@ html.js .label-people__entry.in-view .label-people__shot img{
 
 @media (prefers-reduced-motion: reduce){
   .label-people__shot img,
-  .label-releases__item{
+  .label-releases__item,
+  .label-releases__media img,
+  .label-releases__media::after,
+  .credit-label,
+  .credit-label::before{
     transition:none;
   }
 }
@@ -5077,6 +5260,14 @@ html.js .label-people__entry.in-view .label-people__shot img{
   .studio-minimal-hero__title,
   .division-minimal-hero__title {
     margin-top: calc(0.39 * var(--lockup-gap) - 0.61 * var(--logo-pad-b));
+    /* The title is a flex item in a centred column, but when its line reaches
+       the lockup width (logo width) it fills the box and, without this,
+       aligns to `start` — reading left-under-the-logo instead of centred.
+       The subtitle (h1) already carries text-align:center; giving the title
+       the same makes the whole lockup share the logo's centre axis at every
+       width. Text-align only moves the inline content inside the fixed box,
+       so the box, the lockup width and the logo geometry are untouched. */
+    text-align: center;
   }
   .studio-minimal-hero__lockup h1,
   .division-minimal-hero__lockup h1 {

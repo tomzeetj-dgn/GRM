@@ -24,6 +24,107 @@
      mid-range scale. */
   var DEST_LOGO_KEY = "grm-dest-logo:v3";
 
+  /* ---------- SHARED DESTINATION-LOGO RECT RESOLVER ----------
+     One system for every Home -> division path (desktop accordion + mobile
+     stacked) and one writer on the division side. The destination's rendered
+     logo rect is the single source of truth: each division page publishes its
+     own getBoundingClientRect here, and Home reads it back so the committed
+     logo lands exactly on the destination.
+
+     The destination logo box is CSS-driven (vw/svh clamps + fixed offsets), so
+     it is deterministic for a given viewport and can be measured offscreen
+     before that page is ever visited. On a cold first visit (nothing published
+     yet) we render the real division page in an offscreen same-origin frame at
+     the exact same viewport and read its hero logo rect the instant the
+     stylesheet has laid it out. The frame is removed immediately, cancelling
+     in-flight artwork, so the cost is one small HTML fetch.
+
+     Cached per viewport (key includes innerWidth x innerHeight): a resize,
+     orientation change or breakpoint change simply changes the key and misses,
+     forcing a fresh measurement — a stale rect can never survive. */
+  var DEST_PAGES = ["studio", "label", "liveroom"];
+  var destRectCache = {};
+  var destRectPending = {};
+  var destPrefetched = false;
+
+  function destRectKey(page) {
+    return DEST_LOGO_KEY + ":" + page + ":" + window.innerWidth + "x" + window.innerHeight;
+  }
+
+  function measureDestLogoRect(page) {
+    return new Promise(function (resolve) {
+      var frame = document.createElement("iframe");
+      frame.setAttribute("aria-hidden", "true");
+      frame.tabIndex = -1;
+      frame.style.cssText = "position:fixed;left:-10000px;top:0;width:" +
+        window.innerWidth + "px;height:" + window.innerHeight + "px;border:0;visibility:hidden;";
+
+      var settled = false;
+      function finish(rect) {
+        if (settled) return;
+        settled = true;
+        if (frame.parentNode) frame.parentNode.removeChild(frame);
+        resolve(rect);
+      }
+
+      var tries = 0;
+      function poll() {
+        if (settled) return;
+        try {
+          var d = frame.contentDocument;
+          if (d && d.readyState && d.readyState !== "uninitialized") {
+            var el = d.querySelector(".studio-minimal-hero__logo, .division-minimal-hero__logo");
+            if (el) {
+              var r = el.getBoundingClientRect();
+              if (r.width > 1 && r.height > 1) {
+                return finish({ left: r.left, top: r.top, width: r.width, height: r.height });
+              }
+            }
+          }
+        } catch (e) { /* cross-doc not ready yet */ }
+        if (++tries > 240) return finish(null); // ~6s ceiling
+        setTimeout(poll, 25);
+      }
+
+      frame.src = new URL(page + "/index.html", window.location.href).href;
+      document.body.appendChild(frame);
+      poll();
+    });
+  }
+
+  function getDestLogoRect(page) {
+    var key = destRectKey(page);
+    if (destRectCache[key]) return Promise.resolve(destRectCache[key]);
+    if (destRectPending[key]) return destRectPending[key];
+    var stored = null;
+    try { stored = JSON.parse(sessionStorage.getItem(key) || "null"); } catch (e) {}
+    if (stored && stored.width) {
+      destRectCache[key] = stored;
+      return Promise.resolve(stored);
+    }
+    destRectPending[key] = measureDestLogoRect(page).then(function (rect) {
+      delete destRectPending[key];
+      if (rect) {
+        destRectCache[key] = rect;
+        try { sessionStorage.setItem(key, JSON.stringify(rect)); } catch (e) {}
+      }
+      return rect;
+    }, function () { delete destRectPending[key]; return null; });
+    return destRectPending[key];
+  }
+
+  /* Warm all three destination rects once, quietly, off the critical path. */
+  function prefetchDestLogos() {
+    if (destPrefetched) return;
+    destPrefetched = true;
+    var i = 0;
+    (function next() {
+      if (i >= DEST_PAGES.length) return;
+      getDestLogoRect(DEST_PAGES[i++]).then(function () { setTimeout(next, 80); },
+                                             function () { setTimeout(next, 80); });
+    })();
+  }
+
   document.documentElement.classList.add("js");
 
   var prefersReduced = window.matchMedia("(prefers-reduced-motion: reduce)");
@@ -32,6 +133,73 @@
 
   var RAF = window.requestAnimationFrame ||
             function (cb) { return setTimeout(cb, 16); };
+
+  /* Reads a string from the shared i18n dictionary (js/translations.js via
+     js/i18n.js), falling back to the authored English when the engine or the
+     key is unavailable — so dynamic copy localizes without ever going blank. */
+  function tr(key, fallback) {
+    var value = (window.GRMi18n && window.GRMi18n.t) ? window.GRMi18n.t(key) : key;
+    return (value === key && fallback != null) ? fallback : value;
+  }
+
+  function langSwitchMarkup(extra) {
+    return '<div class="lang-switch' + (extra ? " " + extra : "") + '"' +
+             ' role="group" aria-label="Language" data-i18n-aria-label="a11y.language">' +
+             '<button type="button" class="lang-switch__option" data-lang="en">EN</button>' +
+             '<span class="lang-switch__sep" aria-hidden="true">/</span>' +
+             '<button type="button" class="lang-switch__option" data-lang="sr">SR</button>' +
+           "</div>";
+  }
+
+  /* ---------- SOCIAL LINKS (Instagram · YouTube · TikTok) ----------
+     One reusable, icon-only component rendered in three places: the
+     destination header, the mobile menu and the footer. Order is always
+     Instagram → YouTube → TikTok. The SVG is decorative (aria-hidden) and the
+     anchor carries the localized accessible name.
+
+     Canonical URLs are NOT supplied anywhere in the project yet, so each link
+     renders as an inert placeholder (data-pending-social) — the same convention
+     already used for the pending YouTube link on the studio page. Fill in
+     SOCIAL_LINKS below and the links go live (target=_blank,
+     rel=noopener noreferrer) with no other change. */
+  var SOCIAL_LINKS = {
+    instagram: "https://www.instagram.com/grmhouse/",
+    youtube: "https://www.youtube.com/@grmproductionstudio",
+    tiktok: "https://www.tiktok.com/@grm.wav"
+  };
+
+  var SOCIAL_ICONS = {
+    instagram:
+      '<path d="M12 2.163c3.204 0 3.584.012 4.85.07 3.252.149 4.77 1.69 4.919 4.92.058 1.265.069 1.645.069 4.849 0 3.205-.012 3.584-.07 4.849-.149 3.225-1.664 4.771-4.919 4.919-1.266.058-1.644.07-4.85.07-3.204 0-3.584-.012-4.849-.07-3.26-.149-4.771-1.699-4.919-4.92-.058-1.265-.07-1.644-.07-4.849 0-3.204.012-3.583.07-4.849.149-3.227 1.664-4.771 4.919-4.919 1.265-.057 1.644-.069 4.849-.069zM12 0C8.741 0 8.332.014 7.052.072 2.695.272.273 2.69.073 7.052.014 8.333 0 8.741 0 12c0 3.259.014 3.668.072 4.948.2 4.358 2.618 6.78 6.98 6.98C8.333 23.986 8.741 24 12 24c3.259 0 3.668-.014 4.948-.072 4.354-.2 6.782-2.618 6.98-6.98.058-1.28.072-1.689.072-4.948 0-3.259-.014-3.667-.072-4.947-.198-4.354-2.617-6.78-6.979-6.98C15.668.014 15.259 0 12 0zm0 5.838a6.162 6.162 0 1 0 0 12.324 6.162 6.162 0 0 0 0-12.324zM12 16a4 4 0 1 1 0-8 4 4 0 0 1 0 8zm6.406-11.845a1.44 1.44 0 1 0 0 2.881 1.44 1.44 0 0 0 0-2.881z"/>',
+    youtube:
+      '<path d="M23.498 6.186a3.016 3.016 0 0 0-2.122-2.136C19.505 3.545 12 3.545 12 3.545s-7.505 0-9.377.505A3.017 3.017 0 0 0 .502 6.186C0 8.07 0 12 0 12s0 3.93.502 5.814a3.016 3.016 0 0 0 2.122 2.136c1.871.505 9.376.505 9.376.505s7.505 0 9.377-.505a3.015 3.015 0 0 0 2.122-2.136C24 15.93 24 12 24 12s0-3.93-.502-5.814zM9.545 15.568V8.432L15.818 12l-6.273 3.568z"/>',
+    tiktok:
+      '<path d="M12.525.02c1.31-.02 2.61-.01 3.91-.02.08 1.53.63 3.09 1.75 4.17 1.12 1.11 2.7 1.62 4.24 1.79v4.03c-1.44-.05-2.89-.35-4.2-.97-.57-.26-1.1-.59-1.62-.93-.01 2.92.01 5.84-.02 8.75-.08 1.4-.54 2.79-1.35 3.94-1.31 1.92-3.58 3.17-5.91 3.21-1.43.08-2.86-.31-4.08-1.03-2.02-1.19-3.44-3.37-3.65-5.71-.02-.5-.03-1-.01-1.49.18-1.9 1.12-3.72 2.58-4.96 1.66-1.44 3.98-2.13 6.15-1.72.02 1.48-.04 2.96-.04 4.44-.99-.32-2.15-.23-3.02.37-.63.41-1.11 1.04-1.36 1.75-.21.51-.15 1.07-.14 1.61.24 1.64 1.82 3.02 3.5 2.87 1.12-.01 2.19-.66 2.77-1.61.19-.33.4-.67.41-1.06.1-1.79.06-3.57.07-5.36.01-4.03-.01-8.05.02-12.07z"/>'
+  };
+
+  function socialLinksMarkup(extra) {
+    var order = [
+      { key: "instagram", name: "Instagram", label: "a11y.social.instagram" },
+      { key: "youtube", name: "YouTube", label: "a11y.social.youtube" },
+      { key: "tiktok", name: "TikTok", label: "a11y.social.tiktok" }
+    ];
+    var items = order.map(function (item) {
+      var url = SOCIAL_LINKS[item.key];
+      var attrs = url
+        ? ' href="' + url + '" target="_blank" rel="noopener noreferrer"'
+        : ' href="#" data-pending-social="' + item.key + '"';
+      return '<a class="social-links__item"' + attrs +
+               ' aria-label="' + tr(item.label, "GRM on " + item.name) + '"' +
+               ' data-i18n-aria-label="' + item.label + '">' +
+               '<span class="social-links__icon" aria-hidden="true">' +
+                 '<svg viewBox="0 0 24 24" focusable="false">' + SOCIAL_ICONS[item.key] + "</svg>" +
+               "</span>" +
+             "</a>";
+    }).join("");
+    return '<div class="social-links' + (extra ? " " + extra : "") + '"' +
+             ' role="group" aria-label="' + tr("a11y.social", "Social links") + '"' +
+             ' data-i18n-aria-label="a11y.social">' + items + "</div>";
+  }
 
   /* ---------- SHARED CHROME (header / mobile menu / footer) ----------
      One source of truth for the site chrome, injected into
@@ -45,16 +213,17 @@
     var page = document.body.getAttribute("data-page") || "";
 
     var navItems = [
-      { key: "home", label: "Home", href: root + "index.html" },
-      { key: "studio", label: "Production", href: root + "studio/" },
-      { key: "label", label: "Label", href: root + "label/" },
-      { key: "liveroom", label: "Liveroom", href: root + "liveroom/" }
+      { key: "home", label: "Home", i18n: "nav.home", href: root + "index.html" },
+      { key: "studio", label: "Production", i18n: "nav.production", href: root + "studio/" },
+      { key: "label", label: "Label", i18n: "nav.label", href: root + "label/" },
+      { key: "liveroom", label: "Liveroom", i18n: "nav.liveroom", href: root + "liveroom/" }
     ];
 
     function navLinks(cls) {
       return navItems.map(function (item) {
         var current = item.key === page ? ' aria-current="true"' : "";
-        return '<a href="' + item.href + '" class="' + cls + '"' + current + '>' + item.label + "</a>";
+        return '<a href="' + item.href + '" class="' + cls + '"' + current +
+               ' data-i18n="' + item.i18n + '">' + item.label + "</a>";
       }).join("");
     }
 
@@ -67,31 +236,40 @@
       headerMount.innerHTML =
         '<header class="site-header" id="siteHeader">' +
             '<div class="site-header__inner">' +
-            '<a href="' + root + 'index.html" class="site-header__brand" aria-label="GRM — back to top">' +
+            '<a href="' + root + 'index.html" class="site-header__brand" aria-label="GRM — back to top" data-i18n-aria-label="a11y.headerBrand">' +
               '<img src="' + root + 'assets/img/grm-mark.png" alt="" width="38" height="38" class="site-header__mark">' +
               '<img src="' + root + 'assets/img/GRM 4K 1x1_Transparent.png" alt="" aria-hidden="true" class="site-header__mark-glow">' +
-              '<span class="site-header__word">GRM HOUSE</span>' +
+              '<span class="site-header__word" data-i18n="brand.home">GRM HOUSE</span>' +
             "</a>" +
             (isHome ? "" :
-              '<nav class="site-nav" aria-label="Primary">' + navLinks("site-nav__link") + "</nav>" +
-              '<button class="site-nav-toggle" id="navToggle" aria-expanded="false" aria-controls="mobileMenu" aria-label="Open menu">' +
-                '<span class="site-nav-toggle__line"></span>' +
-                '<span class="site-nav-toggle__line"></span>' +
-              "</button>") +
+              '<nav class="site-nav" aria-label="Primary" data-i18n-aria-label="a11y.primaryNav">' + navLinks("site-nav__link") + "</nav>" +
+              '<div class="site-header__actions">' +
+                socialLinksMarkup("site-header__social") +
+                langSwitchMarkup("") +
+                '<button class="site-nav-toggle" id="navToggle" aria-expanded="false" aria-controls="mobileMenu" aria-label="Open menu" data-i18n-aria-label="nav.openMenu">' +
+                  '<span class="site-nav-toggle__line"></span>' +
+                  '<span class="site-nav-toggle__line"></span>' +
+                "</button>" +
+              "</div>") +
           "</div>" +
         "</header>" +
         (isHome ? "" :
           '<div class="mobile-menu" id="mobileMenu" aria-hidden="true">' +
-            '<nav class="mobile-menu__nav" aria-label="Mobile">' + navLinks("mobile-menu__link") + "</nav>" +
+            '<nav class="mobile-menu__nav" aria-label="Mobile" data-i18n-aria-label="a11y.mobileNav">' + navLinks("mobile-menu__link") + "</nav>" +
             '<div class="mobile-menu__foot">' +
-              "<span>Belgrade, Serbia</span>" +
-              '<div class="mobile-menu__social">' +
-                '<a href="#contact" rel="noopener">Instagram</a>' +
-                '<a href="#contact" rel="noopener">YouTube</a>' +
-              "</div>" +
+              '<span data-i18n="footer.city">Belgrade, Serbia</span>' +
+              socialLinksMarkup("mobile-menu__social") +
               '<a href="mailto:info@grmstudio.music" class="is-mail">info@grmstudio.music</a>' +
             "</div>" +
           "</div>");
+    }
+
+    /* Home is a headerless, immersive division selector at EVERY size — no
+       brand, no nav, no hamburger, and no header wrapper taking space (CSS
+       hides the injected header). Its only utility UI is the standalone
+       .lang-switch--home overlay, which is the single language control there. */
+    if (isHome) {
+      document.body.insertAdjacentHTML("beforeend", langSwitchMarkup("lang-switch--home"));
     }
 
     if (footerMount) {
@@ -101,41 +279,51 @@
                ' alt="" loading="lazy" width="2160" height="2160">' +
           '<div class="container">' +
             '<div class="site-footer__top">' +
-              '<a href="' + root + 'index.html" class="site-footer__brand" aria-label="GRM — back to top">' +
+              '<a href="' + root + 'index.html" class="site-footer__brand" aria-label="GRM — back to top" data-i18n-aria-label="a11y.headerBrand">' +
                 '<img src="' + root + 'assets/img/grm-mark.png" alt="" width="46" height="46">' +
-                "<span>GRM</span>" +
+                '<span data-i18n="brand.footer">GRM</span>' +
               "</a>" +
-              '<p class="site-footer__lede">' +
+              '<p class="site-footer__lede" data-i18n="footer.lede">' +
                 "An umbrella house in Belgrade — recording &amp; production, a record label, and a live rehearsal room under one GRM." +
               "</p>" +
               '<div class="site-footer__nav">' +
-                '<span class="site-footer__col-label">GRM</span>' +
-                '<a href="' + root + 'index.html">Home</a>' +
-                '<a href="' + root + 'studio/">Production</a>' +
-                '<a href="' + root + 'label/">Label</a>' +
-                '<a href="' + root + 'liveroom/">Liveroom</a>' +
+                '<span class="site-footer__col-label" data-i18n="footer.col.grm">GRM</span>' +
+                '<a href="' + root + 'index.html" data-i18n="nav.home">Home</a>' +
+                '<a href="' + root + 'studio/" data-i18n="nav.production">Production</a>' +
+                '<a href="' + root + 'label/" data-i18n="nav.label">Label</a>' +
+                '<a href="' + root + 'liveroom/" data-i18n="nav.liveroom">Liveroom</a>' +
               "</div>" +
               '<div class="site-footer__contact">' +
-                '<span class="site-footer__col-label">Contact</span>' +
-                "<p>Belgrade, Serbia</p>" +
+                '<span class="site-footer__col-label" data-i18n="footer.col.contact">Contact</span>' +
+                '<p data-i18n="footer.city">Belgrade, Serbia</p>' +
                 '<a href="mailto:info@grmstudio.music">info@grmstudio.music</a>' +
               "</div>" +
               '<div class="site-footer__social">' +
-                '<span class="site-footer__col-label">Follow</span>' +
-                '<a href="#contact" rel="noopener">Instagram</a>' +
-                '<a href="#contact" rel="noopener">YouTube</a>' +
+                '<span class="site-footer__col-label" data-i18n="footer.col.follow">Follow</span>' +
+                socialLinksMarkup("") +
               "</div>" +
             "</div>" +
             '<div class="site-footer__bottom">' +
-              '<p>© <span id="year">2026</span> GRM — All rights reserved</p>' +
-              '<a href="#top" class="site-footer__top-link">Back to top</a>' +
+              '<p>© <span id="year">2026</span> <span data-i18n="footer.rights">GRM — All rights reserved</span></p>' +
+              '<a href="#top" class="site-footer__top-link" data-i18n="footer.backToTop">Back to top</a>' +
             "</div>" +
           "</div>" +
         "</footer>";
     }
+
+    /* Localize the freshly injected chrome (i18n.js loads first, so the
+       engine is ready; its own DOMContentLoaded pass will re-run anyway). */
+    if (window.GRMi18n) window.GRMi18n.refresh();
   }
 
   injectSiteChrome();
+
+  /* Social links are inert placeholders until the canonical URLs are supplied
+     in SOCIAL_LINKS: keep the empty href="#" links from jumping to the top. */
+  document.addEventListener("click", function (e) {
+    var link = e.target && e.target.closest ? e.target.closest("[data-pending-social]") : null;
+    if (link) { e.preventDefault(); e.stopPropagation(); }
+  });
 
   /* One-time Home entrance presentation using the real hero layers. */
   (function () {
@@ -442,7 +630,7 @@
       isMobileMenuOpen = !!force;
       document.body.classList.toggle("menu-open", force);
       toggle.setAttribute("aria-expanded", String(force));
-      toggle.setAttribute("aria-label", force ? "Close menu" : "Open menu");
+      toggle.setAttribute("aria-label", force ? tr("nav.closeMenu", "Close menu") : tr("nav.openMenu", "Open menu"));
       menu.setAttribute("aria-hidden", String(!force));
 
       if (force) {
@@ -510,7 +698,7 @@
           io.unobserve(entry.target);
         }
       });
-    }, { threshold: 0.16, rootMargin: "0px 0px -8% 0px" });
+    }, { threshold: 0.15 });
 
     targets.forEach(function (el) { io.observe(el); });
   });
@@ -692,6 +880,16 @@
     window.addEventListener("resize", syncLogoWindows);
     syncLogoWindows();
 
+    /* Warm the three destination rects so the committed logo always has its
+       real target before the user can click — the same prefetch the mobile
+       path runs. Never on reduced motion (that path navigates instantly). */
+    if (!prefersReduced.matches) {
+      if ("requestIdleCallback" in window) {
+        window.requestIdleCallback(function () { prefetchDestLogos(); }, { timeout: 1500 });
+      }
+      setTimeout(prefetchDestLogos, 1500);
+    }
+
     // route-transition seam (§4/5 · §13/14 · §29): click is the natural
     // final stage of the accordion — it does NOT reset to neutral first (§3).
     // The selected panel owns the motion: we take the same accordion path the
@@ -732,21 +930,10 @@
         // (§24 navigates immediately above), and it is cleared on read, so
         // direct load / refresh / back never replay the arrival (§23).
         var destination = panel.getAttribute("href");
+        var destPage = destination.replace(/\/$/, "");
         var sourceLogo = panel.querySelector(".panel__logo--glow");
-        var sourceRect = sourceLogo && sourceLogo.getBoundingClientRect();
-        // aim the committed logo at the destination page's own rendered logo
-        // rect (published by that division page, measured there with
-        // getBoundingClientRect). width/height/top/left are all already
-        // transitioned by the committed class, so only the aim point moves —
-        // duration, easing and the centering transform are untouched.
-        var aimRect = null;
-        try {
-          aimRect = JSON.parse(sessionStorage.getItem(
-            DEST_LOGO_KEY + ":" + destination.replace(/\/$/, "") + ":" + innerWidth + "x" + innerHeight
-          ) || "null");
-        } catch (e) {}
         var logoWindow = panel.querySelector(".panel__logo-window");
-        function retarget() {
+        function retarget(aimRect) {
           if (!aimRect || !sourceLogo || !logoWindow) return;
           var box = logoWindow.getBoundingClientRect();
           sourceLogo.getBoundingClientRect(); // flush, so the transition is armed
@@ -755,78 +942,90 @@
           sourceLogo.style.left = (aimRect.left - box.left + aimRect.width / 2) + "px";
           sourceLogo.style.top = (aimRect.top - box.top + aimRect.height / 2) + "px";
         }
-        if (destination === "studio/") {
-          sessionStorage.setItem("grm-arrival", "studio");
-          if (sourceRect) {
-            sessionStorage.setItem("grm-studio-home-logo-width", String(sourceRect.width));
+        function commit(aimRect) {
+          var sourceRect = sourceLogo && sourceLogo.getBoundingClientRect();
+          if (destination === "studio/") {
+            sessionStorage.setItem("grm-arrival", "studio");
+            if (sourceRect) {
+              sessionStorage.setItem("grm-studio-home-logo-width", String(sourceRect.width));
+            }
+            if (sourceLogo) {
+              panel.classList.add("is-studio-logo-committed");
+              sourceLogo.classList.add("is-studio-logo-committed");
+              retarget(aimRect);
+            }
+            setTimeout(function () {
+              window.location.href = destination;
+            }, 820);
+            return;
           }
-          if (sourceLogo) {
-            panel.classList.add("is-studio-logo-committed");
-            sourceLogo.classList.add("is-studio-logo-committed");
-            retarget();
+          if (destination === "label/") {
+            sessionStorage.setItem("grm-arrival", "label");
+            if (sourceRect) {
+              sessionStorage.setItem("grm-label-start-rect", JSON.stringify({
+                left: sourceRect.left,
+                top: sourceRect.top,
+                width: sourceRect.width,
+                height: sourceRect.height
+              }));
+            }
+            if (sourceLogo) {
+              panel.classList.add("is-label-logo-committed");
+              sourceLogo.classList.add("is-label-logo-committed");
+              retarget(aimRect);
+            }
+            setTimeout(function () {
+              if (sourceLogo) {
+                var committedRect = sourceLogo.getBoundingClientRect();
+                sessionStorage.setItem("grm-label-start-rect", JSON.stringify({
+                  left: committedRect.left,
+                  top: committedRect.top,
+                  width: committedRect.width,
+                  height: committedRect.height
+                }));
+              }
+              window.location.href = destination;
+            }, 820);
+            return;
           }
-          setTimeout(function () {
-            window.location.href = destination;
-          }, 820);
-          return;
-        }
-        if (destination === "label/") {
-          sessionStorage.setItem("grm-arrival", "label");
-          if (sourceRect) {
-            sessionStorage.setItem("grm-label-start-rect", JSON.stringify({
+          if (destination === "liveroom/") {
+            sessionStorage.setItem("grm-arrival", "liveroom");
+            if (sourceRect) sessionStorage.setItem("grm-liveroom-start-rect", JSON.stringify({
               left: sourceRect.left,
               top: sourceRect.top,
               width: sourceRect.width,
               height: sourceRect.height
             }));
-          }
-          if (sourceLogo) {
-            panel.classList.add("is-label-logo-committed");
-            sourceLogo.classList.add("is-label-logo-committed");
-            retarget();
-          }
-           setTimeout(function () {
-             if (sourceLogo) {
-               var committedRect = sourceLogo.getBoundingClientRect();
-               sessionStorage.setItem("grm-label-start-rect", JSON.stringify({
-                 left: committedRect.left,
-                 top: committedRect.top,
-                 width: committedRect.width,
-                 height: committedRect.height
-               }));
-             }
-             window.location.href = destination;
-           }, 820);
-          return;
-        }
-        if (destination === "liveroom/") {
-          sessionStorage.setItem("grm-arrival", "liveroom");
-          if (sourceRect) sessionStorage.setItem("grm-liveroom-start-rect", JSON.stringify({
-            left: sourceRect.left,
-            top: sourceRect.top,
-            width: sourceRect.width,
-            height: sourceRect.height
-          }));
-          if (sourceLogo) {
-            panel.classList.add("is-liveroom-logo-committed");
-            sourceLogo.classList.add("is-liveroom-logo-committed");
-            retarget();
-          }
-          setTimeout(function () {
             if (sourceLogo) {
-              var committedRect = sourceLogo.getBoundingClientRect();
-              sessionStorage.setItem("grm-liveroom-start-rect", JSON.stringify({
-                left: committedRect.left,
-                top: committedRect.top,
-                width: committedRect.width,
-                height: committedRect.height
-              }));
+              panel.classList.add("is-liveroom-logo-committed");
+              sourceLogo.classList.add("is-liveroom-logo-committed");
+              retarget(aimRect);
             }
-            window.location.href = destination;
-          }, 820);
-          return;
+            setTimeout(function () {
+              if (sourceLogo) {
+                var committedRect = sourceLogo.getBoundingClientRect();
+                sessionStorage.setItem("grm-liveroom-start-rect", JSON.stringify({
+                  left: committedRect.left,
+                  top: committedRect.top,
+                  width: committedRect.width,
+                  height: committedRect.height
+                }));
+              }
+              window.location.href = destination;
+            }, 820);
+            return;
+          }
+          window.location.href = destination;
         }
-        window.location.href = destination;
+        // The destination's own rendered logo rect is the single source of
+        // truth. It is written by that division page, and prefetched/measured
+        // offscreen here on a cold visit — so the committed logo always lands
+        // exactly on it instead of a guessed 38% fallback. Warm or prefetched,
+        // the promise resolves in a microtask and the approved timing is
+        // unchanged; a cold measurement only delays the logo-only hold.
+        getDestLogoRect(destPage).then(function (aimRect) {
+          setTimeout(function () { commit(aimRect); }, 820);
+        });
       }, 820); // ~650ms continuation + ~170ms logo-only hold (§11)
 
     });
@@ -885,12 +1084,11 @@
     if (!root || !hero) return;
 
     var mqMobile = window.matchMedia("(max-width: 767px), (pointer: coarse) and (max-height: 560px)");
-    var DEST_PAGES = ["studio", "label", "liveroom"];
 
     /* Mobile accessible names, applied only while the stacked layout is
        active; the desktop accordion's authored names are captured and
        restored verbatim, so desktop semantics are untouched. */
-    var A11Y_NAMES = { studio: "GRM Studio", label: "GRM Label", liveroom: "GRM Liveroom" };
+    var A11Y_FALLBACK = { studio: "GRM Studio", label: "GRM Label", liveroom: "GRM Liveroom" };
     var baseLabels = {};
     Array.prototype.forEach.call(root.querySelectorAll(".panel"), function (panel) {
       baseLabels[panel.id] = panel.getAttribute("aria-label") || "";
@@ -899,105 +1097,21 @@
       var mobile = mqMobile.matches;
       Array.prototype.forEach.call(root.querySelectorAll(".panel"), function (panel) {
         var pg = (panel.getAttribute("href") || "").replace(/\/+$/, "");
-        if (mobile && A11Y_NAMES[pg]) panel.setAttribute("aria-label", A11Y_NAMES[pg]);
-        else if (baseLabels[panel.id]) panel.setAttribute("aria-label", baseLabels[panel.id]);
+        if (mobile && A11Y_FALLBACK[pg]) {
+          panel.setAttribute("aria-label", tr("a11y.panel." + pg, A11Y_FALLBACK[pg]));
+        } else {
+          var key = panel.getAttribute("data-i18n-aria-label");
+          if (key) panel.setAttribute("aria-label", tr(key, baseLabels[panel.id]));
+          else if (baseLabels[panel.id]) panel.setAttribute("aria-label", baseLabels[panel.id]);
+        }
       });
     }
     syncPanelNames();
     if (mqMobile.addEventListener) mqMobile.addEventListener("change", syncPanelNames);
     else if (mqMobile.addListener) mqMobile.addListener(syncPanelNames);
+    document.addEventListener("grm:languagechange", syncPanelNames);
 
-    var destCache = {};
-    var destPending = {};
     var transitioning = false;
-    var prefetched = false;
-
-    function destKey(page) {
-      return DEST_LOGO_KEY + ":" + page + ":" + window.innerWidth + "x" + window.innerHeight;
-    }
-
-    /* The destination logo rect is the source of truth. Each division page
-       publishes its own rect (see the handoff block below) into sessionStorage
-       keyed by viewport. On a cold first tap nothing has been published yet, so
-       we render the real division page inside an offscreen same-origin frame at
-       the exact same viewport and read its hero logo rect the instant the
-       stylesheet has laid it out — long before the page's heavy artwork has
-       finished (the logo box is CSS-driven, not image-driven). The frame is
-       removed immediately, which also cancels those in-flight image loads, so
-       the measurement costs one small HTML fetch, not a hidden page load. */
-    function measureDestRect(page) {
-      return new Promise(function (resolve) {
-        var frame = document.createElement("iframe");
-        frame.setAttribute("aria-hidden", "true");
-        frame.tabIndex = -1;
-        frame.style.cssText = "position:fixed;left:-10000px;top:0;width:" +
-          window.innerWidth + "px;height:" + window.innerHeight + "px;border:0;visibility:hidden;";
-
-        var settled = false;
-        function finish(rect) {
-          if (settled) return;
-          settled = true;
-          if (frame.parentNode) frame.parentNode.removeChild(frame);
-          resolve(rect);
-        }
-
-        var tries = 0;
-        function poll() {
-          if (settled) return;
-          try {
-            var d = frame.contentDocument;
-            if (d && d.readyState && d.readyState !== "uninitialized") {
-              var el = d.querySelector(".studio-minimal-hero__logo, .division-minimal-hero__logo");
-              if (el) {
-                var r = el.getBoundingClientRect();
-                if (r.width > 1 && r.height > 1) {
-                  return finish({ left: r.left, top: r.top, width: r.width, height: r.height });
-                }
-              }
-            }
-          } catch (e) { /* cross-doc not ready yet */ }
-          if (++tries > 240) return finish(null); // ~6s ceiling
-          setTimeout(poll, 25);
-        }
-
-        frame.src = new URL(page + "/index.html", window.location.href).href;
-        document.body.appendChild(frame);
-        poll();
-      });
-    }
-
-    function getDestRect(page) {
-      if (destCache[page]) return Promise.resolve(destCache[page]);
-      if (destPending[page]) return destPending[page];
-      var stored = null;
-      try { stored = JSON.parse(sessionStorage.getItem(destKey(page)) || "null"); } catch (e) {}
-      if (stored && stored.width) {
-        destCache[page] = stored;
-        return Promise.resolve(stored);
-      }
-      destPending[page] = measureDestRect(page).then(function (rect) {
-        delete destPending[page];
-        if (rect) {
-          destCache[page] = rect;
-          try { sessionStorage.setItem(destKey(page), JSON.stringify(rect)); } catch (e) {}
-        }
-        return rect;
-      }, function () { delete destPending[page]; return null; });
-      return destPending[page];
-    }
-
-    /* Warm the three destination rects once, quietly, off the critical path. */
-    function prefetch() {
-      if (prefetched) return;
-      prefetched = true;
-      var i = 0;
-      (function next() {
-        if (i >= DEST_PAGES.length) return;
-        var page = DEST_PAGES[i++];
-        getDestRect(page).then(function () { setTimeout(next, 80); },
-                               function () { setTimeout(next, 80); });
-      })();
-    }
 
     function makeOverlay(src, rect) {
       var img = document.createElement("img");
@@ -1048,7 +1162,7 @@
       var t0 = performance.now();
       var since = function () { return performance.now() - t0; };
 
-      getDestRect(page).then(function (aim) {
+      getDestLogoRect(page).then(function (aim) {
         // PHASE 2 begins only after the Home content has cleared — or as soon
         // as the destination rect is ready, if a cold measurement is slower.
         var morphDelay = Math.max(0, MORPH_AT - since());
@@ -1132,7 +1246,7 @@
         var panel = e.target.closest && e.target.closest(".panel");
         if (!panel || !root.contains(panel)) return;
         var href = panel.getAttribute("href");
-        if (href) getDestRect(href.replace(/\/+$/, ""));
+        if (href) getDestLogoRect(href.replace(/\/+$/, ""));
       }
       root.addEventListener("pointerdown", warmIntent, true);
       root.addEventListener("touchstart", warmIntent, { capture: true, passive: true });
@@ -1140,9 +1254,9 @@
       // and warm all three quietly in the background (idle, with a hard
       // fallback so it is never left un-scheduled)
       if ("requestIdleCallback" in window) {
-        window.requestIdleCallback(function () { prefetch(); }, { timeout: 1500 });
+        window.requestIdleCallback(function () { prefetchDestLogos(); }, { timeout: 1500 });
       }
-      setTimeout(prefetch, 1500);
+      setTimeout(prefetchDestLogos, 1500);
     }
   });
 
@@ -1185,6 +1299,18 @@ resize simply misses and falls back to the previous aim point. */
      staggers in around it. Direct load, refresh, back-forward and reduced
      motion all stay instant: the flag is consumed on read and it does not
      survive those (§23/24/§29). */
+
+  /* Division -> division arrivals begin at the top. html{scroll-behavior:smooth}
+     would otherwise animate the reset and reveal it, so force an instant jump
+     (the transition layer owns the screen at this point). */
+  function resetDivisionScrollTop() {
+    if (!window.scrollY) return;
+    var root = document.documentElement;
+    root.style.scrollBehavior = "auto";
+    window.scrollTo(0, 0);
+    root.style.scrollBehavior = "";
+  }
+
   onReady(function () {
     if (document.body.getAttribute("data-page") === "label" && sessionStorage.getItem("grm-morph-arrival") === "label") {
       if (window.__grmStudioLabelMorph) return;
@@ -1194,20 +1320,22 @@ resize simply misses and falls back to the previous aim point. */
       sessionStorage.removeItem("grm-morph-start");
       var target = document.querySelector(".division-minimal-hero__logo");
       if (!source || !target) return;
-      target.style.visibility = "hidden";
-      var morph = document.createElement("img");
-      morph.className = "division-morph-logo";
-      morph.src = "../assets/img/GRM Label Glow.png";
-      morph.alt = "";
-      morph.setAttribute("aria-hidden", "true");
-      morph.style.left = source.left + "px";
-      morph.style.top = source.top + "px";
-      morph.style.width = source.width + "px";
-      morph.style.height = source.height + "px";
-      document.body.appendChild(morph);
+      resetDivisionScrollTop();
       document.fonts.ready.then(function () {
         requestAnimationFrame(function () {
           var end = target.getBoundingClientRect();
+          target.style.visibility = "hidden";
+          var morph = document.createElement("img");
+          morph.className = "division-morph-logo";
+          morph.src = "../assets/img/GRM Label Glow.png";
+          morph.alt = "";
+          morph.setAttribute("aria-hidden", "true");
+          morph.style.left = end.left + "px";
+          morph.style.top = end.top + "px";
+          morph.style.width = end.width + "px";
+          morph.style.height = end.height + "px";
+          document.body.appendChild(morph);
+          void morph.getBoundingClientRect();
           morph.style.transition = "opacity 700ms ease";
           morph.style.opacity = "0";
           target.style.visibility = "visible";
@@ -1240,20 +1368,22 @@ resize simply misses and falls back to the previous aim point. */
       sessionStorage.removeItem("grm-morph-start");
       var target = document.querySelector(".division-minimal-hero__logo");
       if (!source || !target) return;
-      target.style.visibility = "hidden";
-      var morph = document.createElement("img");
-      morph.className = "division-morph-logo";
-      morph.src = "../assets/img/GRM LiveRoom Glow.png";
-      morph.alt = "";
-      morph.setAttribute("aria-hidden", "true");
-      morph.style.left = source.left + "px";
-      morph.style.top = source.top + "px";
-      morph.style.width = source.width + "px";
-      morph.style.height = source.height + "px";
-      document.body.appendChild(morph);
+      resetDivisionScrollTop();
       document.fonts.ready.then(function () {
         requestAnimationFrame(function () {
           var end = target.getBoundingClientRect();
+          target.style.visibility = "hidden";
+          var morph = document.createElement("img");
+          morph.className = "division-morph-logo";
+          morph.src = "../assets/img/GRM LiveRoom Glow.png";
+          morph.alt = "";
+          morph.setAttribute("aria-hidden", "true");
+          morph.style.left = end.left + "px";
+          morph.style.top = end.top + "px";
+          morph.style.width = end.width + "px";
+          morph.style.height = end.height + "px";
+          document.body.appendChild(morph);
+          void morph.getBoundingClientRect();
           morph.style.transition = "opacity 700ms ease";
           morph.style.opacity = "0";
           target.style.visibility = "visible";
@@ -1287,20 +1417,22 @@ resize simply misses and falls back to the previous aim point. */
       sessionStorage.removeItem("grm-morph-start");
       var target = document.querySelector(".studio-minimal-hero__logo");
       if (!source || !target) return;
-      target.style.visibility = "hidden";
-      var morph = document.createElement("img");
-      morph.className = "studio-morph-logo";
-      morph.src = "../assets/img/GRM Studio Glow.png";
-      morph.alt = "";
-      morph.setAttribute("aria-hidden", "true");
-      morph.style.left = source.left + "px";
-      morph.style.top = source.top + "px";
-      morph.style.width = source.width + "px";
-      morph.style.height = source.height + "px";
-      document.body.appendChild(morph);
+      resetDivisionScrollTop();
       document.fonts.ready.then(function () {
         requestAnimationFrame(function () {
           var end = target.getBoundingClientRect();
+          target.style.visibility = "hidden";
+          var morph = document.createElement("img");
+          morph.className = "studio-morph-logo";
+          morph.src = "../assets/img/GRM Studio Glow.png";
+          morph.alt = "";
+          morph.setAttribute("aria-hidden", "true");
+          morph.style.left = end.left + "px";
+          morph.style.top = end.top + "px";
+          morph.style.width = end.width + "px";
+          morph.style.height = end.height + "px";
+          document.body.appendChild(morph);
+          void morph.getBoundingClientRect();
           morph.style.transition = "opacity 700ms ease";
           morph.style.opacity = "0";
           target.style.visibility = "visible";
@@ -1455,22 +1587,28 @@ resize simply misses and falls back to the previous aim point. */
       return new Date(CURRENT.getFullYear(), CURRENT.getMonth(), CURRENT.getDate() + offset * 7);
     }
 
+    function monthNames() {
+      var value = (window.GRMi18n && window.GRMi18n.t) ? window.GRMi18n.t("schedule.months") : null;
+      return Array.isArray(value) ? value : MONTHS;
+    }
+
     function headingLabel() {
       var span = Math.abs(offset);
-      if (offset === 0) return "THIS WEEK";
-      if (offset === 1) return "NEXT WEEK";
-      if (offset === -1) return "LAST WEEK";
-      if (offset > 1) return "IN " + (NUMBER_WORDS[span] || span) + " WEEKS";
-      return (NUMBER_WORDS[span] || span) + " WEEKS AGO";
+      if (offset === 0) return tr("schedule.thisWeek", "THIS WEEK");
+      if (offset === 1) return tr("schedule.nextWeek", "NEXT WEEK");
+      if (offset === -1) return tr("schedule.lastWeek", "LAST WEEK");
+      if (offset > 1) return tr("schedule.inWeeks", "IN {n} WEEKS").replace("{n}", String(NUMBER_WORDS[span] || span));
+      return tr("schedule.weeksAgo", "{n} WEEKS AGO").replace("{n}", String(NUMBER_WORDS[span] || span));
     }
 
     function rangeLabel() {
       var start = weekStart();
       var end = new Date(start.getFullYear(), start.getMonth(), start.getDate() + 6);
+      var months = monthNames();
       if (start.getMonth() === end.getMonth()) {
-        return pad(start.getDate()) + "–" + pad(end.getDate()) + " " + MONTHS[start.getMonth()];
+        return pad(start.getDate()) + "–" + pad(end.getDate()) + " " + months[start.getMonth()];
       }
-      return pad(start.getDate()) + " " + MONTHS[start.getMonth()] + "–" + pad(end.getDate()) + " " + MONTHS[end.getMonth()];
+      return pad(start.getDate()) + " " + months[start.getMonth()] + "–" + pad(end.getDate()) + " " + months[end.getMonth()];
     }
 
     function swapText() {
@@ -1523,6 +1661,9 @@ resize simply misses and falls back to the previous aim point. */
       if (prev) prev.addEventListener("click", function () { change(-1); });
       if (next) next.addEventListener("click", function () { change(1); });
     });
+
+    /* Re-render the visible week label/range when the language changes. */
+    document.addEventListener("grm:languagechange", swapText);
   });
 
   /* ---------- LIVEROOM "The room": ghost materialise ----------
@@ -1717,14 +1858,10 @@ resize simply misses and falls back to the previous aim point. */
     }
 
     function measure() {
-      var vh = window.innerHeight || document.documentElement.clientHeight;
-      var vw = window.innerWidth || document.documentElement.clientWidth;
-
-      /* 92vw target on desktop, height-capped so the showreel (16:9)
-         plus its metadata bar keeps the approved viewport fit. */
-      var frameW = Math.min(vw * 0.92, vh * 0.88 * (16 / 9));
-      stage.style.setProperty("--showreel-frame-w", frameW + "px");
-
+      /* The showreel frame is sized entirely in CSS (full-bleed width,
+         100svh height) so it always takes the shape of the viewport; the
+         aperture only needs the stage height in order to translate each
+         mask by half of the frame. No frame width is measured or set. */
       half = Math.max(1, stage.clientHeight / 2);
     }
 
@@ -1777,6 +1914,12 @@ resize simply misses and falls back to the previous aim point. */
     }
 
     window.addEventListener("resize", onLayout, { passive: true });
+    /* Orientation change / any layout change that alters the frame height
+       re-measures `half` without polling. The resize listener stays as a
+       fallback for browsers without ResizeObserver. */
+    if ("ResizeObserver" in window) {
+      new ResizeObserver(onLayout).observe(stage);
+    }
     measure();
     setMasks(-HALF_HAIRLINE, HALF_HAIRLINE);
   });

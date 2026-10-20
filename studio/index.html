@@ -3,12 +3,12 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>GRM Production — Visual · Sound</title>
-  <meta name="description" content="GRM Production is the production side of GRM — film, photography, video editing, VFX, color grading and motion graphics, shown through the work.">
+  <title data-i18n="meta.studio.title">GRM Production — Visual · Sound</title>
+  <meta name="description" content="GRM Production is the production side of GRM — film, photography, video editing, VFX, color grading and motion graphics, shown through the work." data-i18n-content="meta.studio.desc">
   <meta name="theme-color" content="#050505">
 
-  <meta property="og:title" content="GRM Production — Visual · Sound">
-  <meta property="og:description" content="Film, photography and motion under one GRM — the production side of the house.">
+  <meta property="og:title" content="GRM Production — Visual · Sound" data-i18n-content="meta.studio.ogTitle">
+  <meta property="og:description" content="Film, photography and motion under one GRM — the production side of the house." data-i18n-content="meta.studio.ogDesc">
   <meta property="og:type" content="website">
   <meta property="og:locale" content="en">
   <meta property="og:url" content="/studio/">
@@ -22,6 +22,10 @@
   <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Archivo:ital,wdth,wght@0,62.5,100..900;1,62.5,100..900&family=Inter:wght@300;400;500;600&display=swap">
 
   <link rel="stylesheet" href="../css/style.css">
+
+  <script src="../js/translations.js"></script>
+  <script src="../js/i18n.js"></script>
+
   <script>
     if (sessionStorage.getItem("grm-arrival") === "studio") {
       document.documentElement.classList.add("studio-arrival-pending");
@@ -34,7 +38,7 @@
 </head>
 <body class="theme-studio" data-root="../" data-page="studio">
 
-  <a class="skip-link" href="#main">Skip to content</a>
+  <a class="skip-link" href="#main" data-i18n="common.skip">Skip to content</a>
   <div class="progress" id="progress" aria-hidden="true"></div>
 
   <!-- Shared header + mobile menu, injected by js/main.js -->
@@ -47,10 +51,10 @@
          ============================================================ -->
     <section class="studio-minimal-hero" id="top" aria-labelledby="studio-hero-title">
       <div class="studio-minimal-hero__lockup">
-        <img class="studio-minimal-hero__logo" data-studio-hero-logo src="../assets/img/GRM Studio Glow.png" alt="GRM Production" width="2160" height="2160">
-        <p class="studio-minimal-hero__title">GRM PRODUCTION</p>
-        <h1 id="studio-hero-title">AUDIO/VIDEO PRODUCTION</h1>
-        <div class="studio-minimal-hero__scroll" aria-hidden="true"><span>Scroll</span><i></i></div>
+        <img class="studio-minimal-hero__logo" data-studio-hero-logo src="../assets/img/GRM Studio Glow.png" alt="GRM Production" data-i18n-alt="studio.hero.logoAlt" width="2160" height="2160">
+        <p class="studio-minimal-hero__title" data-i18n="studio.hero.title">PRODUCTION</p>
+        <h1 id="studio-hero-title" data-i18n="studio.hero.h1">AUDIO/VIDEO PRODUCTION</h1>
+        <div class="studio-minimal-hero__scroll" aria-hidden="true"><span data-i18n="common.scroll">Scroll</span><i></i></div>
       </div>
     </section>
 
@@ -71,15 +75,17 @@
          bottom metadata axis — release type (bottom-left) opposite
          the original release year (bottom-right). Loop clones aria-hidden.
          ============================================================ -->
-    <section class="grm-sound" aria-label="GRM Production — Sound">
+    <section class="grm-sound" aria-label="GRM Production — Sound" data-i18n-aria-label="studio.sound.aria">
 
       <!-- Discipline intro — SOUND. Same editorial anatomy as Visual:
            large condensed name + one horizontal capability line beneath
-           it, sharing the same left axis; static. Arrives after the
-           controlled black breathing room from the showreel, and hands
-           off to the archive with tight spacing. -->
-      <header class="discipline discipline--sound">
-        <h2 class="discipline__name">SOUND</h2>
+           it, sharing the same left axis. Arrives on the shared content
+           reveal (the Liveroom motion, via the global `.reveal` system),
+           then hands off to the archive with tight spacing. The photo
+           strip and the release archive below arrive on the same shared
+           reveal (their component-owned entrances were retired). -->
+      <header class="discipline discipline--sound reveal">
+        <h2 class="discipline__name" data-i18n="studio.sound.name">SOUND</h2>
       </header>
 
       <!-- ============================================================
@@ -90,11 +96,9 @@
            frames). Each frame carries ONE quiet editorial title
            (bottom-left, title case, no boxes or badges); the four
            frames read as one subdivided horizontal field between the
-           capability line and the release archive. Frames NEVER move;
-           the photographs expose themselves inside their fixed crops
-           as the strip enters the viewport (one-shot Intersection-
-           Observer, left-to-right exposure, subtle internal settle),
-           then the whole object rests completely still. Hover only
+           capability line and the release archive. The strip arrives on
+           the shared content reveal (the Liveroom motion, via the global
+           `.reveal` system) and then rests completely still. Hover only
            breathes the image inside its crop and lifts its title on
            capable pointers — no neighbor movement, no reflow.
            ------------------------------------------------------------
@@ -106,41 +110,45 @@
            as before, so the strip sits between capabilities and
            plaques without dead space. The archive below is
            untouched. -->
-      <div class="grm-photo-strip" role="group" aria-label="GRM Sound production strip — recording, composition, beat making, engineering">
+      <div class="grm-photo-strip reveal" role="group" aria-label="GRM Sound production strip — recording, composition, beat making, engineering" data-i18n-aria-label="studio.strip.aria">
         <figure class="grm-photo grm-photo--recording">
-          <img src="../assets/img/placeholders/sound-recording-placeholder.jpg" alt="Person recording vocals at a studio microphone" decoding="async" draggable="false">
+          <img src="../assets/img/placeholders/sound-recording-placeholder.jpg" alt="Person recording vocals at a studio microphone" data-i18n-alt="studio.photo.recording.alt" decoding="async" draggable="false">
+          <span class="grm-photo__stroke" aria-hidden="true"></span>
           <figcaption class="grm-photo__text">
-            <span class="grm-photo__title">Recording</span>
-            <p class="grm-photo__desc">Vocals, instruments and performances captured with clarity.</p>
+            <span class="grm-photo__title" data-i18n="studio.photo.recording.title">Recording</span>
+            <p class="grm-photo__desc" data-i18n="studio.photo.recording.desc">Vocals, instruments and performances captured with clarity.</p>
           </figcaption>
         </figure>
         <figure class="grm-photo grm-photo--composition">
-          <img src="../assets/img/placeholders/sound-composition-placeholder.jpg" alt="Person composing music at a keyboard" decoding="async" draggable="false">
+          <img src="../assets/img/placeholders/sound-composition-placeholder.jpg" alt="Person composing music at a keyboard" data-i18n-alt="studio.photo.composition.alt" decoding="async" draggable="false">
+          <span class="grm-photo__stroke" aria-hidden="true"></span>
           <figcaption class="grm-photo__text">
-            <span class="grm-photo__title">Composition</span>
-            <p class="grm-photo__desc">Ideas developed into melody, harmony and arrangement.</p>
+            <span class="grm-photo__title" data-i18n="studio.photo.composition.title">Composition</span>
+            <p class="grm-photo__desc" data-i18n="studio.photo.composition.desc">Ideas developed into melody, harmony and arrangement.</p>
           </figcaption>
         </figure>
         <figure class="grm-photo grm-photo--beatmaking">
-          <img src="../assets/img/placeholders/sound-beatmaking-placeholder.jpg" alt="Producer making music at a production workstation" decoding="async" draggable="false">
+          <img src="../assets/img/placeholders/sound-beatmaking-placeholder.jpg" alt="Producer making music at a production workstation" data-i18n-alt="studio.photo.beat.alt" decoding="async" draggable="false">
+          <span class="grm-photo__stroke" aria-hidden="true"></span>
           <figcaption class="grm-photo__text">
-            <span class="grm-photo__title">Beat Making</span>
-            <p class="grm-photo__desc">Original beats shaped around the artist and the track.</p>
+            <span class="grm-photo__title" data-i18n="studio.photo.beat.title">Beat Making</span>
+            <p class="grm-photo__desc" data-i18n="studio.photo.beat.desc">Original beats shaped around the artist and the track.</p>
           </figcaption>
         </figure>
         <figure class="grm-photo grm-photo--engineering">
-          <img src="../assets/img/placeholders/sound-engineering-placeholder.jpg" alt="Audio engineer working at a mixing desk" decoding="async" draggable="false">
+          <img src="../assets/img/placeholders/sound-engineering-placeholder.jpg" alt="Audio engineer working at a mixing desk" data-i18n-alt="studio.photo.engineering.alt" decoding="async" draggable="false">
+          <span class="grm-photo__stroke" aria-hidden="true"></span>
           <figcaption class="grm-photo__text">
-            <span class="grm-photo__title">Engineering</span>
-            <p class="grm-photo__desc">Mixing and mastering that bring the record into focus.</p>
+            <span class="grm-photo__title" data-i18n="studio.photo.engineering.title">Engineering</span>
+            <p class="grm-photo__desc" data-i18n="studio.photo.engineering.desc">Mixing and mastering that bring the record into focus.</p>
           </figcaption>
         </figure>
       </div>
 
-      <div class="grm-sound__row" data-grm-sound-row>
+      <div class="grm-sound__row reveal" data-grm-sound-row>
         <div class="grm-sound__track" data-grm-sound-track>
 
-                <div class="grm-sound__set" role="group" aria-label="GRM Sound — release archive">
+                <div class="grm-sound__set" role="group" aria-label="GRM Sound — release archive" data-i18n-aria-label="studio.archive.aria">
                 <a class="grm-plaque grm-plaque--v4" draggable="false" data-release-type="EP" href="https://open.spotify.com/album/2r0IEzDy97D05pKxvaHOzu?si=pwnIusorQO2Ns9NZK-AzOA" target="_blank" rel="noopener noreferrer" aria-label="Open Prizma by Dzu on Spotify"><div class="grm-plaque__reveal"><span class="grm-plaque__inner"><span class="grm-plaque__fastener grm-plaque__fastener--tl" aria-hidden="true"></span>
                   <span class="grm-plaque__fastener grm-plaque__fastener--tr" aria-hidden="true"></span>
                   <span class="grm-plaque__fastener grm-plaque__fastener--bl" aria-hidden="true"></span>
@@ -404,7 +412,7 @@
          Reduced motion / no JS: masks are suppressed and the whole
          composition shows fully, static, in flow.
          ============================================================ -->
-    <section class="production-visual" id="visual" aria-label="GRM Production — Visual">
+    <section class="production-visual" id="visual" aria-label="GRM Production — Visual" data-i18n-aria-label="studio.visual.aria">
 
       <!-- ========================================================
            APERTURE + RESTING COMPOSITION (ONE OBJECT)
@@ -432,16 +440,18 @@
                    the closed masks, so the ~3px hairline opens onto live
                    footage, and this SAME video continues into the resting
                    Visual composition. No clone, no swap, no remount.
-                   object-fit:cover crops it inside the fixed 16:9 area. -->
-              <video class="visual-block__video" src="../assets/img/GRM_Production_placeholder_showreel_v1.mp4" autoplay muted loop playsinline preload="auto" aria-label="GRM Production showreel"></video>
+                   The frame is full-bleed and takes the shape of the
+                   viewport (100% wide, 100svh tall); object-fit:cover crops
+                   the 1280x720 source inside it without distortion. -->
+              <video class="visual-block__video" src="../assets/img/GRM_Production_placeholder_showreel_v1.mp4" autoplay muted loop playsinline preload="auto" aria-label="GRM Production showreel" data-i18n-aria-label="studio.showreel.aria"></video>
 
               <!-- VISUAL identity — part of the revealed composition, NOT an
                    overlay above it. Lives inside the frame below the aperture
                    masks, so the same physical reveal exposes footage +
                    VISUAL + capabilities together as one cinematic unit. -->
               <div class="visual-block__identity">
-                <h2 class="visual-block__identity-name">VISUAL</h2>
-                <p class="visual-block__identity-caps">FILM · PHOTOGRAPHY · EDITING · VFX · COLOR · MOTION</p>
+                <h2 class="visual-block__identity-name" data-i18n="studio.visual.name">VISUAL</h2>
+                <p class="visual-block__identity-caps" data-i18n="studio.visual.caps">FILM · PHOTOGRAPHY · EDITING · VFX · COLOR · MOTION</p>
               </div>
 
               <!-- VIEW OUR WORK — a quiet editorial overlay, bottom-right
@@ -450,11 +460,9 @@
                    masks), so the opening aperture exposes it together with
                    the footage. Text stays small and plain; only the arrow's
                    color and 3px northeast shift respond to hover/focus. -->
-              <!-- PENDING: replace placeholder target with the real GRM YouTube
-                   channel URL when supplied. href="#" keeps the link inert and
-                   clearly temporary. -->
-              <a class="visual-block__link" href="#" data-pending-youtube rel="noopener">
-                VIEW OUR WORK <i aria-hidden="true">↗</i>
+              <!-- Real GRM YouTube channel, supplied 2026-10-14. -->
+              <a class="visual-block__link" href="https://www.youtube.com/@grmproductionstudio" target="_blank" rel="noopener noreferrer">
+                <span data-i18n="studio.visual.link">VIEW OUR WORK</span> <i aria-hidden="true">↗</i>
               </a>
             </div>
           </figure>
@@ -491,24 +499,24 @@
          ============================================================ -->
     <section class="grm-cta" aria-labelledby="grm-cta-title">
 
-      <div class="grm-cta__card">
+      <div class="grm-cta__card reveal">
 
         <span class="grm-cta__bolt grm-cta__bolt--tl" aria-hidden="true"></span>
         <span class="grm-cta__bolt grm-cta__bolt--tr" aria-hidden="true"></span>
         <span class="grm-cta__bolt grm-cta__bolt--bl" aria-hidden="true"></span>
         <span class="grm-cta__bolt grm-cta__bolt--br" aria-hidden="true"></span>
 
-        <figure class="grm-cta__media" role="img" aria-label="Top view of a vinyl record on a turntable, lit with warm bronze highlights."></figure>
+        <figure class="grm-cta__media" role="img" aria-label="Top view of a vinyl record on a turntable, lit with warm bronze highlights." data-i18n-aria-label="studio.cta.mediaAlt"></figure>
 
         <div class="grm-cta__inner">
 
           <div class="grm-cta__copy">
 
-            <p class="grm-cta__eyebrow">Sound meets visual &mdash;</p>
+            <p class="grm-cta__eyebrow" data-i18n="studio.cta.eyebrow">Sound meets visual &mdash;</p>
 
             <h2 class="grm-cta__title" id="grm-cta-title">
-              <span class="grm-cta__line">Ideas</span>
-              <span class="grm-cta__line">In good hands.</span>
+              <span class="grm-cta__line" data-i18n="studio.cta.line1">Ideas</span>
+              <span class="grm-cta__line" data-i18n="studio.cta.line2">In good hands.</span>
             </h2>
 
             <!-- Contact sign-off. There is deliberately NO button here: no
@@ -520,21 +528,21 @@
             <dl class="grm-cta__contact">
 
               <div class="grm-cta__contact-item">
-                <dt class="grm-cta__contact-label">Email</dt>
+                <dt class="grm-cta__contact-label" data-i18n="contact.email">Email</dt>
                 <dd class="grm-cta__contact-value">
                   <a class="grm-cta__contact-link" href="mailto:info@grmstudio.music">info@grmstudio.music</a>
                 </dd>
               </div>
 
               <div class="grm-cta__contact-item">
-                <dt class="grm-cta__contact-label">Phone</dt>
+                <dt class="grm-cta__contact-label" data-i18n="contact.phone">Phone</dt>
                 <dd class="grm-cta__contact-value">
                   <a class="grm-cta__contact-link" href="tel:+381636465666">+381 63 646 5666</a>
                 </dd>
               </div>
 
               <div class="grm-cta__contact-item">
-                <dt class="grm-cta__contact-label">Address</dt>
+                <dt class="grm-cta__contact-label" data-i18n="contact.address">Address</dt>
                 <dd class="grm-cta__contact-value">
                   <a class="grm-cta__contact-link" href="https://maps.google.com/?q=Blagoja%20Parovi%C4%87a%2019a%2C%20Beograd" target="_blank" rel="noopener noreferrer">Blagoja Parovi&#263;a 19a, Beograd</a>
                 </dd>
@@ -556,94 +564,6 @@
   <div id="footerMount"></div>
 
   <script src="../js/main.js"></script>
-
-  <!-- SOUND photo-strip entrance + hover unlock: page-local, isolated.
-       The conception state (crops closed) is applied ONLY after JS
-       runs, so no-JS shows the finished static strip. One-shot:
-       exposing when the strip first crosses the viewport, then
-       disconnects forever. The hover redistribution stays inert until
-       the reveal has fully settled: .grm-sound--entered is added after
-       the last staggered crop closes (390ms stagger + 1000ms reveal),
-       so geometry never fights the entrance on any pointer. -->
-  <script>
-    (function () {
-      "use strict";
-
-      if (!document.body || document.body.getAttribute("data-page") !== "studio") return;
-
-      var strip = document.querySelector(".grm-photo-strip");
-      if (!strip) return;
-
-      if (!("IntersectionObserver" in window)) {
-        strip.classList.add("grm-sound--entered");
-        return;
-      }
-
-      strip.classList.add("grm-sound--reveal-ready");
-
-      var observer = new IntersectionObserver(function (entries) {
-        for (var i = 0; i < entries.length; i++) {
-          if (entries[i].isIntersecting) {
-            strip.classList.add("grm-sound--strip-in");
-            observer.disconnect();
-            window.setTimeout(function () {
-              strip.classList.add("grm-sound--entered");
-            }, 1500);
-            return;
-          }
-        }
-      }, { threshold: 0.25, rootMargin: "0px 0px -10% 0px" });
-
-      observer.observe(strip);
-    })();
-
-    /* RELEASES entrance (slow, one-by-one, left-to-right). One-shot. */
-    (function () {
-      "use strict";
-      if (!document.body || document.body.getAttribute("data-page") !== "studio") return;
-      var section = document.querySelector(".grm-sound");
-      var row = section ? section.querySelector(".grm-sound__row") : null;
-      if (!section || !row) return;
-      if (!("IntersectionObserver" in window)) return;
-      if (window.matchMedia("(prefers-reduced-motion: reduce)").matches) return;
-      section.classList.add("grm-sound--releases-prepared");
-      var observer = new IntersectionObserver(function (entries) {
-        for (var i = 0; i < entries.length; i++) {
-          if (!entries[i].isIntersecting) continue;
-          observer.disconnect();
-          var vw = window.innerWidth;
-          var all = section.querySelectorAll(".grm-plaque");
-          var visible = [];
-          for (var j = 0; j < all.length; j++) {
-            var r = all[j].getBoundingClientRect();
-            if (r.width > 0 && r.height > 0 && r.right > 0 && r.left < vw && r.bottom > 0 && r.top < window.innerHeight) {
-              visible.push({ el: all[j], left: r.left });
-            }
-          }
-          visible.sort(function (a,b){ return a.left - b.left; });
-          for (var k = 0; k < visible.length; k++) {
-            var inner = visible[k].el.querySelector(".grm-plaque__reveal") || visible[k].el.querySelector(".grm-plaque__inner") || visible[k].el;
-            inner.classList.add("grm-releases--item");
-            inner.style.setProperty("--r-i", String(k));
-          }
-          section.classList.add("grm-sound--releases-in");
-          var cleanup = 300 + (visible.length > 0 ? (visible.length - 1) * 250 : 0) + 1100 + 160;
-          if (cleanup < 2400) cleanup = 2400;
-          window.setTimeout(function () {
-            section.classList.remove("grm-sound--releases-in");
-            section.classList.remove("grm-sound--releases-prepared");
-            for (var m = 0; m < visible.length; m++) {
-              var inner2 = visible[m].el.querySelector(".grm-plaque__reveal") || visible[m].el.querySelector(".grm-plaque__inner") || visible[m].el;
-              inner2.classList.remove("grm-releases--item");
-              inner2.style.removeProperty("--r-i");
-            }
-          }, cleanup);
-          return;
-        }
-      }, { threshold: 0.15, rootMargin: "0px 0px -12% 0px" });
-      observer.observe(row);
-    })();
-  </script>
 
 </body>
 </html>

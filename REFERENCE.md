@@ -41,6 +41,12 @@ injected chrome (only on division pages). The home page offers no nav.
   active logic is frozen** — never modify the mechanics, hover states,
   `is-expanded` toggling, arrow-key handling, `aria-expanded` mirroring, or
   the accordion reset.
+- Hover-revealed division **names** carry no redundant "GRM" (the mark already
+  states the brand): `.panel__name` reads `Production` / `Label` / `Liveroom`
+  (EN) and `Produkcija` / `Label` / `Liveroom` (SR) via `home.panel.*.name`.
+  The Header wordmark (`GRM HOUSE`), the label panel's possessive tag
+  (`GRM's record label`) and the mobile panel aria-labels stay as-is — those
+  are brand references, not division names.
 - `.panel__logo-window` is `position:absolute; inset:0; z-index:0; overflow:
   hidden; pointer-events:none`. The imgs are centered by a `50vw/50vh` offset
   + `translate(-50%,-50%)`, sized `min(130vw, 1872px)` square,
@@ -323,6 +329,24 @@ raised a touch on mobile (`clamp(0.73rem, 1vw, 0.86rem)`, tracking `0.22em`); th
 title typography, the scroll cue position, and all arrival choreography are
 untouched. The cue is bottom-anchored and independent (unchanged).
 
+##### Title wording + horizontal centring
+
+The division word no longer carries the redundant "GRM" prefix — the mark above
+it already states the brand. The hero titles are now `PRODUCTION` / `LABEL` /
+`LIVEROOM` (EN) and `PRODUKCIJA` / `LABEL` / `LIVEROOM` (SR), driven by the
+existing i18n keys `studio.hero.title`, `label.hero.title`, `liveroom.hero.title`
+(EN in `js/translations.js`; SR keys added alongside). The HTML fallback strings
+match. Only the wording changed on desktop/tablet — positioning is untouched.
+
+The title `<p>` was `text-align:start` while the `<h1>` was already
+`text-align:center`; at ≥390px the longer string reached the lockup width and its
+wrapped lines read left-under-the-mark. The mobile title rule therefore adds
+`text-align:center` so title + subtitle share the mark's centre axis at every
+width (including the cases that used to wrap). Horizontal only — `text-align`
+moves inline content inside the fixed box, so the box, `--logo-w`, the mark's
+`left`/`top` optical offset and the morph target are all unchanged, and the
+explicit logo→title / title→subtitle gaps are identical.
+
 #### Mid-range scale (768–1439px) — height-aware mark
 
 Above the mobile query the mark was a pure `58vw`, so it was proportional to
@@ -346,4 +370,368 @@ mark width is now height-aware —
   bumped to `:v3`; the desktop takeover re-aims to the published rect and is
   verified to land exactly on it at every mid-range size. The mobile handoff
   (`--logo-w`, `58vw`) is unchanged, so its zero-jump/jitter-0 property holds.
+
+---
+
+## 9. Bilingual infrastructure (Phase 1 — architecture + switcher)
+
+English is canonical; the markup itself is the English fallback (JS-off reads
+English). Phase 1 shipped the architecture and the EN/SR language control; the
+**switch-visibility fix (switch-fix)** then populated `sr` for the **global +
+Home layer** (approved values only — see below), so clicking SR now visibly
+changes the UI. Deeper page copy (footer lede, destination tags/meta, bios)
+stays English and is **not** present in `sr`, falling back per-key to `en` until
+approved in a later pass (no machine translation).
+
+- **Engine** (`js/i18n.js`, loaded in `<head>` before `js/main.js`) exposes
+  `window.GRMi18n = { lang, t, setLang, apply, refresh }`. Storage key
+  `grm-language` (localStorage), default `en`, supported `[en, sr]`,
+  `<html lang="en|sr-Latn">` synced (set as early as possible). Missing keys
+  fall back per-key: current → `en` → authored DOM text, never blank/undefined/
+  raw key names. Hooks: `data-i18n` (text; on `<meta>` sets `content`),
+  `data-i18n-aria-label`, `data-i18n-alt`, `data-i18n-title`,
+  `data-i18n-placeholder`, `data-i18n-content`, `data-i18n-value`; `t(key,
+  {params})` supports `{n}` interpolation. One delegated `click` listener on
+  `document` serves every `[data-lang]` button — including ones injected later
+  into the header chrome and the Home overlay. `.lr-word` split-nodes are
+  never rewritten (liveroom ghost-materialise survives); `data-i18n-skip` opt-out.
+- **Dictionary** (`js/translations.js`): namespaced EN map of the current copy
+  (~150 keys across chrome/home/studio/label/liveroom + dynamic schedule week/
+  month tokens). `sr` now carries the **global + Home layer** only: nav home/
+  production/label/liveroom, all a11y labels (header brand, primary/mobile nav,
+  language, menu open/close), `common.skip/scroll`, footer column/city/back-to-
+  top/contact labels, Home metadata (title/desc/ogTitle/ogDesc), Home hero +
+  3 panel a11y labels, the 3 mobile panel titles/descriptors, and the desktop
+  Studio panel tag. Approved values: Home→Početna, Production→Produkcija,
+  Label→Label, Liveroom→Liveroom, AUDIO / VIDEO PRODUCTION→AUDIO / VIDEO
+  PRODUKCIJA, ARTISTS & RELEASES→IZVOĐAČI & IZDANJA, LIVE EVENTS & REHEARSALS→
+  NASTUPI & PROBE. Any key absent from `sr` falls back to `en`. Do NOT machine-
+  translate; deeper copy is added only when approved.
+- **Switcher**: `EN / SR` chip (`.lang-switch`) injected by `injectSiteChrome()`
+  in `js/main.js` into a `.site-header__actions` wrapper on every **non-Home**
+  page (sits right of the nav, before the hamburger on ≤1000px). **Home is
+  headerless at EVERY size** (headerless-Home fix): the injected header is
+  `display: none` on `body[data-page="home"]` for all widths, and
+  `injectSiteChrome` emits **no nav, toggle or mobile-menu markup on Home at
+  all** — only the (hidden) brand. No brand, nav, hamburger, border or reserved
+  space (`.site-header` is `position:fixed`, so hiding it shifts no geometry).
+  Home's language control is the standalone fixed `.lang-switch--home` overlay
+  (top-right, `safe-area` aware, z 900) appended to `<body>`, visible at **all**
+  widths and positioned independently of the hidden header (`top` = a
+  header-safe `clamp(18px,2.8vh,30px)`, `right` = the page's own responsive
+  `--gutter`). It fades with the Home UI during the Home→division takeover
+  (`body[data-page="home"]:has(.hero.is-takeover) .lang-switch--home`), so only
+  the destination header's chip is ever visible after arrival. Buttons carry
+  `aria-current="true"` / `.is-active` on the active language, driven by the engine.
+- **Font safety** (no blocker): the display `@font-face` already loads
+  `assets/fonts/UltraCondensedSansSerif-Serbian.ttf`, which covers all Serbian
+  Latin (`č ć š ž đ Č Ć Š Ž Đ`, 0 missing of 214 glyphs). Body/UI = Inter +
+  Archivo loaded from Google Fonts; Inter's **latin-ext** subset
+  (`unicode-range: U+0100-02BA`, includes `Đ/đ`) loads on demand — canvas proof:
+  `đ` renders at 8.66px in Inter vs 8.43px mono / 7px serif, so no single-glyph
+  fallback. `document.fonts.check` returns false only **before** that lazy face
+  is requested; after `document.fonts.load(...,"đ")` it is true. The non-Serbian
+  TTF (204 glyphs) is unused; the woff2 variants are unused.
+- **Dynamic strings routed through i18n** in `main.js`: the liveroom schedule
+  week/month labels (`schedule.thisWeek/nextWeek/lastWeek/inWeeks/weeksAgo`,
+  `schedule.months[]`), mobile Home panel accessible names, menu open/close
+  aria-labels, and the division switch re-applies on `grm:languagechange`.
+- **Sacred areas unchanged**: home accordion mechanics, logo geometries
+  (`syncLogoWindows`, `DEST_LOGO_KEY:v3` rects), isolation/takeover transitions,
+  division↔division morphs, plaque carousel, showreel, intro sequence, and the
+  `HOME_INTRO_DEBUG_REPLAY=true` debug flag (main.js:18) are untouched. Header
+  markup/design is unchanged on destination pages; Home emits a brand-only,
+  nav-free header (no nav/toggle/mobile-menu markup) and hides it entirely, so
+  the three panels remain the only Home navigation.
+- **QA (verified)**: original matrix 110 checks (switcher placement/`aria-
+  current` across desktop 1440×900, tablet 820×1180, mobile 390×844 × 4 pages).
+  **Switch-fix run: 44/44** — nav `Početna/Produkcija/Label/Liveroom`, Studio
+  tag `Audio/Video Produkcija`, `html lang="sr-Latn"`, `localStorage="sr"`,
+  destinations keep the chip + SR nav, persistence survives navigation, no
+  reload (URL unchanged), scroll preserved. **Headerless-Home fix (7 viewports,
+  390×844 → 1920×1080):** Home header `display:none` and `#headerMount` 0px at
+  every size, no nav/toggle/lang-switch/mobile-menu inside it, exactly one
+  visible control (`.lang-switch--home`, `position:fixed`, top-right at the
+  responsive `--gutter`: right 20px @390 / 86px @1440 / 96px @1920); panels
+  unchanged (desktop 479/480/480 @1440, mobile 281/282/282 @390), hero = full
+  viewport; SR click → `lang="sr-Latn"`, `localStorage="sr"`, SR `.is-active`;
+  Home→ Production/Label/Liveroom takeover fades the overlay (opacity→0,
+  `pointer-events:none`, header stays `none`) and lands with the destination
+  header (`display:flex`, 4 nav links + chip, no overlay); returning Home →
+  header `none` + one overlay; `studio/` header intact; reduced-motion Home
+  headerless; zero console errors. Screenshots in
+  `docs/home-headerless-remove/screens/`.
+- **Known Phase-1 gaps (scheduled)**: long-form editorial body copy/bios stay
+  English (unkeyed, documented). Liveroom ghost-materialise text and the taken-
+  slot `aria-label`s stay English this phase (split-safety + not keyed).
+
+
+## 10. Content reveal system (Liveroom motion — Production + Label)
+
+The Liveroom "ghost materialise" is now the **shared content-reveal language**
+for Production and Label. It is not a new animation: the exact Liveroom values
+are reused, and the existing global `.reveal` / `.in-view` pair is the
+transport (so every approved `.in-view` dependency is preserved).
+
+- **Source of truth** — `.lr-room` / `.lr-word` in `css/style.css`:
+  `opacity:0; filter:blur(24px); transform:translateY(30px) scale(.99)` →
+  `.in` = `opacity:1; filter:blur(0); transform:none`, transition
+  `opacity/filter/transform 1.4s cubic-bezier(.22,1,.3,1)`. Observer trigger
+  (`js/main.js`, Liveroom block) is `threshold:0.15`, **no rootMargin**,
+  one-shot (unobserve). `.lr-word` is the 80ms/word cadence.
+- **Transport** — the global `.reveal` block (`css/style.css` §REVEALS) now
+  carries those exact values, and `js/main.js` (§REVEALS) matches the trigger
+  (`{ threshold: 0.15 }`). Class name is kept because other approved reveals key
+  off `.in-view` (`.label-people__entry.in-view` image develop). Shared stagger
+  token `--reveal-stagger: 80ms` drives `[data-delay="1|2|3"]`.
+- **Production (`studio`)** — every content block below the hero now arrives on
+  the shared `.reveal`: the **SOUND heading** (`.discipline--sound`), the
+  **SOUND photo strip** (`.grm-photo-strip`), the **release-plaque archive**
+  (`.grm-sound__row`, revealed as its stable outer wrapper), and the **final CTA
+  plate** (`.grm-cta__card`, revealed as a unit; its `.grm-cta__media` keeps its
+  own `brightness/contrast/saturate` filter, which a per-child reveal would have
+  clobbered). The hero arrival choreography is untouched. The photo-strip hover
+  redistribution is unlocked by the same `.in-view` class that reveals the strip
+  (`.grm-photo-strip.in-view …`), so interaction and motion share one state.
+- **Excluded (component-owned — never double-animated)** — the VISUAL showreel
+  aperture (`.visual-block` / `.showreel-aperture`, entirely excluded per task:
+  the aperture exposes the footage + VISUAL identity as one object), and the
+  Label people portrait develop (`.in-view` → scale/saturate). The SOUND strip
+  and plaque archive entrances that used to be component-owned
+  (`grm-sound--reveal-ready/strip-in/entered`, `grm-sound--releases-prepared/in`)
+  were **retired**; those two blocks now use the shared `.reveal`. The VISUAL
+  showreel therefore keeps ONLY its own aperture animation — see §11 for its
+  (separately changed) responsive geometry.
+- **Label** — every existing `.reveal` element (about/people/releases) inherits
+  the new motion automatically (no markup change). The **`.label-about`
+  section keeps its own coordinated develop-from-black** (`is-revealed`); its
+  `.reveal` children carry `filter:none` so the global blur cannot leak in and
+  the two reveals never stack.
+- **Reduced motion** — unchanged behaviour, extended: `.reveal` resolves to
+  `opacity:1; filter:none; transform:none; transition:none` (global + about +
+  main.js adds `.in-view`), so content is always visible, nothing hidden.
+- **Localization-safe** — the motion is class-driven (i18n rewrites
+  `textContent`, never nodes), so a language switch keeps `.in-view` and never
+  replays a reveal; motion does not depend on text length or language.
+- **QA (verified)** — 7 viewports (320×568, 390×844, 430×932, 820×1180,
+  1024×768, 1440×900, 1920×1080) × Production + Label: no horizontal overflow,
+  no console errors, every `.reveal` settles to `blur(0)`; `.reveal` computed
+  transition/transform is byte-identical to `.lr-room`; the strip + archive
+  reveal on scroll and the showreel aperture still fires; strip hover and
+  plaque drag/autoplay intact; reduced-motion shows 0 hidden elements; language
+  switch does not replay. Recordings (PNG frame sequences) in
+  `docs/production-reveal/recordings/`; report in
+  `docs/production-reveal/REPORT.md`.
+
+
+## 11. Production Visual showreel — responsive geometry (viewport-shaped)
+
+The VISUAL showreel frame is a full-bleed object that takes the shape of the
+screen it is viewed on (phone-shaped on a phone, tablet-shaped on a tablet,
+desktop-shaped on a desktop). Its **animation is unchanged** (see §10 excluded);
+only the container geometry was reworked.
+
+- **Rule** — `.visual-block` is `width:100%` of the (already full-width)
+  `.production-visual` section and `height:100svh` (with a `height:100vh`
+  legacy fallback), so the frame's aspect ratio equals the viewport's at every
+  size. There is no fixed `16/9`/`21/9` ratio and no `--showreel-frame-w` width
+  any more; the `aspect-ratio:16/9` was removed from `.visual-block__media`
+  (now `height:100%`). `.production-visual` carries `padding:0` so the frame
+  runs edge to edge with no letterbox bands.
+- **Units** — `100svh` (smallest viewport height) is used for stable,
+  mobile-safe sizing: it never overflows the screen the way legacy `100vh`
+  does, and it does not re-crop mid-scroll the way `100dvh` would. `100vh` is
+  kept only as a fallback for engines without `svh`.
+- **Media** — `.visual-block__video` keeps `object-fit:cover` (footage fills
+  the frame, never stretches) with `object-position:center` (the existing
+  centred framing; the source is 1280×720 and the bright content is central, so
+  a centred crop keeps it on portrait).
+- **Aperture** — unchanged in behaviour: each mask is `height:50%` of the
+  `.showreel-aperture__stage` and `js/main.js` translates it by
+  `half = stage.clientHeight/2`. `HALF_HAIRLINE` (1.5), `DURATION` (1400ms),
+  `easeInOutCubic`, and the trigger (`rootMargin` bottom `-32%`, i.e. ~68vh)
+  are byte-identical. The driver no longer measures/sets the frame width; a
+  `ResizeObserver` on the stage (plus the existing `resize` listener) re-measures
+  `half` on orientation/layout change with no reload and no polling.
+- **Overlays** — `.visual-block__identity` and `.visual-block__link` are inset
+  with `env(safe-area-inset-*)`; the identity also clears the fixed header
+  (`calc(var(--header-h) + …)`) since the frame now starts at the viewport top.
+  Typography is unchanged.
+- **No global reveal** — the shared `.reveal`/`.in-view` system is **not**
+  applied to the showreel; it keeps only the aperture animation.
+- **QA (verified)** — 16 viewports (320×568 → 1920×1080, incl. 768×1024,
+  820×1180, 1024×768, 1180×820): frame ratio == viewport ratio, frame == client
+  viewport, closed masks `-1.5/1.5` → open `±half`, no horizontal overflow.
+  Orientation 820×1180→1180×820 without reload re-seats the masks to the new
+  half; reduced-motion and no-JS hide the masks and keep the viewport-shaped
+  frame; the video autoplays (1280×720). Screenshots +
+   recordings in `docs/production-showreel/`; report
+   `docs/production-showreel/REPORT.md`.
+
+
+## 12. Hover stroke — Liveroom Room language, reused on Label + Production
+
+The Liveroom Room bento **hover stroke** is now a **shared interaction cue**
+reused, verbatim, on Label *Selected releases* and Production *SOUND* tiles.
+No new treatment was invented: the exact Liveroom technique moves across.
+
+- **Source of truth** — `.liveroom-room__img::after` in `css/style.css`:
+  `content:""; position:absolute; inset:0; box-shadow:inset 0 0 0 1px
+  var(--accent-lite); opacity:0; transition:opacity 250ms ease;
+  pointer-events:none`, flipped to `opacity:1` while the tile is the active
+  hover target. It is a **pseudo-element box-shadow**, not a border, so it
+  follows the tile's current box and never causes layout shift.
+- **Colour is contextual** — `var(--accent-lite)` is themed per division
+  (`theme-studio #f5cf6a` gold, `theme-label #2ee6a8` green,
+  `theme-liveroom #ff8f56`), so the same rule renders the correct division
+  colour automatically: green on Label, gold on Production, orange on Live.
+- **Label *Selected releases*** (`label/index.html` + `css/style.css`) — each
+  `.label-releases__item`'s `<img>` is wrapped in a crop layer
+  `.label-releases__media` (`position:relative; overflow:hidden`) that now owns
+  the `1px var(--border-strong)` frame the `<img>` used to carry (geometry
+  byte-identical: the wrapper border box is the column, so the square outline
+  and visible image area are unchanged). The stroke is
+  `.label-releases__media::after` (same values as Liveroom). On
+  `@media (hover:hover) and (pointer:fine)` the hovered release also pushes its
+  artwork in: `.label-releases__item:hover .label-releases__media img {
+  transform:scale(1.035) }` over `600ms var(--ease-out)` — the Liveroom image
+  zoom, slightly stronger. The tile itself does **not** move (`:hover`
+  `translateY` is inert while `.reveal.in-view` is present); the reveal
+  transform (on the `<figure>`) and the zoom transform (on the `<img>`) stay on
+  **separate layers**. The releases are `<figure>`s, not links, so no
+  `:focus-visible` cue is added.
+- **Production *SOUND*** (`studio/index.html` + `css/style.css`) — the four
+  `.grm-photo` tiles get the stroke as a **dedicated child element**
+  `.grm-photo__stroke` (a `<span aria-hidden="true">`), because `.grm-photo`
+  already spends `::before` and `::after` on its two exposure scrims. The layer
+  sits at `z-index:3` over the scrims and is flipped to `opacity:1` by
+  `@media (min-width:901px) and (hover:hover) and (pointer:fine)
+  { .grm-photo-strip.in-view .grm-photo:hover .grm-photo__stroke }`. No image
+  zoom is added here — the strip's own expansion motion is left untouched; the
+  stroke simply tracks the tile as the grid redistributes. It is
+  `display:none` in the ≤900px 2×2 layout, where there is no hover.
+- **Reduced motion** — mirrors Liveroom exactly: transitions are removed
+  (`.label-releases__media img`, `.label-releases__media::after`,
+  `.grm-photo__stroke`), so the state change still reads but is instant, and the
+  layout never moves. Nothing is hidden.
+- **Scroll reveals untouched** — the shared `.reveal`/`.in-view` system (§10) is
+  unchanged; the SOUND stroke is gated by the same `.in-view` that unlocks the
+  strip's hover, so cue and reveal share one state.
+- **QA (verified)** — 6 viewports (320×568, 390×844, 768×1024, 1024×768,
+  1180×820, 1440×900): stroke appears on the hovered tile only, in the division
+  colour, with no horizontal overflow, no console errors, no layout shift
+  (`offsetWidth/Height` byte-stable rest→hover), and reset on leave. Label
+  artwork scales `1.035`; neighbours stay unscaled (`transform:none`), and the
+  tile never lifts (`transform:none`). A pixel diff of the Label hovered tile
+  finds ~1570 accent-green pixels — essentially the 1px perimeter of the 396px
+  square. Reduced-motion reports `transitionDuration:0s` and an instant stroke.
+  Recordings + screenshots in `docs/hover-stroke/`; report
+  `docs/hover-stroke/REPORT.md`.
+
+## 13. Division ↔ division transition — one logo, destination always at top
+
+The division↔division identity handoff (Production/Label/Liveroom nav links) is a
+**fixed transition proxy** that carries the outgoing mark across a full page
+load. The destination hero logo is the single source of truth; the destination
+always begins at `scrollY = 0`.
+
+- **Root cause of the "ghost logo" (scrolled source).** Each source page's click
+  handler (`js/main.js`, the six `document` click blocks) stores the outgoing
+  logo's **viewport** rect in `sessionStorage["grm-morph-start"]` and the
+  destination in `grm-morph-arrival`. The destination arrival block then built
+  the `.division-morph-logo` / `.studio-morph-logo` proxy at that **source**
+  rect and cross-faded it into the real destination logo. When the source was
+  scrolled, the proxy sat at the scrolled rect (e.g. `top:-652`) while the real
+  logo rendered at its own top (`top:-52`) → **two copies of the same mark**
+  (the ghost). The destination was in fact already at `scrollY=0` (no scroll was
+  being preserved); the divergence was purely the proxy's start position.
+- **Fix.** The proxy is now created **after `document.fonts.ready` + a rAF**
+  (layout settled) and positioned on the **destination** logo's measured
+  `getBoundingClientRect()` — the same rect the real logo occupies. The real
+  logo stays visible until that frame (so there is never a blank or a second
+  mark), is then set `visibility:hidden` (never `display:none`, so its DOMRect
+  is preserved) and revealed on the proxy's `transitionend`. The proxy and the
+  real logo therefore share one rect from first appearance to the zero-jump
+  handoff.
+- **Destination begins at the top — invisibly.** On arrival the reset uses
+  `resetDivisionScrollTop()` (`js/main.js`), which forces
+  `root.style.scrollBehavior = "auto"` around `window.scrollTo(0,0)` and then
+  restores it — because the global `html { scroll-behavior: smooth }` would
+  otherwise animate the reset and reveal it. The reset happens while the
+  transition layer owns the screen. The source's geometry is captured (in the
+  click handler) **before** any navigation, so nothing is lost.
+- **No redesign.** Structure, the `700ms ease` opacity cross-fade, the staggered
+  `48/82/116s`-clock header/title/descriptor/scroll reveals, colours, glow and
+  duration are unchanged; only the proxy's start position moved from the source
+  rect to the destination rect, and the real logo is now hidden for the
+  single-frame handoff instead of being exposed underneath the offset proxy.
+  The same `getBoundingClientRect()` is read after fonts + layout settle, so the
+  EN/SR locale (which changes the hidden lockup's text height) is already
+  applied.
+- **Back/forward.** The morph runs only when `grm-morph-arrival` is present
+  (the managed forward click); it is consumed on read, so a bfcache/`history`
+  return is untouched — Back restores the outgoing page's scroll (verified:
+  `/label/` at `600`), Forward returns the destination to the top.
+- **Cached rects.** `DEST_LOGO_KEY` (`grm-dest-logo:v3`, `js/main.js`) publishes
+  the division hero logo's **scroll-0** rect for the Home takeover to aim at; it
+  is not used by this path (the destination is measured live).
+- **QA (verified).** All 6 division routes (`Label↔Production↔Liveroom`) × 5
+  scroll positions (0, partially clipped, off-screen, mid-page, near-bottom) × 7
+  viewports (390×844, 430×932, 820×1180, 1024×768, 1280×800, 1440×900,
+  1920×1080): **0** frames with two logos at differing rects, proxy rect == real
+  rect at every coexisting frame, destination `scrollY` always `0`, no console
+  errors, no zero-logo flashes. Home→division arrivals regression-tested
+  (desktop + mobile): unchanged. Reduced motion skips the morph (instant, real
+   logo at top). Recordings + per-frame logs in `docs/ghost-logo/`; report
+   `docs/ghost-logo/REPORT.md`.
+
+## 14. Label — Behind GRM expertise credit labels
+
+- **What.** Each `.label-people__entry` (§02 "The people behind GRM") now carries
+  a row of small **expertise credit labels** where the single role line used to
+  be — printed record-sleeve metadata, not UI chips. The row opens each profile
+  — it sits **above the name** (tags → name → bio) and is **left-aligned** (no
+  leading ordinal — the `01 /` index was removed).
+- **Markup.** `.label-people__role` wraps a
+  `<ul class="label-people__credits" role="list" aria-label
+  data-i18n-aria-label="label.people.credits.aria">`, whose `<li
+  class="credit-label" data-cat="…" data-i18n="label.people.credit.…">` items
+  are the tags. `data-cat` maps to a colour: `production` / `label` / `liveroom`
+  / `neutral`.
+- **Look.** `.credit-label` is a 27px (25px ≤620px) inline-flex tag: `1px` radius,
+  bg `rgba(10,10,10,.82)`, hairline `1px` border `var(--border-strong)`, warm-grey
+  `10px/600` uppercase text at `0.15em` tracking, and a `2px` division-coloured
+  top edge via `::before` at `opacity:.85`. The colour lives on the edge only;
+  the text stays neutral. Four global tokens were added to `:root`:
+  `--credit-production:#f5cf6a`, `--credit-label:#2ee6a8`,
+  `--credit-live:#ff8f56`, `--credit-neutral:rgba(236,233,226,.5)` — global (not
+  theme-scoped) so the Label page can still spark Production/Liveroom colours.
+- **Hover.** Informational only — no `cursor:pointer`, no navigation. A
+  profile-level `@media (hover:hover)` rule lifts the tag border
+  (`.22→.34`), background, text (`--text-muted→--text`) and the accent
+  (`opacity→1`, `brightness 1.18`). No glow/scale/per-tag motion; neutralised
+  under `prefers-reduced-motion`.
+- **Motion.** Tags are children of the existing `.label-people__entry.reveal`
+  unit, so they ride the sacred Label reveal (blur/`translateY`/opacity, 1.4s
+  `cubic-bezier(.22,1,.3,1)`) with no new cascade.
+- **Bilingual.** New `label.people.credit.*` + `label.people.credits.aria` keys,
+  EN and SR (Latin: Osnivač, Kreativna direkcija, Produkcija, Izdanja, Audio
+  inženjering, Aranžman, Art direkcija, Fotografija, Mastering, A&R). The old
+  `label.people.role.1..5` keys are left in place but unused.
+- **Colour map (derived from bios).** Marko → Founder [neutral], Creative
+  Direction, A&R [label], Production [production]. Jelena → Label, A&R, Releases
+  [label]. Nikola → Production, Audio Engineering, Arrangement [production].
+  Sara → Creative Direction, Art Direction [label], Photography [neutral].
+  Aleksa → Audio Engineering, Mastering [production]. Counts 4/3/3/3/2.
+  **No Liveroom/orange tag** — no member has a live remit (see report).
+- **QA (verified).** 1440/1024 desktop + 620/390/320 mobile, EN + SR: tags stay
+  inside the intro column (`right ≤ intro.right`), document `overflowX = 0`,
+  **0** console errors, tags wrap naturally (1–3 rows) never clipped,
+  tags→name gap 16.8px desktop / 14.4px @1024 / ~11.9px mobile, name→bio gap
+  21.4px desktop / 18.2px @1024 / ~13.9px mobile, tag height 27px (25px
+  mobile), accent colours correct per `data-cat`, `aria-label` switches
+  Expertise/Ekspertiza, `lang` → `sr-Latn`. Home/Studio/Liveroom smoke: 0
+  credit-labels, no overflow/errors. Screenshots + `docs/credit-labels/REPORT.md`.
+
+
 

@@ -3,12 +3,12 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>GRM Liveroom — rehearsal space for musicians and bands</title>
-  <meta name="description" content="GRM Liveroom is the rehearsal side of GRM — a prepared, quiet space for bands to work the set properly.">
+  <title data-i18n="meta.liveroom.title">GRM Liveroom — rehearsal space for musicians and bands</title>
+  <meta name="description" content="GRM Liveroom is the rehearsal side of GRM — a prepared, quiet space for bands to work the set properly." data-i18n-content="meta.liveroom.desc">
   <meta name="theme-color" content="#050505">
 
-  <meta property="og:title" content="GRM Liveroom — rehearsal space">
-  <meta property="og:description" content="Rehearsal space for musicians and bands — GRM's live room.">
+  <meta property="og:title" content="GRM Liveroom — rehearsal space" data-i18n-content="meta.liveroom.ogTitle">
+  <meta property="og:description" content="Rehearsal space for musicians and bands — GRM's live room." data-i18n-content="meta.liveroom.ogDesc">
   <meta property="og:type" content="website">
   <meta property="og:locale" content="en">
   <meta property="og:url" content="/liveroom/">
@@ -23,6 +23,10 @@
 
   <link rel="stylesheet" href="../css/style.css">
   <link rel="preload" as="image" href="../assets/img/GRM LiveRoom Glow.png">
+
+  <script src="../js/translations.js"></script>
+  <script src="../js/i18n.js"></script>
+
   <script>
     if (sessionStorage.getItem("grm-arrival") === "liveroom") {
       document.documentElement.classList.add("division-arrival-pending");
@@ -56,7 +60,7 @@
   }());
 </script>
 
-  <a class="skip-link" href="#main">Skip to content</a>
+  <a class="skip-link" href="#main" data-i18n="common.skip">Skip to content</a>
   <div class="progress" id="progress" aria-hidden="true"></div>
 
   <!-- Shared header + mobile menu, injected by js/main.js -->
@@ -69,42 +73,42 @@
          ============================================================ -->
     <section class="division-minimal-hero" id="top" aria-labelledby="liveroom-hero-title">
       <div class="division-minimal-hero__lockup">
-        <img class="division-minimal-hero__logo" src="../assets/img/GRM LiveRoom Glow.png" alt="GRM Liveroom" width="2160" height="2160">
-        <p class="division-minimal-hero__title">GRM LIVEROOM</p>
-        <h1 id="liveroom-hero-title">REHEARSAL SPACE FOR MUSICIANS AND BANDS</h1>
+        <img class="division-minimal-hero__logo" src="../assets/img/GRM LiveRoom Glow.png" alt="GRM Liveroom" data-i18n-alt="liveroom.hero.logoAlt" width="2160" height="2160">
+        <p class="division-minimal-hero__title" data-i18n="liveroom.hero.title">LIVEROOM</p>
+        <h1 id="liveroom-hero-title" data-i18n="liveroom.hero.h1">REHEARSAL SPACE FOR MUSICIANS AND BANDS</h1>
       </div>
-      <div class="division-minimal-hero__scroll" aria-hidden="true"><span>Scroll</span><i></i></div>
+      <div class="division-minimal-hero__scroll" aria-hidden="true"><span data-i18n="common.scroll">Scroll</span><i></i></div>
     </section>
 
     <section class="liveroom-room" id="liveroom-room" aria-labelledby="liveroom-room-title">
       <div class="liveroom-room__text">
-        <p class="eyebrow lr-room lr-re">Liveroom</p>
+        <p class="eyebrow lr-room lr-re" data-i18n="liveroom.room.eyebrow">Liveroom</p>
         <h2 class="liveroom-room__title lr-room lr-split lr-re" id="liveroom-room-title">The<br><em>room</em></h2>
-        <p class="liveroom-room__note lr-room lr-re">Built for rehearsals. Plug in, turn up and play.</p>
+        <p class="liveroom-room__note lr-room lr-re" data-i18n="liveroom.room.note">Built for rehearsals. Plug in, turn up and play.</p>
       </div>
       <div class="liveroom-room__media">
         <figure class="liveroom-room__img liveroom-room__img--primary lr-room lr-re">
-          <img src="../assets/img/Liveroom 1.png" alt="GRM Liveroom control room" loading="lazy">
+          <img src="../assets/img/Liveroom 1.png" alt="GRM Liveroom control room" data-i18n-alt="liveroom.room.img1Alt" loading="lazy">
         </figure>
         <figure class="liveroom-room__img liveroom-room__img--wide lr-room lr-re">
-          <img src="../assets/img/Liveroom 2.png" alt="GRM Liveroom drum kit" loading="lazy">
+          <img src="../assets/img/Liveroom 2.png" alt="GRM Liveroom drum kit" data-i18n-alt="liveroom.room.img2Alt" loading="lazy">
         </figure>
         <figure class="liveroom-room__img liveroom-room__img--detail lr-room lr-re">
-          <img src="../assets/img/Liveroom 3.png" alt="GRM Liveroom Markbass amplifier" loading="lazy">
+          <img src="../assets/img/Liveroom 3.png" alt="GRM Liveroom Markbass amplifier" data-i18n-alt="liveroom.room.img3Alt" loading="lazy">
         </figure>
         <figure class="liveroom-room__img liveroom-room__img--detail lr-room lr-re">
-          <img src="../assets/img/Liveroom 4.png" alt="GRM Liveroom microphone" loading="lazy">
+          <img src="../assets/img/Liveroom 4.png" alt="GRM Liveroom microphone" data-i18n-alt="liveroom.room.img4Alt" loading="lazy">
         </figure>
       </div>
     </section>
-    <section class="liveroom-availability" id="availability" aria-labelledby="availability-title"><div class="liveroom-availability__head"><p class="eyebrow lr-room lr-re">Room schedule</p><h2 id="availability-title" class="liveroom-availability__title lr-room lr-re" data-week-offset="0"><button class="liveroom-availability__title-arrow liveroom-availability__title-arrow--prev" type="button" aria-label="Previous week"><svg class="liveroom-availability__chevron" viewBox="0 0 16 18" aria-hidden="true"><path d="M10 3 L4 9 L10 15"></path></svg></button><span class="liveroom-availability__title-unit"><span class="liveroom-availability__title-word" data-week-label>THIS WEEK</span><span class="liveroom-availability__week" data-week-range>21–27 SEP</span></span><button class="liveroom-availability__title-arrow liveroom-availability__title-arrow--next" type="button" aria-label="Next week"><svg class="liveroom-availability__chevron" viewBox="0 0 16 18" aria-hidden="true"><path d="M6 3 L12 9 L6 15"></path></svg></button></h2></div><div class="liveroom-availability__board lr-room lr-re"><div class="liveroom-availability__days"><span>TIME</span><b>MON</b><b>TUE</b><b>WED</b><b>THU</b><b>FRI</b><b>SAT</b><b class="is-today">SUN<small>TODAY</small></b></div><div class="liveroom-availability__hours"><span>10:00</span><span>11:00</span><span>12:00</span><span>13:00</span><span>14:00</span><span>15:00</span><span>16:00</span><span>17:00</span><span>18:00</span><span>19:00</span><span>20:00</span><span>21:00</span><span>22:00</span></div><div class="liveroom-availability__slots"><span class="liveroom-availability__separator" aria-hidden="true"></span><span class="liveroom-availability__separator" aria-hidden="true"></span><span class="liveroom-availability__separator" aria-hidden="true"></span><span class="liveroom-availability__separator" aria-hidden="true"></span><span class="liveroom-availability__separator" aria-hidden="true"></span><span class="liveroom-availability__separator" aria-hidden="true"></span><i class="is-taken is-taken--one" tabindex="0" aria-label="Taken Monday 13:00 to 16:00">TAKEN<br><small>13:00–16:00</small></i><i class="is-taken is-taken--two" tabindex="0" aria-label="Taken Wednesday 18:00 to 21:00">TAKEN<br><small>18:00–21:00</small></i><i class="is-taken is-taken--three" tabindex="0" aria-label="Taken Friday 11:00 to 13:00">TAKEN<br><small>11:00–13:00</small></i><i class="is-taken is-taken--four" tabindex="0" aria-label="Taken Saturday 16:00 to 20:00">TAKEN<br><small>16:00–20:00</small></i></div></div></section>
+    <section class="liveroom-availability" id="availability" aria-labelledby="availability-title"><div class="liveroom-availability__head"><p class="eyebrow lr-room lr-re" data-i18n="liveroom.schedule.eyebrow">Room schedule</p><h2 id="availability-title" class="liveroom-availability__title lr-room lr-re" data-week-offset="0"><button class="liveroom-availability__title-arrow liveroom-availability__title-arrow--prev" type="button" aria-label="Previous week" data-i18n-aria-label="liveroom.schedule.prev"><svg class="liveroom-availability__chevron" viewBox="0 0 16 18" aria-hidden="true"><path d="M10 3 L4 9 L10 15"></path></svg></button><span class="liveroom-availability__title-unit"><span class="liveroom-availability__title-word" data-week-label>THIS WEEK</span><span class="liveroom-availability__week" data-week-range>21–27 SEP</span></span><button class="liveroom-availability__title-arrow liveroom-availability__title-arrow--next" type="button" aria-label="Next week" data-i18n-aria-label="liveroom.schedule.next"><svg class="liveroom-availability__chevron" viewBox="0 0 16 18" aria-hidden="true"><path d="M6 3 L12 9 L6 15"></path></svg></button></h2></div><div class="liveroom-availability__board lr-room lr-re"><div class="liveroom-availability__days"><span data-i18n="liveroom.schedule.time">TIME</span><b data-i18n="liveroom.schedule.mon">MON</b><b data-i18n="liveroom.schedule.tue">TUE</b><b data-i18n="liveroom.schedule.wed">WED</b><b data-i18n="liveroom.schedule.thu">THU</b><b data-i18n="liveroom.schedule.fri">FRI</b><b data-i18n="liveroom.schedule.sat">SAT</b><b class="is-today"><span data-i18n="liveroom.schedule.sun">SUN</span><small data-i18n="liveroom.schedule.today">TODAY</small></b></div><div class="liveroom-availability__hours"><span>10:00</span><span>11:00</span><span>12:00</span><span>13:00</span><span>14:00</span><span>15:00</span><span>16:00</span><span>17:00</span><span>18:00</span><span>19:00</span><span>20:00</span><span>21:00</span><span>22:00</span></div><div class="liveroom-availability__slots"><span class="liveroom-availability__separator" aria-hidden="true"></span><span class="liveroom-availability__separator" aria-hidden="true"></span><span class="liveroom-availability__separator" aria-hidden="true"></span><span class="liveroom-availability__separator" aria-hidden="true"></span><span class="liveroom-availability__separator" aria-hidden="true"></span><span class="liveroom-availability__separator" aria-hidden="true"></span><i class="is-taken is-taken--one" tabindex="0" aria-label="Taken Monday 13:00 to 16:00"><span data-i18n="liveroom.schedule.taken">TAKEN</span><br><small>13:00–16:00</small></i><i class="is-taken is-taken--two" tabindex="0" aria-label="Taken Wednesday 18:00 to 21:00"><span data-i18n="liveroom.schedule.taken">TAKEN</span><br><small>18:00–21:00</small></i><i class="is-taken is-taken--three" tabindex="0" aria-label="Taken Friday 11:00 to 13:00"><span data-i18n="liveroom.schedule.taken">TAKEN</span><br><small>11:00–13:00</small></i><i class="is-taken is-taken--four" tabindex="0" aria-label="Taken Saturday 16:00 to 20:00"><span data-i18n="liveroom.schedule.taken">TAKEN</span><br><small>16:00–20:00</small></i></div></div></section>
     <div class="liveroom-utility">
-      <a class="liveroom-utility__item" href="https://maps.google.com/?q=Blagoja%20Parovi%C4%87a%2019a%2C%20Beograd" target="_blank" rel="noreferrer noopener" aria-label="GRM Liveroom location: Blagoja Parovića 19a, Beograd">
-        <em>LOCATION</em>
+      <a class="liveroom-utility__item" href="https://maps.google.com/?q=Blagoja%20Parovi%C4%87a%2019a%2C%20Beograd" target="_blank" rel="noreferrer noopener" aria-label="GRM Liveroom location: Blagoja Parovića 19a, Beograd" data-i18n-aria-label="liveroom.util.locationAria">
+        <em data-i18n="liveroom.util.location">LOCATION</em>
         <strong>Blagoja Parovića 19a, Beograd</strong>
       </a>
-      <a class="liveroom-utility__item" href="tel:+381636465666" aria-label="Call GRM Liveroom to book a rehearsal: +381 63 646 5666">
-        <em>BOOK A REHEARSAL</em>
+      <a class="liveroom-utility__item" href="tel:+381636465666" aria-label="Call GRM Liveroom to book a rehearsal: +381 63 646 5666" data-i18n-aria-label="liveroom.util.bookAria">
+        <em data-i18n="liveroom.util.book">BOOK A REHEARSAL</em>
         <strong>+381 63 646 5666</strong>
       </a>
     </div>
