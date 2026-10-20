@@ -16,11 +16,11 @@ Multi-page umbrella brand. Division pages carry a shared header/footer
 (injected) plus a full-bleed division logo behind the page hero. The home
 page is hero-only on desktop (`overflow: hidden`, no nav links, no mobile
 menu, no footer — guarded by the `isHome` flag). On phones (§8) home becomes a
-naturally scrolling stack and the brand-only header is re-shown.
+stack of three destination panels; Home is headerless at every size (§9).
 
 | Division page | URL       | body theme      | Accent (--accent / --accent-lite) |
 | ------------- | --------- | --------------- | --------------------------------- |
-| Studio        | `/studio/`  | `theme-studio`    | `#7a5d11` / `#f5cf6a` (deep `#3a2c05`, hair `rgba(245,207,106,.32)`) |
+| Production (route `studio`) | `/studio/`  | `theme-studio`    | `#7a5d11` / `#f5cf6a` (deep `#3a2c05`, hair `rgba(245,207,106,.32)`) |
 | Label         | `/label/`   | `theme-label`     | `#0c5e4a` / `#2ee6a8` (deep `#062e24`, hair `rgba(46,230,168,.32)`) |
 | Liveroom      | `/liveroom/`| `theme-liveroom`  | `#8a3d1a` / `#ff8f56` (deep `#4a1f0a`, hair `rgba(255,143,86,.32)`) |
 
@@ -171,7 +171,11 @@ CSS (added to the hero block in `css/style.css`):
 
 ---
 
-## 7. Label — polish slate (Phase 1)
+## 7. Label — polish slate (Phase 1) — HISTORICAL
+
+> Superseded: the roster index / preview module described here was replaced by
+> About · Behind GRM · Selected Releases (see §10, §12, §14 and `label/index.html`).
+> Kept for history only.
 
 All Label-phase rules are fully scoped to `body.theme-label` / `.label-*` in the
 appended "GRM LABEL — PHASE ONE" block of `css/style.css` plus the page-local
@@ -458,7 +462,7 @@ approved in a later pass (no machine translation).
   `schedule.months[]`), mobile Home panel accessible names, menu open/close
   aria-labels, and the division switch re-applies on `grm:languagechange`.
 - **Sacred areas unchanged**: home accordion mechanics, logo geometries
-  (`syncLogoWindows`, `DEST_LOGO_KEY:v3` rects), isolation/takeover transitions,
+  (`syncLogoWindows`, `DEST_LOGO_KEY` rects), isolation/takeover transitions,
   division↔division morphs, plaque carousel, showreel, intro sequence, and the
   `HOME_INTRO_DEBUG_REPLAY=true` debug flag (main.js:18) are untouched. Header
   markup/design is unchanged on destination pages; Home emits a brand-only,
@@ -657,7 +661,7 @@ load. The destination hero logo is the single source of truth; the destination
 always begins at `scrollY = 0`.
 
 - **Root cause of the "ghost logo" (scrolled source).** Each source page's click
-  handler (`js/main.js`, the six `document` click blocks) stores the outgoing
+  handler (`js/main.js`, "DIVISION <-> DIVISION: source side") stores the outgoing
   logo's **viewport** rect in `sessionStorage["grm-morph-start"]` and the
   destination in `grm-morph-arrival`. The destination arrival block then built
   the `.division-morph-logo` / `.studio-morph-logo` proxy at that **source**
@@ -693,7 +697,7 @@ always begins at `scrollY = 0`.
   (the managed forward click); it is consumed on read, so a bfcache/`history`
   return is untouched — Back restores the outgoing page's scroll (verified:
   `/label/` at `600`), Forward returns the destination to the top.
-- **Cached rects.** `DEST_LOGO_KEY` (`grm-dest-logo:v3`, `js/main.js`) publishes
+- **Cached rects.** `DEST_LOGO_KEY` (`grm-dest-logo:v4`, `js/main.js`) publishes
   the division hero logo's **scroll-0** rect for the Home takeover to aim at; it
   is not used by this path (the destination is measured live).
 - **QA (verified).** All 6 division routes (`Label↔Production↔Liveroom`) × 5
@@ -742,7 +746,8 @@ always begins at `scrollY = 0`.
 - **Colour map (derived from bios).** Marko → Founder [neutral], Creative
   Direction, A&R [label], Production [production]. Jelena → Label, A&R, Releases
   [label]. Nikola → Production, Audio Engineering, Arrangement [production].
-  Sara → Creative Direction, Art Direction [label], Photography [neutral].
+  Milan “Igla” Subotić → Founder [neutral], Video Production/Editing [production],
+  Motion Design [label], Liveroom [liveroom] (replaced the earlier placeholder profile).
   Aleksa → Audio Engineering, Mastering [production]. Counts 4/3/3/3/2.
   **No Liveroom/orange tag** — no member has a live remit (see report).
 - **QA (verified).** 1440/1024 desktop + 620/390/320 mobile, EN + SR: tags stay
@@ -756,3 +761,36 @@ always begins at `scrollY = 0`.
 
 
 
+
+## 15. Debugging + refactor pass (2026-10-20)
+
+Baseline before the pass: `e85eebe` (mobile hero centring). Each step is its
+own commit and was verified with full-page renders + computed styles of every
+element on all 4 pages at 8 viewports (390×844, 430×932, 844×390 touch,
+820×1180, 1024×768, 1280×800, 1440×900, 1920×1080), hover states, and the
+transition suite (Home→division desktop + mobile, 6 division routes).
+
+- **Bug fixes** — Label→Label nav no longer fades + reloads + leaves stale
+  morph keys (the same-page handler was removed); landscape phones hide the
+  decorative scroll cue (it collided with the subtitle); the scroll-progress
+  hairline starts at `left:0` (was −29px); Home intro console logging removed
+  (intro still replays every visit, `HOME_INTRO_DEBUG_REPLAY = true` is
+  intended); the Home glow fade's reduced-motion override now actually wins.
+- **Dead code** — ~550 CSS rules for markup that no longer exists (retired
+  Liveroom layouts, the original studio template, page-hero), 9 orphaned
+  keyframes, dead JS modules (work rail, gallery scrub, active-section nav,
+  pending-YouTube), two unused image preloads. Pixel- and style-identical.
+- **Performance** — PNGs re-encoded losslessly (−2.4 MB, decoded pixels
+  identical); display font served as woff2 (17 KB; TTF kept as fallback);
+  `syncLogoWindows()` now parks after 20 still frames and is re-armed by every
+  geometry trigger (`kickLogoWindows()`); the plaque carousel parks while
+  off-screen.
+- **Structure** — division↔division source handlers are one table-driven
+  handler; division arrivals are `runDivisionMorphArrival()` /
+  `runHomeOverlayArrival()` driven by `DIVISION_ARRIVAL`; schedule CSS lost 269
+  overridden declarations. Behaviour verified identical (event sequences and
+  intervals).
+- **Not done on purpose** — the CSS stays one file (splitting adds requests
+  and cascade-order risk for no visual gain); the Home desktop takeover timing
+  chain (820ms × 3) is unchanged; Label→Production / Liveroom→Production still
+  have no exit fade (open question).
