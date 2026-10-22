@@ -4307,13 +4307,6 @@ html.js .label-about.is-revealed .label-about__rule{ transition-delay:520ms; }
   --lineup-grow:1.06;
   overflow:hidden;
 }
-.label-lineup__head{
-  display:flex;
-  justify-content:space-between;
-  align-items:center;
-  gap:24px;
-}
-.label-lineup__head .section-head__note{ text-align:right; }
 
 .label-lineup__stage{
   container-type:inline-size;
@@ -4571,10 +4564,6 @@ html.js .label-about.is-revealed .label-about__rule{ transition-delay:520ms; }
   .label-lineup__roles{ justify-content:flex-start; margin-top:12px; }
   .label-lineup__bio{ max-width:42ch; }
   .label-lineup__stage[data-active] .label-lineup__credit{ opacity:1; }
-}
-@media (max-width:620px){
-  .label-lineup__head{ flex-direction:column; align-items:flex-start; gap:12px; }
-  .label-lineup__head .section-head__note{ text-align:left; }
 }
 
 @media (prefers-reduced-motion: reduce){
