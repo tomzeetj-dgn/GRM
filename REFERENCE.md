@@ -799,6 +799,9 @@ transition suite (Home→division desktop + mobile, 6 division routes).
 
 It is the first section after the Label hero, above About ("More than a label."); the page order is hero → people → about → releases. The About reveal and scroll travel key off the section's own position, so the order doesn't affect them.
 
+- **Spacing under the hero.** The section uses Liveroom's spacing: `margin-top: calc(-12vh - 16px)` and no section padding, so it tucks into the empty bottom of the hero. This collapses with the hero's own `margin-bottom: -10vh`, and the larger one wins. The hero's height is untouched. At 900px and below the section has a small top padding instead.
+- **Entrance.** It uses the shared Liveroom reveal (`.reveal`, see §10): it materialises from a 24px blur, rising 30px, over 1.4s, staggered word (0) → photo and outlines (1, together) → names (2). The four big words share one wrapper (`.label-lineup__words`), so the reveal's blur and transform never fight the words' own opacity and transform.
+
 Designed on the Claude Design canvas as direction "E · Step forward" and approved on 2026-10-22. The section is still `#people`, but it is now `.label-lineup`.
 
 - **The photo.** One group photo is split into a cut-out per person in `assets/img/people/` (`grzi`, `dzu`, `igla`; 1254² WebP with alpha). Stacked, the three cut-outs reproduce the original photo.

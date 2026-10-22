@@ -96,13 +96,16 @@
          in [data-active] on the stage; js/main.js only sets it.
          ============================================================ -->
     <section class="section label-lineup" id="people" aria-labelledby="label-people-title">
-      <div class="label-lineup__stage reveal" data-lineup>
-        <h2 class="label-lineup__word" id="label-people-title" data-i18n="label.people.title">Behind GRM.</h2>
-        <p class="label-lineup__word label-lineup__nick" data-p="0" aria-hidden="true">Grzi</p>
-        <p class="label-lineup__word label-lineup__nick" data-p="1" aria-hidden="true">Džu</p>
-        <p class="label-lineup__word label-lineup__nick" data-p="2" aria-hidden="true">Igla</p>
+      <div class="label-lineup__stage" data-lineup>
+        <!-- Liveroom-style staggered reveal: word (0) → people (1) → names (2) -->
+        <div class="label-lineup__words reveal">
+          <h2 class="label-lineup__word" id="label-people-title" data-i18n="label.people.title">Behind GRM.</h2>
+          <p class="label-lineup__word label-lineup__nick" data-p="0" aria-hidden="true">Grzi</p>
+          <p class="label-lineup__word label-lineup__nick" data-p="1" aria-hidden="true">Džu</p>
+          <p class="label-lineup__word label-lineup__nick" data-p="2" aria-hidden="true">Igla</p>
+        </div>
 
-        <div class="label-lineup__photo" data-hitmap="../assets/img/people/hitmap.png" role="img" aria-label="Đorđe Grgurović – Grzi, Rajko Bogosavljević – Džu and Milan Subotić – Igla in white quarter-zips; Džu holds a small potted plant" data-i18n-aria-label="label.people.photoAlt">
+        <div class="label-lineup__photo reveal" data-delay="1" data-hitmap="../assets/img/people/hitmap.png" role="img" aria-label="Đorđe Grgurović – Grzi, Rajko Bogosavljević – Džu and Milan Subotić – Igla in white quarter-zips; Džu holds a small potted plant" data-i18n-aria-label="label.people.photoAlt">
           <div class="label-lineup__layer label-lineup__outline" data-p="1"><img src="../assets/img/people/outline-dzu.webp" alt="" width="1254" height="1254" decoding="async" draggable="false"></div>
           <div class="label-lineup__layer label-lineup__person" data-p="0"><img src="../assets/img/people/grzi.webp" alt="" width="1254" height="1254" decoding="async" draggable="false"></div>
           <div class="label-lineup__layer label-lineup__person" data-p="1"><img src="../assets/img/people/dzu.webp" alt="" width="1254" height="1254" decoding="async" draggable="false"></div>
@@ -111,13 +114,13 @@
         <div class="label-lineup__fade" aria-hidden="true"></div>
         <!-- outlines of the two in front + Džu's seam, drawn ABOVE the fade so the glow isn't dimmed by it
              (Džu's own outline stays inside the photo, under the two in front, which hide whatever runs behind them) -->
-        <div class="label-lineup__lines" aria-hidden="true">
+        <div class="label-lineup__lines reveal" data-delay="1" aria-hidden="true">
             <div class="label-lineup__layer label-lineup__outline" data-p="0"><img src="../assets/img/people/outline-grzi.webp" alt="" width="1254" height="1254" decoding="async" draggable="false"></div>
             <div class="label-lineup__layer label-lineup__outline" data-p="2"><img src="../assets/img/people/outline-igla.webp" alt="" width="1254" height="1254" decoding="async" draggable="false"></div>
             <img class="label-lineup__seam" src="../assets/img/people/outline-dzu-seam.webp" alt="" width="1254" height="1254" decoding="async" draggable="false">
         </div>
 
-        <ul class="label-lineup__credits" role="list">
+        <ul class="label-lineup__credits reveal" data-delay="2" role="list">
           <li class="label-lineup__credit" data-p="0">
             <button class="label-lineup__who" type="button" aria-pressed="false" aria-describedby="lineup-bio-0">
               <span class="label-lineup__name">Đorđe Grgurović – Grzi</span>

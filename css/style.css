@@ -4305,7 +4305,20 @@ html.js .label-about.is-revealed .label-about__rule{ transition-delay:520ms; }
 .label-lineup{
   --lineup-snap:cubic-bezier(.22,1,.36,1);   /* starts at once, settles softly */
   --lineup-grow:1.06;
+  /* sit close under the hero, exactly like Liveroom's first section does
+     (`.liveroom-room { margin-top: calc(-12vh - 16px) }`): the hero keeps its own,
+     transition-critical height and this section tucks up into its empty bottom.
+     Collapses with the hero's own `margin-bottom:-10vh` (the larger one wins). */
+  --sec:0px;
+  margin-top:calc(-12vh - 16px);
   overflow:hidden;
+}
+/* the four big words share one reveal wrapper (their own opacity/transform stay free) */
+.label-lineup__words{
+  position:absolute;
+  inset:0;
+  z-index:0;
+  pointer-events:none;
 }
 
 .label-lineup__stage{
@@ -4314,7 +4327,7 @@ html.js .label-about.is-revealed .label-about__rule{ transition-delay:520ms; }
   /* fits the screen's HEIGHT too: header + names + caption ≈ 0.519 × width + ~230px,
      so on a desktop screen the people, names and caption are all in one view */
   width:min(100%, 1440px, max(640px, calc((100svh - 220px) * 1.96)));
-  margin:clamp(12px,1.7vw,24px) auto 0;
+  margin:0 auto;
 }
 
 /* the big word(s), behind the photo */
@@ -4546,6 +4559,7 @@ html.js .label-about.is-revealed .label-about__rule{ transition-delay:520ms; }
 
 /* ---- narrow screens: photo full width, credits stacked, every bio visible ---- */
 @media (max-width:900px){
+  .label-lineup{ margin-top:0; --sec:clamp(48px,13vw,64px); }
   .label-lineup__word{ top:3.5cqw; font-size:27cqw; }
   .label-lineup__photo{ width:100cqw; margin:6cqw 0 0; }
   .label-lineup__lines{ left:0; top:6cqw; width:100cqw; }
