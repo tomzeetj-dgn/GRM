@@ -809,12 +809,13 @@ Designed on the Claude Design canvas as direction "E · Step forward" and approv
 - **State.** `js/main.js` only sets `[data-active="0|1|2"]` on `[data-lineup]`; all motion is in CSS.
   - What changes on selection: the hovered person grows (Grzi and Igla move above everyone, Džu grows behind), the outline fades in, the big word becomes the nickname, the others go to `brightness(.55)` and the credits to opacity .4, and the bio fades in.
   - Input:
-    - **Mouse:** selection uses hover intent (140ms on, 220ms off), based on `pointerType` and not a media query, because touch fires compatibility mouse events.
+    - **Mouse:** hovering a person selects them at once, and leaving the stage clears after 220ms. This is based on `pointerType` and not a media query, because touch fires compatibility mouse events.
     - **Touch:** tapping a person or a name toggles them.
     - **Keyboard:** focus selects only when it is `:focus-visible`, and Escape clears.
-- **Motion.** One ease-in-out curve, `--lineup-ease`.
-  - The person grows over 1.6s, and the dim, outline and word fade over about 1.2s.
-  - The bio has a 250ms delay. The seam fades in after 700ms and fades out quickly.
+- **Motion.** The selection responds the moment the mouse enters a person; only leaving the stage waits 220ms.
+  - The person grows over 700ms on `--lineup-snap`, which starts at once and settles softly. The dim and the outline take about 0.45s, and the bio follows 120ms behind.
+  - Džu's seam fades in at 420ms, once he has nearly finished growing.
+  - Big words hand over in sequence: the outgoing word leaves in 140ms, and the incoming one only starts after that, so two words never overlap.
   - With reduced motion, there are no transitions.
 - **Layout.** The stage is a 1440-wide design box sized in container units (`1cqw` = 14.4px at 1440), so the whole composition scales as one.
   - At 900px and below, the photo goes full width, the credits stack, and every bio is shown.

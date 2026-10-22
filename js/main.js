@@ -1847,8 +1847,8 @@ resize simply misses and falls back to the previous aim point. */
 
 /* ---------- LABEL "Behind GRM": line-up ----------
    Sets [data-active] on the stage; css/style.css does all the motion.
-   Pointer: hover intent (a pause on someone, not a brush across the
-   photo) selects; leaving the stage clears. Keyboard: focusing a
+   Pointer: hovering a person selects at once; leaving the stage
+   clears after a short grace. Keyboard: focusing a
    name selects; tabbing out clears. Touch: tapping a person or a
    name selects, tapping the same one again clears. Self-contained;
    touches nothing outside [data-lineup]. */
@@ -1876,9 +1876,10 @@ resize simply misses and falls back to the previous aim point. */
       else stage.setAttribute("data-active", String(i));
       buttons.forEach(function (b, j) { b.setAttribute("aria-pressed", j === i ? "true" : "false"); });
     }
+    // only used for leaving: a short grace so brushing past the edge doesn't reset the stage
     function intend(i) {
       clearTimeout(timer);
-      timer = setTimeout(function () { set(i); }, i < 0 ? 220 : 140);
+      timer = setTimeout(function () { set(i); }, 220);
     }
     function indexOf(el) {
       var host = el && el.closest && el.closest("[data-p]");
@@ -1890,7 +1891,7 @@ resize simply misses and falls back to the previous aim point. */
     stage.addEventListener("pointerover", function (e) {
       if (e.pointerType !== "mouse") return;
       var t = e.target.closest(".label-lineup__zone, .label-lineup__who");
-      if (t) intend(indexOf(t));
+      if (t) set(indexOf(t));          // immediate: no hover delay on the way in
     });
     stage.addEventListener("pointerleave", function (e) {
       if (e.pointerType === "mouse") intend(-1);
