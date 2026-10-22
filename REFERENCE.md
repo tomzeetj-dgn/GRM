@@ -809,8 +809,9 @@ Designed on the Claude Design canvas as direction "E · Step forward" and approv
 - **State.** `js/main.js` only sets `[data-active="0|1|2"]` on `[data-lineup]`; all motion is in CSS.
   - What changes on selection: the hovered person grows (Grzi and Igla move above everyone, Džu grows behind), the outline fades in, the big word becomes the nickname, the others go to `brightness(.55)` and the credits to opacity .4, and the bio fades in.
   - Input:
-    - **Mouse:** hovering a person selects them at once, and leaving the stage clears after 220ms. This is based on `pointerType` and not a media query, because touch fires compatibility mouse events.
-    - **Touch:** tapping a person or a name toggles them.
+    - **Hit-testing:** hover and tap use the people's actual silhouettes, not boxes. `assets/img/people/hitmap.png` is 314², with one grey level per person (0 none, 85 Grzi, 170 Džu, 255 Igla) showing who you see at each point. While someone is grown, the point is mapped back through their growth first, so their enlarged shape still counts as theirs. The outline glow and the black never trigger anything. If the photo or the cut-outs change, regenerate the hitmap too.
+    - **Mouse:** hovering a person selects them at once, and moving off everyone clears after 160ms. This is based on `pointerType` and not a media query, because touch fires compatibility mouse events. The names below are buttons and select on hover too.
+    - **Touch:** tapping a person or a name toggles them, and tapping the black clears.
     - **Keyboard:** focus selects only when it is `:focus-visible`, and Escape clears.
 - **Motion.** The selection responds the moment the mouse enters a person; only leaving the stage waits 220ms.
   - The person grows over 700ms on `--lineup-snap`, which starts at once and settles softly. The dim and the outline take about 0.45s, and the bio follows 120ms behind.

@@ -4386,15 +4386,8 @@ html.js .label-about.is-revealed .label-about__rule{ transition-delay:520ms; }
   transition:opacity 200ms ease;
   pointer-events:none;
 }
-.label-lineup__zone{
-  position:absolute;
-  top:14.286%;
-  height:65.306%;
-  z-index:5;
-}
-.label-lineup__zone[data-p="0"]{ left:0;       width:33.163%; }
-.label-lineup__zone[data-p="1"]{ left:33.163%; width:33.367%; }
-.label-lineup__zone[data-p="2"]{ left:66.531%; width:33.469%; }
+/* hover / tap is hit-tested against the people themselves (hitmap.png), not boxes */
+.label-lineup__photo.is-over{ cursor:pointer; }
 
 /* the photo melts into the page under the credits */
 .label-lineup__fade{

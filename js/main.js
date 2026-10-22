@@ -1847,10 +1847,17 @@ resize simply misses and falls back to the previous aim point. */
 
 /* ---------- LABEL "Behind GRM": line-up ----------
    Sets [data-active] on the stage; css/style.css does all the motion.
-   Pointer: hovering a person selects at once; leaving the stage
-   clears after a short grace. Keyboard: focusing a
-   name selects; tabbing out clears. Touch: tapping a person or a
-   name selects, tapping the same one again clears. Self-contained;
+   Who is under the pointer is decided by the people themselves, not
+   boxes: hitmap.png (314², one grey level per person: 0 none, 85 Grzi,
+   170 Džu, 255 Igla) says who you actually see at each point of the
+   photo. While someone is stepped forward (grown 1.06 about their own
+   origin), the point is mapped back through that growth first, so their
+   enlarged shape counts as theirs.
+   Mouse: on a person → selected at once; off every person (the black,
+   the outline glow, the gaps) → cleared after a short grace. The names
+   below are buttons and select on hover too. Touch: tapping a person or
+   a name selects; tapping the same one again clears. Keyboard: focusing
+   a name selects (focus-visible only); Escape clears. Self-contained;
    touches nothing outside [data-lineup]. */
 (function () {
   function onReady(fn) {
@@ -1863,10 +1870,62 @@ resize simply misses and falls back to the previous aim point. */
   onReady(function () {
     var stage = document.querySelector("[data-lineup]");
     if (!stage) return;
+    var photo = stage.querySelector(".label-lineup__photo");
     var buttons = Array.prototype.slice.call(stage.querySelectorAll(".label-lineup__who"));
     var active = -1;
     var timer = null;
     var lastPointer = "mouse";
+
+    // growth origins (fractions of the photo) and amount — keep in step with css/style.css
+    var ORIGIN = [[0.268, 1], [0.516, 0.75], [0.761, 1]];
+    var GROW = 1.06;
+    var FRONT_FIRST = [0, 2, 1];          // Grzi and Igla stand in front of Džu
+
+    var map = null, mapN = 0;
+    var src = photo && photo.getAttribute("data-hitmap");
+    if (src) {
+      var img = new Image();
+      img.onload = function () {
+        try {
+          mapN = img.naturalWidth;
+          var c = document.createElement("canvas");
+          c.width = c.height = mapN;
+          var ctx = c.getContext("2d", { willReadFrequently: true });
+          ctx.drawImage(img, 0, 0);
+          var px = ctx.getImageData(0, 0, mapN, mapN).data;
+          map = new Uint8Array(mapN * mapN);
+          for (var k = 0; k < map.length; k++) map[k] = Math.round(px[k * 4] / 85);   // 0..3
+        } catch (err) { map = null; }
+      };
+      img.src = src;
+    }
+
+    function ownerAt(fx, fy) {
+      if (fx < 0 || fy < 0 || fx >= 1 || fy >= 1) return -1;
+      return map[Math.floor(fy * mapN) * mapN + Math.floor(fx * mapN)] - 1;
+    }
+    // which person is really under this point of the photo (fractions 0–1), or -1
+    function personAt(fx, fy) {
+      if (!map) return -1;
+      // the stepped-forward person first, through their growth (Džu only when nobody in front covers the point)
+      if (active >= 0) {
+        var o = ORIGIN[active];
+        var gx = o[0] + (fx - o[0]) / GROW, gy = o[1] + (fy - o[1]) / GROW;
+        if (active !== 1) {
+          if (ownerAt(gx, gy) === active) return active;
+        } else {
+          var front = ownerAt(fx, fy);
+          if (front === 0 || front === 2) return front;
+          if (ownerAt(gx, gy) === 1) return 1;
+        }
+      }
+      var who = ownerAt(fx, fy);
+      return who;
+    }
+    function pointToPerson(e) {
+      var r = photo.getBoundingClientRect();
+      return personAt((e.clientX - r.left) / r.width, (e.clientY - r.top) / r.height);
+    }
 
     function set(i) {
       clearTimeout(timer);
@@ -1876,39 +1935,56 @@ resize simply misses and falls back to the previous aim point. */
       else stage.setAttribute("data-active", String(i));
       buttons.forEach(function (b, j) { b.setAttribute("aria-pressed", j === i ? "true" : "false"); });
     }
-    // only used for leaving: a short grace so brushing past the edge doesn't reset the stage
-    function intend(i) {
+    // only used for leaving: a short grace so crossing a hairline gap doesn't flicker
+    function release() {
       clearTimeout(timer);
-      timer = setTimeout(function () { set(i); }, 220);
+      timer = setTimeout(function () { set(-1); }, 160);
     }
     function indexOf(el) {
       var host = el && el.closest && el.closest("[data-p]");
       return host ? parseInt(host.getAttribute("data-p"), 10) : -1;
     }
 
-    // hover: real mouse / trackpad only (touch fires compatibility mouse events — ignored)
     stage.addEventListener("pointerdown", function (e) { lastPointer = e.pointerType || "mouse"; });
+
+    // mouse over the photo: only the people themselves count
+    photo.addEventListener("pointermove", function (e) {
+      if (e.pointerType !== "mouse") return;
+      var i = pointToPerson(e);
+      photo.classList.toggle("is-over", i >= 0);
+      if (i >= 0) set(i);
+      else if (active >= 0) release();
+    });
+    photo.addEventListener("pointerleave", function (e) {
+      if (e.pointerType !== "mouse") return;
+      photo.classList.remove("is-over");
+      release();
+    });
+    // mouse over a name
     stage.addEventListener("pointerover", function (e) {
       if (e.pointerType !== "mouse") return;
-      var t = e.target.closest(".label-lineup__zone, .label-lineup__who");
-      if (t) set(indexOf(t));          // immediate: no hover delay on the way in
+      var t = e.target.closest(".label-lineup__who");
+      if (t) set(indexOf(t));
     });
-    stage.addEventListener("pointerleave", function (e) {
-      if (e.pointerType === "mouse") intend(-1);
-    });
-
-    // tap / click: select, or clear when tapping the selected person again
-    stage.addEventListener("click", function (e) {
-      var t = e.target.closest(".label-lineup__zone, .label-lineup__who");
-      if (!t) return;
-      var i = indexOf(t);
-      if (lastPointer === "mouse") set(i);
-      else set(i === active ? -1 : i);
+    stage.addEventListener("pointerout", function (e) {
+      if (e.pointerType !== "mouse") return;
+      var t = e.target.closest(".label-lineup__who");
+      if (t && !(e.relatedTarget && t.contains(e.relatedTarget))) release();
     });
 
-    // keyboard
+    // tap / click
+    photo.addEventListener("click", function (e) {
+      var i = pointToPerson(e);
+      if (lastPointer === "mouse") { if (i >= 0) set(i); return; }
+      set(i < 0 || i === active ? -1 : i);
+    });
     buttons.forEach(function (b) {
-      // keyboard focus only — a tap also focuses the button, and the click handler owns taps
+      b.addEventListener("click", function () {
+        var i = indexOf(b);
+        if (lastPointer === "mouse") set(i);
+        else set(i === active ? -1 : i);
+      });
+      // keyboard focus only — a tap also focuses the button, and its click owns taps
       b.addEventListener("focus", function () {
         var kb = true;
         try { kb = b.matches(":focus-visible"); } catch (err) {}
@@ -1916,7 +1992,7 @@ resize simply misses and falls back to the previous aim point. */
       });
     });
     stage.addEventListener("focusout", function (e) {
-      if (!stage.contains(e.relatedTarget)) intend(-1);
+      if (!stage.contains(e.relatedTarget)) release();
     });
     stage.addEventListener("keydown", function (e) {
       if (e.key === "Escape" && active >= 0) set(-1);
