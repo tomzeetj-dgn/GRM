@@ -797,6 +797,8 @@ transition suite (Home→division desktop + mobile, 6 division routes).
 
 ## 16. Label — Behind GRM line-up (replaces the five spreads)
 
+It is the first section after the Label hero, above About ("More than a label."); the page order is hero → people → about → releases. The About reveal and scroll travel key off the section's own position, so the order doesn't affect them.
+
 Designed on the Claude Design canvas as direction "E · Step forward" and approved on 2026-10-22. The section is still `#people`, but it is now `.label-lineup`.
 
 - **The photo.** One group photo is split into a cut-out per person in `assets/img/people/` (`grzi`, `dzu`, `igla`; 1254² WebP with alpha). Stacked, the three cut-outs reproduce the original photo.
