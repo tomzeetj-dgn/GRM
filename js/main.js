@@ -1276,8 +1276,16 @@ resize simply misses and falls back to the previous aim point. */
       if (offset === 0) return tr("schedule.thisWeek", "THIS WEEK");
       if (offset === 1) return tr("schedule.nextWeek", "NEXT WEEK");
       if (offset === -1) return tr("schedule.lastWeek", "LAST WEEK");
-      if (offset > 1) return tr("schedule.inWeeks", "IN {n} WEEKS").replace("{n}", String(NUMBER_WORDS[span] || span));
-      return tr("schedule.weeksAgo", "{n} WEEKS AGO").replace("{n}", String(NUMBER_WORDS[span] || span));
+      var words = (window.GRMi18n && window.GRMi18n.t) ? window.GRMi18n.t("schedule.numberWords") : null;
+      var n = String((Array.isArray(words) ? words : NUMBER_WORDS)[span] || span);
+      // Serbian plural: 2–4 take the "few" form (NEDELJE), 5+ the plain one (NEDELJA); English has one form
+      var few = span >= 2 && span <= 4;
+      if (offset > 1) {
+        var inTpl = tr("schedule.inWeeks", "IN {n} WEEKS");
+        return (few ? tr("schedule.inWeeksFew", inTpl) : inTpl).replace("{n}", n);
+      }
+      var agoTpl = tr("schedule.weeksAgo", "{n} WEEKS AGO");
+      return (few ? tr("schedule.weeksAgoFew", agoTpl) : agoTpl).replace("{n}", n);
     }
 
     function rangeLabel() {
@@ -1290,7 +1298,22 @@ resize simply misses and falls back to the previous aim point. */
       return pad(start.getDate()) + " " + months[start.getMonth()] + "–" + pad(end.getDate()) + " " + months[end.getMonth()];
     }
 
+    function slotLabels() {
+      var days = (window.GRMi18n && window.GRMi18n.t) ? window.GRMi18n.t("liveroom.schedule.dayNames") : null;
+      if (!Array.isArray(days)) days = ["Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday", "Sunday"];
+      var tpl = tr("liveroom.schedule.takenAria", "Taken {day} {from} to {to}");
+      sections.forEach(function (section) {
+        Array.prototype.forEach.call(section.querySelectorAll(".is-taken[data-day]"), function (slot) {
+          slot.setAttribute("aria-label", tpl
+            .replace("{day}", days[+slot.getAttribute("data-day")] || "")
+            .replace("{from}", slot.getAttribute("data-from") || "")
+            .replace("{to}", slot.getAttribute("data-to") || ""));
+        });
+      });
+    }
+
     function swapText() {
+      slotLabels();
       sections.forEach(function (section) {
         var label = section.querySelector("[data-week-label]");
         var range = section.querySelector("[data-week-range]");
@@ -1341,8 +1364,11 @@ resize simply misses and falls back to the previous aim point. */
       if (next) next.addEventListener("click", function () { change(1); });
     });
 
-    /* Re-render the visible week label/range when the language changes. */
+    /* Re-render the visible week label/range when the language changes —
+       and once now, so a page that opens in Serbian isn't left on the
+       authored English label, dates and slot descriptions. */
     document.addEventListener("grm:languagechange", swapText);
+    swapText();
   });
 
   /* ---------- LIVEROOM "The room": ghost materialise ----------
@@ -1358,6 +1384,19 @@ resize simply misses and falls back to the previous aim point. */
       triggers = triggers.concat(Array.prototype.slice.call(sched.querySelectorAll(".lr-room")));
     }
     if (!triggers.length) return;
+
+    // titles whose markup comes from the dictionary (they contain <br>/<em>, so not data-i18n)
+    function paintHtmlTitles() {
+      Array.prototype.forEach.call(document.querySelectorAll("[data-i18n-html-title]"), function (el) {
+        var key = el.getAttribute("data-i18n-html-title");
+        var html = (window.GRMi18n && window.GRMi18n.t) ? window.GRMi18n.t(key) : null;
+        if (typeof html !== "string" || html === key) return;
+        el.innerHTML = html;
+        if (el.dataset.split) { delete el.dataset.split; if (el.classList.contains("lr-split") && !reduced()) splitWords(el); }
+      });
+    }
+    paintHtmlTitles();
+    document.addEventListener("grm:languagechange", paintHtmlTitles);
 
     function splitWords(el) {
       if (el.dataset.split) return;

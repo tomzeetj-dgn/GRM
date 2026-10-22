@@ -491,6 +491,14 @@ approved in a later pass (no machine translation).
   slot `aria-label`s stay English this phase (split-safety + not keyed).
 
 
+### 9a. Liveroom — full Serbian (2026-10-22)
+
+Every string on the Liveroom page, plus the shared week schedule and footer, has Serbian (Latin) copy. Brand names (GRM House, Label, Liveroom) stay in English.
+- **"The room" title.** The title (`liveroom.room.title`) holds markup (`<br>`, `<em>`), so it uses `data-i18n-html-title` rather than `data-i18n`. `js/main.js` writes it before the word-split reveal runs, and re-splits it on a language change.
+- **Week labels.** They use translated number words (`schedule.numberWords`). Serbian has a separate plural for 2–4 (`schedule.inWeeksFew` / `weeksAgoFew`, "ZA DVE NEDELJE") versus 5 and up ("ZA PET NEDELJA"); English has only one form. The months are `schedule.months` (MAJ, AVG, OKT).
+- **TAKEN slots.** Their spoken labels are built from `data-day` / `data-from` / `data-to` with `liveroom.schedule.takenAria` and `dayNames`.
+- **Fixed bug.** The week label, dates and slot labels now render on load as well, so a page that opens in Serbian no longer shows the English authored text until the language is switched.
+
 ## 10. Content reveal system (Liveroom motion — Production + Label)
 
 The Liveroom "ghost materialise" is now the **shared content-reveal language**
