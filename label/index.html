@@ -127,144 +127,83 @@
 
 
     <!-- ============================================================
-         SECTION 02 — THE PEOPLE BEHIND GRM
-         Five placeholder profiles as stacked, alternating editorial
-         spreads — photo left / text right, text left / photo right —
-         with photo and text holding roughly equal halves (~1:1) of
-         each row inside the shared GRM container. Each portrait is a
-         temporary placeholder photograph (see data-credit for the
-         source file), sized to its own aspect ratio. The text block runs a row of
-         expertise "credit labels" (record-sleeve metadata: a dark near-square tag
-         with a hairline border and a 2px division-coloured accent edge), then the
-         member name in the display face, then the biography as two justified-left
-         paragraphs sharing one left edge and a consistent measure. Portraits are
-         temporary placeholders, easy to swap.
+         SECTION 02 — THE PEOPLE BEHIND GRM (line-up)
+         One group photograph split into a cut-out per person
+         (assets/img/people). The huge "BEHIND GRM." sits behind the
+         photo; hovering, focusing or tapping a person steps them
+         forward: their layer grows, a Label-green outline fades in,
+         the big word becomes their nickname, the other two fall into
+         shadow, and their one-sentence bio fades in under their
+         credit. Džu stands behind the other two, so his outline is in
+         two parts: one that grows with him (hidden behind the two in
+         front) and a fixed line on their edges (…-seam). State lives
+         in [data-active] on the stage; js/main.js only sets it.
          ============================================================ -->
-    <section class="section label-people" id="people" aria-labelledby="label-people-title">
+    <section class="section label-lineup" id="people" aria-labelledby="label-people-title">
       <div class="container">
-        <div class="section-head reveal">
-          <div>
-            <p class="eyebrow" data-i18n="label.people.eyebrow">02 / The people</p>
-            <h2 class="section-head__title" id="label-people-title" data-i18n="label.people.title">Behind GRM.</h2>
-          </div>
+        <div class="label-lineup__head reveal">
+          <p class="eyebrow" data-i18n="label.people.eyebrow">02 / The people</p>
           <p class="section-head__note" data-i18n="label.people.note">Different backgrounds. Shared obsession.</p>
         </div>
+      </div>
 
-        <ul class="label-people__list" role="list">
+      <div class="label-lineup__stage reveal" data-lineup>
+        <h2 class="label-lineup__word" id="label-people-title" data-i18n="label.people.title">Behind GRM.</h2>
+        <p class="label-lineup__word label-lineup__nick" data-p="0" aria-hidden="true">Grzi</p>
+        <p class="label-lineup__word label-lineup__nick" data-p="1" aria-hidden="true">Džu</p>
+        <p class="label-lineup__word label-lineup__nick" data-p="2" aria-hidden="true">Igla</p>
 
-          <li class="label-people__entry reveal">
-            <figure class="label-people__portrait">
-              <div class="label-people__shot">
-                <img src="../assets/img/Behind GRM - 1.png" alt="Portrait photograph, Behind GRM profile 1" width="1246" height="1246" loading="lazy" decoding="async" draggable="false" data-credit="Portrait — source: assets/img/Behind GRM - 1.png">
-              </div>
-            </figure>
-            <div class="label-people__intro">
-              <div class="label-people__role">
-                <ul class="label-people__credits" role="list" aria-label="Expertise" data-i18n-aria-label="label.people.credits.aria">
-                  <li class="credit-label" data-cat="neutral" data-i18n="label.people.credit.founder">Founder</li>
-                  <li class="credit-label" data-cat="label" data-i18n="label.people.credit.creativeDirection">Creative Direction</li>
-                  <li class="credit-label" data-cat="label" data-i18n="label.people.credit.anr">A&amp;R</li>
-                  <li class="credit-label" data-cat="production" data-i18n="label.people.credit.production">Production</li>
-                </ul>
-              </div>
-              <h3 class="label-people__name">Marko Petrović</h3>
-              <div class="label-people__bio">
-                <p>Marko founded GRM from a home studio on a simple belief — that small labels can move culture. Years of engineering and production work across rock, electronic and hip-hop taught him how ideas become records, and why the people behind them matter as much as the sound. He still starts most days in the control room before the admin begins.</p>
-                <p>As creative director he sets GRM's direction: which artists sign, how the release calendar is shaped, and how each record should feel before a note is even mixed. He also brokers collaborations between producers and the visual team, keeping room for the sessions — and the arguments — that make a project worth putting out.</p>
-              </div>
-            </div>
+        <div class="label-lineup__photo" role="img" aria-label="Đorđe Grgurović – Grzi, Rajko Bogosavljević – Džu and Milan Subotić – Igla in white quarter-zips; Džu holds a small potted plant" data-i18n-aria-label="label.people.photoAlt">
+          <div class="label-lineup__layer label-lineup__outline" data-p="0"><img src="../assets/img/people/outline-grzi.webp" alt="" width="1254" height="1254" decoding="async" draggable="false"></div>
+          <div class="label-lineup__layer label-lineup__outline" data-p="1"><img src="../assets/img/people/outline-dzu.webp" alt="" width="1254" height="1254" decoding="async" draggable="false"></div>
+          <div class="label-lineup__layer label-lineup__outline" data-p="2"><img src="../assets/img/people/outline-igla.webp" alt="" width="1254" height="1254" decoding="async" draggable="false"></div>
+          <div class="label-lineup__layer label-lineup__person" data-p="0"><img src="../assets/img/people/grzi.webp" alt="" width="1254" height="1254" decoding="async" draggable="false"></div>
+          <div class="label-lineup__layer label-lineup__person" data-p="1"><img src="../assets/img/people/dzu.webp" alt="" width="1254" height="1254" decoding="async" draggable="false"></div>
+          <div class="label-lineup__layer label-lineup__person" data-p="2"><img src="../assets/img/people/igla.webp" alt="" width="1254" height="1254" decoding="async" draggable="false"></div>
+          <img class="label-lineup__seam" src="../assets/img/people/outline-dzu-seam.webp" alt="" width="1254" height="1254" decoding="async" draggable="false">
+          <span class="label-lineup__zone" data-p="0" aria-hidden="true"></span>
+          <span class="label-lineup__zone" data-p="1" aria-hidden="true"></span>
+          <span class="label-lineup__zone" data-p="2" aria-hidden="true"></span>
+        </div>
+        <div class="label-lineup__fade" aria-hidden="true"></div>
+
+        <ul class="label-lineup__credits" role="list">
+          <li class="label-lineup__credit" data-p="0">
+            <button class="label-lineup__who" type="button" aria-pressed="false" aria-describedby="lineup-bio-0">
+              <span class="label-lineup__num">01</span>
+              <span class="label-lineup__name">Đorđe Grgurović – Grzi</span>
+            </button>
+            <ul class="label-people__credits" role="list" aria-label="Expertise" data-i18n-aria-label="label.people.credits.aria">
+              <li class="credit-label" data-cat="label" data-i18n="label.people.credit.label">Label</li>
+              <li class="credit-label" data-cat="label" data-i18n="label.people.credit.anr">A&amp;R</li>
+              <li class="credit-label" data-cat="label" data-i18n="label.people.credit.releases">Releases</li>
+            </ul>
+            <p class="label-lineup__bio" id="lineup-bio-0" data-i18n="label.people.bio.grzi">Grzi came up through record shops, fanzines and freelance promotion, and now runs GRM’s day-to-day — schedules, artist relations, budgets and rights.</p>
           </li>
-
-          <li class="label-people__entry label-people__entry--flip reveal">
-            <figure class="label-people__portrait">
-              <div class="label-people__shot">
-                <img src="../assets/img/Behind GRM - 2.png" alt="Portrait photograph, Behind GRM profile 2" width="1254" height="1254" loading="lazy" decoding="async" draggable="false" data-credit="Portrait — source: assets/img/Behind GRM - 2.png">
-              </div>
-            </figure>
-            <div class="label-people__intro">
-              <div class="label-people__role">
-                <ul class="label-people__credits" role="list" aria-label="Expertise" data-i18n-aria-label="label.people.credits.aria">
-                  <li class="credit-label" data-cat="label" data-i18n="label.people.credit.label">Label</li>
-                  <li class="credit-label" data-cat="label" data-i18n="label.people.credit.anr">A&amp;R</li>
-                  <li class="credit-label" data-cat="label" data-i18n="label.people.credit.releases">Releases</li>
-                </ul>
-              </div>
-              <h3 class="label-people__name">Jelena Ilić</h3>
-              <div class="label-people__bio">
-                <p>Jelena grew up in record shops and fanzines, and spent years freelancing across promotion, licensing and tour logistics before it was ever called management. That patchwork background gives her a practical eye for what a release really needs — not just how it sounds, but how it reaches the people who should hear it.</p>
-                <p>At GRM she runs the day-to-day machine: release schedules, artist relations, budgets, rights, and the quiet coordination that holds a band's journey together. She's often the first person artists call, and the one who turns a finished master into a live record — catalogue entries, distribution, press and partners included.</p>
-              </div>
-            </div>
+          <li class="label-lineup__credit" data-p="1">
+            <button class="label-lineup__who" type="button" aria-pressed="false" aria-describedby="lineup-bio-1">
+              <span class="label-lineup__num">02</span>
+              <span class="label-lineup__name">Rajko Bogosavljević – Džu</span>
+            </button>
+            <ul class="label-people__credits" role="list" aria-label="Expertise" data-i18n-aria-label="label.people.credits.aria">
+              <li class="credit-label" data-cat="label" data-i18n="label.people.credit.creativeDirection">Creative Direction</li>
+              <li class="credit-label" data-cat="label" data-i18n="label.people.credit.anr">A&amp;R</li>
+              <li class="credit-label" data-cat="production" data-i18n="label.people.credit.production">Production</li>
+            </ul>
+            <p class="label-lineup__bio" id="lineup-bio-1" data-i18n="label.people.bio.dzu">Džu started GRM on a simple belief that small labels can move culture, and as creative director he shapes who signs and how every record should feel.</p>
           </li>
-
-          <li class="label-people__entry reveal">
-            <figure class="label-people__portrait">
-              <div class="label-people__shot">
-                <img src="../assets/img/Behind GRM - 3.png" alt="Portrait photograph, Behind GRM profile 3" width="1254" height="1254" loading="lazy" decoding="async" draggable="false" data-credit="Portrait — source: assets/img/Behind GRM - 3.png">
-              </div>
-            </figure>
-            <div class="label-people__intro">
-              <div class="label-people__role">
-                <ul class="label-people__credits" role="list" aria-label="Expertise" data-i18n-aria-label="label.people.credits.aria">
-                  <li class="credit-label" data-cat="production" data-i18n="label.people.credit.production">Production</li>
-                  <li class="credit-label" data-cat="production" data-i18n="label.people.credit.audioEngineering">Audio Engineering</li>
-                  <li class="credit-label" data-cat="production" data-i18n="label.people.credit.arrangement">Arrangement</li>
-                </ul>
-              </div>
-              <h3 class="label-people__name">Nikola Vasić</h3>
-              <div class="label-people__bio">
-                <p>Nikola's production style was shaped in small Belgrade rehearsal rooms, then refined over a decade of studio work spanning electronic, indie and hip-hop. He cares about the space between notes as much as the notes themselves, and spends his sessions chasing performances that sound alive even at their cleanest.</p>
-                <p>Inside GRM he produces, arranges and records across most of the roster, guiding projects from demo to master while keeping the artist's voice central. He also mentors younger engineers in the studio, building the sessions where GRM's signature — weight, warmth and small, kept imperfections — actually gets made.</p>
-              </div>
-            </div>
+          <li class="label-lineup__credit" data-p="2">
+            <button class="label-lineup__who" type="button" aria-pressed="false" aria-describedby="lineup-bio-2">
+              <span class="label-lineup__num">03</span>
+              <span class="label-lineup__name">Milan Subotić – Igla</span>
+            </button>
+            <ul class="label-people__credits" role="list" aria-label="Expertise" data-i18n-aria-label="label.people.credits.aria">
+              <li class="credit-label" data-cat="production" data-i18n="label.people.credit.videoProductionEditing">Video Production/Editing</li>
+              <li class="credit-label" data-cat="label" data-i18n="label.people.credit.motionDesign">Motion Design</li>
+              <li class="credit-label" data-cat="liveroom" data-i18n="label.people.credit.liveroom">Liveroom</li>
+            </ul>
+            <p class="label-lineup__bio" id="lineup-bio-2" data-i18n="label.people.bio.igla">A motion designer and video editor since 2014, Igla co-founded GRM House, where he leads video production and runs the Liveroom.</p>
           </li>
-
-          <li class="label-people__entry label-people__entry--flip reveal">
-            <figure class="label-people__portrait">
-              <div class="label-people__shot">
-                <img src="../assets/img/Behind GRM - 4.png" alt="Portrait photograph, Behind GRM profile 4" width="1254" height="1254" loading="lazy" decoding="async" draggable="false" data-credit="Portrait — source: assets/img/Behind GRM - 4.png">
-              </div>
-            </figure>
-            <div class="label-people__intro">
-              <div class="label-people__role">
-                <ul class="label-people__credits" role="list" aria-label="Expertise" data-i18n-aria-label="label.people.credits.aria">
-                  <li class="credit-label" data-cat="neutral" data-i18n="label.people.credit.founder">Founder</li>
-                  <li class="credit-label" data-cat="production" data-i18n="label.people.credit.videoProductionEditing">Video Production/Editing</li>
-                  <li class="credit-label" data-cat="label" data-i18n="label.people.credit.motionDesign">Motion Design</li>
-                  <li class="credit-label" data-cat="liveroom" data-i18n="label.people.credit.liveroom">Liveroom</li>
-                </ul>
-              </div>
-              <h3 class="label-people__name">Milan “Igla” Subotić</h3>
-              <div class="label-people__bio">
-                <p data-i18n="label.people.bio.4.1">Milan Subotić, better known by his pseudonym “Igla”, was born in Belgrade in 1991. He graduated in Psychology from the Faculty of Media and Communications (FMK) in 2019. Since 2014, he has been working in animation (motion graphics design) and video editing. He has two demo releases and one studio album, released through the record label Aristokrat Muzik.</p>
-                <p data-i18n="label.people.bio.4.2">Since 2020, he has been involved in developing visual identities and creating visuals for various events, festivals and concerts. He has also worked on visual content for a range of television channels.</p>
-                <p data-i18n="label.people.bio.4.3">He is one of the founders of GRM House, where he is responsible for video production and Live Room.</p>
-                <p data-i18n="label.people.bio.4.4">He approaches every project and client professionally, with dedication and a personal touch, aiming to understand their needs as thoroughly as possible and bring their vision to life as faithfully as possible. He believes in open communication, a friendly approach, and collaboration without unnecessary pressure, creating space for creativity and high-quality results.</p>
-              </div>
-            </div>
-          </li>
-
-          <li class="label-people__entry reveal">
-            <figure class="label-people__portrait">
-              <div class="label-people__shot">
-                <img src="../assets/img/Behind GRM - 5.png" alt="Portrait photograph, Behind GRM profile 5" width="1254" height="1254" loading="lazy" decoding="async" draggable="false" data-credit="Portrait — source: assets/img/Behind GRM - 5.png">
-              </div>
-            </figure>
-            <div class="label-people__intro">
-              <div class="label-people__role">
-                <ul class="label-people__credits" role="list" aria-label="Expertise" data-i18n-aria-label="label.people.credits.aria">
-                  <li class="credit-label" data-cat="production" data-i18n="label.people.credit.audioEngineering">Audio Engineering</li>
-                  <li class="credit-label" data-cat="production" data-i18n="label.people.credit.mastering">Mastering</li>
-                </ul>
-              </div>
-              <h3 class="label-people__name">Aleksa Nikolić</h3>
-              <div class="label-people__bio">
-                <p>Aleksa trained in classical recording before falling for the messier world of independent music. His ear is built on room acoustics, vintage chains and long, careful sessions — the kind of patient engineering that lets a take breathe instead of just getting it loud.</p>
-                <p>He handles recording, mixing and the final stages of GRM's releases, and keeps the label's technical backbone running. He also works with artists on reference mixes so their rough ideas translate to loudspeakers, headphones and club systems without losing what made them exciting in the first place.</p>
-              </div>
-            </div>
-          </li>
-
         </ul>
       </div>
     </section>

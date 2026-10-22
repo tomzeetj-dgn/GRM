@@ -3937,7 +3937,7 @@ body.theme-label .division-minimal-hero{
 /* No local width override on .label-about > .container: it deliberately
    inherits the SHARED site container — `var(--container)` =
    min(1400px, 100% - 2 * var(--gutter)) centred with margin-inline:auto —
-   exactly as .label-people and .label-releases do. It used to be forced to
+   exactly as .label-lineup and .label-releases do. It used to be forced to
    width:100%, which threw the site gutter away entirely and put the
    eyebrow and headline hard against the viewport edge at x=0 on every
    width; the right edge then fell wherever the grid happened to end,
@@ -4287,95 +4287,250 @@ html.js .label-about.is-revealed .label-about__rule{ transition-delay:520ms; }
   .label-about__frame{ will-change:auto; }
 }
 
-/* --- 3 · THE PEOPLE BEHIND GRM ------------------------------
-   Five stacked, alternating editorial spreads inside the shared
-   GRM container — photo left / text right, then text left / photo
-   right. Photo and text each hold roughly one half of the row
-   (≈1:1). Each portrait is a REAL transparent cutout (subject
-   lifted from its photo via segmentation, saved as alpha PNG) —
-   no simulated background removal — floating on the page
-   background. The text column carries a numbered green role
-   label (01 / ROLE), the name in the display face and a biography
-   set as two left-aligned paragraphs on a consistent measure. No
-   cards or boxes; only a hairline between spreads. */
+/* --- 3 · THE PEOPLE BEHIND GRM — line-up ----------------------
+   One group photo split into a cut-out per person (assets/img/people,
+   1254² WebP layers that stack back into the original photo). Design
+   box: a 1440-wide stage; everything inside is sized in container
+   units (1cqw = 14.4px at 1440) so the composition scales as one.
+   The huge "BEHIND GRM." sits behind the photo. Hover / focus / tap a
+   person → [data-active="i"] on the stage: their layer grows (Džu
+   behind the two in front), a Label-green outline fades in, the big
+   word becomes their nickname, the other two fall into shadow, and
+   their one-sentence bio fades in. Motion is deliberately slow and
+   even (one ease-in-out curve). Džu's outline is two images: one that
+   grows with him under the two in front, and a fixed seam line on
+   their edges that only settles in once he has grown. */
+.label-lineup{
+  --lineup-ease:cubic-bezier(.45,.05,.25,1);
+  --lineup-grow:1.06;
+  overflow:hidden;
+}
+.label-lineup__head{
+  display:flex;
+  justify-content:space-between;
+  align-items:center;
+  gap:24px;
+}
+.label-lineup__head .section-head__note{ text-align:right; }
 
-.label-people__list{
-  display:grid;
+.label-lineup__stage{
+  container-type:inline-size;
+  position:relative;
+  width:min(100%,1440px);
+  margin:clamp(12px,1.7vw,24px) auto 0;
+}
+
+/* the big word(s), behind the photo */
+.label-lineup__word{
+  position:absolute;
+  left:50%;
+  top:4.861cqw;
+  z-index:0;
   margin:0;
+  font-family:var(--font-display);
+  font-stretch:62.5%;
+  font-weight:900;
+  font-size:20.833cqw;
+  line-height:.82;
+  letter-spacing:.005em;
+  text-transform:uppercase;
+  white-space:nowrap;
+  color:var(--credit-label);
+  transform:translateX(-50%);
+  transition:opacity 1200ms var(--lineup-ease);
+  pointer-events:none;
+}
+.label-lineup__nick{
+  opacity:0;
+  transform:translate(-50%,.833cqw);
+  transition:opacity 1200ms var(--lineup-ease), transform 1600ms var(--lineup-ease);
+}
+
+/* the photo: 980/1440 of the stage, a square */
+.label-lineup__photo{
+  position:relative;
+  z-index:1;
+  width:68.056cqw;
+  aspect-ratio:1;
+  margin:1.389cqw 0 0 15.972cqw;
+}
+.label-lineup__layer{
+  position:absolute;
+  inset:0;
+  transform-origin:var(--origin);
+  transition:transform 1600ms var(--lineup-ease), filter 1400ms var(--lineup-ease);
+  will-change:transform;
+  backface-visibility:hidden;
+  pointer-events:none;
+}
+.label-lineup__layer img,
+.label-lineup__seam{
+  display:block;
+  width:100%;
+  height:100%;
+}
+.label-lineup__layer[data-p="0"]{ --origin:26.8% 100%; z-index:2; }
+.label-lineup__layer[data-p="1"]{ --origin:51.6% 75%;  z-index:1; }
+.label-lineup__layer[data-p="2"]{ --origin:76.1% 100%; z-index:2; }
+.label-lineup__outline img{
+  opacity:0;
+  transition:opacity 1200ms var(--lineup-ease) 150ms;
+}
+.label-lineup__seam{
+  position:absolute;
+  inset:0;
+  z-index:4;
+  opacity:0;
+  transition:opacity 350ms ease;
+  pointer-events:none;
+}
+.label-lineup__zone{
+  position:absolute;
+  top:14.286%;
+  height:65.306%;
+  z-index:5;
+}
+.label-lineup__zone[data-p="0"]{ left:0;       width:33.163%; }
+.label-lineup__zone[data-p="1"]{ left:33.163%; width:33.367%; }
+.label-lineup__zone[data-p="2"]{ left:66.531%; width:33.469%; }
+
+/* the photo melts into the page under the credits */
+.label-lineup__fade{
+  position:absolute;
+  left:0;
+  right:0;
+  top:36.111cqw;
+  height:34.722cqw;
+  z-index:2;
+  pointer-events:none;
+  background:linear-gradient(to bottom, rgba(5,5,5,0) 0%, rgba(5,5,5,.55) 34%, rgba(5,5,5,.94) 62%, var(--bg) 78%);
+}
+
+/* credits: three film-poster columns over the fade */
+.label-lineup__credits{
+  position:relative;
+  z-index:3;
+  display:grid;
+  grid-template-columns:repeat(3,26.389cqw);
+  column-gap:2.778cqw;
+  margin:-14.583cqw 0 0 7.639cqw;
   padding:0;
   list-style:none;
 }
-
-.label-people__entry{
-  display:grid;
-  grid-template-columns:repeat(2,minmax(0,1fr));
-  column-gap:clamp(32px,4vw,72px);
-  align-items:center;
-  padding:clamp(32px,5.2vh,54px) 0;
-  min-width:0;
-}
-.label-people__entry + .label-people__entry{
-  border-top:1px solid var(--border);
-}
-
-.label-people__portrait{
-  margin:0;
-  min-width:0;
-}
-.label-people__entry--flip .label-people__portrait{
-  grid-column:2;
-  grid-row:1;
-}
-.label-people__entry--flip .label-people__intro{
-  grid-column:1;
-  grid-row:1;
-}
-
-.label-people__shot{
+.label-lineup__credit{
   display:flex;
+  flex-direction:column;
   align-items:center;
-  justify-content:center;
-}
-.label-people__shot img{
-  display:block;
-  max-width:100%;
-  height:auto;
-  object-fit:contain;
-}
-
-/* gentle reveal: the photo settles into place and colour as the
-   spread enters the viewport (existing .reveal drives this) */
-html.js .label-people__entry .label-people__shot img{
-  transform:scale(1.06);
-  filter:saturate(.82);
-  transition:transform 1100ms var(--ease-out), filter 1100ms var(--ease-out);
-}
-html.js .label-people__entry.in-view .label-people__shot img{
-  transform:scale(1);
-  filter:saturate(1);
-}
-
-/* restrained hover — scale only, no layout shift */
-@media (hover:hover){
-  html.js .label-people__entry.in-view:hover .label-people__shot img{
-    transform:scale(1.025);
-  }
-}
-
-
-/* the role label, name and both bio paragraphs form one cohesive
-   text block: every line shares the intro's left edge, spacing is
-   tight and deliberate, and the whole block is vertically centred
-   against its photograph. The bio keeps a consistent measure so a
-   paragraph never stretches across the full column. */
-.label-people__intro{
+  text-align:center;
   min-width:0;
+  transition:opacity 1200ms var(--lineup-ease);
+}
+.label-lineup__who{
+  display:flex;
+  flex-direction:column;
+  align-items:center;
+  gap:10px;
+  margin:0;
+  padding:0;
+  border:0;
+  background:none;
+  color:var(--text);
+  font:inherit;
+  cursor:pointer;
+}
+.label-lineup__who:focus-visible{ outline:1px solid var(--credit-label); outline-offset:8px; }
+.label-lineup__num{
+  font-size:var(--f-label);
+  font-weight:500;
+  letter-spacing:.2em;
+  color:var(--text-faint);
+  transition:color 1000ms ease;
+}
+.label-lineup__name{
+  font-family:var(--font-display);
+  font-stretch:62.5%;
+  font-weight:800;
+  font-size:clamp(1.5rem,2.5cqw,2.25rem);
+  line-height:.92;
+  letter-spacing:.005em;
+  text-transform:uppercase;
+  white-space:nowrap;
+}
+.label-lineup__credit .label-people__credits{
+  justify-content:center;
+  gap:6px;
+  margin-top:14px;
+}
+.label-lineup__bio{
+  max-width:340px;
+  margin:16px 0 0;
+  color:var(--label-copy);
+  font-size:.9rem;
+  line-height:1.7;
+  opacity:0;
+  transform:translateY(8px);
+  transition:opacity 1100ms var(--lineup-ease) 250ms, transform 1400ms var(--lineup-ease) 250ms;
 }
 
-/* the credit-label row opens each profile, above the name — the tags are the
-   only colour here. */
-.label-people__role{
-  margin:0 0 clamp(13px,1.9vh,17px) 0;
+/* ---- state: one person selected ---- */
+.label-lineup__stage[data-active] .label-lineup__word:not(.label-lineup__nick){ opacity:0; }
+.label-lineup__stage[data-active] .label-lineup__person{ filter:brightness(.55); }
+.label-lineup__stage[data-active] .label-lineup__credit{ opacity:.4; }
+.label-lineup__stage[data-active="0"] [data-p="0"],
+.label-lineup__stage[data-active="1"] [data-p="1"],
+.label-lineup__stage[data-active="2"] [data-p="2"]{ opacity:1; filter:none; }
+.label-lineup__stage[data-active="0"] .label-lineup__nick[data-p="0"],
+.label-lineup__stage[data-active="1"] .label-lineup__nick[data-p="1"],
+.label-lineup__stage[data-active="2"] .label-lineup__nick[data-p="2"]{ transform:translate(-50%,0); }
+.label-lineup__stage[data-active="0"] .label-lineup__layer[data-p="0"],
+.label-lineup__stage[data-active="2"] .label-lineup__layer[data-p="2"]{ transform:scale(var(--lineup-grow)); z-index:3; }
+/* Džu grows behind the other two; the seam line is drawn for exactly this size */
+.label-lineup__stage[data-active="1"] .label-lineup__layer[data-p="1"]{ transform:scale(1.06); }
+.label-lineup__stage[data-active="0"] .label-lineup__outline[data-p="0"] img,
+.label-lineup__stage[data-active="1"] .label-lineup__outline[data-p="1"] img,
+.label-lineup__stage[data-active="2"] .label-lineup__outline[data-p="2"] img{ opacity:1; }
+.label-lineup__stage[data-active="1"] .label-lineup__seam{
+  opacity:1;
+  transition:opacity 900ms var(--lineup-ease) 700ms;
+}
+.label-lineup__stage[data-active="0"] .label-lineup__credit[data-p="0"] .label-lineup__num,
+.label-lineup__stage[data-active="1"] .label-lineup__credit[data-p="1"] .label-lineup__num,
+.label-lineup__stage[data-active="2"] .label-lineup__credit[data-p="2"] .label-lineup__num{ color:var(--credit-label); }
+.label-lineup__stage[data-active="0"] .label-lineup__credit[data-p="0"] .label-lineup__bio,
+.label-lineup__stage[data-active="1"] .label-lineup__credit[data-p="1"] .label-lineup__bio,
+.label-lineup__stage[data-active="2"] .label-lineup__credit[data-p="2"] .label-lineup__bio{ opacity:1; transform:none; }
+
+/* ---- narrow screens: photo full width, credits stacked, every bio visible ---- */
+@media (max-width:900px){
+  .label-lineup__word{ top:3.5cqw; font-size:27cqw; }
+  .label-lineup__photo{ width:100cqw; margin:6cqw 0 0; }
+  .label-lineup__fade{ top:58cqw; height:50cqw; }
+  .label-lineup__credits{
+    grid-template-columns:1fr;
+    row-gap:clamp(36px,9vw,48px);
+    width:var(--container);
+    margin:-22cqw auto 0;
+  }
+  .label-lineup__credit{ align-items:flex-start; text-align:left; }
+  .label-lineup__who{ align-items:flex-start; gap:8px; }
+  .label-lineup__name{ font-size:clamp(1.9rem,8.4vw,2.6rem); white-space:normal; }
+  .label-lineup__credit .label-people__credits{ justify-content:flex-start; }
+  .label-lineup__bio{ max-width:42ch; opacity:1; transform:none; font-size:.95rem; }
+  .label-lineup__stage[data-active] .label-lineup__credit{ opacity:1; }
+}
+@media (max-width:620px){
+  .label-lineup__head{ flex-direction:column; align-items:flex-start; gap:12px; }
+  .label-lineup__head .section-head__note{ text-align:left; }
+}
+
+@media (prefers-reduced-motion: reduce){
+  .label-lineup__word,
+  .label-lineup__layer,
+  .label-lineup__outline img,
+  .label-lineup__seam,
+  .label-lineup__credit,
+  .label-lineup__num,
+  .label-lineup__bio{ transition:none !important; }
 }
 
 /* ---------- expertise credit labels ----------
@@ -4430,42 +4585,16 @@ html.js .label-people__entry.in-view .label-people__shot img{
 .credit-label[data-cat="liveroom"]{ --credit-accent:var(--credit-live); }
 .credit-label[data-cat="neutral"]{ --credit-accent:var(--credit-neutral); }
 
-/* restrained profile-level response: hovering the profile lifts the tag
-   borders and the accent a touch. No glow, no scale, no per-tag motion. */
-@media (hover:hover){
-  .label-people__entry:hover .credit-label{
-    border-color:rgba(236,233,226,.34);
-    background:rgba(14,14,14,.9);
-    color:var(--text);
-  }
-  .label-people__entry:hover .credit-label::before{
-    opacity:1;
-    filter:brightness(1.18);
-  }
+/* the selected person's tags lift a touch: borders, text and accent edge */
+.label-lineup__stage[data-active="0"] .label-lineup__credit[data-p="0"] .credit-label,
+.label-lineup__stage[data-active="1"] .label-lineup__credit[data-p="1"] .credit-label,
+.label-lineup__stage[data-active="2"] .label-lineup__credit[data-p="2"] .credit-label{
+  border-color:rgba(236,233,226,.34);
+  background:rgba(14,14,14,.9);
+  color:var(--text);
 }
 
-.label-people__name{
-  margin:0 0 clamp(16px,2.4vh,24px) 0;
-  font-family:var(--font-display);
-  font-stretch:62.5%;
-  font-weight:800;
-  font-size:clamp(2.2rem,3.8vw,3.8rem);
-  line-height:0.9;
-  letter-spacing:.005em;
-  text-transform:uppercase;
-}
-.label-people__bio{
-  max-width:41ch;
-}
-.label-people__bio p{
-  margin:0 0 clamp(10px,1.5vh,14px) 0;
-  color:var(--label-copy);
-  font-size:clamp(.98rem,1.06vw,1.06rem);
-  line-height:1.75;
-}
-.label-people__bio p:last-child{
-  margin-bottom:0;
-}
+
 
 
 /* --- 4 · SELECTED RELEASES ---------------------------------- */
@@ -4555,55 +4684,15 @@ html.js .label-people__entry.in-view .label-people__shot img{
 /* --- responsive -------------------------------------------- */
 
 @media (max-width:900px){
-  /* tablet: keep the even split, ease the gap and type */
-  .label-people__entry{
-    column-gap:clamp(24px,3.5vw,40px);
-    padding:clamp(28px,4.6vh,38px) 0;
-  }
-  .label-people__name{
-    font-size:clamp(1.9rem,3.4vw,2.6rem);
-  }
-  .label-people__bio{
-    max-width:none;
-  }
   .label-releases__grid{
     grid-template-columns:repeat(2,minmax(0,1fr));
   }
 }
 
 @media (max-width:620px){
-  /* mobile: stack each profile — photo, role, name, biography — on
-     the site's own gutters; the flip side is neutralised so the
-     order stays true and images stay within the viewport */
-  .label-people__entry{
-    grid-template-columns:1fr;
-    padding:clamp(28px,7vw,36px) 0;
-  }
-  .label-people__portrait,
-  .label-people__entry--flip .label-people__portrait{
-    grid-column:auto;
-    grid-row:auto;
-  }
-  .label-people__entry--flip .label-people__intro{
-    grid-column:auto;
-    grid-row:auto;
-  }
-  .label-people__intro{
-    min-width:0;
-  }
-  .label-people__role{
-    margin:clamp(14px,3.4vw,18px) 0 clamp(12px,3vw,15px);
-  }
   .credit-label{
     height:25px;
     padding:0 10px;
-  }
-  .label-people__name{
-    margin-bottom:clamp(12px,4vw,14px);
-    font-size:clamp(1.8rem,8vw,2.2rem);
-  }
-  .label-people__bio{
-    max-width:none;
   }
   .label-releases__grid{
     grid-template-columns:1fr;
@@ -4611,7 +4700,6 @@ html.js .label-people__entry.in-view .label-people__shot img{
 }
 
 @media (prefers-reduced-motion: reduce){
-  .label-people__shot img,
   .label-releases__item,
   .label-releases__media img,
   .label-releases__media::after,

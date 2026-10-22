@@ -794,3 +794,32 @@ transition suite (Home→division desktop + mobile, 6 division routes).
   and cascade-order risk for no visual gain); the Home desktop takeover timing
   chain (820ms × 3) is unchanged; Label→Production / Liveroom→Production still
   have no exit fade (open question).
+
+## 16. Label — Behind GRM line-up (replaces the five spreads)
+
+Designed on the Claude Design canvas as direction "E · Step forward" and approved on 2026-10-22. The section is still `#people`, but it is now `.label-lineup`.
+
+- **The photo.** One group photo is split into a cut-out per person in `assets/img/people/` (`grzi`, `dzu`, `igla`; 1254² WebP with alpha). Stacked, the three cut-outs reproduce the original photo.
+  - Džu's layer runs about 16px under the two in front, and Grzi's runs about 8px under Igla's, so no seam ever shows.
+  - The split came from person segmentation and was hand-tuned at the ears and beards. If the photo changes, the cut-outs and outlines must be regenerated.
+- **Outlines.** Each `outline-*.webp` is a Label-green line plus a soft glow, drawn outside that person's silhouette.
+  - Džu stands behind the other two, so his outline is in two parts:
+    - `outline-dzu.webp` grows with him and sits under the two in front, which hide whatever runs behind them.
+    - `outline-dzu-seam.webp` is a fixed line on their edges, drawn for exactly his grown size (1.06). If you change his growth, regenerate the seam.
+- **State.** `js/main.js` only sets `[data-active="0|1|2"]` on `[data-lineup]`; all motion is in CSS.
+  - What changes on selection: the hovered person grows (Grzi and Igla move above everyone, Džu grows behind), the outline fades in, the big word becomes the nickname, the others go to `brightness(.55)` and the credits to opacity .4, and the bio fades in.
+  - Input:
+    - **Mouse:** selection uses hover intent (140ms on, 220ms off), based on `pointerType` and not a media query, because touch fires compatibility mouse events.
+    - **Touch:** tapping a person or a name toggles them.
+    - **Keyboard:** focus selects only when it is `:focus-visible`, and Escape clears.
+- **Motion.** One ease-in-out curve, `--lineup-ease`.
+  - The person grows over 1.6s, and the dim, outline and word fade over about 1.2s.
+  - The bio has a 250ms delay. The seam fades in after 700ms and fades out quickly.
+  - With reduced motion, there are no transitions.
+- **Layout.** The stage is a 1440-wide design box sized in container units (`1cqw` = 14.4px at 1440), so the whole composition scales as one.
+  - At 900px and below, the photo goes full width, the credits stack, and every bio is shown.
+- **Copy.** The bios are one sentence each, under `label.people.bio.{grzi,dzu,igla}` (EN and SR); the photo description is under `label.people.photoAlt`.
+  - Grzi's and Džu's bios were written from earlier placeholder text, so swap in real details when they're available.
+- **Removed.** The old five-spread markup, `.label-people__entry`/`__portrait`/`__shot`/`__intro`/`__role`/`__name`/`__bio` styles, and the `label.people.role.*` and `label.people.bio.4.*` keys.
+  - `.label-people__credits` and `.credit-label` (§14) are kept and reused.
+  - `assets/img/Behind GRM - 1…5.png` are no longer referenced, but are left in place.

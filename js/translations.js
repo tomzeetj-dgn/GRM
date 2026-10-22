@@ -128,11 +128,10 @@
     "label.people.eyebrow": "02 / The people",
     "label.people.title": "Behind GRM.",
     "label.people.note": "Different backgrounds. Shared obsession.",
-    "label.people.role.1": "Founder & Creative Director",
-    "label.people.role.2": "Label Manager",
-    "label.people.role.3": "Music Producer",
-    "label.people.role.4": "Visual Director",
-    "label.people.role.5": "Sound Engineer",
+    "label.people.photoAlt": "Đorđe Grgurović – Grzi, Rajko Bogosavljević – Džu and Milan Subotić – Igla in white quarter-zips; Džu holds a small potted plant",
+    "label.people.bio.grzi": "Grzi came up through record shops, fanzines and freelance promotion, and now runs GRM’s day-to-day — schedules, artist relations, budgets and rights.",
+    "label.people.bio.dzu": "Džu started GRM on a simple belief that small labels can move culture, and as creative director he shapes who signs and how every record should feel.",
+    "label.people.bio.igla": "A motion designer and video editor since 2014, Igla co-founded GRM House, where he leads video production and runs the Liveroom.",
     "label.people.credits.aria": "Expertise",
     "label.people.credit.founder": "Founder",
     "label.people.credit.creativeDirection": "Creative Direction",
@@ -148,10 +147,6 @@
     "label.people.credit.videoProductionEditing": "Video Production/Editing",
     "label.people.credit.motionDesign": "Motion Design",
     "label.people.credit.liveroom": "Liveroom",
-    "label.people.bio.4.1": "Milan Subotić, better known by his pseudonym “Igla”, was born in Belgrade in 1991. He graduated in Psychology from the Faculty of Media and Communications (FMK) in 2019. Since 2014, he has been working in animation (motion graphics design) and video editing. He has two demo releases and one studio album, released through the record label Aristokrat Muzik.",
-    "label.people.bio.4.2": "Since 2020, he has been involved in developing visual identities and creating visuals for various events, festivals and concerts. He has also worked on visual content for a range of television channels.",
-    "label.people.bio.4.3": "He is one of the founders of GRM House, where he is responsible for video production and Live Room.",
-    "label.people.bio.4.4": "He approaches every project and client professionally, with dedication and a personal touch, aiming to understand their needs as thoroughly as possible and bring their vision to life as faithfully as possible. He believes in open communication, a friendly approach, and collaboration without unnecessary pressure, creating space for creativity and high-quality results.",
     "label.releases.eyebrow": "03 / Selected releases",
     "label.releases.title": "Selected releases.",
     "label.releases.note": "Six records from the house — real GRM covers, written, mixed & mastered in-house.",
@@ -265,6 +260,10 @@
 
     /* ---- label · Behind GRM — expertise credit labels (compact industry
        terms, kept short so no tag clips or wraps awkwardly in SR) ---- */
+    "label.people.photoAlt": "Đorđe Grgurović – Grzi, Rajko Bogosavljević – Džu i Milan Subotić – Igla u belim duksevima; Džu drži malu saksiju sa biljkom",
+    "label.people.bio.grzi": "Grzi je stasao uz prodavnice ploča, fanzine i frilens promociju, a danas vodi svakodnevni rad GRM-a — rasporede, odnose sa izvođačima, budžete i prava.",
+    "label.people.bio.dzu": "Džu je pokrenuo GRM verujući da mali izdavači mogu da pomeraju kulturu, a kao kreativni direktor odlučuje ko potpisuje i kakav osećaj svaka ploča treba da nosi.",
+    "label.people.bio.igla": "Motion dizajner i video montažer od 2014. godine, Igla je suosnivač GRM House-a, gde vodi video-produkciju i Liveroom.",
     "label.people.credits.aria": "Ekspertiza",
     "label.people.credit.founder": "Osnivač",
     "label.people.credit.creativeDirection": "Kreativna direkcija",
@@ -280,10 +279,6 @@
     "label.people.credit.videoProductionEditing": "Video produkcija/montaža",
     "label.people.credit.motionDesign": "Motion dizajn",
     "label.people.credit.liveroom": "Liveroom",
-    "label.people.bio.4.1": "Milan Subotić, poznatiji pod pseudonimom „Igla“, rođen je 1991. godine u Beogradu. Diplomirao je psihologiju na Fakultetu za medije i komunikacije (FMK) 2019. godine. Od 2014. godine bavi se animacijom (motion graphics design) i video-montažom. Iza sebe ima dva demo i jedan studijski album, objavljen za izdavačku kuću Aristokrat Muzik.",
-    "label.people.bio.4.2": "Od 2020. godine učestvuje u razvoju vizuelnih identiteta i kreiranju vizuala za različite događaje, festivale i koncerte. Takođe, radio je na izradi vizuelnih sadržaja za različite televizijske kanale.",
-    "label.people.bio.4.3": "Jedan je od osnivača GRM House-a, gde je zadužen za video-produkciju i Live Room.",
-    "label.people.bio.4.4": "Svakom projektu i klijentu pristupa profesionalno, posvećeno i lično, sa ciljem da što bolje razume njihove potrebe i što vernije realizuje njihovu viziju. Veruje u otvorenu komunikaciju, prijateljski pristup i saradnju bez nepotrebnog pritiska, stvarajući prostor za kreativnost i kvalitetne rezultate."
   };
 
   window.GRM_TRANSLATIONS = { en: en, sr: sr };

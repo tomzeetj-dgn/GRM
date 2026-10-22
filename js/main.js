@@ -1844,3 +1844,81 @@ resize simply misses and falls back to the previous aim point. */
     start();
   }
 })();
+
+/* ---------- LABEL "Behind GRM": line-up ----------
+   Sets [data-active] on the stage; css/style.css does all the motion.
+   Pointer: hover intent (a pause on someone, not a brush across the
+   photo) selects; leaving the stage clears. Keyboard: focusing a
+   name selects; tabbing out clears. Touch: tapping a person or a
+   name selects, tapping the same one again clears. Self-contained;
+   touches nothing outside [data-lineup]. */
+(function () {
+  function onReady(fn) {
+    if (document.readyState === "loading") {
+      document.addEventListener("DOMContentLoaded", fn);
+    } else {
+      fn();
+    }
+  }
+  onReady(function () {
+    var stage = document.querySelector("[data-lineup]");
+    if (!stage) return;
+    var buttons = Array.prototype.slice.call(stage.querySelectorAll(".label-lineup__who"));
+    var active = -1;
+    var timer = null;
+    var lastPointer = "mouse";
+
+    function set(i) {
+      clearTimeout(timer);
+      if (i === active) return;
+      active = i;
+      if (i < 0) stage.removeAttribute("data-active");
+      else stage.setAttribute("data-active", String(i));
+      buttons.forEach(function (b, j) { b.setAttribute("aria-pressed", j === i ? "true" : "false"); });
+    }
+    function intend(i) {
+      clearTimeout(timer);
+      timer = setTimeout(function () { set(i); }, i < 0 ? 220 : 140);
+    }
+    function indexOf(el) {
+      var host = el && el.closest && el.closest("[data-p]");
+      return host ? parseInt(host.getAttribute("data-p"), 10) : -1;
+    }
+
+    // hover: real mouse / trackpad only (touch fires compatibility mouse events — ignored)
+    stage.addEventListener("pointerdown", function (e) { lastPointer = e.pointerType || "mouse"; });
+    stage.addEventListener("pointerover", function (e) {
+      if (e.pointerType !== "mouse") return;
+      var t = e.target.closest(".label-lineup__zone, .label-lineup__who");
+      if (t) intend(indexOf(t));
+    });
+    stage.addEventListener("pointerleave", function (e) {
+      if (e.pointerType === "mouse") intend(-1);
+    });
+
+    // tap / click: select, or clear when tapping the selected person again
+    stage.addEventListener("click", function (e) {
+      var t = e.target.closest(".label-lineup__zone, .label-lineup__who");
+      if (!t) return;
+      var i = indexOf(t);
+      if (lastPointer === "mouse") set(i);
+      else set(i === active ? -1 : i);
+    });
+
+    // keyboard
+    buttons.forEach(function (b) {
+      // keyboard focus only — a tap also focuses the button, and the click handler owns taps
+      b.addEventListener("focus", function () {
+        var kb = true;
+        try { kb = b.matches(":focus-visible"); } catch (err) {}
+        if (kb) set(indexOf(b));
+      });
+    });
+    stage.addEventListener("focusout", function (e) {
+      if (!stage.contains(e.relatedTarget)) intend(-1);
+    });
+    stage.addEventListener("keydown", function (e) {
+      if (e.key === "Escape" && active >= 0) set(-1);
+    });
+  });
+})();
