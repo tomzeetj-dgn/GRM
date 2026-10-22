@@ -4299,10 +4299,10 @@ html.js .label-about.is-revealed .label-about__rule{ transition-delay:520ms; }
    their one-sentence bio fades in. Motion answers at once and settles
    softly (--lineup-snap); the big words hand over in sequence — the
    old one leaves in 140ms, the new one arrives after it — so two
-   words never overlap. Džu stands behind the other two, so his
-   outline is one fixed image drawn at his grown size (same 5px line +
-   glow as theirs) that settles in as he finishes growing. All three
-   outlines sit above the fade, so it never dims them. */
+   words never overlap. All three outlines grow with their person and
+   fade in on the same timing; they sit above the fade, so it never
+   dims them. (Džu's is drawn so that, grown with him, it lands exactly
+   on his grown shape, including along the two men in front.) */
 .label-lineup{
   --lineup-snap:cubic-bezier(.22,1,.36,1);   /* starts at once, settles softly */
   --lineup-grow:1.06;
@@ -4377,8 +4377,7 @@ html.js .label-about.is-revealed .label-about__rule{ transition-delay:520ms; }
   backface-visibility:hidden;
   pointer-events:none;
 }
-.label-lineup__layer img,
-.label-lineup__dzu-line{
+.label-lineup__layer img{
   display:block;
   width:100%;
   height:100%;
@@ -4389,14 +4388,6 @@ html.js .label-about.is-revealed .label-about__rule{ transition-delay:520ms; }
 .label-lineup__outline img{
   opacity:0;
   transition:opacity 450ms ease;
-}
-.label-lineup__dzu-line{
-  position:absolute;
-  inset:0;
-  z-index:4;
-  opacity:0;
-  transition:opacity 200ms ease;
-  pointer-events:none;
 }
 /* hover / tap is hit-tested against the people themselves (hitmap.png), not boxes */
 .label-lineup__photo.is-over{ cursor:pointer; }
@@ -4541,15 +4532,11 @@ html.js .label-about.is-revealed .label-about__rule{ transition-delay:520ms; }
 }
 .label-lineup__stage[data-active="0"] .label-lineup__layer[data-p="0"],
 .label-lineup__stage[data-active="2"] .label-lineup__layer[data-p="2"]{ transform:scale(var(--lineup-grow)); z-index:3; }
-/* Džu grows behind the other two; his fixed outline is drawn for exactly this size */
+/* Džu grows behind the other two; his outline is drawn for exactly this size */
 .label-lineup__stage[data-active="1"] .label-lineup__layer[data-p="1"]{ transform:scale(1.06); }
 .label-lineup__stage[data-active="0"] .label-lineup__outline[data-p="0"] img,
 .label-lineup__stage[data-active="1"] .label-lineup__outline[data-p="1"] img,
 .label-lineup__stage[data-active="2"] .label-lineup__outline[data-p="2"] img{ opacity:1; }
-.label-lineup__stage[data-active="1"] .label-lineup__dzu-line{
-  opacity:1;
-  transition:opacity 400ms ease 300ms;   /* settles in as he finishes growing */
-}
 .label-lineup__stage[data-active="0"] .label-lineup__credit[data-p="0"] .label-lineup__detail,
 .label-lineup__stage[data-active="1"] .label-lineup__credit[data-p="1"] .label-lineup__detail,
 .label-lineup__stage[data-active="2"] .label-lineup__credit[data-p="2"] .label-lineup__detail{
@@ -4585,7 +4572,6 @@ html.js .label-about.is-revealed .label-about__rule{ transition-delay:520ms; }
   .label-lineup__word,
   .label-lineup__layer,
   .label-lineup__outline img,
-  .label-lineup__dzu-line,
   .label-lineup__credit,
   .label-lineup__detail{ transition:none !important; }
 }

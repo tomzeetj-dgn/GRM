@@ -90,9 +90,8 @@
          forward: their layer grows, a Label-green outline fades in,
          the big word becomes their nickname, the other two fall into
          shadow, and their one-sentence bio fades in under their
-         credit. Džu stands behind the other two, so his outline is one
-         fixed image drawn at his grown size, settling in as he finishes
-         growing. All outlines sit above the fade. State lives
+         credit. All three outlines grow with their person and sit above
+         the fade. State lives
          in [data-active] on the stage; js/main.js only sets it.
          ============================================================ -->
     <section class="section label-lineup" id="people" aria-labelledby="label-people-title">
@@ -112,12 +111,11 @@
         </div>
         <div class="label-lineup__fade" aria-hidden="true"></div>
         <!-- all three outlines, drawn ABOVE the fade so the glow is never dimmed by it.
-             Grzi's and Igla's grow with them; Džu's is one fixed line drawn at his grown size
-             (he stands behind the other two), so it settles in as he finishes growing -->
+             each grows with its person and fades in on the same timing -->
         <div class="label-lineup__lines reveal" data-delay="1" aria-hidden="true">
             <div class="label-lineup__layer label-lineup__outline" data-p="0"><img src="../assets/img/people/outline-grzi.webp" alt="" width="1254" height="1254" decoding="async" draggable="false"></div>
             <div class="label-lineup__layer label-lineup__outline" data-p="2"><img src="../assets/img/people/outline-igla.webp" alt="" width="1254" height="1254" decoding="async" draggable="false"></div>
-            <img class="label-lineup__dzu-line" src="../assets/img/people/outline-dzu.webp" alt="" width="1254" height="1254" decoding="async" draggable="false">
+            <div class="label-lineup__layer label-lineup__outline" data-p="1"><img src="../assets/img/people/outline-dzu.webp" alt="" width="1254" height="1254" decoding="async" draggable="false"></div>
         </div>
 
         <ul class="label-lineup__credits reveal" data-delay="2" role="list">

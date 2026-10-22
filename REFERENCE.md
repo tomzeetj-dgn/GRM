@@ -808,7 +808,7 @@ Designed on the Claude Design canvas as direction "E · Step forward" and approv
   - Džu's layer runs about 16px under the two in front, and Grzi's runs about 8px under Igla's, so no seam ever shows.
   - The split came from person segmentation and was hand-tuned at the ears and beards. If the photo changes, the cut-outs and outlines must be regenerated.
 - **Outlines.** Each `outline-*.webp` is a Label-green line plus a soft glow, drawn outside that person's silhouette.
-  - Džu stands behind the other two, so his outline is one fixed image, `outline-dzu.webp`, drawn at his grown size (1.06): the same 5px line and glow, running all the way round, including along Grzi's and Igla's edges. The glow only spills onto the black. It fades in 300ms after he starts growing, so it never shows half-grown. If you change his growth, regenerate it.
+  - Džu stands behind the other two. His outline, `outline-dzu.webp`, was drawn around his grown shape (×1.06): the same 5px line and glow, running all the way round, including along Grzi's and Igla's edges, with the glow only on the black. It was then shrunk by 1/1.06 about his origin, so it can grow with him like the other two outlines and land exactly in place, with the same timing. If you change his growth or origin, regenerate it, and keep the RGB solid green under transparent pixels (`exact=True`).
 - **State.** `js/main.js` only sets `[data-active="0|1|2"]` on `[data-lineup]`; all motion is in CSS.
   - What changes on selection: the hovered person grows (Grzi and Igla move above everyone, Džu grows behind), the outline fades in, the big word becomes the nickname, the others go to `brightness(.55)` and the credits to opacity .4, and the bio fades in.
   - Input:
@@ -818,7 +818,6 @@ Designed on the Claude Design canvas as direction "E · Step forward" and approv
     - **Keyboard:** focus selects only when it is `:focus-visible`, and Escape clears.
 - **Motion.** The selection responds the moment the mouse enters or leaves a person.
   - The person grows over 700ms on `--lineup-snap`, which starts at once and settles softly. The dim and the outline take about 0.45s, and the bio follows 120ms behind.
-  - Džu's outline fades in at 300ms, as he finishes growing.
   - Big words hand over in sequence: the outgoing word leaves in 140ms, and the incoming one only starts after that, so two words never overlap.
   - With reduced motion, there are no transitions.
 - **Layout.** The stage is a 1440-wide design box sized in container units (`1cqw` = 14.4px at 1440), so the whole composition scales as one.
