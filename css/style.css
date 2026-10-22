@@ -4321,6 +4321,10 @@ html.js .label-about.is-revealed .label-about__rule{ transition-delay:520ms; }
   z-index:0;
   pointer-events:none;
 }
+/* entrance order: the people materialise first; the word behind them only starts once
+   they are nearly solid (so it never shows THROUGH a half-transparent photo), then the names */
+html.js .label-lineup__words.reveal{ transition-delay:700ms; }
+html.js .label-lineup__credits.reveal{ transition-delay:900ms; }
 
 .label-lineup__stage{
   container-type:inline-size;
