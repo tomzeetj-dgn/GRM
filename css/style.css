@@ -4090,6 +4090,13 @@ body.theme-label .division-minimal-hero{
   position:absolute;
   inset:0;
   background-image:
+    /* rise out of the page's black: the line-up above ends on --bg, so the
+       photo's top edge must not read as a hard seam under the names */
+    linear-gradient(180deg,
+      var(--bg) 0,
+      rgba(5,5,5,.72) clamp(36px,4vw,64px),
+      rgba(5,5,5,.28) clamp(80px,9vw,140px),
+      rgba(5,5,5,0) clamp(120px,13vw,200px)),
     linear-gradient(90deg,
       rgba(0,0,0,.10) 0%,
       rgba(0,0,0,.06) 14%,
@@ -4238,6 +4245,11 @@ html.js .label-about.is-revealed .label-about__rule{ transition-delay:520ms; }
      protect. It remains secondary to the vertical. */
   .label-about__vignette{
     background-image:
+      linear-gradient(180deg,
+        var(--bg) 0,
+        rgba(5,5,5,.72) 32px,
+        rgba(5,5,5,.28) 72px,
+        rgba(5,5,5,0) 110px),
       linear-gradient(90deg,
         rgba(0,0,0,.22) 0%,
         rgba(0,0,0,.10) 28%,
@@ -4552,6 +4564,8 @@ html.js .label-lineup__credits.reveal{ transition-delay:900ms; }
 /* ---- narrow screens: photo full width, credits stacked, every bio visible ---- */
 @media (max-width:900px){
   .label-lineup{ margin-top:0; --sec:clamp(48px,13vw,64px); }
+  /* tablets: the hero's scroll cue sat ~260px above the word; pull the line-up in */
+  @media (min-width:600px){ .label-lineup{ margin-top:calc(-10vh - 80px); } }
   .label-lineup__word{ top:3.5cqw; font-size:27cqw; }
   .label-lineup__photo{ width:100cqw; margin:6cqw 0 0; }
   .label-lineup__lines{ left:0; top:6cqw; width:100cqw; }
