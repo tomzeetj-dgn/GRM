@@ -1854,7 +1854,7 @@ resize simply misses and falls back to the previous aim point. */
    origin), the point is mapped back through that growth first, so their
    enlarged shape counts as theirs.
    Mouse: on a person → selected at once; off every person (the black,
-   the outline glow, the gaps) → cleared after a short grace. The names
+   the outline glow, the gaps) → cleared at once. The names
    below are buttons and select on hover too. Touch: tapping a person or
    a name selects; tapping the same one again clears. Keyboard: focusing
    a name selects (focus-visible only); Escape clears. Self-contained;
@@ -1873,7 +1873,6 @@ resize simply misses and falls back to the previous aim point. */
     var photo = stage.querySelector(".label-lineup__photo");
     var buttons = Array.prototype.slice.call(stage.querySelectorAll(".label-lineup__who"));
     var active = -1;
-    var timer = null;
     var lastPointer = "mouse";
 
     // growth origins (fractions of the photo) and amount — keep in step with css/style.css
@@ -1928,18 +1927,14 @@ resize simply misses and falls back to the previous aim point. */
     }
 
     function set(i) {
-      clearTimeout(timer);
       if (i === active) return;
       active = i;
       if (i < 0) stage.removeAttribute("data-active");
       else stage.setAttribute("data-active", String(i));
       buttons.forEach(function (b, j) { b.setAttribute("aria-pressed", j === i ? "true" : "false"); });
     }
-    // only used for leaving: a short grace so crossing a hairline gap doesn't flicker
-    function release() {
-      clearTimeout(timer);
-      timer = setTimeout(function () { set(-1); }, 160);
-    }
+    // leaving: as immediate as arriving
+    function release() { set(-1); }
     function indexOf(el) {
       var host = el && el.closest && el.closest("[data-p]");
       return host ? parseInt(host.getAttribute("data-p"), 10) : -1;
