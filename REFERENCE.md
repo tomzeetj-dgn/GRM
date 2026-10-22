@@ -819,7 +819,9 @@ Designed on the Claude Design canvas as direction "E · Step forward" and approv
   - Big words hand over in sequence: the outgoing word leaves in 140ms, and the incoming one only starts after that, so two words never overlap.
   - With reduced motion, there are no transitions.
 - **Layout.** The stage is a 1440-wide design box sized in container units (`1cqw` = 14.4px at 1440), so the whole composition scales as one.
-  - The stage also fits the screen's height: its width is `min(100%, 1440px, max(640px, (100svh − 316px) × 1.8228))`. The photo, the names and the caption take about 0.549 × width + 300px, so on any desktop screen the whole thing fits under the header in one view (checked from 1280×720 to 2560×1300).
+  - The stage also fits the screen's height: its width is `min(100%, 1440px, max(640px, (100svh − 220px) × 1.96))`. The names sit at about 74% of the photo's height, over the faded sweaters, so the header, people, names and caption fit in one view on any desktop screen (checked from 1280×720 to 2560×1300).
+  - The fade (`.label-lineup__fade`) reaches past the photo's bottom edge, and the photo's left and right edges are feathered, so no hard edge of the square shows.
+  - Grzi's and Igla's outlines and Džu's seam live in `.label-lineup__lines`, a copy of the photo box placed above the fade, so the fade never dims the glow; they soften out just above the names. Džu's own outline stays inside the photo, under the two in front.
   - On wide screens the roles and bio of the selected person are one shared caption (`.label-lineup__detail`), centred under the three names, rather than separate text under each column. It hands over in sequence like the big words, so two captions never show together. At 900px and below, each person's caption sits under their own name and is always visible.
   - At 900px and below, the photo goes full width, the credits stack, and every bio is shown.
 - **Copy.** The bios are one sentence each, under `label.people.bio.{grzi,dzu,igla}` (EN and SR); the photo description is under `label.people.photoAlt`.

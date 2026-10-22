@@ -4318,9 +4318,9 @@ html.js .label-about.is-revealed .label-about__rule{ transition-delay:520ms; }
 .label-lineup__stage{
   container-type:inline-size;
   position:relative;
-  /* fits the screen's HEIGHT too: photo + names + caption ≈ 0.549 × width + 300px,
-     so the stage never gets taller than the space under the header */
-  width:min(100%, 1440px, max(640px, calc((100svh - 316px) * 1.8228)));
+  /* fits the screen's HEIGHT too: header + names + caption ≈ 0.519 × width + ~230px,
+     so on a desktop screen the people, names and caption are all in one view */
+  width:min(100%, 1440px, max(640px, calc((100svh - 220px) * 1.96)));
   margin:clamp(12px,1.7vw,24px) auto 0;
 }
 
@@ -4357,6 +4357,9 @@ html.js .label-about.is-revealed .label-about__rule{ transition-delay:520ms; }
   width:68.056cqw;
   aspect-ratio:1;
   margin:1.389cqw 0 0 15.972cqw;
+  /* the shoulders run off the photo's square edge: feather both sides so no hard vertical line shows */
+  -webkit-mask-image:linear-gradient(to right, transparent 0, #000 7%, #000 93%, transparent 100%);
+          mask-image:linear-gradient(to right, transparent 0, #000 7%, #000 93%, transparent 100%);
 }
 .label-lineup__layer{
   position:absolute;
@@ -4391,16 +4394,29 @@ html.js .label-about.is-revealed .label-about__rule{ transition-delay:520ms; }
 /* hover / tap is hit-tested against the people themselves (hitmap.png), not boxes */
 .label-lineup__photo.is-over{ cursor:pointer; }
 
+/* outlines above the fade (same box as the photo); they soften out just above the names */
+.label-lineup__lines{
+  position:absolute;
+  left:15.972cqw;
+  top:1.389cqw;
+  width:68.056cqw;
+  aspect-ratio:1;
+  z-index:2;
+  pointer-events:none;
+  -webkit-mask-image:linear-gradient(to bottom, #000 0, #000 58%, transparent 71%);
+          mask-image:linear-gradient(to bottom, #000 0, #000 58%, transparent 71%);
+}
+
 /* the photo melts into the page under the credits */
 .label-lineup__fade{
   position:absolute;
   left:0;
   right:0;
-  top:36.111cqw;
-  height:34.722cqw;
+  top:30.4cqw;
+  height:40cqw;                  /* reaches past the photo's bottom edge (69.44cqw) */
   z-index:2;
   pointer-events:none;
-  background:linear-gradient(to bottom, rgba(5,5,5,0) 0%, rgba(5,5,5,.55) 34%, rgba(5,5,5,.94) 62%, var(--bg) 78%);
+  background:linear-gradient(to bottom, rgba(5,5,5,0) 0%, rgba(5,5,5,.55) 29.5%, rgba(5,5,5,.94) 53.8%, var(--bg) 67.7%);
 }
 
 /* credits: three film-poster columns over the fade */
@@ -4410,7 +4426,7 @@ html.js .label-about.is-revealed .label-about__rule{ transition-delay:520ms; }
   display:grid;
   grid-template-columns:repeat(3,26.389cqw);
   column-gap:2.778cqw;
-  margin:-14.583cqw 0 0 7.639cqw;
+  margin:-17.5cqw 0 0 7.639cqw;
   padding:0 0 150px;   /* room for the shared caption (roles + up to 3–4 lines of bio) */
   list-style:none;
 }
@@ -4539,6 +4555,7 @@ html.js .label-about.is-revealed .label-about__rule{ transition-delay:520ms; }
 @media (max-width:900px){
   .label-lineup__word{ top:3.5cqw; font-size:27cqw; }
   .label-lineup__photo{ width:100cqw; margin:6cqw 0 0; }
+  .label-lineup__lines{ left:0; top:6cqw; width:100cqw; }
   .label-lineup__fade{ top:58cqw; height:50cqw; }
   .label-lineup__credits{
     grid-template-columns:1fr;
