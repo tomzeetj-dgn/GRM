@@ -4434,13 +4434,6 @@ html.js .label-about.is-revealed .label-about__rule{ transition-delay:520ms; }
   cursor:pointer;
 }
 .label-lineup__who:focus-visible{ outline:1px solid var(--credit-label); outline-offset:8px; }
-.label-lineup__num{
-  font-size:var(--f-label);
-  font-weight:500;
-  letter-spacing:.2em;
-  color:var(--text-faint);
-  transition:color 400ms ease;
-}
 .label-lineup__name{
   font-family:var(--font-display);
   font-stretch:62.5%;
@@ -4451,11 +4444,42 @@ html.js .label-about.is-revealed .label-about__rule{ transition-delay:520ms; }
   text-transform:uppercase;
   white-space:nowrap;
 }
-.label-lineup__credit .label-people__credits{
+/* roles: one quiet credit line, a small division-coloured dot before each.
+   Hidden at rest on wide screens — they arrive with the bio. */
+.label-lineup__roles{
+  display:flex;
+  flex-wrap:wrap;
   justify-content:center;
-  gap:6px;
-  margin-top:14px;
+  gap:6px 16px;
+  margin:12px 0 0;
+  padding:0;
+  list-style:none;
+  color:var(--text-muted);
+  font-size:10.4px;
+  font-weight:600;
+  letter-spacing:.18em;
+  line-height:1.6;
+  text-transform:uppercase;
+  opacity:0;
+  transform:translateY(6px);
+  transition:opacity 140ms ease-out, transform 140ms ease-out;
 }
+.label-lineup__roles li{
+  display:inline-flex;
+  align-items:center;
+  gap:8px;
+  white-space:nowrap;
+}
+.label-lineup__roles li::before{
+  content:"";
+  width:4px;
+  height:4px;
+  border-radius:50%;
+  background:var(--credit-neutral);
+}
+.label-lineup__roles li[data-cat="label"]::before{ background:var(--credit-label); }
+.label-lineup__roles li[data-cat="production"]::before{ background:var(--credit-production); }
+.label-lineup__roles li[data-cat="liveroom"]::before{ background:var(--credit-live); }
 .label-lineup__bio{
   max-width:340px;
   margin:16px 0 0;
@@ -4491,9 +4515,13 @@ html.js .label-about.is-revealed .label-about__rule{ transition-delay:520ms; }
   opacity:1;
   transition:opacity 350ms ease 420ms;
 }
-.label-lineup__stage[data-active="0"] .label-lineup__credit[data-p="0"] .label-lineup__num,
-.label-lineup__stage[data-active="1"] .label-lineup__credit[data-p="1"] .label-lineup__num,
-.label-lineup__stage[data-active="2"] .label-lineup__credit[data-p="2"] .label-lineup__num{ color:var(--credit-label); }
+.label-lineup__stage[data-active="0"] .label-lineup__credit[data-p="0"] .label-lineup__roles,
+.label-lineup__stage[data-active="1"] .label-lineup__credit[data-p="1"] .label-lineup__roles,
+.label-lineup__stage[data-active="2"] .label-lineup__credit[data-p="2"] .label-lineup__roles{
+  opacity:1;
+  transform:none;
+  transition:opacity 420ms ease 60ms, transform 600ms var(--lineup-snap) 60ms;
+}
 .label-lineup__stage[data-active="0"] .label-lineup__credit[data-p="0"] .label-lineup__bio,
 .label-lineup__stage[data-active="1"] .label-lineup__credit[data-p="1"] .label-lineup__bio,
 .label-lineup__stage[data-active="2"] .label-lineup__credit[data-p="2"] .label-lineup__bio{ opacity:1; transform:none; }
@@ -4512,7 +4540,7 @@ html.js .label-about.is-revealed .label-about__rule{ transition-delay:520ms; }
   .label-lineup__credit{ align-items:flex-start; text-align:left; }
   .label-lineup__who{ align-items:flex-start; gap:8px; }
   .label-lineup__name{ font-size:clamp(1.9rem,8.4vw,2.6rem); white-space:normal; }
-  .label-lineup__credit .label-people__credits{ justify-content:flex-start; }
+  .label-lineup__roles{ justify-content:flex-start; opacity:1; transform:none; }
   .label-lineup__bio{ max-width:42ch; opacity:1; transform:none; font-size:.95rem; }
   .label-lineup__stage[data-active] .label-lineup__credit{ opacity:1; }
 }
@@ -4527,7 +4555,7 @@ html.js .label-about.is-revealed .label-about__rule{ transition-delay:520ms; }
   .label-lineup__outline img,
   .label-lineup__seam,
   .label-lineup__credit,
-  .label-lineup__num,
+  .label-lineup__roles,
   .label-lineup__bio{ transition:none !important; }
 }
 
@@ -4583,14 +4611,6 @@ html.js .label-about.is-revealed .label-about__rule{ transition-delay:520ms; }
 .credit-label[data-cat="liveroom"]{ --credit-accent:var(--credit-live); }
 .credit-label[data-cat="neutral"]{ --credit-accent:var(--credit-neutral); }
 
-/* the selected person's tags lift a touch: borders, text and accent edge */
-.label-lineup__stage[data-active="0"] .label-lineup__credit[data-p="0"] .credit-label,
-.label-lineup__stage[data-active="1"] .label-lineup__credit[data-p="1"] .credit-label,
-.label-lineup__stage[data-active="2"] .label-lineup__credit[data-p="2"] .credit-label{
-  border-color:rgba(236,233,226,.34);
-  background:rgba(14,14,14,.9);
-  color:var(--text);
-}
 
 
 
