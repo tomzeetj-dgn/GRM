@@ -4318,7 +4318,9 @@ html.js .label-about.is-revealed .label-about__rule{ transition-delay:520ms; }
 .label-lineup__stage{
   container-type:inline-size;
   position:relative;
-  width:min(100%,1440px);
+  /* fits the screen's HEIGHT too: photo + names + caption ≈ 0.549 × width + 300px,
+     so the stage never gets taller than the space under the header */
+  width:min(100%, 1440px, max(640px, calc((100svh - 316px) * 1.8228)));
   margin:clamp(12px,1.7vw,24px) auto 0;
 }
 
@@ -4409,7 +4411,7 @@ html.js .label-about.is-revealed .label-about__rule{ transition-delay:520ms; }
   grid-template-columns:repeat(3,26.389cqw);
   column-gap:2.778cqw;
   margin:-14.583cqw 0 0 7.639cqw;
-  padding:0;
+  padding:0 0 150px;   /* room for the shared caption (roles + up to 3–4 lines of bio) */
   list-style:none;
 }
 .label-lineup__credit{
@@ -4438,7 +4440,7 @@ html.js .label-about.is-revealed .label-about__rule{ transition-delay:520ms; }
   font-family:var(--font-display);
   font-stretch:62.5%;
   font-weight:800;
-  font-size:clamp(1.5rem,2.5cqw,2.25rem);
+  font-size:clamp(1rem,2.5cqw,2.25rem);
   line-height:.92;
   letter-spacing:.005em;
   text-transform:uppercase;
@@ -4460,9 +4462,6 @@ html.js .label-about.is-revealed .label-about__rule{ transition-delay:520ms; }
   letter-spacing:.18em;
   line-height:1.6;
   text-transform:uppercase;
-  opacity:0;
-  transform:translateY(6px);
-  transition:opacity 140ms ease-out, transform 140ms ease-out;
 }
 .label-lineup__roles li{
   display:inline-flex;
@@ -4480,15 +4479,28 @@ html.js .label-about.is-revealed .label-about__rule{ transition-delay:520ms; }
 .label-lineup__roles li[data-cat="label"]::before{ background:var(--credit-label); }
 .label-lineup__roles li[data-cat="production"]::before{ background:var(--credit-production); }
 .label-lineup__roles li[data-cat="liveroom"]::before{ background:var(--credit-live); }
-.label-lineup__bio{
-  max-width:340px;
-  margin:16px 0 0;
-  color:var(--label-copy);
-  font-size:.9rem;
-  line-height:1.7;
+/* the selected person's roles + bio: ONE shared caption, centred under the
+   three names (2–3 lines), so it always lands in the same place and stays
+   inside the screen. Hand-over is sequenced like the big words. */
+.label-lineup__detail{
+  position:absolute;
+  left:42.361cqw;                /* = the stage centre (50cqw) in the credits grid, which starts at 7.639cqw */
+  top:calc(clamp(1rem,2.5cqw,2.25rem) + 6px);
+  width:min(560px,56cqw);
+  display:flex;
+  flex-direction:column;
+  align-items:center;
+  text-align:center;
   opacity:0;
-  transform:translateY(8px);
-  transition:opacity 450ms ease 120ms, transform 600ms var(--lineup-snap) 120ms;
+  transform:translate(-50%,6px);
+  transition:opacity 140ms ease-out, transform 140ms ease-out;
+  pointer-events:none;
+}
+.label-lineup__bio{
+  margin:14px 0 0;
+  color:var(--label-copy);
+  font-size:.95rem;
+  line-height:1.65;
 }
 
 /* ---- state: one person selected ---- */
@@ -4515,16 +4527,13 @@ html.js .label-about.is-revealed .label-about__rule{ transition-delay:520ms; }
   opacity:1;
   transition:opacity 350ms ease 420ms;
 }
-.label-lineup__stage[data-active="0"] .label-lineup__credit[data-p="0"] .label-lineup__roles,
-.label-lineup__stage[data-active="1"] .label-lineup__credit[data-p="1"] .label-lineup__roles,
-.label-lineup__stage[data-active="2"] .label-lineup__credit[data-p="2"] .label-lineup__roles{
+.label-lineup__stage[data-active="0"] .label-lineup__credit[data-p="0"] .label-lineup__detail,
+.label-lineup__stage[data-active="1"] .label-lineup__credit[data-p="1"] .label-lineup__detail,
+.label-lineup__stage[data-active="2"] .label-lineup__credit[data-p="2"] .label-lineup__detail{
   opacity:1;
-  transform:none;
-  transition:opacity 420ms ease 60ms, transform 600ms var(--lineup-snap) 60ms;
+  transform:translate(-50%,0);
+  transition:opacity 420ms ease 140ms, transform 600ms var(--lineup-snap) 140ms;   /* after the previous caption has gone */
 }
-.label-lineup__stage[data-active="0"] .label-lineup__credit[data-p="0"] .label-lineup__bio,
-.label-lineup__stage[data-active="1"] .label-lineup__credit[data-p="1"] .label-lineup__bio,
-.label-lineup__stage[data-active="2"] .label-lineup__credit[data-p="2"] .label-lineup__bio{ opacity:1; transform:none; }
 
 /* ---- narrow screens: photo full width, credits stacked, every bio visible ---- */
 @media (max-width:900px){
@@ -4540,8 +4549,10 @@ html.js .label-about.is-revealed .label-about__rule{ transition-delay:520ms; }
   .label-lineup__credit{ align-items:flex-start; text-align:left; }
   .label-lineup__who{ align-items:flex-start; gap:8px; }
   .label-lineup__name{ font-size:clamp(1.9rem,8.4vw,2.6rem); white-space:normal; }
-  .label-lineup__roles{ justify-content:flex-start; opacity:1; transform:none; }
-  .label-lineup__bio{ max-width:42ch; opacity:1; transform:none; font-size:.95rem; }
+  .label-lineup__credits{ padding-bottom:0; }
+  .label-lineup__detail{ position:static; width:auto; align-items:flex-start; text-align:left; opacity:1; transform:none; pointer-events:auto; }
+  .label-lineup__roles{ justify-content:flex-start; margin-top:12px; }
+  .label-lineup__bio{ max-width:42ch; }
   .label-lineup__stage[data-active] .label-lineup__credit{ opacity:1; }
 }
 @media (max-width:620px){
@@ -4555,8 +4566,7 @@ html.js .label-about.is-revealed .label-about__rule{ transition-delay:520ms; }
   .label-lineup__outline img,
   .label-lineup__seam,
   .label-lineup__credit,
-  .label-lineup__roles,
-  .label-lineup__bio{ transition:none !important; }
+  .label-lineup__detail{ transition:none !important; }
 }
 
 /* ---------- expertise credit labels ----------
