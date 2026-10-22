@@ -808,9 +808,7 @@ Designed on the Claude Design canvas as direction "E · Step forward" and approv
   - Džu's layer runs about 16px under the two in front, and Grzi's runs about 8px under Igla's, so no seam ever shows.
   - The split came from person segmentation and was hand-tuned at the ears and beards. If the photo changes, the cut-outs and outlines must be regenerated.
 - **Outlines.** Each `outline-*.webp` is a Label-green line plus a soft glow, drawn outside that person's silhouette.
-  - Džu stands behind the other two, so his outline is in two parts:
-    - `outline-dzu.webp` grows with him and sits under the two in front, which hide whatever runs behind them.
-    - `outline-dzu-seam.webp` is a fixed line on their edges, drawn for exactly his grown size (1.06). If you change his growth, regenerate the seam.
+  - Džu stands behind the other two, so his outline is one fixed image, `outline-dzu.webp`, drawn at his grown size (1.06): the same 5px line and glow, running all the way round, including along Grzi's and Igla's edges. The glow only spills onto the black. It fades in 300ms after he starts growing, so it never shows half-grown. If you change his growth, regenerate it.
 - **State.** `js/main.js` only sets `[data-active="0|1|2"]` on `[data-lineup]`; all motion is in CSS.
   - What changes on selection: the hovered person grows (Grzi and Igla move above everyone, Džu grows behind), the outline fades in, the big word becomes the nickname, the others go to `brightness(.55)` and the credits to opacity .4, and the bio fades in.
   - Input:
@@ -820,13 +818,13 @@ Designed on the Claude Design canvas as direction "E · Step forward" and approv
     - **Keyboard:** focus selects only when it is `:focus-visible`, and Escape clears.
 - **Motion.** The selection responds the moment the mouse enters or leaves a person.
   - The person grows over 700ms on `--lineup-snap`, which starts at once and settles softly. The dim and the outline take about 0.45s, and the bio follows 120ms behind.
-  - Džu's seam fades in at 420ms, once he has nearly finished growing.
+  - Džu's outline fades in at 300ms, as he finishes growing.
   - Big words hand over in sequence: the outgoing word leaves in 140ms, and the incoming one only starts after that, so two words never overlap.
   - With reduced motion, there are no transitions.
 - **Layout.** The stage is a 1440-wide design box sized in container units (`1cqw` = 14.4px at 1440), so the whole composition scales as one.
   - The stage also fits the screen's height: its width is `min(100%, 1440px, max(640px, (100svh − 220px) × 1.96))`. The names sit at about 74% of the photo's height, over the faded sweaters, so the header, people, names and caption fit in one view on any desktop screen (checked from 1280×720 to 2560×1300).
   - The fade (`.label-lineup__fade`) reaches past the photo's bottom edge, and the photo's left and right edges are feathered, so no hard edge of the square shows.
-  - Grzi's and Igla's outlines and Džu's seam live in `.label-lineup__lines`, a copy of the photo box placed above the fade, so the fade never dims the glow; they soften out just above the names. Džu's own outline stays inside the photo, under the two in front.
+  - All three outlines live in `.label-lineup__lines`, a copy of the photo box placed above the fade, so the fade never dims them. They stay fully bright until about 65% of the photo's height and then soften out over a short band, just above the names.
   - On wide screens the roles and bio of the selected person are one shared caption (`.label-lineup__detail`), centred under the three names, rather than separate text under each column. It hands over in sequence like the big words, so two captions never show together. At 900px and below, each person's caption sits under their own name and is always visible.
   - At 900px and below, the photo goes full width, the credits stack, and every bio is shown.
 - **Copy.** There is no eyebrow or note row: the section opens straight on the big "BEHIND GRM." (`label.people.eyebrow` and `.note` were removed). The bios are one sentence each, under `label.people.bio.{grzi,dzu,igla}` (EN and SR); the photo description is under `label.people.photoAlt`.

@@ -90,9 +90,9 @@
          forward: their layer grows, a Label-green outline fades in,
          the big word becomes their nickname, the other two fall into
          shadow, and their one-sentence bio fades in under their
-         credit. Džu stands behind the other two, so his outline is in
-         two parts: one that grows with him (hidden behind the two in
-         front) and a fixed line on their edges (…-seam). State lives
+         credit. Džu stands behind the other two, so his outline is one
+         fixed image drawn at his grown size, settling in as he finishes
+         growing. All outlines sit above the fade. State lives
          in [data-active] on the stage; js/main.js only sets it.
          ============================================================ -->
     <section class="section label-lineup" id="people" aria-labelledby="label-people-title">
@@ -106,18 +106,18 @@
         </div>
 
         <div class="label-lineup__photo reveal" data-delay="1" data-hitmap="../assets/img/people/hitmap.png" role="img" aria-label="Đorđe Grgurović – Grzi, Rajko Bogosavljević – Džu and Milan Subotić – Igla in white quarter-zips; Džu holds a small potted plant" data-i18n-aria-label="label.people.photoAlt">
-          <div class="label-lineup__layer label-lineup__outline" data-p="1"><img src="../assets/img/people/outline-dzu.webp" alt="" width="1254" height="1254" decoding="async" draggable="false"></div>
           <div class="label-lineup__layer label-lineup__person" data-p="0"><img src="../assets/img/people/grzi.webp" alt="" width="1254" height="1254" decoding="async" draggable="false"></div>
           <div class="label-lineup__layer label-lineup__person" data-p="1"><img src="../assets/img/people/dzu.webp" alt="" width="1254" height="1254" decoding="async" draggable="false"></div>
           <div class="label-lineup__layer label-lineup__person" data-p="2"><img src="../assets/img/people/igla.webp" alt="" width="1254" height="1254" decoding="async" draggable="false"></div>
         </div>
         <div class="label-lineup__fade" aria-hidden="true"></div>
-        <!-- outlines of the two in front + Džu's seam, drawn ABOVE the fade so the glow isn't dimmed by it
-             (Džu's own outline stays inside the photo, under the two in front, which hide whatever runs behind them) -->
+        <!-- all three outlines, drawn ABOVE the fade so the glow is never dimmed by it.
+             Grzi's and Igla's grow with them; Džu's is one fixed line drawn at his grown size
+             (he stands behind the other two), so it settles in as he finishes growing -->
         <div class="label-lineup__lines reveal" data-delay="1" aria-hidden="true">
             <div class="label-lineup__layer label-lineup__outline" data-p="0"><img src="../assets/img/people/outline-grzi.webp" alt="" width="1254" height="1254" decoding="async" draggable="false"></div>
             <div class="label-lineup__layer label-lineup__outline" data-p="2"><img src="../assets/img/people/outline-igla.webp" alt="" width="1254" height="1254" decoding="async" draggable="false"></div>
-            <img class="label-lineup__seam" src="../assets/img/people/outline-dzu-seam.webp" alt="" width="1254" height="1254" decoding="async" draggable="false">
+            <img class="label-lineup__dzu-line" src="../assets/img/people/outline-dzu.webp" alt="" width="1254" height="1254" decoding="async" draggable="false">
         </div>
 
         <ul class="label-lineup__credits reveal" data-delay="2" role="list">
