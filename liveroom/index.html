@@ -27,6 +27,10 @@
   <script src="../js/i18n.js"></script>
 
   <script>
+    /* arriving from a Home takeover or a division hand-off: always start at the
+       top — never let the browser restore an old scroll position under the logo */
+    if ((sessionStorage.getItem("grm-arrival") === "liveroom" || sessionStorage.getItem("grm-morph-arrival") === "liveroom") &&
+        "scrollRestoration" in history) history.scrollRestoration = "manual";
     if (sessionStorage.getItem("grm-arrival") === "liveroom") {
       document.documentElement.classList.add("division-arrival-pending");
     }

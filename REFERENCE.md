@@ -268,7 +268,7 @@ are never touched above those queries.
   `pageshow` bfcache return the lock re-arms and the isolation state is fully
   torn down so the home is never left hidden.
 - Destination rect source of truth: the division pages' published
-  `grm-dest-logo:v4:<page>:<w>x<h>` (sessionStorage, prefix held in the shared
+  `grm-dest-logo:v5:<page>:<w>x<h>` (sessionStorage, prefix held in the shared
   `DEST_LOGO_KEY` const so the reader — Home — and the writer — the division
   pages — can never diverge). The `:vN` version is bumped whenever the
   destination hero geometry changes, so a stale pre-change rect can never
@@ -330,7 +330,7 @@ so the VISIBLE group (top of the drawn mark → bottom of the subtitle) sits on
 - Nothing from the next section enters the first screen on mobile: Label's
   negative hero `margin-bottom` is reset to 0 and Liveroom's `.liveroom-room`
   gets `margin-top:0; padding-top:72px` (mobile query only).
-- `DEST_LOGO_KEY` bumped to `grm-dest-logo:v4`; the mobile Home handoff lands
+- `DEST_LOGO_KEY` bumped to `grm-dest-logo:v5`; the mobile Home handoff lands
   exactly on the new rect (verified 390×844, 430×932). Tablet/desktop logo rects
   are byte-identical to before (820, 1024, 1280, 1440, 1920).
 - Known, pre-existing: on landscape phones (≈844×390) the subtitle and the scroll
@@ -661,6 +661,14 @@ No new treatment was invented: the exact Liveroom technique moves across.
   Recordings + screenshots in `docs/hover-stroke/`; report
   `docs/hover-stroke/REPORT.md`.
 
+### 12a. Hand-off fix — stale logo rect / landing scrolled down (v5)
+
+Symptom (intermittent): Home → Production/Label/Liveroom held a giant logo for ~1.5s, went black, then landed scrolled down (e.g. at Behind GRM). Cause: each division page publishes its hero-logo rect for the Home takeover to aim at, but it measured the *viewport* rect, so a reload (or resize) while that page was scrolled down stored something like `top:-1098`. The takeover then flew the logo to that off-screen rect, and the arrival overlay snapped to a logo that was off screen. Fixes:
+- `publish()` stores the rect as it sits with the page at the top (`+ scrollX/Y`) and skips it if it isn't fully on screen.
+- `saneDestRect()` rejects any stored or measured rect that isn't on screen, so the takeover falls back to a fresh measurement.
+- The key was bumped to `v5`, which drops old bad rects.
+- Every arrival starts at the top. The head script sets `history.scrollRestoration = "manual"` when `grm-arrival`/`grm-morph-arrival` targets the page. `holdArrivalTop()` pins `scrollY = 0` at init and again on `load`, then sets restoration back to `auto`.
+
 ## 13. Division ↔ division transition — one logo, destination always at top
 
 The division↔division identity handoff (Production/Label/Liveroom nav links) is a
@@ -705,7 +713,7 @@ always begins at `scrollY = 0`.
   (the managed forward click); it is consumed on read, so a bfcache/`history`
   return is untouched — Back restores the outgoing page's scroll (verified:
   `/label/` at `600`), Forward returns the destination to the top.
-- **Cached rects.** `DEST_LOGO_KEY` (`grm-dest-logo:v4`, `js/main.js`) publishes
+- **Cached rects.** `DEST_LOGO_KEY` (`grm-dest-logo:v5`, `js/main.js`) publishes
   the division hero logo's **scroll-0** rect for the Home takeover to aim at; it
   is not used by this path (the destination is measured live).
 - **QA (verified).** All 6 division routes (`Label↔Production↔Liveroom`) × 5

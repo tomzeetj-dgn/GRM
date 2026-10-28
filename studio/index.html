@@ -26,6 +26,10 @@
   <script src="../js/i18n.js"></script>
 
   <script>
+    /* arriving from a Home takeover or a division hand-off: always start at the
+       top — never let the browser restore an old scroll position under the logo */
+    if ((sessionStorage.getItem("grm-arrival") === "studio" || sessionStorage.getItem("grm-morph-arrival") === "studio") &&
+        "scrollRestoration" in history) history.scrollRestoration = "manual";
     if (sessionStorage.getItem("grm-arrival") === "studio") {
       document.documentElement.classList.add("studio-arrival-pending");
     }

@@ -23,7 +23,7 @@
      morph target. Home (reader) and the division pages (writer) MUST agree
      on this version — currently the mobile-centred hero + height-aware
      mid-range scale. */
-  var DEST_LOGO_KEY = "grm-dest-logo:v4";
+  var DEST_LOGO_KEY = "grm-dest-logo:v5";   /* v5: rects are page-top-relative and sanity-checked */
 
   /* ---------- SHARED DESTINATION-LOGO RECT RESOLVER ----------
      One system for every Home -> division path (desktop accordion + mobile
@@ -47,6 +47,15 @@
   var destRectCache = {};
   var destRectPending = {};
   var destPrefetched = false;
+
+  /* A destination logo rect is only usable if it sits fully on screen — a rect
+     taken while that page was scrolled (or mid-resize) would send the committed
+     logo flying off to a giant size and stall the hand-off. */
+  function saneDestRect(r) {
+    return !!(r && r.width > 1 && r.height > 1 &&
+      r.left > -2 && r.top > -2 &&
+      r.left + r.width < window.innerWidth + 2 && r.top + r.height < window.innerHeight + 2);
+  }
 
   function destRectKey(page) {
     return DEST_LOGO_KEY + ":" + page + ":" + window.innerWidth + "x" + window.innerHeight;
@@ -99,17 +108,17 @@
     if (destRectPending[key]) return destRectPending[key];
     var stored = null;
     try { stored = JSON.parse(sessionStorage.getItem(key) || "null"); } catch (e) {}
-    if (stored && stored.width) {
+    if (saneDestRect(stored)) {
       destRectCache[key] = stored;
       return Promise.resolve(stored);
     }
     destRectPending[key] = measureDestLogoRect(page).then(function (rect) {
       delete destRectPending[key];
-      if (rect) {
+      if (saneDestRect(rect)) {
         destRectCache[key] = rect;
         try { sessionStorage.setItem(key, JSON.stringify(rect)); } catch (e) {}
       }
-      return rect;
+      return saneDestRect(rect) ? rect : null;
     }, function () { delete destRectPending[key]; return null; });
     return destRectPending[key];
   }
@@ -1044,9 +1053,12 @@ resize simply misses and falls back to the previous aim point. */
   function publish() {
     var r = logo.getBoundingClientRect();
     if (!r.width || !r.height) return;
+    // where the logo sits with the page at the top (a reload can restore a
+    // scrolled position — the raw viewport rect would then be far off screen)
+    var rect = { left: r.left + window.scrollX, top: r.top + window.scrollY, width: r.width, height: r.height };
+    if (rect.top < -2 || rect.top + rect.height > window.innerHeight + 2) return;
     try {
-      sessionStorage.setItem(DEST_LOGO_KEY + ":" + page + ":" + innerWidth + "x" + innerHeight,
-        JSON.stringify({ left: r.left, top: r.top, width: r.width, height: r.height }));
+      sessionStorage.setItem(DEST_LOGO_KEY + ":" + page + ":" + innerWidth + "x" + innerHeight, JSON.stringify(rect));
     } catch (e) {}
   }
   function settled() {
@@ -1091,6 +1103,22 @@ resize simply misses and falls back to the previous aim point. */
     root.style.scrollBehavior = "";
   }
 
+  /* Every arrival (Home takeover or division morph) starts at the top of the
+     page. The head script already switched scroll restoration to manual for
+     this load; this pins the top through load (when browsers restore) and then
+     hands restoration back so a later reload behaves normally. */
+  function holdArrivalTop() {
+    resetDivisionScrollTop();
+    function done() {
+      resetDivisionScrollTop();
+      setTimeout(function () {
+        try { if ("scrollRestoration" in history) history.scrollRestoration = "auto"; } catch (e) {}
+      }, 400);
+    }
+    if (document.readyState === "complete") done();
+    else window.addEventListener("load", done, { once: true });
+  }
+
   var DIVISION_ARRIVAL = {
     studio: {
       logo: ".studio-minimal-hero__logo", scroll: ".studio-minimal-hero__scroll",
@@ -1123,7 +1151,7 @@ resize simply misses and falls back to the previous aim point. */
     sessionStorage.removeItem("grm-morph-start");
     var target = document.querySelector(cfg.logo);
     if (!source || !target) return false;
-    resetDivisionScrollTop();
+    holdArrivalTop();
     document.fonts.ready.then(function () {
       requestAnimationFrame(function () {
         var end = target.getBoundingClientRect();
@@ -1172,6 +1200,7 @@ resize simply misses and falls back to the previous aim point. */
     window[guard] = true;
     if (sessionStorage.getItem("grm-arrival") !== page) return;
     sessionStorage.removeItem("grm-arrival");
+    holdArrivalTop();
     document.documentElement.classList.add("division-arrival-pending");
     document.body.classList.add("is-division-entering");
     var logo = document.querySelector(cfg.logo);
@@ -1222,6 +1251,7 @@ resize simply misses and falls back to the previous aim point. */
     var arrival = sessionStorage.getItem("grm-arrival");
     if (arrival) sessionStorage.removeItem("grm-arrival");
     if (arrival !== "studio" || reduced() || !hero) return;
+    holdArrivalTop();
     document.documentElement.classList.remove("studio-arrival-pending");
 
     document.body.classList.add("is-studio-arriving");
