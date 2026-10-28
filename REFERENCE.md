@@ -661,6 +661,14 @@ No new treatment was invented: the exact Liveroom technique moves across.
   Recordings + screenshots in `docs/hover-stroke/`; report
   `docs/hover-stroke/REPORT.md`.
 
+### 12f. Production · Sound disciplines below desktop
+
+Desktop (≥901, mouse) keeps the 4×1 hover strip unchanged. Below it, the strip used to put the title *under* the description and push it to the right edge (the base overlay's `align-items:end` in a flex column), and touch screens ≥901 squeezed four columns with the text off the photos. Now:
+- **Tablets (600–900, and touch ≥901):** frames 2×2. Each photo is 4:5 with the discipline title back on the photo, bottom-left, over the resting scrim (the desktop language), and the sentence beneath the frame in muted text. `align-content:start` keeps a taller neighbour from stretching the photo row.
+- **Landscape tablets (touch ≥1024):** the same frames, four across.
+- **Phones (<600):** a typographic index of four rows on hairlines. The discipline name is large in the display face (`clamp(2rem,10.5vw,2.85rem)`), the sentence sits beneath it, and a 4:5 thumbnail sits on the right (`clamp(84px,26vw,112px)`).
+- Crops use the desktop X windows (76/60/100/55%).
+
 ### 12e. Home takeover lands exactly on the destination logo (v6)
 
 The v5 sanity check (12a) required the whole logo box to be on screen. On desktop the box legitimately starts above the viewport (the PNG has transparent margins), so every desktop aim rect was rejected. The takeover then fell back to the old CSS aim (`top:38%`), landing ~20px high and 4–6px off, and the logo jumped once the page arrived. Fixes:

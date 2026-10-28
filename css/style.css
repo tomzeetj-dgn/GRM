@@ -2591,144 +2591,158 @@ body[data-page="studio"].is-studio-arriving .site-header {
   .grm-photo-strip.in-view .grm-photo:hover .grm-photo__stroke{opacity:1}
 }
 
-/* --- Mobile/tablet: 2x2 photographic grid, still disciplined ------ */
-@media (max-width:900px){
+/* --- Below the desktop hover strip -----------------------------------
+   Desktop (≥901, mouse) keeps the 4×1 hover strip above, untouched.
+   TABLETS (600–900, and any touch screen ≥901): the same frames
+   rearranged 2×2 — tall photographs with the discipline title back ON the
+   photo, bottom-left, over the resting scrim (exactly the desktop
+   language), and the sentence beneath the frame on the page background,
+   where it always reads.
+   PHONES (<600): a typographic index — four rows on hairlines, the
+   discipline large in the display face, its sentence beneath, a small
+   cropped photograph on the right. Short to scroll and calm before the
+   archive. Both are static: no hover, no redistribution. */
+@media (min-width:600px) and (max-width:900px), (min-width:901px) and (hover:none), (min-width:901px) and (pointer:coarse){
   .grm-photo-strip{
-    grid-template-columns:repeat(2,1fr);
-    column-gap:6px;
-    row-gap:6px;
-    height:auto;
+    grid-template-columns:repeat(2,minmax(0,1fr));
+    column-gap:clamp(10px,1.6vw,16px);
+    row-gap:clamp(28px,4vw,40px);
     aspect-ratio:auto;
-    margin-top:clamp(20px,3vh,28px);
-    margin-bottom:0;
+    margin-top:clamp(24px,3.4vh,36px);
+    transition:none;
   }
-  /* Touch / static 2x2. There is no hover here, so the discipline title
-     and its sentence are both always visible — but they no longer sit ON
-     the photograph. Three of the four frames carry blown highlights right
-     through the middle (peak luminance ~250), exactly where a three-line
-     caption lands, so no scrim short of blacking out most of the image
-     could make that text readable. Instead the figure becomes a column:
-     photograph first, then the title and its sentence beneath it on the
-     section background. The image keeps its crop and its full tonal range,
-     and the copy reads at full contrast against the page. */
   .grm-photo-strip .grm-photo{
+    display:grid;
+    grid-template-rows:auto auto;
+    align-content:start;       /* a taller neighbour must not stretch the photo row (the scrim would overhang) */
+    overflow:visible;
+    background:none;
+  }
+  /* the frame: photo + resting scrim + title, one box */
+  .grm-photo-strip .grm-photo img{
+    position:relative;
+    grid-row:1;
+    grid-column:1;
+    inset:auto;
+    width:100%;
+    height:auto;
+    aspect-ratio:4/5;
+  }
+  .grm-photo-strip .grm-photo::after{
+    grid-row:1;
+    grid-column:1;
+    position:relative;
+    inset:auto;
+    align-self:start;
+    aspect-ratio:4/5;          /* exactly the photo's box */
+  }
+  .grm-photo-strip .grm-photo::before,
+  .grm-photo-strip .grm-photo__stroke{display:none}
+  /* the caption spans both rows: title pinned to the frame's bottom-left,
+     sentence below the frame */
+  .grm-photo__text{
+    display:contents;
+  }
+  .grm-photo__title{
+    grid-row:1;
+    grid-column:1;
+    align-self:end;
+    justify-self:start;
+    position:relative;
+    z-index:2;
+    max-width:none;
+    margin:0 0 clamp(14px,2vw,22px) clamp(16px,2.4vw,24px);
+    font-size:clamp(2rem,5vw,3rem);
+  }
+  .grm-photo__desc{
+    grid-row:2;
+    grid-column:1;
+    opacity:1;
+    transform:none;
+    max-width:40ch;
+    margin:clamp(12px,1.6vw,16px) 0 0;
+    font-size:15px;
+    line-height:1.5;
+    color:var(--text-muted, rgba(236,233,226,.72));
+    transition:none;
+  }
+  /* 4:5 crops of the portrait sources: the desktop X windows still find the
+     face / activity band */
+  .grm-photo--recording img{object-position:76% center}
+  .grm-photo--composition img{object-position:60% center}
+  .grm-photo--beatmaking img{object-position:100% center}
+  .grm-photo--engineering img{object-position:55% center}
+}
+
+/* wide touch screens (landscape tablets): the same frames, four across —
+   2×2 at this width made each photograph taller than the screen */
+@media (min-width:1024px) and (hover:none), (min-width:1024px) and (pointer:coarse){
+  .grm-photo-strip{ grid-template-columns:repeat(4,minmax(0,1fr)); }
+  .grm-photo__title{ font-size:clamp(1.75rem,2.6vw,2.5rem); }
+  .grm-photo__desc{ font-size:14.5px; }
+}
+
+@media (max-width:599px){
+  .grm-photo-strip{
+    display:block;
     aspect-ratio:auto;
-    min-height:0;
-    display:flex;
-    flex-direction:column;
+    margin-top:clamp(20px,5vw,28px);
+    border-bottom:1px solid var(--border, rgba(236,233,226,.12));
+    transition:none;
+  }
+  .grm-photo-strip .grm-photo{
+    display:grid;
+    grid-template-columns:minmax(0,1fr) clamp(84px,26vw,112px);
+    column-gap:clamp(14px,4vw,20px);
+    align-items:center;
+    padding:clamp(18px,5vw,24px) 0;
+    border-top:1px solid var(--border, rgba(236,233,226,.12));
+    overflow:visible;
     background:none;
   }
   .grm-photo-strip .grm-photo img{
-    position:static;
+    position:relative;
+    grid-column:2;
+    grid-row:1;
     inset:auto;
-    z-index:auto;
     width:100%;
     height:auto;
-    aspect-ratio:16/10;
-    flex:0 0 auto;
+    aspect-ratio:4/5;
   }
-  /* The text no longer overlays anything, so the exposure scrims have no
-     job to do on this layout — the photograph is left untouched. The
-     stroke layer belongs to the desktop hover interaction only. */
   .grm-photo-strip .grm-photo::before,
   .grm-photo-strip .grm-photo::after,
   .grm-photo-strip .grm-photo__stroke{display:none}
   .grm-photo__text{
     position:static;
-    left:auto;
-    bottom:auto;
+    grid-column:1;
+    grid-row:1;
     display:flex;
     flex-direction:column;
-    padding:clamp(9px,2.6vw,13px) 2px 0;
-    transition:none;
-  }
-  /* Mobile crops are flatter boxes (16/10 against a portrait source), so the
-     whole image height is shown and the crop is X-limited instead — these
-     values slide that window onto the measured face / activity band. */
-  .grm-photo__desc{
-    order:1;
-    opacity:1;
-    transform:none;
-    margin:0 0 clamp(4px,1vw,6px) 0;
-    font-size:clamp(14px,11px + 1.3vw,15px);
-    line-height:1.4;
-    max-width:min(40ch,100%);
-    transition:none;
-  }
-  /* The DOM lists title before description; the base overlay reverses that
-     with grid-row placement, so this stacked layout has to order them
-     explicitly to keep the approved description-above-title relationship. */
-  .grm-photo__title{
-    order:2;
-    font-size:clamp(1.35rem,4.5vw,2rem);
-    bottom:auto;
-    margin:0;
-    text-shadow:none;
-  }
-  .grm-photo--recording img{object-position:center 48%}
-  .grm-photo--composition img{object-position:center 33%}
-  .grm-photo--beatmaking img{object-position:center 10%}
-  .grm-photo--engineering img{object-position:center 41%}
-}
-
-/* Tablet-landscape and other touch widths above 900px fall back to the
-   desktop 4x1 grid but have no hover, so the descriptions stay visible
-   statically there too (same treatment, no interaction dependency).
-   They also carry the same legibility problem as the phone layout — with
-   no expanded tile the caption sits in the bottom fifth of a 16:9 frame
-   and still lands on blown highlights (measured 1.5–3.3:1). So this
-   branch gets the identical column layout: 4x1 track list unchanged, the
-   strip simply stops pinning its own height because the figures now own
-   theirs, and the copy moves onto the section background. */
-@media (min-width:901px) and (hover:none){
-  .grm-photo-strip{aspect-ratio:auto}
-  .grm-photo-strip .grm-photo{
-    aspect-ratio:auto;
-    min-height:0;
-    display:flex;
-    flex-direction:column;
-    background:none;
-  }
-  .grm-photo-strip .grm-photo img{
-    position:static;
-    inset:auto;
-    z-index:auto;
-    width:100%;
-    height:auto;
-    aspect-ratio:16/10;
-    flex:0 0 auto;
-  }
-  .grm-photo-strip .grm-photo::before,
-  .grm-photo-strip .grm-photo::after{display:none}
-  .grm-photo__text{
-    position:static;
-    left:auto;
-    bottom:auto;
-    display:flex;
-    flex-direction:column;
-    padding:clamp(9px,1.1vw,13px) 2px 0;
-    transition:none;
-  }
-  .grm-photo__desc{
-    order:1;
-    opacity:1;
-    transform:none;
-    margin:0 0 clamp(4px,.5vw,6px) 0;
-    max-width:min(40ch,100%);
+    align-items:flex-start;     /* the base overlay grid bottom-aligns with `end`, which in a
+                                   flex column pushed the titles to the RIGHT edge */
+    gap:clamp(8px,2.4vw,12px);
     transition:none;
   }
   .grm-photo__title{
-    order:2;
-    bottom:auto;
-    margin:0;
+    max-width:none;
+    font-size:clamp(2rem,10.5vw,2.85rem);
     text-shadow:none;
   }
-  /* Same 16/10 image box as the phone branch, so this is X-limited crop
-     art direction too — the desktop Y values would do nothing here. */
-  .grm-photo--recording img{object-position:center 48%}
-  .grm-photo--composition img{object-position:center 33%}
-  .grm-photo--beatmaking img{object-position:center 10%}
-  .grm-photo--engineering img{object-position:center 41%}
+  .grm-photo__desc{
+    order:2;
+    opacity:1;
+    transform:none;
+    max-width:32ch;
+    margin:0;
+    font-size:14.5px;
+    line-height:1.5;
+    color:var(--text-muted, rgba(236,233,226,.72));
+    transition:none;
+  }
+  .grm-photo--recording img{object-position:76% center}
+  .grm-photo--composition img{object-position:60% center}
+  .grm-photo--beatmaking img{object-position:100% center}
+  .grm-photo--engineering img{object-position:55% center}
 }
 
 /* --- ARCHIVE SPACING ---------------------------------------------
