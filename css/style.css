@@ -4542,6 +4542,9 @@ html.js .label-lineup__credits.reveal{ transition-delay:900ms; }
      tablets (fitted at 768×1024, 820×1180, 1023×1366); small tablets add room so
      the cue never meets the word */
   .label-lineup{ margin-top:min(0px, calc(270px - 33vh)); padding-top:clamp(0px, (700px - 100vw) * .6, 60px); }
+  /* portrait tablets: the hero now owns the whole first screen (centred lockup,
+     cue near its foot), so the line-up starts below it rather than tucking up */
+  @media (orientation:portrait){ .label-lineup{ margin-top:0; padding-top:0; } }
   .label-lineup__name{ font-size:clamp(1rem,3cqw,1.6rem); }
   .label-lineup__detail{ width:min(560px,72cqw); }
 }
@@ -5005,7 +5008,7 @@ html.js .label-lineup__credits.reveal{ transition-delay:900ms; }
    to fight and zero-jump is preserved. Real logo rect === morph target.
    Desktop is untouched (block lives under the mobile-only query).
    ============================================================ */
-@media (max-width: 767px), (pointer: coarse) and (max-height: 560px) {
+@media (max-width: 767px), (pointer: coarse) and (max-height: 560px), (max-width: 1023px) and (orientation: portrait) {
   .studio-minimal-hero,
   body.theme-label .division-minimal-hero,
   body.theme-liveroom .division-minimal-hero {
@@ -5097,6 +5100,18 @@ html.js .label-lineup__credits.reveal{ transition-delay:900ms; }
   .division-minimal-hero__scroll {
     top: auto;
     bottom: clamp(24px, 7svh, 72px);
+  }
+}
+
+/* Portrait tablets (768–1023) use the same optically-centred hero as phones —
+   the desktop lockup's fixed upward nudges left the mark + title high on a tall
+   screen with a dead band above a far-off scroll cue. The mark keeps its
+   desktop size here. */
+@media (min-width: 768px) and (max-width: 1023px) and (orientation: portrait) {
+  .studio-minimal-hero,
+  body.theme-label .division-minimal-hero,
+  body.theme-liveroom .division-minimal-hero {
+    --logo-w: min(clamp(400px, max(58vw, 50svh), 880px), 100vw - 2 * var(--gutter));
   }
 }
 

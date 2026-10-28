@@ -661,6 +661,10 @@ No new treatment was invented: the exact Liveroom technique moves across.
   Recordings + screenshots in `docs/hover-stroke/`; report
   `docs/hover-stroke/REPORT.md`.
 
+### 12b. Portrait tablets use the centred hero
+
+On portrait tablets (768–1023, `orientation: portrait`) the Production, Label and Liveroom heroes now use the phone model: the visible mark, title and subtitle are optically centred on the screen, and the scroll cue sits `clamp(24px,7svh,72px)` from the bottom. The desktop lockup's fixed nudges had left the group high, with a dead band above a far-off cue. The mark keeps its desktop size here: `--logo-w: min(clamp(400px, max(58vw,50svh), 880px), 100vw − 2·gutter)`. The Label line-up no longer tucks up into the hero in portrait (`margin-top:0`). The scroll-cue → next-content gap is ~140–155px on Label and ~170px on Liveroom. Landscape tablets keep the desktop hero.
+
 ### 12a. Hand-off fix — stale logo rect / landing scrolled down (v5)
 
 Symptom (intermittent): Home → Production/Label/Liveroom held a giant logo for ~1.5s, went black, then landed scrolled down (e.g. at Behind GRM). Cause: each division page publishes its hero-logo rect for the Home takeover to aim at, but it measured the *viewport* rect, so a reload (or resize) while that page was scrolled down stored something like `top:-1098`. The takeover then flew the logo to that off-screen rect, and the arrival overlay snapped to a logo that was off screen. Fixes:
