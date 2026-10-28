@@ -661,6 +661,10 @@ No new treatment was invented: the exact Liveroom technique moves across.
   Recordings + screenshots in `docs/hover-stroke/`; report
   `docs/hover-stroke/REPORT.md`.
 
+### 12h. Home intro dividers land on the panel borders
+
+The intro's drawn-in dividers were children of the panels at `left:0`, which is the padding edge, one pixel right of the resting `.panel + .panel` border. Because the panel's `overflow:hidden` stops a child reaching the border, the line visibly hopped ~1px left when the intro handed over to the border. The lines are now appended to `#heroPanels` (made `position:relative`). Each one is placed on its border's box with sub-pixel `getBoundingClientRect()` values, so the pixels are identical during and after the intro (checked at 938, 1281 and 1440px).
+
 ### 12g. Mobile menu close button
 
 The full-screen menu (z 240) covered the whole header (z 200), including the hamburger that turns into the ×, so on phones and tablets there was no visible way to close it. `body.menu-open .site-header` now sits at z 250 with no background, blur or border, so the brand, the language switch and the × show on the menu's own background.
