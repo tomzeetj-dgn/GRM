@@ -661,6 +661,13 @@ No new treatment was invented: the exact Liveroom technique moves across.
   Recordings + screenshots in `docs/hover-stroke/`; report
   `docs/hover-stroke/REPORT.md`.
 
+### 12d. One mark position on every division page
+
+The hero logos sat 1px apart from page to page (`left:-1px / 0 / 1px` hand-tweaks), and on phones Liveroom's two-line descriptor made its centred group taller, which lifted its mark ~8–10px. Switching pages therefore nudged the logo. Two fixes:
+- **Horizontal:** the drawn mark sits 0.58% right of centre inside all six logo PNGs (bbox centre x = 0.5058). Every hero logo now has `left:0; translate:-0.58% 0`, which puts the visible mark dead centre and identical on Production, Label and Liveroom. `translate` is used rather than `transform`, so transform animations are untouched.
+- **Vertical (phones / portrait tablets):** every descriptor reserves two lines (`line-height:1.35; min-height:2.7em`), so the centred group is the same height on all three pages.
+- **Verified:** the mark centre is identical on all three pages at 1920, 1728, 1440, 1280, 1024, 820, 390 and 360px, in EN and SR.
+
 ### 12c. Page-to-page hand-off from the hamburger menu
 
 The Production ↔ Label ↔ Liveroom logo hand-off used to run only from the desktop header nav (`.site-nav`). The hamburger menu (`.mobile-menu__nav`, used on tablets and phones) navigated plainly, with no logo flash. Now both run the hand-off. The menu closes itself on the tap, the outgoing hero text fades, and the destination's logo flashes in with the usual staggered title, descriptor and cue. Modifier clicks and reduced motion still fall through to the browser.

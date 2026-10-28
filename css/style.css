@@ -719,7 +719,7 @@ body.menu-open .mobile-menu__link:nth-child(6) { transition-delay: 440ms; }
   width: clamp(400px, max(58vw, 50svh), 880px);
   height: auto;
   position: relative;
-  left: -1px;
+  left: 0;
   top: -38px;
 }
 body.is-shared-logo-pending .studio-minimal-hero__title,
@@ -834,9 +834,15 @@ body.theme-liveroom .division-minimal-hero {
   gap: clamp(18px, 2.8vh, 34px);
   transform: translateY(-10vh);
 }
-body.theme-label .division-minimal-hero__logo { left: 0; }
-body.theme-liveroom .division-minimal-hero__logo { left: 1px; }
-.division-minimal-hero__logo { display: block; width: clamp(400px, max(58vw, 50svh), 880px); height: auto; position: relative; left: -1px; top: -38px; }
+.division-minimal-hero__logo { display: block; width: clamp(400px, max(58vw, 50svh), 880px); height: auto; position: relative; left: 0; top: -38px; }
+/* ONE mark position on every division page. The drawn mark sits 0.58% right of
+   centre inside all six logo PNGs (bbox centre x = 0.5058), so each logo is
+   shifted back by that much of its own width — the visible mark is then dead
+   centre and identical on Production, Label and Liveroom, so the page-to-page
+   hand-off never nudges sideways. (`translate`, not `transform`, so nothing
+   that animates transform on these logos is affected.) */
+.studio-minimal-hero__logo,
+.division-minimal-hero__logo { translate: -0.58% 0; }
 .label-transition-logo {
   position: fixed;
   z-index: 1000;
@@ -5093,6 +5099,11 @@ html.js .label-lineup__credits.reveal{ transition-delay:900ms; }
     margin-top: calc(0.85 * var(--lockup-gap));
     font-size: clamp(0.73rem, 1vw, 0.86rem);
     letter-spacing: 0.22em;
+    /* every descriptor reserves two lines (Liveroom's wraps on phones), so the
+       centred group is the same height on all three pages and the mark sits in
+       exactly the same spot — no jump in the page-to-page hand-off */
+    line-height: 1.35;
+    min-height: 2.7em;
   }
 
   /* the scroll cue sits low in the hero on every route */
