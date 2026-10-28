@@ -837,6 +837,6 @@ Designed on the Claude Design canvas as direction "E · Step forward" and approv
 - **Copy.** There is no eyebrow or note row: the section opens straight on the big "BEHIND GRM." (`label.people.eyebrow` and `.note` were removed). The bios are one sentence each, under `label.people.bio.{grzi,dzu,igla}` (EN and SR); the photo description is under `label.people.photoAlt`.
   - Grzi's and Džu's bios were written from earlier placeholder text, so swap in real details when they're available.
 - **Removed.** The old five-spread markup, `.label-people__entry`/`__portrait`/`__shot`/`__intro`/`__role`/`__name`/`__bio` styles, and the `label.people.role.*` and `label.people.bio.4.*` keys.
-  - Roles are no longer the §14 credit-label chips. They are one quiet line (`.label-lineup__roles`): small spaced caps with a 4px division-coloured dot before each role. On wide screens the line is hidden at rest and arrives with the bio on hover; at 900px and below it is always shown. The numbers above the names are gone.
+  - No role tags. Each person is just the name plus a one-sentence bio (the `.label-lineup__roles` line and the `label.people.credit.*` / `credits.aria` keys were removed at the client's request). On wide screens the bio arrives on hover; at 900px and below it is always shown. No numbers above the names.
   - `.label-people__credits` and `.credit-label` (§14) are no longer used on any page but are kept, so the chips can come back easily.
   - `assets/img/Behind GRM - 1…5.png` are no longer referenced, but are left in place.

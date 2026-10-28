@@ -4476,40 +4476,7 @@ html.js .label-lineup__credits.reveal{ transition-delay:900ms; }
   text-transform:uppercase;
   white-space:nowrap;
 }
-/* roles: one quiet credit line, a small division-coloured dot before each.
-   Hidden at rest on wide screens — they arrive with the bio. */
-.label-lineup__roles{
-  display:flex;
-  flex-wrap:wrap;
-  justify-content:center;
-  gap:6px 16px;
-  margin:12px 0 0;
-  padding:0;
-  list-style:none;
-  color:var(--text-muted);
-  font-size:10.4px;
-  font-weight:600;
-  letter-spacing:.18em;
-  line-height:1.6;
-  text-transform:uppercase;
-}
-.label-lineup__roles li{
-  display:inline-flex;
-  align-items:center;
-  gap:8px;
-  white-space:nowrap;
-}
-.label-lineup__roles li::before{
-  content:"";
-  width:4px;
-  height:4px;
-  border-radius:50%;
-  background:var(--credit-neutral);
-}
-.label-lineup__roles li[data-cat="label"]::before{ background:var(--credit-label); }
-.label-lineup__roles li[data-cat="production"]::before{ background:var(--credit-production); }
-.label-lineup__roles li[data-cat="liveroom"]::before{ background:var(--credit-live); }
-/* the selected person's roles + bio: ONE shared caption, centred under the
+/* the selected person's bio: ONE shared caption, centred under the
    three names (2–3 lines), so it always lands in the same place and stays
    inside the screen. Hand-over is sequenced like the big words. */
 .label-lineup__detail{
@@ -4581,7 +4548,6 @@ html.js .label-lineup__credits.reveal{ transition-delay:900ms; }
   .label-lineup__name{ font-size:clamp(1.9rem,8.4vw,2.6rem); white-space:normal; }
   .label-lineup__credits{ padding-bottom:0; }
   .label-lineup__detail{ position:static; width:auto; align-items:flex-start; text-align:left; opacity:1; transform:none; pointer-events:auto; }
-  .label-lineup__roles{ justify-content:flex-start; margin-top:12px; }
   .label-lineup__bio{ max-width:42ch; }
   .label-lineup__stage[data-active] .label-lineup__credit{ opacity:1; }
 }
