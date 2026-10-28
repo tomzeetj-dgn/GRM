@@ -345,10 +345,7 @@
     // The entrance animation composes the desktop accordion's layered marks.
     // On the mobile stacked-destination hero there is nothing to compose, so
     // skip it entirely — but always clear the pre-paint hold it set in <head>.
-    if (window.matchMedia("(max-width: 767px), (pointer: coarse) and (max-height: 560px), (hover: none) and (pointer: coarse)").matches) {
-      document.documentElement.classList.remove("home-intro-pending");
-      return;
-    }
+    var stacked = window.matchMedia("(max-width: 767px), (pointer: coarse) and (max-height: 560px), (hover: none) and (pointer: coarse)").matches;
     var reduce = reduced();
     var seen = false;
     try { seen = sessionStorage.getItem("grm-home-intro-seen") === "1"; } catch (e) {}
@@ -357,6 +354,33 @@
       return;
     }
     try { sessionStorage.setItem("grm-home-intro-seen", "1"); } catch (e) {}
+
+    // Phones and touch tablets: the stacked selector's own entrance (styles
+    // in css/style.css, "ENTRANCE"): dividers draw → marks glow in (Label,
+    // Studio, Liveroom) → photographs develop → words rise in. A tap during
+    // it simply proceeds; the takeover owns the screen from there.
+    if (stacked) {
+      var b = document.body;
+      b.classList.add("home-m-intro");
+      document.documentElement.classList.remove("home-intro-pending");
+      var steps = [
+        [250, "m-lines"],
+        [1050, "m-mark-label"],
+        [1400, "m-mark-studio"],
+        [1750, "m-mark-live"],
+        [2150, "m-media"],
+        [2600, "m-text"]
+      ];
+      requestAnimationFrame(function () {
+        requestAnimationFrame(function () {
+          steps.forEach(function (st) { setTimeout(function () { b.classList.add(st[1]); }, st[0]); });
+          setTimeout(function () {
+            b.classList.remove("home-m-intro", "m-lines", "m-mark-label", "m-mark-studio", "m-mark-live", "m-media", "m-text");
+          }, 4300);
+        });
+      });
+      return;
+    }
     var home = document.querySelector(".hero");
     var header = document.querySelector(".site-header");
     var dividers = Array.prototype.slice.call(document.querySelectorAll(".panel + .panel"));

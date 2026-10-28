@@ -674,6 +674,19 @@ The intro used to draw separate lines (scaled `<i>` elements) and then hand over
 
 The full-screen menu (z 240) covered the whole header (z 200), including the hamburger that turns into the ×, so on phones and tablets there was no visible way to close it. `body.menu-open .site-header` now sits at z 250 with no background, blur or border, so the brand, the language switch and the × show on the menu's own background.
 
+### 12l. Home entrance on phones and touch tablets
+
+The stacked selector now has its own once-per-session entrance, mirroring the desktop intro (same `grm-home-intro-seen` / `HOME_INTRO_DEBUG_REPLAY` gate; reduced motion skips it). It runs ~4s from black, as body classes set by js/main.js:
+- 250ms `m-lines`: the two dividers draw across, the first from the left and the second from the right (1100ms).
+- 1050/1400/1750ms `m-mark-label/studio/live`: the marks glow in, Label first as on desktop (700ms fade, `home-m-mark-glow` pulse).
+- 2150ms `m-media`: each band's photo, scrim and tint develop, top band first (1400ms, 160ms stagger).
+- 2600ms `m-text`: the title, rule, descriptor and arrow rise in, staggered across the bands.
+- 4300ms: the classes clear. Every end state equals the resting style, so nothing moves.
+
+**Dividers.** The bands' dividers are now the same `::after` lines as on desktop, turned horizontal (`border-top` removed). That lets the intro draw them in and leave them in place.
+
+**Taps and first paint.** A tap during the intro proceeds to the normal takeover. `html.home-intro-pending` (head script) holds the first paint black.
+
 ### 12k. Home on touch tablets uses the stacked selector
 
 The desktop accordion only completes its split marks on hover, so touch tablets (any width) now get the phone's stacked selector: three full-width bands, each with its whole mark, name, descriptor and arrow, and tap → the mobile logo hand-off.

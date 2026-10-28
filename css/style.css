@@ -4921,11 +4921,18 @@ html.js .label-lineup__credits.reveal{ transition-delay:900ms; }
     min-height: 0;
     padding-top: 0;
   }
-  .hero__panels .panel + .panel {
-    border-left: none;
-    border-top: 1px solid var(--border);
+  /* the dividers between bands are the same ::after lines as on desktop,
+     turned horizontal — one element the intro can draw in and leave in place */
+  .hero__panels .panel + .panel { border-left: none; border-top: none; }
+  .hero__panels .panel + .panel::after {
+    display: block;
+    top: 0;
+    bottom: auto;
+    left: 0;
+    right: 0;
+    width: auto;
+    height: 1px;
   }
-  .hero__panels .panel + .panel::after { display: none; }
 
   /* retire every desktop / composite layer */
   .panel__logo-window,
@@ -5069,10 +5076,88 @@ html.js .label-lineup__credits.reveal{ transition-delay:900ms; }
     opacity: 0;
     transition: opacity 180ms ease-out;
   }
-  .hero.is-mobile-isolating .hero__panels .panel + .panel {
-    border-top-color: transparent;
-    transition: border-color 180ms ease-out;
+  .hero.is-mobile-isolating .hero__panels .panel + .panel::after {
+    opacity: 0;
+    transition: opacity 180ms ease-out;
   }
+
+  /* ---- ENTRANCE (once per session, like the desktop intro) ----
+     black → the two dividers draw across (the first from the left, the
+     second from the right) → the three marks glow in, centre band first
+     (Label, Studio, Liveroom — the desktop order) → each band's photograph
+     develops behind its mark → titles, rules, descriptors and arrows rise in.
+     `html.home-intro-pending` (set in <head>) holds the first paint black;
+     js/main.js then runs the steps on <body>. Every end state equals the
+     resting style, so clearing the classes changes nothing on screen. */
+  html.home-intro-pending .panel__mobile-media,
+  html.home-intro-pending .panel__mobile-scrim,
+  html.home-intro-pending .panel__mobile-tint,
+  body.home-m-intro .panel__mobile-media,
+  body.home-m-intro .panel__mobile-scrim,
+  body.home-m-intro .panel__mobile-tint { opacity: 0; }
+  html.home-intro-pending .panel__mobile-logo,
+  body.home-m-intro .panel__mobile-logo { opacity: 0; transform: scale(.94); }
+  html.home-intro-pending .panel__mobile-title,
+  html.home-intro-pending .panel__mobile-rule,
+  html.home-intro-pending .panel__mobile-desc,
+  body.home-m-intro .panel__mobile-title,
+  body.home-m-intro .panel__mobile-rule,
+  body.home-m-intro .panel__mobile-desc { opacity: 0; transform: translateY(12px); }
+  html.home-intro-pending .panel__mobile-arrow,
+  body.home-m-intro .panel__mobile-arrow { opacity: 0; }
+  html.home-intro-pending #panelHouse.panel::after,
+  body.home-m-intro #panelHouse.panel::after { right: 100%; }
+  html.home-intro-pending #panelLive.panel::after,
+  body.home-m-intro #panelLive.panel::after { left: 100%; }
+
+  /* 1 · the dividers draw across */
+  body.home-m-intro.m-lines #panelHouse.panel::after { right: 0; transition: right 1100ms cubic-bezier(.22, 1, .36, 1); }
+  body.home-m-intro.m-lines #panelLive.panel::after { left: 0; transition: left 1100ms cubic-bezier(.22, 1, .36, 1); }
+
+  /* 2 · the marks glow in, one by one */
+  body.home-m-intro.m-mark-label #panelHouse .panel__mobile-logo,
+  body.home-m-intro.m-mark-studio #panelProduction .panel__mobile-logo,
+  body.home-m-intro.m-mark-live #panelLive .panel__mobile-logo {
+    opacity: 1;
+    transform: none;
+    transition: opacity 700ms ease-out, transform 1100ms cubic-bezier(.22, 1, .36, 1);
+    animation: home-m-mark-glow 1300ms ease-in-out;
+  }
+
+  /* 3 · the photographs develop behind them (top band first) */
+  body.home-m-intro.m-media .panel__mobile-media,
+  body.home-m-intro.m-media .panel__mobile-scrim { opacity: 1; transition: opacity 1400ms cubic-bezier(.33, 0, .2, 1); }
+  body.home-m-intro.m-media .panel__mobile-tint { opacity: .14; transition: opacity 1400ms cubic-bezier(.33, 0, .2, 1); }
+  body.home-m-intro.m-media #panelHouse .panel__mobile-media,
+  body.home-m-intro.m-media #panelHouse .panel__mobile-scrim,
+  body.home-m-intro.m-media #panelHouse .panel__mobile-tint { transition-delay: 160ms; }
+  body.home-m-intro.m-media #panelLive .panel__mobile-media,
+  body.home-m-intro.m-media #panelLive .panel__mobile-scrim,
+  body.home-m-intro.m-media #panelLive .panel__mobile-tint { transition-delay: 320ms; }
+
+  /* 4 · the words rise in */
+  body.home-m-intro.m-text .panel__mobile-title,
+  body.home-m-intro.m-text .panel__mobile-rule,
+  body.home-m-intro.m-text .panel__mobile-desc {
+    opacity: 1;
+    transform: none;
+    transition: opacity 800ms ease-out, transform 900ms cubic-bezier(.22, 1, .36, 1);
+  }
+  body.home-m-intro.m-text .panel__mobile-rule { transition-delay: 90ms; }
+  body.home-m-intro.m-text .panel__mobile-desc { transition-delay: 180ms; }
+  body.home-m-intro.m-text #panelHouse .panel__mobile-title { transition-delay: 140ms; }
+  body.home-m-intro.m-text #panelHouse .panel__mobile-rule { transition-delay: 230ms; }
+  body.home-m-intro.m-text #panelHouse .panel__mobile-desc { transition-delay: 320ms; }
+  body.home-m-intro.m-text #panelLive .panel__mobile-title { transition-delay: 280ms; }
+  body.home-m-intro.m-text #panelLive .panel__mobile-rule { transition-delay: 370ms; }
+  body.home-m-intro.m-text #panelLive .panel__mobile-desc { transition-delay: 460ms; }
+  body.home-m-intro.m-text .panel__mobile-arrow { opacity: .82; transition: opacity 900ms ease-out 500ms; }
+}
+
+@keyframes home-m-mark-glow {
+  0%   { filter: brightness(1); }
+  45%  { filter: brightness(1.7) drop-shadow(0 0 14px var(--zone-color, #2ee6a8)); }
+  100% { filter: brightness(1); }
 }
 
 /* Touch tablets: the stacked selector, sized up. Each band is a third of a
