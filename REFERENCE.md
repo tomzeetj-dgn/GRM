@@ -683,7 +683,9 @@ The full-screen menu (z 240) covered the whole header (z 200), including the ham
 - Only runs at ≥901px with a fine hover pointer.
 
 **Motion.**
-- Columns: 950ms `cubic-bezier(.45,0,.2,1)`.
+- Columns: 1100ms `cubic-bezier(.4,0,.2,1)`. Two fixes made this actually glide:
+  - The strip is also a `.reveal`, whose `transition` shorthand out-ranked the strip's own and dropped the column transition entirely (the widths snapped). The desktop block now restates the reveal's three properties plus `grid-template-columns`.
+  - The rest columns are `25fr` ×4 (not `1fr`), so they total the same 100fr as the active 40/20/20/20. Raw fr numbers interpolate, so 1fr→40fr had jumped most of the way in the first frames.
 - Image breathe: 1400ms.
 - Scrim: 800ms.
 - Arriving: the sentence row opens (700ms, 200ms delay) and then the sentence fades in (600ms, 520ms delay).

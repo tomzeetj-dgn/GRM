@@ -2381,7 +2381,12 @@ body[data-page="studio"].is-studio-arriving .site-header {
      expanded geometries must be structurally identical minmax() lists so
      every state change interpolates; a repeat()-wrapped resting track
      cannot blend with explicit active tracks and would snap. */
-  grid-template-columns:minmax(0,1fr) minmax(0,1fr) minmax(0,1fr) minmax(0,1fr);
+  /* 25fr each, not 1fr: the active states total 100fr (40/20/20/20), and fr
+     values interpolate as raw numbers — from 1fr×4 the very first frames of
+     the transition already jumped most of the way (a 1→40 ramp against 1→20
+     neighbours), which read as a snap. With the same 100fr total the share
+     moves linearly with the easing curve. */
+  grid-template-columns:minmax(0,25fr) minmax(0,25fr) minmax(0,25fr) minmax(0,25fr);
   column-gap:6px;
   width:var(--container);
   aspect-ratio:16/9;
@@ -2575,8 +2580,18 @@ body[data-page="studio"].is-studio-arriving .site-header {
      script keeps the current tile until the pointer is clearly over another
      one, and only releases after the pointer has left the strip for a beat.
      Motion is a soft ease-in-out instead of the old instant-start curve. */
+  /* The strip is also a shared `.reveal`, whose `transition` shorthand
+     (opacity/filter/transform) out-ranks a plain `.grm-photo-strip` rule — so
+     the column change had NO transition at all and the tiles snapped to their
+     new widths. Restate the reveal's three properties here and add the
+     columns: a slow, gliding ease-in-out. */
+  html.js .grm-photo-strip.reveal,
   .grm-photo-strip{
-    transition:grid-template-columns 950ms cubic-bezier(.45,0,.2,1);
+    transition:
+      grid-template-columns 1100ms cubic-bezier(.4,0,.2,1),
+      opacity 1.4s cubic-bezier(.22,1,.3,1),
+      filter 1.4s cubic-bezier(.22,1,.3,1),
+      transform 1.4s cubic-bezier(.22,1,.3,1);
   }
   .grm-photo-strip.in-view[data-active="0"]{ grid-template-columns:minmax(0,40fr) minmax(0,20fr) minmax(0,20fr) minmax(0,20fr); }
   .grm-photo-strip.in-view[data-active="1"]{ grid-template-columns:minmax(0,20fr) minmax(0,40fr) minmax(0,20fr) minmax(0,20fr); }
