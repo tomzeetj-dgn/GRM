@@ -674,6 +674,14 @@ The intro used to draw separate lines (scaled `<i>` elements) and then hand over
 
 The full-screen menu (z 240) covered the whole header (z 200), including the hamburger that turns into the ×, so on phones and tablets there was no visible way to close it. `body.menu-open .site-header` now sits at z 250 with no background, blur or border, so the brand, the language switch and the × show on the menu's own background.
 
+### 12k. Home on touch tablets uses the stacked selector
+
+The desktop accordion only completes its split marks on hover, so touch tablets (any width) now get the phone's stacked selector: three full-width bands, each with its whole mark, name, descriptor and arrow, and tap → the mobile logo hand-off.
+- **Query:** the phone query gained `(hover: none) and (pointer: coarse)` in the CSS block, its reduced-motion twin, and both `matchMedia` checks in js/main.js (intro skip and the mobile takeover).
+- **Tablet sizing** (`(hover:none) and (pointer:coarse) and (min-width:768px)`): the mark is `clamp(84px, min(12vw,11svh), 140px)` and the title `clamp(3rem, min(8vw,8svh), 5.5rem)`, with a larger rule, descriptor and arrow.
+- **Verified:** the hand-off lands pixel-exact at 820×1180, 1180×820, 1024×1366 and 390.
+- **Unchanged:** desktop with a mouse.
+
 ### 12j. Page-to-page flash: no phantom logo
 
 The division→division arrival lays a Glow copy of the destination mark on the real logo and fades it out (700ms). It was `position:fixed` at the viewport rect measured once. If the page scrolled after that (a late scroll restore, arriving from a scrolled page), the copy stayed where the logo *had been* and faded out there: a second, "phantom" logo. Now the arrival resets to the top right before measuring, and the copy (`.studio-morph-logo` / `.division-morph-logo`) is `position:absolute` in page coordinates, so it moves with the page and stays on the logo. Verified at 0.01px offset, including with a forced late scroll.

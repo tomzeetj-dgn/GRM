@@ -345,7 +345,7 @@
     // The entrance animation composes the desktop accordion's layered marks.
     // On the mobile stacked-destination hero there is nothing to compose, so
     // skip it entirely — but always clear the pre-paint hold it set in <head>.
-    if (window.matchMedia("(max-width: 767px), (pointer: coarse) and (max-height: 560px)").matches) {
+    if (window.matchMedia("(max-width: 767px), (pointer: coarse) and (max-height: 560px), (hover: none) and (pointer: coarse)").matches) {
       document.documentElement.classList.remove("home-intro-pending");
       return;
     }
@@ -861,7 +861,7 @@
     var hero = document.getElementById("top");
     if (!root || !hero) return;
 
-    var mqMobile = window.matchMedia("(max-width: 767px), (pointer: coarse) and (max-height: 560px)");
+    var mqMobile = window.matchMedia("(max-width: 767px), (pointer: coarse) and (max-height: 560px), (hover: none) and (pointer: coarse)");
 
     /* Mobile accessible names, applied only while the stacked layout is
        active; the desktop accordion's authored names are captured and

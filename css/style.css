@@ -4891,8 +4891,10 @@ html.js .label-lineup__credits.reveal{ transition-delay:900ms; }
   will-change: left, top, width, height, opacity;
 }
 
-@media (max-width: 767px), (pointer: coarse) and (max-height: 560px) {
-  /* mobile home is headerless: the selector IS the whole screen — no brand
+@media (max-width: 767px), (pointer: coarse) and (max-height: 560px), (hover: none) and (pointer: coarse) {
+  /* touch tablets (hover:none + coarse pointer) get this same stacked selector:
+     the desktop accordion only completes its split marks on hover.
+     mobile home is headerless: the selector IS the whole screen — no brand
      header, no hamburger, no border, and no reserved header height/spacer.
      (the second selector also beats the pre-paint `home-intro-pending`
      display:block hold, though the intro is already skipped on mobile) */
@@ -5073,6 +5075,19 @@ html.js .label-lineup__credits.reveal{ transition-delay:900ms; }
   }
 }
 
+/* Touch tablets: the stacked selector, sized up. Each band is a third of a
+   much larger screen, so the mark, title and descriptor grow with it; the
+   landscape tablet bands are wide and shallow, so the mark tracks the HEIGHT
+   there and the text block stays compact. */
+@media (hover: none) and (pointer: coarse) and (min-width: 768px) {
+  .panel__mobile-body { gap: clamp(12px, 1.6vh, 18px); bottom: calc(clamp(24px, 4svh, 44px) + env(safe-area-inset-bottom, 0px)); }
+  .panel__mobile-logo { width: clamp(84px, min(12vw, 11svh), 140px); }
+  .panel__mobile-title { font-size: clamp(3rem, min(8vw, 8svh), 5.5rem); }
+  .panel__mobile-rule { width: 56px; }
+  .panel__mobile-desc { font-size: clamp(.78rem, 1.1vw, .9rem); }
+  .panel__mobile-arrow svg { width: 34px; height: 34px; }
+}
+
 /* Deliberate landscape-mobile treatment: three stacked bands would be too
    shallow at a phone's landscape height, so compact the panel internals
    instead of ever exposing the hover-dependent desktop accordion. */
@@ -5087,7 +5102,8 @@ html.js .label-lineup__credits.reveal{ transition-delay:900ms; }
 }
 
 @media (max-width: 767px) and (prefers-reduced-motion: reduce),
-       (pointer: coarse) and (max-height: 560px) and (prefers-reduced-motion: reduce) {
+       (pointer: coarse) and (max-height: 560px) and (prefers-reduced-motion: reduce),
+       (hover: none) and (pointer: coarse) and (prefers-reduced-motion: reduce) {
   .panel__mobile-media,
   .panel__mobile-arrow { transition: none; }
 }
