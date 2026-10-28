@@ -416,9 +416,10 @@
      then navigates after 520ms. The destination side lives in
      "DIVISION <-> DIVISION: destination side" below.
      One table instead of six copied handlers; behaviour per route is
-     unchanged. Desktop header only (.site-nav); the <=1000px hamburger menu
-     navigates normally. Modifier/middle clicks and reduced motion fall
-     through to the browser. */
+     unchanged. Desktop header (.site-nav) and the hamburger menu
+     (.mobile-menu__nav, tablets and phones) both run it — the menu closes
+     itself on the tap, then the hand-off plays. Modifier/middle clicks and
+     reduced motion fall through to the browser. */
   (function () {
     var page = document.body.getAttribute("data-page");
     if (reduced() || (page !== "studio" && page !== "label" && page !== "liveroom")) return;
@@ -430,7 +431,8 @@
 
     document.addEventListener("click", function (event) {
       if (busy || event.button !== 0 || event.metaKey || event.ctrlKey || event.shiftKey || event.altKey) return;
-      var link = event.target.closest(".site-nav a");
+      // the desktop header nav and the hamburger menu (tablets / phones) share the hand-off
+      var link = event.target.closest(".site-nav a, .mobile-menu__nav a");
       if (!link) return;
       var destination = null;
       DIVISIONS.forEach(function (d) {

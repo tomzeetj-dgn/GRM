@@ -661,6 +661,10 @@ No new treatment was invented: the exact Liveroom technique moves across.
   Recordings + screenshots in `docs/hover-stroke/`; report
   `docs/hover-stroke/REPORT.md`.
 
+### 12c. Page-to-page hand-off from the hamburger menu
+
+The Production ↔ Label ↔ Liveroom logo hand-off used to run only from the desktop header nav (`.site-nav`). The hamburger menu (`.mobile-menu__nav`, used on tablets and phones) navigated plainly, with no logo flash. Now both run the hand-off. The menu closes itself on the tap, the outgoing hero text fades, and the destination's logo flashes in with the usual staggered title, descriptor and cue. Modifier clicks and reduced motion still fall through to the browser.
+
 ### 12b. Portrait tablets use the centred hero
 
 On portrait tablets (768–1023, `orientation: portrait`) the Production, Label and Liveroom heroes now use the phone model: the visible mark, title and subtitle are optically centred on the screen, and the scroll cue sits `clamp(24px,7svh,72px)` from the bottom. The desktop lockup's fixed nudges had left the group high, with a dead band above a far-off cue. The mark keeps its desktop size here: `--logo-w: min(clamp(400px, max(58vw,50svh), 880px), 100vw − 2·gutter)`. The Label line-up no longer tucks up into the hero in portrait (`margin-top:0`). The scroll-cue → next-content gap is ~140–155px on Label and ~170px on Liveroom. Landscape tablets keep the desktop hero.
