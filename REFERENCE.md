@@ -674,6 +674,23 @@ The intro used to draw separate lines (scaled `<i>` elements) and then hand over
 
 The full-screen menu (z 240) covered the whole header (z 200), including the hamburger that turns into the ×, so on phones and tablets there was no visible way to close it. `body.menu-open .site-header` now sits at z 250 with no background, blur or border, so the brand, the language switch and the × show on the menu's own background.
 
+### 12i. Production · Sound strip hover (desktop): gentle and stable
+
+**Stability.** The active tile is held by js/main.js as `[data-active]` on `.grm-photo-strip` plus `.is-active` on the tile, not by `:hover`. The 6px gaps and the tiles' moving edges used to drop `:hover` for a frame, so the strip snapped back to rest and re-expanded mid-move. Now:
+- Gaps keep the current tile.
+- A new tile takes over once the pointer is 14px inside it and has rested 70ms.
+- Leaving the strip releases after 200ms.
+- Only runs at ≥901px with a fine hover pointer.
+
+**Motion.**
+- Columns: 950ms `cubic-bezier(.45,0,.2,1)`.
+- Image breathe: 1400ms.
+- Scrim: 800ms.
+- Arriving: the sentence row opens (700ms, 200ms delay) and then the sentence fades in (600ms, 520ms delay).
+- Leaving: the sentence fades out first (260ms) and its row closes after it.
+
+**Order.** Title first, its sentence beneath (same as tablets): the row under the title opens on the active tile and gently lifts the title. The old 4px title nudge is gone.
+
 ### 12f. Production · Sound disciplines below desktop
 
 Desktop (≥901, mouse) keeps the 4×1 hover strip unchanged. Below it, the strip used to put the title *under* the description and push it to the right edge (the base overlay's `align-items:end` in a flex column), and touch screens ≥901 squeezed four columns with the text off the photos. Now:

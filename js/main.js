@@ -1680,6 +1680,69 @@ resize simply misses and falls back to the previous aim point. */
    autoplay velocity (never stopping). Reduced-motion turns the
    autoplay off but keeps manual drag/swipe intact.
    ============================================================ */
+/* ============================================================
+   PRODUCTION · SOUND STRIP — stable hover (desktop, fine pointer)
+   The four discipline tiles widen on hover. :hover alone was unstable: the
+   6px gaps and the tiles' moving edges dropped it for a frame, so the strip
+   snapped back to rest and re-expanded while the pointer crossed them. This
+   holds ONE active tile on the strip ([data-active] + .is-active):
+   - the gaps belong to the tile already active (nothing resets mid-move);
+   - a new tile takes over only once the pointer is 14px inside it and has
+     rested there for a moment (no flicker when sweeping across);
+   - leaving the strip releases after a short beat (no snap if the pointer
+     just grazes the edge).
+   Touch, coarse pointers and narrow screens never run it (static layouts).
+   ============================================================ */
+(function () {
+  "use strict";
+  var strip = document.querySelector(".grm-photo-strip");
+  if (!strip || !window.matchMedia) return;
+  var tiles = Array.prototype.slice.call(strip.querySelectorAll(".grm-photo"));
+  if (!tiles.length) return;
+  var mq = window.matchMedia("(min-width:901px) and (hover:hover) and (pointer:fine)");
+  var active = -1, pending = -1, switchTimer = 0, leaveTimer = 0;
+  var INSET = 14, DWELL = 70, LEAVE = 200;
+
+  function apply(i) {
+    if (i === active) return;
+    active = i;
+    if (i < 0) strip.removeAttribute("data-active");
+    else strip.setAttribute("data-active", String(i));
+    tiles.forEach(function (t, j) { t.classList.toggle("is-active", j === i); });
+  }
+  function tileAt(x) {
+    for (var i = 0; i < tiles.length; i++) {
+      var r = tiles[i].getBoundingClientRect();
+      if (x >= r.left && x <= r.right) return { i: i, r: r };
+    }
+    return null;                                   // in a gap
+  }
+  function onMove(e) {
+    if (!mq.matches || e.pointerType !== "mouse") return;
+    clearTimeout(leaveTimer);
+    var hit = tileAt(e.clientX);
+    if (!hit || hit.i === active) { pending = -1; clearTimeout(switchTimer); return; }
+    // first entry: take it at once; afterwards require the pointer to be clearly inside
+    if (active >= 0 && (e.clientX < hit.r.left + INSET || e.clientX > hit.r.right - INSET)) return;
+    if (hit.i === pending) return;
+    pending = hit.i;
+    clearTimeout(switchTimer);
+    if (active < 0) { apply(hit.i); pending = -1; return; }
+    switchTimer = setTimeout(function () { apply(pending); pending = -1; }, DWELL);
+  }
+  function onLeave(e) {
+    if (e.pointerType && e.pointerType !== "mouse") return;
+    clearTimeout(switchTimer); pending = -1;
+    clearTimeout(leaveTimer);
+    leaveTimer = setTimeout(function () { apply(-1); }, LEAVE);
+  }
+  strip.addEventListener("pointermove", onMove);
+  strip.addEventListener("pointerleave", onLeave);
+  var onChange = function () { if (!mq.matches) apply(-1); };
+  if (mq.addEventListener) mq.addEventListener("change", onChange);
+  else if (mq.addListener) mq.addListener(onChange);
+})();
+
 (function () {
   "use strict";
   var row = document.querySelector(".grm-sound__row[data-grm-sound-row]");

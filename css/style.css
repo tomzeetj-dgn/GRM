@@ -2422,13 +2422,15 @@ body[data-page="studio"].is-studio-arriving .site-header {
   left:clamp(16px,2vw,28px);
   bottom:clamp(14px,1.8vw,26px);
   display:grid;
-  grid-template-rows:0fr auto;
+  /* title first, its sentence beneath (the row under the title opens on the
+     active tile and lifts the title with it — same reading order as tablets) */
+  grid-template-rows:auto 0fr;
   align-items:end;
   pointer-events:none;
   transition:grid-template-rows 380ms cubic-bezier(.22,1,.36,1);
 }
 .grm-photo__title{
-  grid-row:2;
+  grid-row:1;
   margin:0;
   max-width:82%;
   color:var(--text);
@@ -2448,8 +2450,11 @@ body[data-page="studio"].is-studio-arriving .site-header {
    Rendered by the hover reveal below; at rest the 0fr row collapses to
    zero so nothing moves. */
 .grm-photo__desc{
-  grid-row:1;
-  margin:0 0 clamp(8px,.7vw,12px) 0;
+  grid-row:2;
+  align-self:start;
+  overflow:hidden;
+  margin:0;
+  padding-top:clamp(8px,.7vw,12px);
   max-width:min(420px,70%);
   color:rgba(236,233,226,.95);
   font-family:var(--font-body);
@@ -2563,66 +2568,56 @@ body[data-page="studio"].is-studio-arriving .site-header {
    neighbors never dim, move, or reflow. Touch/coarse pointers,
    reduced motion, and the 2x2 layout stay completely static. */
 @media (min-width:901px) and (prefers-reduced-motion: no-preference) and (hover:hover) and (pointer:fine){
-  .grm-photo-strip.in-view:has(.grm-photo--recording:hover){
-    grid-template-columns:minmax(0,40fr) minmax(0,20fr) minmax(0,20fr) minmax(0,20fr);
+  /* GENTLE, STABLE REDISTRIBUTION (2026-10-28). The active tile is held by
+     js/main.js as [data-active] on the strip, not by :hover: the 6px gaps and
+     the moving tile edges used to drop :hover for a frame, so the strip
+     snapped back to rest and re-expanded as the pointer crossed them. The
+     script keeps the current tile until the pointer is clearly over another
+     one, and only releases after the pointer has left the strip for a beat.
+     Motion is a soft ease-in-out instead of the old instant-start curve. */
+  .grm-photo-strip{
+    transition:grid-template-columns 950ms cubic-bezier(.45,0,.2,1);
   }
-  .grm-photo-strip.in-view:has(.grm-photo--composition:hover){
-    grid-template-columns:minmax(0,20fr) minmax(0,40fr) minmax(0,20fr) minmax(0,20fr);
+  .grm-photo-strip.in-view[data-active="0"]{ grid-template-columns:minmax(0,40fr) minmax(0,20fr) minmax(0,20fr) minmax(0,20fr); }
+  .grm-photo-strip.in-view[data-active="1"]{ grid-template-columns:minmax(0,20fr) minmax(0,40fr) minmax(0,20fr) minmax(0,20fr); }
+  .grm-photo-strip.in-view[data-active="2"]{ grid-template-columns:minmax(0,20fr) minmax(0,20fr) minmax(0,40fr) minmax(0,20fr); }
+  .grm-photo-strip.in-view[data-active="3"]{ grid-template-columns:minmax(0,20fr) minmax(0,20fr) minmax(0,20fr) minmax(0,40fr); }
+
+  /* every tile eases between states on the same soft curve */
+  .grm-photo-strip .grm-photo img{
+    transition:transform 1400ms cubic-bezier(.33,0,.2,1);
   }
-  .grm-photo-strip.in-view:has(.grm-photo--beatmaking:hover){
-    grid-template-columns:minmax(0,20fr) minmax(0,20fr) minmax(0,40fr) minmax(0,20fr);
+  .grm-photo-strip .grm-photo::before{
+    transition:opacity 800ms cubic-bezier(.45,0,.2,1);
   }
-  .grm-photo-strip.in-view:has(.grm-photo--engineering:hover){
-    grid-template-columns:minmax(0,20fr) minmax(0,20fr) minmax(0,20fr) minmax(0,40fr);
+  /* leaving: the sentence fades first and its row closes after it, so the
+     title settles back down smoothly instead of dropping */
+  .grm-photo-strip .grm-photo__text{
+    transition:grid-template-rows 600ms cubic-bezier(.45,0,.2,1) 120ms;
   }
-  .grm-photo-strip.in-view .grm-photo:hover img{
-    transform:scale(1.018);
-    transition-duration:650ms;
-    transition-timing-function:cubic-bezier(.22,1,.36,1);
-    transition-property:transform;
+  .grm-photo-strip .grm-photo__desc{
+    transition:opacity 260ms ease-out, transform 260ms ease-out;
   }
-  .grm-photo-strip.in-view .grm-photo:hover .grm-photo__title{
-    transform:translateY(-4px);
-    transition-duration:650ms;
-    transition-timing-function:cubic-bezier(.22,1,.36,1);
-    transition-property:transform;
+
+  .grm-photo-strip.in-view .grm-photo.is-active img{ transform:scale(1.018); }
+  .grm-photo-strip.in-view .grm-photo.is-active::before{ opacity:1; }
+  /* arriving: the row opens while the tile widens, then the sentence fades in
+     once there is room for it — never squeezed into a still-narrow tile */
+  .grm-photo-strip.in-view .grm-photo.is-active .grm-photo__text{
+    grid-template-rows:auto 1fr;
+    transition:grid-template-rows 700ms cubic-bezier(.45,0,.2,1) 200ms;
   }
-  /* ACTIVE EXPOSURE — only the expanded tile receives the taller scrim
-     (its description sits above the title). Pure opacity fade, so the
-     exposure change is as smooth as the width redistribution and lands
-     in step with it. Gated by the same .in-view / hover /
-     fine-pointer conditions as the expansion, so reduced motion, touch
-     and the pre-reveal strip keep the rest exposure only. */
-  .grm-photo-strip.in-view .grm-photo:hover::before{
-    opacity:1;
-  }
-  /* Only the expanded tile reveals its description. The description row
-     grows in (grid-template-rows 0fr -> 1fr, bottom-packed so the title
-     never moves) while the sentence fades in with a short secondary
-     delay — uncovered by the expanding space, not snapped into place.
-     On loss of hover the base rules revert immediately (0 delay) so
-     exits never stick and tile-to-tile swaps crossfade gently. */
-  .grm-photo-strip.in-view .grm-photo:hover .grm-photo__text{
-    grid-template-rows:1fr auto;
-    transition:grid-template-rows 380ms cubic-bezier(.22,1,.36,1) 150ms;
-  }
-  .grm-photo-strip.in-view .grm-photo:hover .grm-photo__desc{
+  .grm-photo-strip.in-view .grm-photo.is-active .grm-photo__desc{
     opacity:1;
     transform:translateY(0);
-    transition:
-      opacity 380ms cubic-bezier(.22,1,.36,1) 150ms,
-      transform 380ms cubic-bezier(.22,1,.36,1) 150ms;
+    transition:opacity 600ms cubic-bezier(.33,0,.2,1) 520ms, transform 700ms cubic-bezier(.33,0,.2,1) 520ms;
   }
 }
 
-/* The active discipline tile also receives the reused Liveroom stroke.
-   Kept OUT of the reduced-motion-gated expansion block above so the
-   static state change still reads under reduced motion (stroke fades
-   instantly, layout never moves) — matching Liveroom's own reduced-
-   motion contract. No image zoom here: the strip's motion stays its
-   own. */
+/* The active tile's accent stroke — outside the motion gate so it still reads
+   (instantly) under reduced motion. */
 @media (min-width:901px) and (hover:hover) and (pointer:fine){
-  .grm-photo-strip.in-view .grm-photo:hover .grm-photo__stroke{opacity:1}
+  .grm-photo-strip.in-view .grm-photo.is-active .grm-photo__stroke{opacity:1; transition:opacity 600ms ease}
 }
 
 /* --- Below the desktop hover strip -----------------------------------
@@ -2721,6 +2716,8 @@ body[data-page="studio"].is-studio-arriving .site-header {
     transform:none;
     max-width:34ch;
     margin:0;
+    padding-top:0;
+    overflow:visible;
     font-size:15px;
     line-height:1.45;
     min-height:4.35em;         /* three lines reserved, so every title in a row sits at the same height */
@@ -2796,6 +2793,8 @@ body[data-page="studio"].is-studio-arriving .site-header {
     transform:none;
     max-width:32ch;
     margin:0;
+    padding-top:0;
+    overflow:visible;
     font-size:14.5px;
     line-height:1.5;
     color:var(--text-muted, rgba(236,233,226,.72));
