@@ -524,6 +524,17 @@ body.menu-open .mobile-menu {
   transition: opacity 450ms var(--ease-out), visibility 450ms step-start;
 }
 body.menu-open { overflow: hidden; }
+/* The open menu (z 240) used to cover the whole header (z 200) — including the
+   hamburger that turns into the close ×, so there was no visible way out. While
+   the menu is open the header rides above it, bare: the brand and the × sit on
+   the menu's own background, with no scrolled-state bar or blur. */
+body.menu-open .site-header {
+  z-index: 250;
+  background: transparent;
+  -webkit-backdrop-filter: none;
+  backdrop-filter: none;
+  border-color: transparent;
+}
 
 .mobile-menu__nav { display: flex; flex-direction: column; gap: 6px; }
 .mobile-menu__link {

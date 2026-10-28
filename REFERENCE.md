@@ -661,6 +661,10 @@ No new treatment was invented: the exact Liveroom technique moves across.
   Recordings + screenshots in `docs/hover-stroke/`; report
   `docs/hover-stroke/REPORT.md`.
 
+### 12g. Mobile menu close button
+
+The full-screen menu (z 240) covered the whole header (z 200), including the hamburger that turns into the ×, so on phones and tablets there was no visible way to close it. `body.menu-open .site-header` now sits at z 250 with no background, blur or border, so the brand, the language switch and the × show on the menu's own background.
+
 ### 12f. Production · Sound disciplines below desktop
 
 Desktop (≥901, mouse) keeps the 4×1 hover strip unchanged. Below it, the strip used to put the title *under* the description and push it to the right edge (the base overlay's `align-items:end` in a flex column), and touch screens ≥901 squeezed four columns with the text off the photos. Now:
