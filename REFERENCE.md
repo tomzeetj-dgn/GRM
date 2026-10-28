@@ -268,7 +268,7 @@ are never touched above those queries.
   `pageshow` bfcache return the lock re-arms and the isolation state is fully
   torn down so the home is never left hidden.
 - Destination rect source of truth: the division pages' published
-  `grm-dest-logo:v5:<page>:<w>x<h>` (sessionStorage, prefix held in the shared
+  `grm-dest-logo:v6:<page>:<w>x<h>` (sessionStorage, prefix held in the shared
   `DEST_LOGO_KEY` const so the reader — Home — and the writer — the division
   pages — can never diverge). The `:vN` version is bumped whenever the
   destination hero geometry changes, so a stale pre-change rect can never
@@ -330,7 +330,7 @@ so the VISIBLE group (top of the drawn mark → bottom of the subtitle) sits on
 - Nothing from the next section enters the first screen on mobile: Label's
   negative hero `margin-bottom` is reset to 0 and Liveroom's `.liveroom-room`
   gets `margin-top:0; padding-top:72px` (mobile query only).
-- `DEST_LOGO_KEY` bumped to `grm-dest-logo:v5`; the mobile Home handoff lands
+- `DEST_LOGO_KEY` bumped to `grm-dest-logo:v6`; the mobile Home handoff lands
   exactly on the new rect (verified 390×844, 430×932). Tablet/desktop logo rects
   are byte-identical to before (820, 1024, 1280, 1440, 1920).
 - Known, pre-existing: on landscape phones (≈844×390) the subtitle and the scroll
@@ -661,6 +661,13 @@ No new treatment was invented: the exact Liveroom technique moves across.
   Recordings + screenshots in `docs/hover-stroke/`; report
   `docs/hover-stroke/REPORT.md`.
 
+### 12e. Home takeover lands exactly on the destination logo (v6)
+
+The v5 sanity check (12a) required the whole logo box to be on screen. On desktop the box legitimately starts above the viewport (the PNG has transparent margins), so every desktop aim rect was rejected. The takeover then fell back to the old CSS aim (`top:38%`), landing ~20px high and 4–6px off, and the logo jumped once the page arrived. Fixes:
+- `saneDestRect()` and `publish()` now check only the drawn mark (27.6–71.9% of height, 24.5–76.6% of width).
+- The key was bumped to `v6`, which drops rects cached before the 12d centring.
+- **Verified:** Home lands pixel-exact on Production, Label and Liveroom at 1728, 1440 and 1280px, on a 820 tablet and on a 390 phone.
+
 ### 12d. One mark position on every division page
 
 The hero logos sat 1px apart from page to page (`left:-1px / 0 / 1px` hand-tweaks), and on phones Liveroom's two-line descriptor made its centred group taller, which lifted its mark ~8–10px. Switching pages therefore nudged the logo. Two fixes:
@@ -728,7 +735,7 @@ always begins at `scrollY = 0`.
   (the managed forward click); it is consumed on read, so a bfcache/`history`
   return is untouched — Back restores the outgoing page's scroll (verified:
   `/label/` at `600`), Forward returns the destination to the top.
-- **Cached rects.** `DEST_LOGO_KEY` (`grm-dest-logo:v5`, `js/main.js`) publishes
+- **Cached rects.** `DEST_LOGO_KEY` (`grm-dest-logo:v6`, `js/main.js`) publishes
   the division hero logo's **scroll-0** rect for the Home takeover to aim at; it
   is not used by this path (the destination is measured live).
 - **QA (verified).** All 6 division routes (`Label↔Production↔Liveroom`) × 5

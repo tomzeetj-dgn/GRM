@@ -23,7 +23,7 @@
      morph target. Home (reader) and the division pages (writer) MUST agree
      on this version — currently the mobile-centred hero + height-aware
      mid-range scale. */
-  var DEST_LOGO_KEY = "grm-dest-logo:v5";   /* v5: rects are page-top-relative and sanity-checked */
+  var DEST_LOGO_KEY = "grm-dest-logo:v6";   /* v6: page-top-relative, mark-on-screen checked, centred-mark CSS */
 
   /* ---------- SHARED DESTINATION-LOGO RECT RESOLVER ----------
      One system for every Home -> division path (desktop accordion + mobile
@@ -48,13 +48,17 @@
   var destRectPending = {};
   var destPrefetched = false;
 
-  /* A destination logo rect is only usable if it sits fully on screen — a rect
-     taken while that page was scrolled (or mid-resize) would send the committed
-     logo flying off to a giant size and stall the hand-off. */
+  /* A destination logo rect is only usable if the DRAWN mark sits on screen.
+     The logo image is square with transparent margins (the mark spans ~27.6%–
+     71.9% of its height and ~24.5%–76.6% of its width), so on desktop the box
+     legitimately starts above the viewport; only the mark itself is checked.
+     A rect taken while that page was scrolled (or mid-resize) fails this and is
+     re-measured instead of sending the committed logo to the wrong place. */
   function saneDestRect(r) {
-    return !!(r && r.width > 1 && r.height > 1 &&
-      r.left > -2 && r.top > -2 &&
-      r.left + r.width < window.innerWidth + 2 && r.top + r.height < window.innerHeight + 2);
+    if (!(r && r.width > 1 && r.height > 1)) return false;
+    var top = r.top + r.height * 0.276, bottom = r.top + r.height * 0.719;
+    var left = r.left + r.width * 0.245, right = r.left + r.width * 0.766;
+    return top > -2 && bottom < window.innerHeight + 2 && left > -2 && right < window.innerWidth + 2;
   }
 
   function destRectKey(page) {
@@ -1058,7 +1062,8 @@ resize simply misses and falls back to the previous aim point. */
     // where the logo sits with the page at the top (a reload can restore a
     // scrolled position — the raw viewport rect would then be far off screen)
     var rect = { left: r.left + window.scrollX, top: r.top + window.scrollY, width: r.width, height: r.height };
-    if (rect.top < -2 || rect.top + rect.height > window.innerHeight + 2) return;
+    // the drawn mark (not the padded box) must be on screen, as saneDestRect checks
+    if (rect.top + rect.height * 0.276 < -2 || rect.top + rect.height * 0.719 > window.innerHeight + 2) return;
     try {
       sessionStorage.setItem(DEST_LOGO_KEY + ":" + page + ":" + innerWidth + "x" + innerHeight, JSON.stringify(rect));
     } catch (e) {}
