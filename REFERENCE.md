@@ -661,9 +661,14 @@ No new treatment was invented: the exact Liveroom technique moves across.
   Recordings + screenshots in `docs/hover-stroke/`; report
   `docs/hover-stroke/REPORT.md`.
 
-### 12h. Home intro dividers land on the panel borders
+### 12h. Home panel dividers: one line, drawn in and left in place
 
-The intro's drawn-in dividers were children of the panels at `left:0`, which is the padding edge, one pixel right of the resting `.panel + .panel` border. Because the panel's `overflow:hidden` stops a child reaching the border, the line visibly hopped ~1px left when the intro handed over to the border. The lines are now appended to `#heroPanels` (made `position:relative`). Each one is placed on its border's box with sub-pixel `getBoundingClientRect()` values, so the pixels are identical during and after the intro (checked at 938, 1281 and 1440px).
+The intro used to draw separate lines (scaled `<i>` elements) and then hand over to the panels' `border-left`. The two never rendered alike: the scaled line straddled device pixels (3px wide on a 2× screen) while the border snapped to 2px. So the line hopped about 1px and looked thinner when the intro ended. The divider is now a single element, `.hero__panels .panel + .panel::after`, a 1px line on the panel's left edge (the border is gone):
+- **Intro:** grows it through its own offsets: `#panelHouse` animates `bottom` 100%→0 (drawn from the top) and `#panelLive` animates `top` 100%→0 (drawn up from the bottom), 1200ms.
+- **Why offsets:** there is no transform or clip, so every frame is painted and pixel-snapped exactly like the resting line. Verified pixel-identical through and after the intro at 938, 1281 and 1440px.
+- **Takeover:** hides it with the other panel chrome.
+- **Phones:** keep the stacked `border-top` and hide the `::after`.
+- **JS:** no longer creates divider elements.
 
 ### 12g. Mobile menu close button
 

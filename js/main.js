@@ -386,26 +386,9 @@
       return;
     }
     document.body.classList.add("home-intro-running");
-    // The drawn-in dividers must land EXACTLY on the panels' own resting
-    // borders (`.panel + .panel { border-left }`), or the line visibly hops
-    // 1px when the intro hands over to them. Inside a panel, `left:0` sits at
-    // the padding edge — one pixel right of the border, which overflow:hidden
-    // won't let a child reach — so the lines live in the panel row instead,
-    // placed on each border's own box.
-    var panelRow = document.getElementById("heroPanels");
-    if (panelRow && getComputedStyle(panelRow).position === "static") panelRow.style.position = "relative";
-    ["panelHouse", "panelLive"].forEach(function (id, index) {
-      var panel = document.getElementById(id);
-      if (!panel || !panelRow) return;
-      var line = document.createElement("i");
-      line.className = "home-intro-divider home-intro-divider--" + (index ? "right" : "left");
-      // sub-pixel exact (offsetLeft rounds; the flex thirds rarely land on whole pixels)
-      var pr = panel.getBoundingClientRect(), rr = panelRow.getBoundingClientRect();
-      line.style.left = (pr.left - rr.left) + "px";
-      line.style.top = (pr.top - rr.top) + "px";
-      line.style.height = pr.height + "px";
-      panelRow.appendChild(line);
-    });
+    // The dividers are the panels' own ::after lines (css/style.css): the
+    // intro just reveals them, so nothing is created here and nothing is
+    // handed over when the intro ends.
     requestAnimationFrame(function () {
       requestAnimationFrame(function () {
         setTimeout(function () {

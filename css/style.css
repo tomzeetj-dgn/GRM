@@ -124,11 +124,14 @@ html.home-intro-pending body > *:not(#headerMount):not(#main) { visibility: hidd
 html.home-intro-pending .site-header { visibility: hidden; opacity: 0; }
 html.home-intro-pending body[data-page="home"] .site-header { display: none; }
 body[data-page="home"].home-intro-running { pointer-events: none; }
-body[data-page="home"].home-intro-running .panel + .panel { border-left-color: transparent; }
-.home-intro-divider { position: absolute; z-index: 5; left: 0; top: 0; width: 1px; height: 100%; background: var(--border); transform: scaleY(0); pointer-events: none; }
-.home-intro-divider--left { transform-origin: top; }
-.home-intro-divider--right { transform-origin: bottom; }
-body[data-page="home"].home-intro-lines .home-intro-divider { transform: scaleY(1); transition: transform 1200ms cubic-bezier(.22, 1, .36, 1); }
+/* Intro draw-in of the panel dividers: the line's own top/bottom inset grows
+   it (left line from the top, right line up from the bottom). Plain layout,
+   no transform or clip, so every frame is painted — and pixel-snapped —
+   exactly like the resting line it becomes. */
+body[data-page="home"].home-intro-running #panelHouse.panel::after { bottom: 100%; }
+body[data-page="home"].home-intro-running #panelLive.panel::after { top: 100%; }
+body[data-page="home"].home-intro-running.home-intro-lines #panelHouse.panel::after { bottom: 0; transition: bottom 1200ms cubic-bezier(.22, 1, .36, 1); }
+body[data-page="home"].home-intro-running.home-intro-lines #panelLive.panel::after { top: 0; transition: top 1200ms cubic-bezier(.22, 1, .36, 1); }
 body[data-page="home"].home-intro-running #panelProduction .panel__logo-window,
 body[data-page="home"].home-intro-running #panelHouse .panel__logo-window,
 body[data-page="home"].home-intro-running #panelLive .panel__logo-window { opacity: 0 !important; }
@@ -646,6 +649,7 @@ body.menu-open .mobile-menu__link:nth-child(6) { transition-delay: 440ms; }
    its stationary logo on the dark field for the short handoff hold. */
 .hero.is-takeover .panel__content,
 .hero.is-takeover .panel::before,
+.hero.is-takeover .hero__panels .panel + .panel::after,
 .hero.is-takeover .hero__panels .panel + .panel {
   opacity: 0;
   border-color: transparent;
@@ -980,7 +984,25 @@ html.studio-morph-ui-pending body.is-studio-enter-descriptor .studio-minimal-her
   box-shadow: inset 0 0 0 2px var(--accent-lite);
   z-index: 3;
 }
-.hero__panels .panel + .panel { border-left: 1px solid var(--border); }
+.hero__panels .panel + .panel { border-left: none; }
+/* The vertical divider between panels is ONE element for its whole life:
+   drawn in by the Home intro, then left in place. (It used to be a border that
+   a separate intro line handed over to — the two never rendered identically,
+   so the line hopped and thinned at the hand-over.) It sits on the panel's
+   left edge, inside the panel's own box, and the intro grows it by its own
+   top/bottom offsets (no transform or clip), so it is painted exactly like the
+   resting line on every frame. */
+.hero__panels .panel + .panel::after {
+  content: "";
+  position: absolute;
+  z-index: 5;
+  top: 0;
+  bottom: 0;
+  left: 0;
+  width: 1px;
+  background: var(--border);
+  pointer-events: none;
+}
 
 /* Bottom readability gradient — a visual layer ONLY, tied to the active
    state. Cinematic tonal protection behind the active-panel typography:
@@ -1268,6 +1290,7 @@ html.studio-morph-ui-pending body.is-studio-enter-descriptor .studio-minimal-her
   }
   .panel.is-expanded { flex-grow: 1; }
   .hero__panels .panel + .panel { border-left: none; border-top: 1px solid var(--border); }
+  .hero__panels .panel + .panel::after { display: none; }
 
   .panel__logo-window img { width: 130vw; height: 130vw; }
 
@@ -4886,6 +4909,7 @@ html.js .label-lineup__credits.reveal{ transition-delay:900ms; }
     border-left: none;
     border-top: 1px solid var(--border);
   }
+  .hero__panels .panel + .panel::after { display: none; }
 
   /* retire every desktop / composite layer */
   .panel__logo-window,
