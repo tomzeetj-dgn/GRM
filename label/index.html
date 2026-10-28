@@ -97,25 +97,28 @@
     <section class="section label-lineup" id="people" aria-labelledby="label-people-title">
       <div class="label-lineup__stage" data-lineup>
         <!-- Liveroom-style reveal, people first: photo + outlines → the word behind them (once they are solid) → names -->
-        <div class="label-lineup__words reveal">
-          <h2 class="label-lineup__word" id="label-people-title" data-i18n="label.people.title">Behind GRM.</h2>
-          <p class="label-lineup__word label-lineup__nick" data-p="0" aria-hidden="true">Grzi</p>
-          <p class="label-lineup__word label-lineup__nick" data-p="1" aria-hidden="true">Džu</p>
-          <p class="label-lineup__word label-lineup__nick" data-p="2" aria-hidden="true">Igla</p>
-        </div>
+        <!-- the picture: word + photo + fade + outlines. Pinned on phones while the bios scroll past -->
+        <div class="label-lineup__visual">
+          <div class="label-lineup__words reveal">
+            <h2 class="label-lineup__word" id="label-people-title" data-i18n="label.people.title">Behind GRM.</h2>
+            <p class="label-lineup__word label-lineup__nick" data-p="0" aria-hidden="true">Grzi</p>
+            <p class="label-lineup__word label-lineup__nick" data-p="1" aria-hidden="true">Džu</p>
+            <p class="label-lineup__word label-lineup__nick" data-p="2" aria-hidden="true">Igla</p>
+          </div>
 
-        <div class="label-lineup__photo reveal" data-hitmap="../assets/img/people/hitmap.png" role="img" aria-label="Đorđe Grgurović – Grzi, Rajko Bogosavljević – Džu and Milan Subotić – Igla in white quarter-zips; Džu holds a small potted plant" data-i18n-aria-label="label.people.photoAlt">
-          <div class="label-lineup__layer label-lineup__person" data-p="0"><img src="../assets/img/people/grzi.webp" alt="" width="1254" height="1254" decoding="async" draggable="false"></div>
-          <div class="label-lineup__layer label-lineup__person" data-p="1"><img src="../assets/img/people/dzu.webp" alt="" width="1254" height="1254" decoding="async" draggable="false"></div>
-          <div class="label-lineup__layer label-lineup__person" data-p="2"><img src="../assets/img/people/igla.webp" alt="" width="1254" height="1254" decoding="async" draggable="false"></div>
-        </div>
-        <div class="label-lineup__fade" aria-hidden="true"></div>
-        <!-- all three outlines, drawn ABOVE the fade so the glow is never dimmed by it.
-             each grows with its person and fades in on the same timing -->
-        <div class="label-lineup__lines reveal" aria-hidden="true">
-            <div class="label-lineup__layer label-lineup__outline" data-p="0"><img src="../assets/img/people/outline-grzi.webp" alt="" width="1254" height="1254" decoding="async" draggable="false"></div>
-            <div class="label-lineup__layer label-lineup__outline" data-p="2"><img src="../assets/img/people/outline-igla.webp" alt="" width="1254" height="1254" decoding="async" draggable="false"></div>
-            <div class="label-lineup__layer label-lineup__outline" data-p="1"><img src="../assets/img/people/outline-dzu.webp" alt="" width="1254" height="1254" decoding="async" draggable="false"></div>
+          <div class="label-lineup__photo reveal" data-hitmap="../assets/img/people/hitmap.png" role="img" aria-label="Đorđe Grgurović – Grzi, Rajko Bogosavljević – Džu and Milan Subotić – Igla in white quarter-zips; Džu holds a small potted plant" data-i18n-aria-label="label.people.photoAlt">
+            <div class="label-lineup__layer label-lineup__person" data-p="0"><img src="../assets/img/people/grzi.webp" alt="" width="1254" height="1254" decoding="async" draggable="false"></div>
+            <div class="label-lineup__layer label-lineup__person" data-p="1"><img src="../assets/img/people/dzu.webp" alt="" width="1254" height="1254" decoding="async" draggable="false"></div>
+            <div class="label-lineup__layer label-lineup__person" data-p="2"><img src="../assets/img/people/igla.webp" alt="" width="1254" height="1254" decoding="async" draggable="false"></div>
+          </div>
+          <div class="label-lineup__fade" aria-hidden="true"></div>
+          <!-- all three outlines, drawn ABOVE the fade so the glow is never dimmed by it.
+               each grows with its person and fades in on the same timing -->
+          <div class="label-lineup__lines reveal" aria-hidden="true">
+              <div class="label-lineup__layer label-lineup__outline" data-p="0"><img src="../assets/img/people/outline-grzi.webp" alt="" width="1254" height="1254" decoding="async" draggable="false"></div>
+              <div class="label-lineup__layer label-lineup__outline" data-p="2"><img src="../assets/img/people/outline-igla.webp" alt="" width="1254" height="1254" decoding="async" draggable="false"></div>
+              <div class="label-lineup__layer label-lineup__outline" data-p="1"><img src="../assets/img/people/outline-dzu.webp" alt="" width="1254" height="1254" decoding="async" draggable="false"></div>
+          </div>
         </div>
 
         <ul class="label-lineup__credits reveal" role="list">

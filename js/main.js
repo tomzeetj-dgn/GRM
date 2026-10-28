@@ -1894,8 +1894,11 @@ resize simply misses and falls back to the previous aim point. */
    enlarged shape counts as theirs.
    Mouse: on a person → selected at once; off every person (the black,
    the outline glow, the gaps) → cleared at once. The names
-   below are buttons and select on hover too. Touch: tapping a person or
-   a name selects; tapping the same one again clears. Keyboard: focusing
+   below are buttons and select on hover too. Touch tablets (≥600,
+   hover:none): the first person is selected once the section is in view;
+   tapping a person or a name switches. Phones (≤599): the picture is
+   pinned and the bio crossing the reading line selects its person;
+   tapping a person or name scrolls their bio there. Keyboard: focusing
    a name selects (focus-visible only); Escape clears. Self-contained;
    touches nothing outside [data-lineup]. */
 (function () {
@@ -1979,57 +1982,136 @@ resize simply misses and falls back to the previous aim point. */
       return host ? parseInt(host.getAttribute("data-p"), 10) : -1;
     }
 
+    // three ways in, by screen:
+    //   "mouse"  desktop pointer — hover selects, leaving clears (unchanged)
+    //   "tap"    touch tablets ≥600 — first person selected once the section is
+    //            in view; tapping a person or name switches (never clears)
+    //   "scroll" phones ≤599 — the picture is pinned (CSS) and the bio that
+    //            crosses the reading line selects its person
+    var mqPhone = window.matchMedia ? window.matchMedia("(max-width:599px)") : null;
+    var mqTouch = window.matchMedia ? window.matchMedia("(hover:none)") : null;
+    function mode() {
+      if (mqPhone && mqPhone.matches) return "scroll";
+      if (mqTouch && mqTouch.matches) return "tap";
+      return "mouse";
+    }
+    var visual = stage.querySelector(".label-lineup__visual");
+    var credits = Array.prototype.slice.call(stage.querySelectorAll(".label-lineup__credit"));
+
     stage.addEventListener("pointerdown", function (e) { lastPointer = e.pointerType || "mouse"; });
 
     // mouse over the photo: only the people themselves count
     photo.addEventListener("pointermove", function (e) {
-      if (e.pointerType !== "mouse") return;
+      if (e.pointerType !== "mouse" || mode() === "scroll") return;
       var i = pointToPerson(e);
       photo.classList.toggle("is-over", i >= 0);
       if (i >= 0) set(i);
-      else if (active >= 0) release();
+      else if (active >= 0 && mode() === "mouse") release();
     });
     photo.addEventListener("pointerleave", function (e) {
       if (e.pointerType !== "mouse") return;
       photo.classList.remove("is-over");
-      release();
+      if (mode() === "mouse") release();
     });
     // mouse over a name
     stage.addEventListener("pointerover", function (e) {
-      if (e.pointerType !== "mouse") return;
+      if (e.pointerType !== "mouse" || mode() === "scroll") return;
       var t = e.target.closest(".label-lineup__who");
       if (t) set(indexOf(t));
     });
     stage.addEventListener("pointerout", function (e) {
-      if (e.pointerType !== "mouse") return;
+      if (e.pointerType !== "mouse" || mode() !== "mouse") return;
       var t = e.target.closest(".label-lineup__who");
       if (t && !(e.relatedTarget && t.contains(e.relatedTarget))) release();
     });
 
+    // ---- phones: scroll selects ----
+    // the reading line: halfway down the space left under the pinned picture, so the
+    // selected bio is always fully in view (the previous one slides under the picture)
+    // (measured from where the picture sits once pinned, so it never moves while scrolling)
+    function readingLine() {
+      var vh = window.innerHeight || document.documentElement.clientHeight;
+      if (!visual) return vh * 0.6;
+      var pinned = (parseFloat(getComputedStyle(visual).top) || 0) + visual.offsetHeight;
+      return pinned + Math.max(0, vh - pinned) * 0.5;
+    }
+    // bring a person's bio up to the reading line
+    function scrollToPerson(i) {
+      var c = credits[i];
+      if (!c) return;
+      var smooth = !(window.matchMedia && window.matchMedia("(prefers-reduced-motion: reduce)").matches);
+      var y = c.getBoundingClientRect().top + window.pageYOffset - readingLine() + 4;
+      window.scrollTo({ top: Math.max(0, y), behavior: smooth ? "smooth" : "auto" });
+    }
+    var lineupTicking = false;
+    function fromScroll() {
+      lineupTicking = false;
+      if (mode() !== "scroll") return;
+      var line = readingLine(), pick = -1;
+      credits.forEach(function (c, i) {
+        if (c.getBoundingClientRect().top <= line) pick = i;   // the latest bio to reach the line
+      });
+      set(pick);
+    }
+    function onScroll() {
+      if (!lineupTicking) { lineupTicking = true; window.requestAnimationFrame(fromScroll); }
+    }
+    window.addEventListener("scroll", onScroll, { passive: true });
+    window.addEventListener("resize", onScroll);
+
     // tap / click
     photo.addEventListener("click", function (e) {
-      var i = pointToPerson(e);
-      if (lastPointer === "mouse") { if (i >= 0) set(i); return; }
+      var i = pointToPerson(e), m = mode();
+      if (m === "scroll") { if (i >= 0) scrollToPerson(i); return; }
+      if (m === "tap" || lastPointer === "mouse") { if (i >= 0) set(i); return; }
       set(i < 0 || i === active ? -1 : i);
     });
     buttons.forEach(function (b) {
       b.addEventListener("click", function () {
-        var i = indexOf(b);
-        if (lastPointer === "mouse") set(i);
+        var i = indexOf(b), m = mode();
+        if (m === "scroll") scrollToPerson(i);
+        else if (m === "tap" || lastPointer === "mouse") set(i);
         else set(i === active ? -1 : i);
       });
       // keyboard focus only — a tap also focuses the button, and its click owns taps
       b.addEventListener("focus", function () {
         var kb = true;
         try { kb = b.matches(":focus-visible"); } catch (err) {}
-        if (kb) set(indexOf(b));
+        if (kb && mode() !== "scroll") set(indexOf(b));
       });
     });
     stage.addEventListener("focusout", function (e) {
-      if (!stage.contains(e.relatedTarget)) release();
+      if (mode() === "mouse" && !stage.contains(e.relatedTarget)) release();
     });
     stage.addEventListener("keydown", function (e) {
-      if (e.key === "Escape" && active >= 0) set(-1);
+      if (e.key === "Escape" && active >= 0 && mode() !== "scroll") set(-1);
     });
+
+    // ---- touch tablets: start with the first person once the section is in view ----
+    var greeted = false;
+    if ("IntersectionObserver" in window) {
+      new IntersectionObserver(function (entries) {
+        entries.forEach(function (en) {
+          if (!en.isIntersecting || greeted || mode() !== "tap") return;
+          greeted = true;
+          // let the title read first: people, word and names arrive (~1.6s), then Grzi steps up
+          window.setTimeout(function () { if (active < 0 && mode() === "tap") set(0); }, 1800);
+        });
+      }, { threshold: 0.45 }).observe(stage);
+    }
+
+    // switching modes (rotation, resizing a window)
+    function onModeChange() {
+      var m = mode();
+      if (m === "scroll") fromScroll();
+      else if (m === "tap") { if (active < 0 && greeted) set(0); }
+      else release();
+    }
+    [mqPhone, mqTouch].forEach(function (mq) {
+      if (!mq) return;
+      if (mq.addEventListener) mq.addEventListener("change", onModeChange);
+      else if (mq.addListener) mq.addListener(onModeChange);
+    });
+    fromScroll();
   });
 })();

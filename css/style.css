@@ -4326,6 +4326,12 @@ html.js .label-about.is-revealed .label-about__rule{ transition-delay:520ms; }
   margin-top:calc(-12vh - 16px);
   overflow:hidden;
 }
+/* word + photo + fade + outlines: one picture. A plain box on wide screens
+   (flow-root so the photo's top margin stays inside it); pinned on phones. */
+.label-lineup__visual{
+  position:relative;
+  display:flow-root;
+}
 /* the four big words share one reveal wrapper (their own opacity/transform stay free) */
 .label-lineup__words{
   position:absolute;
@@ -4528,28 +4534,54 @@ html.js .label-lineup__credits.reveal{ transition-delay:900ms; }
   transition:opacity 420ms ease 140ms, transform 600ms var(--lineup-snap) 140ms;   /* after the previous caption has gone */
 }
 
-/* ---- narrow screens: photo full width, credits stacked, every bio visible ---- */
-@media (max-width:900px){
-  .label-lineup{ margin-top:0; --sec:clamp(48px,13vw,64px); }
-  /* tablets: the hero's scroll cue sat ~260px above the word; pull the line-up in */
-  @media (min-width:600px){ .label-lineup{ margin-top:calc(-10vh - 80px); } }
+/* ---- tablets (600–1023): the desktop composition, sized up a little.
+   Touch-first screens (hover:none) start with the first person selected
+   once the section is in view and switch on tap — js/main.js. ---- */
+@media (min-width:600px) and (max-width:1023px){
+  /* tuck under the hero so the scroll cue → word gap lands at ~140px on portrait
+     tablets (fitted at 768×1024, 820×1180, 1023×1366); small tablets add room so
+     the cue never meets the word */
+  .label-lineup{ margin-top:min(0px, calc(270px - 33vh)); padding-top:clamp(0px, (700px - 100vw) * .6, 60px); }
+  .label-lineup__name{ font-size:clamp(1rem,3cqw,1.6rem); }
+  .label-lineup__detail{ width:min(560px,72cqw); }
+}
+
+/* ---- phones (≤599): the picture pins under the header and the three bios
+   scroll up beneath it. The bio crossing the reading line selects its person
+   (outline, step forward, nickname) — hover replaced by scroll. The bios melt
+   into the picture's fade as they leave. ---- */
+@media (max-width:599px){
+  .label-lineup{ margin-top:0; --sec:clamp(48px,13vw,64px); overflow:visible; overflow-x:clip; }
+  .label-lineup__visual{
+    position:sticky;
+    top:var(--header-h);
+    z-index:4;
+    height:92cqw;                /* ends where the fade is solid: no dead black under the faces */
+    overflow:hidden;
+    background:var(--bg);
+  }
   .label-lineup__word{ top:3.5cqw; font-size:27cqw; }
   .label-lineup__photo{ width:100cqw; margin:6cqw 0 0; }
   .label-lineup__lines{ left:0; top:6cqw; width:100cqw; }
   .label-lineup__fade{ top:58cqw; height:50cqw; }
   .label-lineup__credits{
     grid-template-columns:1fr;
-    row-gap:clamp(36px,9vw,48px);
+    row-gap:clamp(56px,12svh,112px);   /* each bio gets its own stretch of scroll */
     width:var(--container);
-    margin:-22cqw auto 0;
+    margin:0 auto;
+    /* lead-in: once the picture pins, "Behind GRM." holds for a moment before
+       the first bio rises to the reading line */
+    padding:calc((100svh - var(--header-h) - 92cqw) * .8) 0 clamp(32px,9vw,48px);
   }
   .label-lineup__credit{ align-items:flex-start; text-align:left; }
   .label-lineup__who{ align-items:flex-start; gap:8px; }
   .label-lineup__name{ font-size:clamp(1.9rem,8.4vw,2.6rem); white-space:normal; }
-  .label-lineup__credits{ padding-bottom:0; }
-  .label-lineup__detail{ position:static; width:auto; align-items:flex-start; text-align:left; opacity:1; transform:none; pointer-events:auto; }
+  .label-lineup__detail,
+  .label-lineup__stage[data-active] .label-lineup__credit[data-p] .label-lineup__detail{
+    position:static; width:auto; align-items:flex-start; text-align:left;
+    opacity:1; transform:none; pointer-events:auto;
+  }
   .label-lineup__bio{ max-width:42ch; }
-  .label-lineup__stage[data-active] .label-lineup__credit{ opacity:1; }
 }
 
 @media (prefers-reduced-motion: reduce){
