@@ -5073,12 +5073,14 @@ html.js .label-lineup__credits.reveal{ transition-delay:900ms; }
   .hero.is-mobile-isolating .panel__mobile-desc,
   .hero.is-mobile-isolating .panel__mobile-arrow,
   .hero.is-mobile-isolating .panel:not(.is-selected-panel) .panel__mobile-logo {
-    opacity: 0;
-    transition: opacity 180ms ease-out;
+    /* !important: a tap can land mid-entrance, whose step rules are more
+       specific — the isolation must still clear the stage */
+    opacity: 0 !important;
+    transition: opacity 180ms ease-out !important;
   }
   .hero.is-mobile-isolating .hero__panels .panel + .panel::after {
-    opacity: 0;
-    transition: opacity 180ms ease-out;
+    opacity: 0 !important;
+    transition: opacity 180ms ease-out !important;
   }
 
   /* ---- ENTRANCE (once per session, like the desktop intro) ----

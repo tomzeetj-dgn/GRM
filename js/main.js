@@ -371,12 +371,21 @@
         [2150, "m-media"],
         [2600, "m-text"]
       ];
+      var timers = [];
+      var stopped = false;
+      // a tap during the entrance hands the screen to the takeover: no further
+      // intro steps may land (they would develop the bands behind the moving mark)
+      document.addEventListener("grm:home-takeover", function () {
+        stopped = true;
+        timers.forEach(clearTimeout);
+      });
       requestAnimationFrame(function () {
         requestAnimationFrame(function () {
-          steps.forEach(function (st) { setTimeout(function () { b.classList.add(st[1]); }, st[0]); });
-          setTimeout(function () {
+          if (stopped) return;
+          steps.forEach(function (st) { timers.push(setTimeout(function () { b.classList.add(st[1]); }, st[0])); });
+          timers.push(setTimeout(function () {
             b.classList.remove("home-m-intro", "m-lines", "m-mark-label", "m-mark-studio", "m-mark-live", "m-media", "m-text");
-          }, 4300);
+          }, 4300));
         });
       });
       return;
@@ -945,6 +954,8 @@
       if (!source) { window.location.href = dest; return; }
 
       var startRect = source.getBoundingClientRect();
+      // stop the stacked entrance if it is still playing (see the Home intro)
+      try { document.dispatchEvent(new CustomEvent("grm:home-takeover")); } catch (e) {}
 
       // PHASE 1 — the selected mark becomes a fixed object sitting on its
       // exact resting box (pixel-identical to the in-flow logo, so it does not
@@ -1030,8 +1041,12 @@
 
     // lock is per navigation; a bfcache return re-arms it AND must restore the
     // home (never leave the isolation state applied, §14)
-    window.addEventListener("pageshow", function () {
+    window.addEventListener("pageshow", function (ev) {
       transitioning = false;
+      // back from a page (bfcache) after a tap that cut the entrance short:
+      // show Home finished, never frozen mid-intro (persisted only — pageshow
+      // also fires on the first load, while the entrance is playing)
+      if (ev && ev.persisted) document.body.classList.remove("home-m-intro", "m-lines", "m-mark-label", "m-mark-studio", "m-mark-live", "m-media", "m-text");
       hero.classList.remove("is-mobile-isolating");
       Array.prototype.forEach.call(root.querySelectorAll(".panel"), function (p) {
         p.classList.remove("is-selected-panel", "is-panel-active");

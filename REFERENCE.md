@@ -685,7 +685,12 @@ The stacked selector now has its own once-per-session entrance, mirroring the de
 
 **Dividers.** The bands' dividers are now the same `::after` lines as on desktop, turned horizontal (`border-top` removed). That lets the intro draw them in and leave them in place.
 
-**Taps and first paint.** A tap during the intro proceeds to the normal takeover. `html.home-intro-pending` (head script) holds the first paint black.
+**Taps and first paint.** A tap during the intro proceeds to the normal takeover:
+- `runTakeover` dispatches `grm:home-takeover`, which cancels the remaining intro steps, so the bands no longer develop behind the moving mark.
+- The isolation fade rules are `!important`, so they beat the more specific intro step rules.
+- A bfcache return (`pageshow` with `persisted`) clears the intro classes, so Home never comes back frozen mid-intro.
+
+`html.home-intro-pending` (head script) holds the first paint black.
 
 ### 12k. Home on touch tablets uses the stacked selector
 
