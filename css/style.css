@@ -2637,7 +2637,7 @@ body[data-page="studio"].is-studio-arriving .site-header {
     aspect-ratio:4/5;          /* exactly the photo's box */
   }
   .grm-photo-strip .grm-photo__stroke{display:none}
-  /* everything inside the frame: the sentence sits just above the title,
+  /* everything inside the frame: the title, then its sentence beneath,
      bottom-left, over a taller scrim (the desktop's expanded-tile exposure,
      always on here) so it reads even on the brighter photographs */
   .grm-photo-strip .grm-photo::before{
@@ -2673,20 +2673,23 @@ body[data-page="studio"].is-studio-arriving .site-header {
     padding:0 clamp(16px,2.4vw,24px) clamp(16px,2.2vw,24px);
     transition:none;
   }
+  /* reading order: title first, its sentence beneath (no hover here, so the
+     desktop's sentence-above-title motion constraint doesn't apply) */
   .grm-photo__title{
-    order:2;
+    order:1;
     max-width:none;
     margin:0;
     font-size:clamp(2rem,5vw,3rem);
   }
   .grm-photo__desc{
-    order:1;
+    order:2;
     opacity:1;
     transform:none;
     max-width:34ch;
     margin:0;
     font-size:15px;
     line-height:1.45;
+    min-height:4.35em;         /* three lines reserved, so every title in a row sits at the same height */
     color:rgba(236,233,226,.92);
     text-shadow:0 1px 2px rgba(0,0,0,.5),0 2px 12px rgba(0,0,0,.45);
     transition:none;

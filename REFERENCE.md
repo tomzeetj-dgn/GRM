@@ -664,7 +664,7 @@ No new treatment was invented: the exact Liveroom technique moves across.
 ### 12f. Production · Sound disciplines below desktop
 
 Desktop (≥901, mouse) keeps the 4×1 hover strip unchanged. Below it, the strip used to put the title *under* the description and push it to the right edge (the base overlay's `align-items:end` in a flex column), and touch screens ≥901 squeezed four columns with the text off the photos. Now:
-- **Tablets (600–900, and touch ≥901):** frames 2×2. Each photo is 4:5, with all the text inside the frame at the bottom-left: the sentence (92% bone, soft shadow) sits just above the discipline title, over a taller always-on scrim (the desktop's expanded-tile exposure). `align-content:start` keeps a taller neighbour from stretching the photo row.
+- **Tablets (600–900, and touch ≥901):** frames 2×2. Each photo is 4:5, with all the text inside the frame at the bottom-left: the discipline title, then its sentence beneath (92% bone, soft shadow; three lines reserved so titles line up across a row), over a taller always-on scrim (the desktop's expanded-tile exposure). `align-content:start` keeps a taller neighbour from stretching the photo row.
 - **Landscape tablets (touch ≥1024):** the same frames, four across.
 - **Phones (<600):** a typographic index of four rows on hairlines. The discipline name is large in the display face (`clamp(2rem,10.5vw,2.85rem)`), the sentence sits beneath it, and a 4:5 thumbnail sits on the right (`clamp(84px,26vw,112px)`).
 - Crops use the desktop X windows (76/60/100/55%).
