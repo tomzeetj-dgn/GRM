@@ -911,7 +911,7 @@ html.division-morph-ui-pending .division-minimal-hero__scroll {
   opacity: 0;
   transition: opacity 1400ms ease;
 }
-.division-morph-logo { position: fixed; z-index: 10000; pointer-events: none; max-width: none; object-fit: contain; opacity: 1; }
+.division-morph-logo { position: absolute; z-index: 10000; pointer-events: none; max-width: none; object-fit: contain; opacity: 1; }
 body.is-division-enter-header .site-header,
 body.is-division-enter-title .division-minimal-hero__title,
 body.is-division-enter-descriptor .division-minimal-hero__lockup h1 { opacity: 1; }
@@ -941,7 +941,7 @@ html.studio-morph-ui-pending .studio-minimal-hero__scroll {
 }
 
 .studio-morph-logo {
-  position: fixed;
+  position: absolute;   /* page coordinates: stays glued to the logo if the page scrolls (js/main.js) */
   z-index: 10000;
   pointer-events: none;
   max-width: none;

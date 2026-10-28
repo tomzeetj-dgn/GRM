@@ -674,6 +674,10 @@ The intro used to draw separate lines (scaled `<i>` elements) and then hand over
 
 The full-screen menu (z 240) covered the whole header (z 200), including the hamburger that turns into the ×, so on phones and tablets there was no visible way to close it. `body.menu-open .site-header` now sits at z 250 with no background, blur or border, so the brand, the language switch and the × show on the menu's own background.
 
+### 12j. Page-to-page flash: no phantom logo
+
+The division→division arrival lays a Glow copy of the destination mark on the real logo and fades it out (700ms). It was `position:fixed` at the viewport rect measured once. If the page scrolled after that (a late scroll restore, arriving from a scrolled page), the copy stayed where the logo *had been* and faded out there: a second, "phantom" logo. Now the arrival resets to the top right before measuring, and the copy (`.studio-morph-logo` / `.division-morph-logo`) is `position:absolute` in page coordinates, so it moves with the page and stays on the logo. Verified at 0.01px offset, including with a forced late scroll.
+
 ### 12i. Production · Sound strip hover (desktop): gentle and stable
 
 **Stability.** The active tile is held by js/main.js as `[data-active]` on `.grm-photo-strip` plus `.is-active` on the tile, not by `:hover`. The 6px gaps and the tiles' moving edges used to drop `:hover` for a frame, so the strip snapped back to rest and re-expanded mid-move. Now:

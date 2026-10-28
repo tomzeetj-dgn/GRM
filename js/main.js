@@ -1157,6 +1157,11 @@ resize simply misses and falls back to the previous aim point. */
     holdArrivalTop();
     document.fonts.ready.then(function () {
       requestAnimationFrame(function () {
+        // the flash must sit ON the real logo whatever the scroll does: make
+        // sure we are at the top, and pin the proxy in PAGE coordinates
+        // (position:absolute), so a late scroll restore moves it together
+        // with the logo instead of leaving a phantom mark behind
+        resetDivisionScrollTop();
         var end = target.getBoundingClientRect();
         target.style.visibility = "hidden";
         var morph = document.createElement("img");
@@ -1164,8 +1169,8 @@ resize simply misses and falls back to the previous aim point. */
         morph.src = "../assets/img/" + cfg.glow;
         morph.alt = "";
         morph.setAttribute("aria-hidden", "true");
-        morph.style.left = end.left + "px";
-        morph.style.top = end.top + "px";
+        morph.style.left = (end.left + window.scrollX) + "px";
+        morph.style.top = (end.top + window.scrollY) + "px";
         morph.style.width = end.width + "px";
         morph.style.height = end.height + "px";
         document.body.appendChild(morph);
