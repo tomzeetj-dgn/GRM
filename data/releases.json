@@ -1,19 +1,19 @@
 {
   "playlist": "6wUsUm9h600yQjbU3Xoy1B",
   "items": [
-    {"id":"3hzOOUUxuOnt2guK0KpoYq","title":"Nisam Te Pitao Za Savet","artists":"Ketchy, Dzu","year":"2026","coverId":"cf99a9fdae67c99bb079a05d","cover":"https://i.scdn.co/image/ab67616d0000b273cf99a9fdae67c99bb079a05d"},
-    {"id":"5JLiNuE1B1mapzzJP2ikgd","title":"Solo (Intro)","artists":"Dzu","year":"2026","coverId":"eb41db3f438ee86e092e3895","cover":"assets/img/releases/dzu-prizma.jpg"},
-    {"id":"428YVGqfNLND78pwE4teBO","title":"Olé!","artists":"Dzu, Urka, Grzi, A.N.D.R.","year":"2026","coverId":"eb41db3f438ee86e092e3895","cover":"assets/img/releases/dzu-prizma.jpg"},
-    {"id":"15gjCXNgpJNeGYROAqBBRS","title":"Toxic","artists":"Dzu, Nedelja","year":"2026","coverId":"eb41db3f438ee86e092e3895","cover":"assets/img/releases/dzu-prizma.jpg"},
-    {"id":"3m9JfRiDl4bxT2lDS8ZrKv","title":"Monstrum","artists":"Dzu, Pablo Kenedi","year":"2026","coverId":"eb41db3f438ee86e092e3895","cover":"assets/img/releases/dzu-prizma.jpg"},
-    {"id":"0peX5YQfhnKUbo8KPqwqxz","title":"Prizma","artists":"Dzu","year":"2026","coverId":"eb41db3f438ee86e092e3895","cover":"assets/img/releases/dzu-prizma.jpg"},
-    {"id":"4Eg78gfUFQhW02X9Ot3vFZ","title":"Drama","artists":"Maia","year":"2026","coverId":"518fe6cda583f4f815f9afce","cover":"assets/img/releases/maia-drama.jpg"},
-    {"id":"0NwoAZVACC2JGt4Ime2QTk","title":"Tango","artists":"Crystal","year":"2026","coverId":"c037c9301cd46c39105fab1d","cover":"https://i.scdn.co/image/ab67616d0000b273c037c9301cd46c39105fab1d"},
-    {"id":"2wP6Z8Ku76PxYV87OsfbTQ","title":"Kangal","artists":"Dzu, Igla","year":"2026","coverId":"d0c619f0888bb1679781d746","cover":"assets/img/releases/dzu-igla-kangal.jpg"},
-    {"id":"2wHtAgcDB8vefC3fCVDRSF","title":"Miriše Na Milion","artists":"Kobi","year":"2025","coverId":"e02dcfa0d5a2d719e2024a53","cover":"assets/img/releases/kobi-mirise-na-milion.jpg"},
-    {"id":"4zoA2yETyq5Cm7eOE3ndEz","title":"Na Rezervi","artists":"Nedelja","year":"2025","coverId":"dbe12acae6549f388996d31d","cover":"assets/img/releases/nedelja-na-rezervi.jpg"},
-    {"id":"3koyxRkyATnAVv9TSbDrl5","title":"Uroboros","artists":"Igla","year":"2025","coverId":"7ecb3e87b573de04e542e4b7","cover":"assets/img/releases/igla-uroboros.jpg"},
-    {"id":"4qXzB05S0sCJVscMRKlhMR","title":"Vir","artists":"Dzu","year":"2025","coverId":"d57fc01d0d9b4d5759395e57","cover":"assets/img/releases/dzu-vir.jpg"},
-    {"id":"7g7bC2g5iaVSv0NBIW48ns","title":"Trag","artists":"Grzi","year":"2025","coverId":"c91fb267033be33b89e280c2","cover":"assets/img/releases/grzi-trag.jpg"}
+    { "id": "3hzOOUUxuOnt2guK0KpoYq", "title": "Nisam Te Pitao Za Savet", "artists": "Ketchy, Dzu", "year": "2026", "coverId": "cf99a9fdae67c99bb079a05d", "cover": "assets/img/releases/ketchy-nisam-te-pitao-za-savet.jpg" },
+    { "id": "5JLiNuE1B1mapzzJP2ikgd", "title": "Solo (Intro)", "artists": "Dzu", "year": "2026", "coverId": "eb41db3f438ee86e092e3895", "cover": "assets/img/releases/dzu-prizma.jpg" },
+    { "id": "428YVGqfNLND78pwE4teBO", "title": "Olé!", "artists": "Dzu, Urka, Grzi, A.N.D.R.", "year": "2026", "coverId": "eb41db3f438ee86e092e3895", "cover": "assets/img/releases/dzu-prizma.jpg" },
+    { "id": "15gjCXNgpJNeGYROAqBBRS", "title": "Toxic", "artists": "Dzu, Nedelja", "year": "2026", "coverId": "eb41db3f438ee86e092e3895", "cover": "assets/img/releases/dzu-prizma.jpg" },
+    { "id": "3m9JfRiDl4bxT2lDS8ZrKv", "title": "Monstrum", "artists": "Dzu, Pablo Kenedi", "year": "2026", "coverId": "eb41db3f438ee86e092e3895", "cover": "assets/img/releases/dzu-prizma.jpg" },
+    { "id": "0peX5YQfhnKUbo8KPqwqxz", "title": "Prizma", "artists": "Dzu", "year": "2026", "coverId": "eb41db3f438ee86e092e3895", "cover": "assets/img/releases/dzu-prizma.jpg" },
+    { "id": "4Eg78gfUFQhW02X9Ot3vFZ", "title": "Drama", "artists": "Maia", "year": "2026", "coverId": "518fe6cda583f4f815f9afce", "cover": "assets/img/releases/maia-drama.jpg" },
+    { "id": "0NwoAZVACC2JGt4Ime2QTk", "title": "Tango", "artists": "Crystal", "year": "2026", "coverId": "c037c9301cd46c39105fab1d", "cover": "assets/img/releases/crystal-tango.jpg" },
+    { "id": "2wP6Z8Ku76PxYV87OsfbTQ", "title": "Kangal", "artists": "Dzu, Igla", "year": "2026", "coverId": "d0c619f0888bb1679781d746", "cover": "assets/img/releases/dzu-igla-kangal.jpg" },
+    { "id": "2wHtAgcDB8vefC3fCVDRSF", "title": "Miriše Na Milion", "artists": "Kobi", "year": "2025", "coverId": "e02dcfa0d5a2d719e2024a53", "cover": "assets/img/releases/kobi-mirise-na-milion.jpg" },
+    { "id": "4zoA2yETyq5Cm7eOE3ndEz", "title": "Na Rezervi", "artists": "Nedelja", "year": "2025", "coverId": "dbe12acae6549f388996d31d", "cover": "assets/img/releases/nedelja-na-rezervi.jpg" },
+    { "id": "3koyxRkyATnAVv9TSbDrl5", "title": "Uroboros", "artists": "Igla", "year": "2025", "coverId": "7ecb3e87b573de04e542e4b7", "cover": "assets/img/releases/igla-uroboros.jpg" },
+    { "id": "4qXzB05S0sCJVscMRKlhMR", "title": "Vir", "artists": "Dzu", "year": "2025", "coverId": "d57fc01d0d9b4d5759395e57", "cover": "assets/img/releases/dzu-vir.jpg" },
+    { "id": "7g7bC2g5iaVSv0NBIW48ns", "title": "Trag", "artists": "Grzi", "year": "2025", "coverId": "c91fb267033be33b89e280c2", "cover": "assets/img/releases/grzi-trag.jpg" }
   ]
 }
