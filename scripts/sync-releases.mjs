@@ -1,11 +1,13 @@
 // GRM Label · Selected Releases — keeps the grid in step with the Spotify playlist.
 //
-//   node scripts/sync-releases.mjs            check the playlist, add new tracks, re-render
+//   node scripts/sync-releases.mjs            check the playlist, add what is new, re-render
 //   node scripts/sync-releases.mjs --render   re-render label/index.html from data/releases.json only
 //
 // Source of truth on the site: data/releases.json (order = order on the page).
-// A track that is in the playlist but not in the file is NEW: it goes to the top
-// (several new ones keep their playlist order). Nothing is ever removed
+// One tile per RELEASE: playlist tracks from the same album / EP share a tile.
+// A playlist track whose release is not on the site yet puts that release at
+// the top (several new ones keep their playlist order); a new track from a
+// release that is already there just joins it. Nothing is removed
 // automatically. Covers are saved into assets/img/releases/ so the page never
 // depends on Spotify's image servers. No dependencies; Node 20+.
 import { readFile, writeFile, access } from "node:fs/promises";
@@ -47,10 +49,56 @@ export function trackFrom(e, id) {
     cover: hash ? `https://i.scdn.co/image/${hash}` : "",
   };
 }
-/* new tracks first (in playlist order), then everything already on the site, untouched */
-export function merge(items, playlistIds, fresh) {
-  const have = new Set(items.map((i) => i.id));
-  const added = playlistIds.filter((id) => !have.has(id)).map((id) => fresh[id]).filter(Boolean);
+const BOT = { "user-agent": "facebookexternalhit/1.1 (+http://www.facebook.com/externalhit_uatext.php)" };
+const meta = (h, k) => (h.match(new RegExp(`<meta[^>]+(?:property|name)="${k}"[^>]+content="([^"]*)"`)) || [])[1] || "";
+const unesc = (s) => s.replace(/&amp;/g, "&").replace(/&quot;/g, '"').replace(/&#x27;|&#39;/g, "'");
+/* Spotify's share pages (as link-preview crawlers see them) name the album a
+   track belongs to, and describe an album as "Artist · EP · 2026 · 5 songs". */
+async function albumIdOf(trackId) {
+  const r = await fetch(`https://open.spotify.com/track/${trackId}`, { headers: BOT });
+  if (!r.ok) throw new Error(`Spotify answered ${r.status} for track ${trackId}`);
+  const id = (meta(await r.text(), "music:album").match(/album\/([A-Za-z0-9]{22})/) || [])[1];
+  if (!id) throw new Error(`no album found for track ${trackId} (Spotify page layout changed?)`);
+  return id;
+}
+export function typeFrom(description, trackCount) {
+  const m = description.match(/·\s*(EP|single|album|compilation)\s*·/i);
+  if (m) return { ep: "EP", single: "Single", album: "Album", compilation: "Compilation" }[m[1].toLowerCase()];
+  return trackCount <= 3 ? "Single" : trackCount <= 6 ? "EP" : "Album";
+}
+async function albumInfo(albumId) {
+  const e = await embed("album", albumId);
+  const r = await fetch(`https://open.spotify.com/album/${albumId}`, { headers: BOT });
+  const d = r.ok ? unesc(meta(await r.text(), "og:description")) : "";
+  const imgs = e.visualIdentity?.image || [];
+  const best = [...imgs].sort((a, b) => (b.maxWidth || 0) - (a.maxWidth || 0))[0];
+  const hash = best?.url?.split("/").pop() || "";
+  return {
+    album: albumId,
+    type: typeFrom(d, (e.trackList || []).length),
+    title: e.name || e.title,
+    artists: e.subtitle || "",
+    year: (d.match(/·\s*(\d{4})\s*·/) || [])[1] || "",
+    coverId: hash.slice(-24),
+    cover: hash ? `https://i.scdn.co/image/${hash}` : "",
+    tracks: [],
+  };
+}
+/* releases already on the site keep their place; a release that is new goes on
+   top (new ones in playlist order). `albumOf` maps track id -> album id,
+   `info` maps album id -> a fresh release record. */
+export function merge(items, playlistIds, albumOf, info) {
+  const byAlbum = new Map(items.map((i) => [i.album, i]));
+  const known = new Set(items.flatMap((i) => i.tracks));
+  const added = [];
+  for (const id of playlistIds) {
+    if (known.has(id)) continue;
+    const album = albumOf[id];
+    if (!album) continue;
+    let rel = byAlbum.get(album);
+    if (!rel) { rel = { ...info[album], tracks: [] }; byAlbum.set(album, rel); added.push(rel); }
+    rel.tracks.push(id); known.add(id);
+  }
   return { items: [...added, ...items], added };
 }
 async function localiseCovers(items) {
@@ -73,6 +121,7 @@ export function render(items) {
   const tiles = items.map((it, i) => {
     const src = /^https?:/.test(it.cover) ? it.cover : "../" + it.cover;
     const name = `${it.title} — ${it.artists}`;
+    const credit = [it.type, it.year].filter(Boolean).join(" · ");
     return `
           <figure class="label-releases__item reveal${i >= FIRST ? " is-queued" : ""}">
             <div class="label-releases__media">
@@ -80,9 +129,9 @@ export function render(items) {
             </div>
             <figcaption class="label-releases__meta">
               <span class="label-releases__t">${esc(name)}</span>
-              <span class="label-releases__c">${esc(it.year)}</span>
+              <span class="label-releases__c">${esc(credit)}</span>
             </figcaption>
-            <a class="label-releases__link" href="https://open.spotify.com/track/${esc(it.id)}" target="_blank" rel="noopener noreferrer" aria-label="${esc(name)} — listen on Spotify"></a>
+            <a class="label-releases__link" href="https://open.spotify.com/album/${esc(it.album)}" target="_blank" rel="noopener noreferrer" aria-label="${esc(name)} (${esc(it.type || "release")}) — listen on Spotify"></a>
           </figure>
 `;
   }).join("");
@@ -101,16 +150,46 @@ if (import.meta.url === `file://${process.argv[1]}`) {
     const list = (await embed("playlist", data.playlist)).trackList || [];
     const ids = list.map((t) => (t.uri || "").split(":").pop()).filter(Boolean);
     if (!ids.length) throw new Error("playlist came back empty — nothing changed");
-    const have = new Set(data.items.map((i) => i.id));
-    const fresh = {};
-    for (const id of ids.filter((x) => !have.has(x))) fresh[id] = trackFrom(await embed("track", id), id);
-    const { items, added } = merge(data.items, ids, fresh);
+
+    /* one-time migration: entries that are still single tracks become releases */
+    if (data.items.some((i) => !i.album)) {
+      const out = [];
+      for (const old of data.items) {
+        if (old.album) { out.push(old); continue; }
+        const album = await albumIdOf(old.id);
+        let rel = out.find((r) => r.album === album);
+        if (!rel) {
+          rel = await albumInfo(album);
+          if (!/^https?:/.test(old.cover)) { rel.cover = old.cover; rel.coverId = old.coverId || rel.coverId; }
+          rel.year = rel.year || old.year;
+          rel.solo = old.artists;                     /* a one-track release keeps the track's full credits */
+          out.push(rel);
+        }
+        rel.tracks.push(old.id);
+      }
+      for (const r of out) { if (r.solo && r.tracks.length === 1) r.artists = r.solo; delete r.solo; }
+      data.items = out;
+    }
+
+    const known = new Set(data.items.flatMap((i) => i.tracks));
+    const albumOf = {}, info = {};
+    for (const id of ids.filter((x) => !known.has(x))) {
+      const album = (albumOf[id] = await albumIdOf(id));
+      if (!data.items.some((i) => i.album === album) && !info[album]) {
+        info[album] = await albumInfo(album);
+        const t = trackFrom(await embed("track", id), id);
+        info[album].solo = t.artists; info[album].year = info[album].year || t.year;
+      }
+    }
+    const { items, added } = merge(data.items, ids, albumOf, info);
+    for (const r of added) { if (r.solo && r.tracks.length === 1) r.artists = r.solo; }
+    for (const r of items) delete r.solo;
     data.items = items;
-    console.log(added.length ? `added: ${added.map((a) => a.title).join(", ")}` : "no new tracks");
-    const gone = data.items.filter((i) => !ids.includes(i.id));
+    console.log(added.length ? `added: ${added.map((a) => `${a.title} (${a.type})`).join(", ")}` : "no new releases");
+    const gone = data.items.filter((i) => !i.tracks.some((t) => ids.includes(t)));
     if (gone.length) console.log(`on the site but no longer in the playlist (left in place): ${gone.map((g) => g.title).join(", ")}`);
     await localiseCovers(data.items);
-    await writeFile(DATA, JSON.stringify(data, null, 2).replace(/\{\n\s+"id"([\s\S]*?)\n\s+\}/g, (m) => m.replace(/\n\s+/g, " ")) + "\n");
+    await writeFile(DATA, JSON.stringify(data, null, 2) + "\n");
   }
   await writePage(data.items);
   console.log(`rendered ${data.items.length} releases`);
