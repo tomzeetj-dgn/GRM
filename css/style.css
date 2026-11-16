@@ -5344,3 +5344,48 @@ html.js .label-lineup__credits.reveal{ transition-delay:900ms; }
 .hero.is-restoring *::after {
   transition: none !important;
 }
+
+/* ============================================================
+   HOME · DESKTOP ACCORDION — every panel carries its name
+   A collapsed or resting panel used to be a dark strip with a sliver of
+   the mark and no name, so with one panel open nothing said the other two
+   were places. The name is now always there: quiet at rest and on the
+   panels that are not open, full on the open one. It is the same element
+   and the same container-relative size as before, so it simply grows with
+   its panel. The descriptor still belongs to the open panel only. Panel
+   geometry, easing and the logo windows are untouched.
+   ============================================================ */
+@media (min-width: 768px) {
+  .panel__copy { opacity: 1; transform: none; }
+  .panel__name {
+    opacity: 0.6;
+    /* a soft dark halo: invisible on the black field, but it lifts the name
+       off the strokes of the mark where the two cross (Label, mid-screen) */
+    text-shadow: 0 0 6px rgba(5, 5, 5, 0.9), 0 0 12px rgba(5, 5, 5, 0.7);
+    transition: opacity 420ms ease 90ms;
+  }
+  .panel.is-expanded .panel__name,
+  .panel:focus-visible .panel__name { opacity: 1; }
+  /* while one panel is open the other two step back a little further */
+  .hero__panels:has(.panel.is-expanded) .panel:not(.is-expanded) .panel__name { opacity: 0.42; }
+  .panel__tag {
+    opacity: 0;
+    transform: translateY(14px);
+    transition: opacity 420ms ease 90ms, transform 520ms var(--ease-hero) 90ms;
+  }
+  .panel.is-expanded .panel__tag,
+  .panel:focus-visible .panel__tag { opacity: 1; transform: none; }
+  /* the unseen descriptor must never wrap in a narrow panel, or it would lift
+     that panel's name off the shared baseline (Label and Liveroom already
+     keep theirs on one line) */
+  #panelProduction .panel__tag { width: max-content; max-width: none; }
+  /* hover is held for a beat after the entrance (js/main.js): no lit third */
+  .hero.is-hover-held .panel:hover:not(.is-expanded):not(:focus-visible) .panel__logo--glow { opacity: 0; }
+  /* the names arrive as the last beat of the entrance */
+  body[data-page="home"].home-intro-running .panel__name { opacity: 0; transition: none; }
+  body[data-page="home"] .panel__name { transition: opacity 600ms ease; }
+  body[data-page="home"] .panel.is-expanded .panel__name { transition: opacity 420ms ease 90ms; }
+}
+@media (min-width: 768px) and (prefers-reduced-motion: reduce) {
+  .panel__name, .panel__tag { transition: none !important; }
+}

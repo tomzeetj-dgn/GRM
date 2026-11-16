@@ -698,8 +698,44 @@
     root.addEventListener("mouseleave", function () {
       settle();
     });
+    /* After the entrance, the resting three-part composition holds for a
+       beat before hover wakes up: if the pointer is already resting on a
+       panel (usually Label, mid-screen), that panel must not spring open the
+       instant the intro ends — the visitor first sees all three names. Hover
+       arms HOVER_HOLD ms after the intro, on the next real pointer movement.
+       Clicks and the keyboard are never held. No intro (reduced motion, Back
+       from the page cache) = armed from the start. */
+    var HOVER_HOLD = 700;
+    var hoverArmed = !document.body.classList.contains("home-intro-running");
+    var introEndedAt = 0;
+    /* .is-hover-held also keeps the CSS :hover glow off, so the held state is
+       the true resting composition and not one third lit under the pointer. */
+    function armHover() { hoverArmed = true; hero.classList.remove("is-hover-held"); }
+    if (!hoverArmed && "MutationObserver" in window) {
+      hero.classList.add("is-hover-held");
+      var introWatch = new MutationObserver(function () {
+        if (document.body.classList.contains("home-intro-running")) return;
+        introEndedAt = performance.now();
+        introWatch.disconnect();
+      });
+      introWatch.observe(document.body, { attributes: true, attributeFilter: ["class"] });
+    } else {
+      hoverArmed = true;
+    }
+    document.addEventListener("mousemove", function (e) {
+      if (hoverArmed || !introEndedAt || performance.now() - introEndedAt < HOVER_HOLD) return;
+      armHover();
+      var under = document.elementFromPoint(e.clientX, e.clientY);
+      var panel = under && under.closest ? under.closest(".panel") : null;
+      if (panel && root.contains(panel) && !isTransitioning) expand(panel);
+    });
+    /* a click, a key press or keyboard focus ends the hold at once */
+    root.addEventListener("click", armHover, true);
+    root.addEventListener("keydown", armHover, true);
+    root.addEventListener("focusin", armHover);
     panels.forEach(function (panel) {
       panel.addEventListener("mouseenter", function () {
+        if (!hoverArmed) return;
         expand(panel);
       });
     });
