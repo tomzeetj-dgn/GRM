@@ -2390,3 +2390,48 @@ resize simply misses and falls back to the previous aim point. */
     fromScroll();
   });
 })();
+
+/* ---------- LABEL "Selected releases": the rest arrive on scroll ----------
+   The grid is generated from the GRM Spotify playlist (scripts/
+   sync-releases.mjs). The first nine tiles are there from the start; the
+   others are held back (.is-queued) and released a row at a time as the end
+   of the grid nears the screen, each with the page's usual reveal. */
+(function () {
+  var grid = document.querySelector("[data-releases]");
+  if (!grid) return;
+  function queued() { return grid.querySelectorAll(".label-releases__item.is-queued"); }
+  function showAll() { Array.prototype.forEach.call(queued(), function (el) { el.classList.remove("is-queued"); }); }
+  if (!queued().length) return;
+  if (!("IntersectionObserver" in window)) { showAll(); return; }
+  var sentinel = document.createElement("span");
+  sentinel.setAttribute("aria-hidden", "true");
+  sentinel.style.cssText = "display:block;height:1px;";
+  grid.parentNode.insertBefore(sentinel, grid.nextSibling);
+  function columns() {
+    return Math.max(1, getComputedStyle(grid).gridTemplateColumns.split(" ").filter(Boolean).length);
+  }
+  function release() {
+    var q = queued();
+    if (!q.length) { io.disconnect(); sentinel.remove(); return; }
+    var cols = columns();
+    var shown = grid.querySelectorAll(".label-releases__item").length - q.length;
+    var n = cols - (shown % cols || 0);          /* complete the row… */
+    if (shown % cols === 0) n = cols;            /* …or add one full row */
+    for (var i = 0; i < n && i < q.length; i++) {
+      q[i].style.transitionDelay = (i * 90) + "ms";
+      q[i].classList.remove("is-queued");
+    }
+  }
+  var io = new IntersectionObserver(function (entries) {
+    if (entries[entries.length - 1].isIntersecting) release();
+  }, { rootMargin: "0px 0px -12% 0px" });
+  io.observe(sentinel);
+  /* a row that lands with the grid end still on screen: keep going */
+  var again = new IntersectionObserver(function (entries) {
+    if (entries[entries.length - 1].isIntersecting && queued().length) setTimeout(function () {
+      var r = sentinel.getBoundingClientRect();
+      if (r.top < window.innerHeight * 0.88) release();
+    }, 450);
+  }, { rootMargin: "0px 0px -12% 0px", threshold: [0, 1] });
+  again.observe(sentinel);
+})();

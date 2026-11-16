@@ -5347,10 +5347,11 @@ html.js .label-lineup__credits.reveal{ transition-delay:900ms; }
 
 /* ============================================================
    HOME · DESKTOP ACCORDION — every panel carries its name
-   A collapsed or resting panel used to be a dark strip with a sliver of
-   the mark and no name, so with one panel open nothing said the other two
-   were places. The name is now always there: quiet at rest and on the
-   panels that are not open, full on the open one. It is the same element
+   With one panel open, the other two used to be dark strips with a sliver
+   of the mark and no name, so nothing said they were places. Now, whenever
+   ANY panel is open, all three carry their name: full on the open one,
+   quiet on the other two. At rest (nothing open) there are no words — the
+   mark stands alone. It is the same element
    and the same container-relative size as before, so it simply grows with
    its panel. The descriptor still belongs to the open panel only. Panel
    geometry, easing and the logo windows are untouched.
@@ -5358,7 +5359,7 @@ html.js .label-lineup__credits.reveal{ transition-delay:900ms; }
 @media (min-width: 768px) {
   .panel__copy { opacity: 1; transform: none; }
   .panel__name {
-    opacity: 0.6;
+    opacity: 0;
     /* a soft dark halo: invisible on the black field, but it lifts the name
        off the strokes of the mark where the two cross (Label, mid-screen) */
     text-shadow: 0 0 6px rgba(5, 5, 5, 0.9), 0 0 12px rgba(5, 5, 5, 0.7);
@@ -5367,7 +5368,7 @@ html.js .label-lineup__credits.reveal{ transition-delay:900ms; }
   .panel.is-expanded .panel__name,
   .panel:focus-visible .panel__name { opacity: 1; }
   /* while one panel is open the other two step back a little further */
-  .hero__panels:has(.panel.is-expanded) .panel:not(.is-expanded) .panel__name { opacity: 0.42; }
+  .hero__panels:has(.panel.is-expanded) .panel:not(.is-expanded) .panel__name { opacity: 0.45; }
   .panel__tag {
     opacity: 0;
     transform: translateY(14px);
@@ -5388,4 +5389,21 @@ html.js .label-lineup__credits.reveal{ transition-delay:900ms; }
 }
 @media (min-width: 768px) and (prefers-reduced-motion: reduce) {
   .panel__name, .panel__tag { transition: none !important; }
+}
+
+/* Label · Selected releases: each tile opens its track on Spotify (a stretched
+   link over the figure, so the approved hover stroke + zoom are untouched),
+   and tiles past the first nine wait for the visitor to scroll (js/main.js).
+   Without JS every tile is simply there. */
+.label-releases__link{
+  position:absolute;
+  inset:0;
+  z-index:2;
+}
+.label-releases__link:focus-visible{
+  outline:1px solid var(--accent-lite);
+  outline-offset:4px;
+}
+html.js .label-releases__item.is-queued{
+  display:none;
 }

@@ -132,7 +132,7 @@
     "label.people.bio.igla": "A motion designer and video editor since 2014, Igla co-founded GRM House, where he leads video production and runs the Liveroom.",
     "label.releases.eyebrow": "03 / Selected releases",
     "label.releases.title": "Selected releases.",
-    "label.releases.note": "Six records from the house — real GRM covers, written, mixed & mastered in-house.",
+    "label.releases.note": "Records from the house — real GRM covers, written, mixed & mastered in-house.",
     "label.releases.footnote": "13 releases on the catalogue · 10 artists · written, mixed & mastered in-house.",
 
     /* ---- liveroom ---- */

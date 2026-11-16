@@ -965,3 +965,14 @@ Browsers keep a page alive in their Back/Forward cache and bring it back exactly
 
 ### 17d. Checks run after the change
 39/39 transitions (21 Home → division, 18 division ↔ division incl. hamburger) land on the destination logo with `scrollY = 0` and one logo; 72 page/viewport/language combinations show the same page heights as before, no horizontal overflow, no script errors.
+
+## 18. Home panel names + Label releases from Spotify (2026-11-16)
+
+### 18a. Home desktop accordion: names while a panel is open
+At rest there are no words. As soon as any panel is open, all three carry their name: full size with the descriptor on the open one, quiet (0.45) on the other two, so the collapsed strips read as places. Same `.panel__name` element and container-relative size; panel geometry, easing and logo windows untouched (css/style.css, "every panel carries its name"). For 700ms after the intro, hover and the hover glow are held (`.hero.is-hover-held`, `HOVER_HOLD` in js/main.js) so the resting mark is seen first; the next pointer movement wakes it. Clicks and keyboard are never held.
+
+### 18b. Label · Selected releases
+- The grid is generated: `data/releases.json` (order = order on the page) → `node scripts/sync-releases.mjs --render` rewrites the block between the `releases:start` / `releases:end` markers in `label/index.html`. Never edit that block by hand.
+- `.github/workflows/sync-releases.yml` runs `node scripts/sync-releases.mjs` every Monday (and on demand): it reads the GRM Spotify playlist, puts tracks that are not yet on the site at the top (several new ones keep their playlist order), saves their covers into `assets/img/releases/`, and commits to `main`, which deploys. It never removes a release; a track taken out of the playlist stays until removed from `data/releases.json`.
+- Each tile opens its track on Spotify in a new tab (`.label-releases__link`, a stretched link above the figure; the hover stroke + 1.035 zoom are unchanged).
+- The first nine tiles are present on load; the rest carry `.is-queued` and are released a row at a time as the end of the grid nears the screen (js/main.js, last block). Without JS all tiles show.
