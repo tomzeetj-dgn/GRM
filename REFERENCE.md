@@ -944,3 +944,24 @@ Designed on the Claude Design canvas as direction "E · Step forward" and approv
     - **Phones (≤599px):** `.label-lineup__visual` (word + photo + fade + outlines) is `position:sticky` under the header at a height of 92cqw (where the fade is solid). The bios scroll up beneath it and melt into the fade. The reading line sits halfway down the space under the pinned picture, and the latest bio whose top has crossed it selects its person. A lead-in pad of `(100svh − header − 92cqw) × .8` keeps "Behind GRM." on screen for a moment after pinning. Row gap `clamp(56px,12svh,112px)`. Tapping a face or name smooth-scrolls that bio to the line. Section overflow is `overflow-x:clip` (not hidden) so sticky works.
   - `.label-people__credits` and `.credit-label` (§14) are no longer used on any page but are kept, so the chips can come back easily.
   - `assets/img/Behind GRM - 1…5.png` are no longer referenced, but are left in place.
+
+## 17. Health-check fixes (2026-11-16)
+
+Found by a full re-check of the live build (nine viewports, EN + SR, reduced motion, every transition). Nothing approved was redesigned.
+
+### 17a. Back / Forward no longer returns a frozen page
+Browsers keep a page alive in their Back/Forward cache and bring it back exactly as it was left, without re-running any script.
+- **Home (desktop accordion):** it came back at the end of the takeover — one logo on black, panels at zero, language switch hidden, clicks locked. `pageshow` (only when `event.persisted`) now clears `is-takeover`, the `is-*-takeover-selected` / `is-*-logo-committed` classes, the committed logo's inline size/position and the `isTransitioning` lock, then re-syncs the logo windows. `.hero.is-restoring` (css/style.css, last rule) switches transitions off for two frames so the accordion does not animate its way back. The intro does not replay on this path, matching what the stacked (touch) Home already did.
+- **Division pages:** they came back with the hero title, descriptor and scroll cue faded out and the logo hand-off dead. `pageshow` (persisted) now removes the exit class, releases the `busy` lock and clears `grm-morph-arrival` / `grm-morph-start`.
+- A normal load, refresh or direct visit is untouched (the handlers only act on `persisted`).
+
+### 17b. Liveroom schedule follows the real week
+"THIS WEEK" was anchored to 21–27 SEP 2026 and TODAY was authored on Sunday. `CURRENT` is now the Monday of the real current week and `markToday()` moves the `is-today` cell (day name + TODAY tag, both still i18n keys) to the real weekday. The markup still authors Sunday as the no-JS fallback. The TAKEN slots remain the authored sample week: they are not real bookings.
+
+### 17c. Lighter pages (no visual change)
+- Header brand glow and footer watermark no longer use the 1.3 MB `GRM 4K 1x1_Transparent.png`: `grm-mark-glow.png` (256px) and `grm-watermark.png` (1120px) are resized copies of the same artwork. Label no longer preloads the 4K file.
+- Production: the 17 strip / release images are `loading="lazy"`. The showreel video no longer has `autoplay` / `preload="auto"`; a small observer in js/main.js (after the aperture driver, independent of it) calls `play()` once the visitor is within about 1.5 screens of it, so the file is not downloaded by visitors who never scroll that far. Aperture constants, frame geometry and the muted loop are unchanged.
+- Not done, needs a visual sign-off: the three division Glow PNGs (700–900 KB each) would be about 460–520 KB as lossless WebP, or about 190 KB as high-quality WebP.
+
+### 17d. Checks run after the change
+39/39 transitions (21 Home → division, 18 division ↔ division incl. hamburger) land on the destination logo with `scrollY = 0` and one logo; 72 page/viewport/language combinations show the same page heights as before, no horizontal overflow, no script errors.

@@ -5335,3 +5335,12 @@ html.js .label-lineup__credits.reveal{ transition-delay:900ms; }
   .studio-minimal-hero__scroll,
   .division-minimal-hero__scroll { display: none; }
 }
+
+/* Home returning from the browser's Back/Forward page cache: js/main.js puts
+   the accordion back to neutral; nothing may animate while it does. */
+.hero.is-restoring,
+.hero.is-restoring *,
+.hero.is-restoring *::before,
+.hero.is-restoring *::after {
+  transition: none !important;
+}

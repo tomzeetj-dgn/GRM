@@ -252,7 +252,7 @@
             '<div class="site-header__inner">' +
             '<a href="' + root + 'index.html" class="site-header__brand" aria-label="GRM — back to top" data-i18n-aria-label="a11y.headerBrand">' +
               '<img src="' + root + 'assets/img/grm-mark.png" alt="" width="38" height="38" class="site-header__mark">' +
-              '<img src="' + root + 'assets/img/GRM 4K 1x1_Transparent.png" alt="" aria-hidden="true" class="site-header__mark-glow">' +
+              '<img src="' + root + 'assets/img/grm-mark-glow.png" alt="" aria-hidden="true" class="site-header__mark-glow">' +
               '<span class="site-header__word" data-i18n="brand.home">GRM HOUSE</span>' +
             "</a>" +
             (isHome ? "" :
@@ -289,8 +289,8 @@
     if (footerMount) {
       footerMount.innerHTML =
         '<footer class="site-footer" id="siteFooter">' +
-          '<img class="site-footer__watermark" src="' + root + 'assets/img/GRM 4K 1x1_Transparent.png"' +
-               ' alt="" loading="lazy" width="2160" height="2160">' +
+          '<img class="site-footer__watermark" src="' + root + 'assets/img/grm-watermark.png"' +
+               ' alt="" loading="lazy" width="1120" height="1120">' +
           '<div class="container">' +
             '<div class="site-footer__top">' +
               '<a href="' + root + 'index.html" class="site-footer__brand" aria-label="GRM — back to top" data-i18n-aria-label="a11y.headerBrand">' +
@@ -483,6 +483,19 @@
       }
       if (destination !== "studio") document.body.classList.add(exitClass);
       setTimeout(function () { window.location.href = link.href; }, 520);
+    });
+
+    /* Back / Forward can bring this page back exactly as it was left (the
+       browser's page cache): mid-exit, hero text faded out and the hand-off
+       locked. Put it back to rest so the hero reads and the nav works again. */
+    window.addEventListener("pageshow", function (ev) {
+      if (!ev || !ev.persisted) return;
+      busy = false;
+      document.body.classList.remove(exitClass);
+      try {
+        sessionStorage.removeItem("grm-morph-arrival");
+        sessionStorage.removeItem("grm-morph-start");
+      } catch (e) {}
     });
   }());
 
@@ -692,6 +705,31 @@
     });
     window.addEventListener("resize", kickLogoWindows);
     kickLogoWindows();
+
+    /* Back / Forward can bring Home back exactly as the takeover left it (the
+       browser's page cache): one panel owning the screen, the others at zero,
+       the lock still set — a dead screen. Return it to the neutral accordion,
+       without animating the way back, so Home is simply there again. The
+       stacked (touch) selector has its own pageshow reset further down. */
+    window.addEventListener("pageshow", function (ev) {
+      if (!ev || !ev.persisted) return;
+      var COMMITTED = ["is-studio-logo-committed", "is-label-logo-committed", "is-liveroom-logo-committed"];
+      hero.classList.add("is-restoring");
+      isTransitioning = false;
+      hero.classList.remove("is-takeover");
+      panels.forEach(function (p) {
+        p.classList.remove("is-expanded", "is-label-takeover-selected", "is-liveroom-takeover-selected");
+        p.setAttribute("aria-expanded", "false");
+        var glow = p.querySelector(".panel__logo--glow");
+        COMMITTED.forEach(function (c) { p.classList.remove(c); if (glow) glow.classList.remove(c); });
+        if (glow) { glow.style.width = ""; glow.style.height = ""; glow.style.left = ""; glow.style.top = ""; }
+      });
+      kickLogoWindows();
+      void hero.offsetWidth;
+      requestAnimationFrame(function () {
+        requestAnimationFrame(function () { hero.classList.remove("is-restoring"); });
+      });
+    });
 
     /* Warm the three destination rects so the committed logo always has its
        real target before the user can click — the same prefetch the mobile
@@ -1332,7 +1370,11 @@ resize simply misses and falls back to the previous aim point. */
 
     var MONTHS = ["JAN", "FEB", "MAR", "APR", "MAY", "JUN", "JUL", "AUG", "SEP", "OCT", "NOV", "DEC"];
     var NUMBER_WORDS = ["ZERO", "ONE", "TWO", "THREE", "FOUR", "FIVE", "SIX", "SEVEN", "EIGHT", "NINE", "TEN", "ELEVEN", "TWELVE", "THIRTEEN", "FOURTEEN", "FIFTEEN", "SIXTEEN"];
-    var CURRENT = new Date(2026, 8, 21); /* Mon 21 SEP 2026 */
+    /* "THIS WEEK" is the real current week (Monday-first) and TODAY sits on
+       the real weekday. The TAKEN slots are still the authored sample week. */
+    var NOW = new Date();
+    var TODAY_INDEX = (NOW.getDay() + 6) % 7;   /* 0 = Monday … 6 = Sunday */
+    var CURRENT = new Date(NOW.getFullYear(), NOW.getMonth(), NOW.getDate() - TODAY_INDEX);
     var offset = 0;
     var busy = false;
     var duration = 320;
@@ -1385,6 +1427,41 @@ resize simply misses and falls back to the previous aim point. */
             .replace("{day}", days[+slot.getAttribute("data-day")] || "")
             .replace("{from}", slot.getAttribute("data-from") || "")
             .replace("{to}", slot.getAttribute("data-to") || ""));
+        });
+      });
+    }
+
+    /* The markup authors TODAY on Sunday; move it to the real weekday. A day
+       cell is either a plain translated leaf, or (today) a translated day
+       name plus the TODAY tag — keep both shapes valid for the i18n engine. */
+    function markToday() {
+      sections.forEach(function (section) {
+        var cells = section.querySelectorAll(".liveroom-availability__days > b");
+        Array.prototype.forEach.call(cells, function (cell, i) {
+          var want = i === TODAY_INDEX;
+          var has = cell.classList.contains("is-today");
+          if (want === has) return;
+          if (has) {
+            var name = cell.querySelector("span[data-i18n]");
+            var key = name ? name.getAttribute("data-i18n") : "";
+            cell.textContent = name ? name.textContent : cell.textContent;
+            if (key) cell.setAttribute("data-i18n", key);
+            cell.classList.remove("is-today");
+          } else {
+            var dayKey = cell.getAttribute("data-i18n") || "";
+            var dayText = cell.textContent;
+            cell.removeAttribute("data-i18n");
+            cell.textContent = "";
+            var day = document.createElement("span");
+            if (dayKey) day.setAttribute("data-i18n", dayKey);
+            day.textContent = dayText;
+            var tag = document.createElement("small");
+            tag.setAttribute("data-i18n", "liveroom.schedule.today");
+            tag.textContent = tr("liveroom.schedule.today", "TODAY");
+            cell.appendChild(day);
+            cell.appendChild(tag);
+            cell.classList.add("is-today");
+          }
         });
       });
     }
@@ -1445,6 +1522,7 @@ resize simply misses and falls back to the previous aim point. */
        and once now, so a page that opens in Serbian isn't left on the
        authored English label, dates and slot descriptions. */
     document.addEventListener("grm:languagechange", swapText);
+    markToday();
     swapText();
   });
 
@@ -1710,6 +1788,27 @@ resize simply misses and falls back to the previous aim point. */
     }
     measure();
     setMasks(-HALF_HAIRLINE, HALF_HAIRLINE);
+  });
+
+  /* The showreel file is heavy and sits far down the page, so it no longer
+     downloads with the page: it starts loading (and playing, muted, looped —
+     as before) once the visitor is within about a screen and a half of it,
+     well before the aperture opens. Independent of the aperture above. */
+  onReady(function () {
+    var video = document.querySelector("video[data-showreel-video]");
+    if (!video) return;
+    function start() {
+      try { var p = video.play(); if (p && p.catch) p.catch(function () {}); } catch (e) {}
+    }
+    if (!("IntersectionObserver" in window)) { start(); return; }
+    var io = new IntersectionObserver(function (entries) {
+      entries.forEach(function (en) {
+        if (!en.isIntersecting) return;
+        io.disconnect();
+        start();
+      });
+    }, { rootMargin: "150% 0px 150% 0px", threshold: 0 });
+    io.observe(video);
   });
 })();
 
