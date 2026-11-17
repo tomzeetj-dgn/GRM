@@ -2,6 +2,18 @@
   "playlist": "6wUsUm9h600yQjbU3Xoy1B",
   "items": [
     {
+      "album": "02YwIu99m6tP5N0n0TCqoK",
+      "type": "Single",
+      "title": "Jedan Dan",
+      "artists": "Angie",
+      "year": "2026",
+      "coverId": "a443fd0e1a26b54b7d813c73",
+      "cover": "assets/img/releases/angie-jedan-dan.jpg",
+      "tracks": [
+        "58zgj22vCoaCTrzAx438d1"
+      ]
+    },
+    {
       "album": "133b8YJizYWFfXRorScSRf",
       "type": "Single",
       "title": "Nisam Te Pitao Za Savet",
