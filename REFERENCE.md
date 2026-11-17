@@ -1008,3 +1008,8 @@ At rest there are no words. As soon as any panel is open, all three carry their 
 - **Page:** js/main.js fetches `data/schedule.json` fresh on every visit (`cache: "no-store"`), merges overlapping bookings per day, snaps to half-hours, clips to the 10:00–22:00 grid and draws them on 24 half-hour rows (`.liveroom-availability__slots.is-live`). Blocks under 1.5h show "TAKEN" without the time. Visitors see this week plus 7 ahead; the back arrow stops at this week.
 - The four authored sample blocks are gone from the HTML (their old `.is-taken--one…four` rules are now unused).
 - Delay from calendar edit to the site: the trigger (seconds) + 15s + GitHub Pages publish (~1 min).
+
+## 23. Cache-busting (2026-11-17)
+
+GitHub Pages tells browsers they may keep files for 10 minutes, and Safari can hold on to `js/main.js` / `css/style.css` longer, so a page could pair new HTML with an old script (seen: Safari showed the new empty schedule without the bookings). Every page now loads `css/style.css`, `js/translations.js`, `js/i18n.js` and `js/main.js` with a `?v=YYYYMMDD-HHMM` stamp. **Bump the stamp in all four HTML pages whenever any of those files changes.**
+
