@@ -2442,3 +2442,159 @@ resize simply misses and falls back to the previous aim point. */
   }, { rootMargin: "0px 0px -12% 0px", threshold: [0, 1] });
   again.observe(sentinel);
 })();
+
+/* ---------- LIVEROOM "The room": photo preview ----------
+   Each tile opens a full-screen preview (styles: css/style.css, "photo
+   preview"). A tile may carry data-full="…" on its <img> to show a larger
+   file in the preview than in the grid; without it the grid image is used.
+   Self-contained; the bento hover above is untouched. */
+(function () {
+  function onReady(fn) {
+    if (document.readyState === "loading") document.addEventListener("DOMContentLoaded", fn);
+    else fn();
+  }
+  onReady(function () {
+    var media = document.querySelector("#liveroom-room .liveroom-room__media");
+    if (!media) return;
+    var tiles = Array.prototype.slice.call(media.querySelectorAll(".liveroom-room__img"));
+    if (!tiles.length) return;
+    function tr(key, fallback, params) {
+      var v = (window.GRMi18n && window.GRMi18n.t) ? window.GRMi18n.t(key, params) : key;
+      if (v === key) {
+        v = fallback;
+        if (params) v = v.replace(/\{(\w+)\}/g, function (m, k) { return params[k] != null ? params[k] : m; });
+      }
+      return v;
+    }
+    var chevron = function (d) {
+      return '<svg viewBox="0 0 16 18" aria-hidden="true"><path d="' + d + '"></path></svg>';
+    };
+
+    var box = document.createElement("div");
+    box.className = "lr-preview";
+    box.setAttribute("role", "dialog");
+    box.setAttribute("aria-modal", "true");
+    box.setAttribute("aria-hidden", "true");
+    box.innerHTML =
+      '<div class="lr-preview__bar"><span class="lr-preview__count" aria-live="polite"></span>' +
+        '<button type="button" class="lr-preview__close"></button></div>' +
+      '<div class="lr-preview__stage">' +
+        '<button type="button" class="lr-preview__nav lr-preview__nav--prev">' + chevron("M10 3 L4 9 L10 15") + '</button>' +
+        '<figure class="lr-preview__frame"><img alt=""></figure>' +
+        '<button type="button" class="lr-preview__nav lr-preview__nav--next">' + chevron("M6 3 L12 9 L6 15") + '</button>' +
+      '</div>' +
+      '<p class="lr-preview__caption"></p>';
+    document.body.appendChild(box);
+    var count = box.querySelector(".lr-preview__count");
+    var closeBtn = box.querySelector(".lr-preview__close");
+    var prevBtn = box.querySelector(".lr-preview__nav--prev");
+    var nextBtn = box.querySelector(".lr-preview__nav--next");
+    var frame = box.querySelector(".lr-preview__frame");
+    var img = frame.querySelector("img");
+    var caption = box.querySelector(".lr-preview__caption");
+
+    var current = -1, opener = null, swapTimer = 0;
+    var reduce = window.matchMedia && window.matchMedia("(prefers-reduced-motion: reduce)");
+    function pad(n) { return n < 10 ? "0" + n : String(n); }
+    function tileImg(i) { return tiles[i].querySelector("img"); }
+
+    function labels() {
+      box.setAttribute("aria-label", tr("liveroom.preview.dialog", "Photo preview"));
+      closeBtn.setAttribute("aria-label", tr("liveroom.preview.close", "Close"));
+      prevBtn.setAttribute("aria-label", tr("liveroom.preview.prev", "Previous photo"));
+      nextBtn.setAttribute("aria-label", tr("liveroom.preview.next", "Next photo"));
+      tiles.forEach(function (t, i) {
+        t.setAttribute("aria-label", tr("liveroom.preview.open", "Open photo: {alt}", { alt: tileImg(i).alt }));
+      });
+      if (current >= 0) paint(current, true);
+    }
+    tiles.forEach(function (t, i) {
+      t.setAttribute("role", "button");
+      t.setAttribute("tabindex", "0");
+      t.addEventListener("click", function () { open(i, t); });
+      t.addEventListener("keydown", function (e) {
+        if (e.key === "Enter" || e.key === " ") { e.preventDefault(); open(i, t); }
+      });
+    });
+    labels();
+    document.addEventListener("grm:languagechange", labels);
+
+    function paint(i, instant) {
+      var src = tileImg(i);
+      current = i;
+      count.textContent = pad(i + 1) + " / " + pad(tiles.length);
+      caption.textContent = src.alt;
+      var url = src.getAttribute("data-full") || src.currentSrc || src.src;
+      clearTimeout(swapTimer);
+      if (instant || (reduce && reduce.matches) || img.getAttribute("src") === url) {
+        img.src = url; img.alt = src.alt; frame.classList.add("is-shown");
+        return;
+      }
+      frame.classList.remove("is-shown");
+      swapTimer = setTimeout(function () {
+        img.src = url; img.alt = src.alt;
+        var show = function () { requestAnimationFrame(function () { frame.classList.add("is-shown"); }); };
+        if (img.complete) show(); else img.addEventListener("load", show, { once: true });
+      }, 160);
+    }
+    function go(step) { paint((current + step + tiles.length) % tiles.length); }
+
+    function open(i, from) {
+      opener = from || null;
+      /* keep the page from shifting where scrollbars take room (Windows) */
+      var sb = window.innerWidth - document.documentElement.clientWidth;
+      if (sb > 0) document.body.style.paddingRight = sb + "px";
+      document.documentElement.classList.add("lr-preview-lock");
+      img.removeAttribute("src");
+      frame.classList.remove("is-shown");
+      paint(i);
+      box.setAttribute("aria-hidden", "false");
+      box.classList.add("is-open");
+      closeBtn.focus({ preventScroll: true });
+    }
+    function close() {
+      if (current < 0) return;
+      current = -1;
+      box.classList.remove("is-open");
+      box.setAttribute("aria-hidden", "true");
+      document.documentElement.classList.remove("lr-preview-lock");
+      document.body.style.paddingRight = "";
+      if (opener) opener.focus({ preventScroll: true });
+    }
+
+    closeBtn.addEventListener("click", close);
+    prevBtn.addEventListener("click", function () { go(-1); });
+    nextBtn.addEventListener("click", function () { go(1); });
+    /* a click on the dark field (not the photo or a control) closes */
+    box.addEventListener("click", function (e) {
+      if (e.target === box || e.target.classList.contains("lr-preview__stage") || e.target === caption) close();
+    });
+    document.addEventListener("keydown", function (e) {
+      if (current < 0) return;
+      if (e.key === "Escape") { e.preventDefault(); close(); }
+      else if (e.key === "ArrowRight") { e.preventDefault(); go(1); }
+      else if (e.key === "ArrowLeft") { e.preventDefault(); go(-1); }
+      else if (e.key === "Tab") {             /* keep focus inside the preview */
+        var f = [closeBtn, prevBtn, nextBtn].filter(function (b) { return b.offsetParent !== null; });
+        var at = f.indexOf(document.activeElement);
+        e.preventDefault();
+        f[(at + (e.shiftKey ? -1 : 1) + f.length) % f.length].focus();
+      }
+    });
+    /* swipe (touch) */
+    var sx = 0, sy = 0, tracking = false;
+    box.addEventListener("touchstart", function (e) {
+      if (e.touches.length !== 1) return;
+      tracking = true; sx = e.touches[0].clientX; sy = e.touches[0].clientY;
+    }, { passive: true });
+    box.addEventListener("touchend", function (e) {
+      if (!tracking) return;
+      tracking = false;
+      var t = e.changedTouches[0], dx = t.clientX - sx, dy = t.clientY - sy;
+      if (Math.abs(dx) > 40 && Math.abs(dx) > Math.abs(dy) * 1.3) go(dx < 0 ? 1 : -1);
+      else if (dy > 90 && Math.abs(dy) > Math.abs(dx) * 1.3) close();   /* swipe down closes */
+    }, { passive: true });
+    window.addEventListener("pageshow", function (ev) { if (ev && ev.persisted) close(); });
+  });
+})();
+

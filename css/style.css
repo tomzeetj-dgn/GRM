@@ -5414,3 +5414,76 @@ html.js .label-lineup__credits.reveal{ transition-delay:900ms; }
 html.js .label-releases__item.is-queued{
   display:none;
 }
+
+/* ============================================================
+   LIVEROOM "The room" · photo preview
+   Click (or Enter/Space) on a tile opens it full screen over a near-black
+   field: the photo in the tiles' hairline frame, a counter top-left, close
+   top-right, the description beneath, quiet arrows either side. Arrow keys,
+   swipe and the arrows move between the four; Esc, the close button or a
+   click outside the photo closes. Nothing here touches the bento hover.
+   ============================================================ */
+.liveroom-room__img{cursor:zoom-in}
+.liveroom-room__img:focus-visible{outline:1px solid var(--accent-lite);outline-offset:4px}
+
+.lr-preview{
+  position:fixed;inset:0;z-index:2000;
+  display:grid;grid-template-rows:auto minmax(0,1fr) auto;
+  padding:clamp(16px,3vw,32px) clamp(16px,4vw,56px);
+  background:rgba(5,5,5,.985);
+  opacity:0;visibility:hidden;
+  transition:opacity 280ms var(--ease-out),visibility 0s linear 280ms;
+}
+.lr-preview.is-open{opacity:1;visibility:visible;transition:opacity 280ms var(--ease-out),visibility 0s}
+.lr-preview__bar{display:flex;align-items:center;justify-content:space-between;min-height:44px}
+.lr-preview__count{color:var(--text-faint);font-size:var(--f-label);letter-spacing:.2em;font-variant-numeric:tabular-nums}
+.lr-preview__close{
+  position:relative;width:44px;height:44px;margin-right:-10px;
+  background:none;border:0;cursor:pointer;color:var(--text);
+}
+.lr-preview__close::before,.lr-preview__close::after{
+  content:"";position:absolute;left:50%;top:50%;width:22px;height:1px;background:currentColor;
+  transform:translate(-50%,-50%) rotate(45deg);transition:background 200ms ease;
+}
+.lr-preview__close::after{transform:translate(-50%,-50%) rotate(-45deg)}
+.lr-preview__close:hover,.lr-preview__close:focus-visible{color:var(--accent-lite)}
+.lr-preview__stage{
+  position:relative;min-height:0;display:flex;align-items:center;justify-content:center;
+  padding:clamp(8px,2vh,20px) clamp(0px,5vw,72px);
+}
+.lr-preview__frame{
+  margin:0;max-width:100%;max-height:100%;display:flex;
+  border:1px solid var(--border-strong);background:rgba(236,233,226,.04);
+  transform:scale(.985);opacity:0;
+  transition:opacity 320ms var(--ease-out),transform 520ms var(--ease-out);
+}
+.lr-preview.is-open .lr-preview__frame.is-shown{transform:none;opacity:1}
+.lr-preview__frame img{display:block;max-width:100%;max-height:100%;width:auto;height:auto;object-fit:contain}
+.lr-preview__nav{
+  position:absolute;top:50%;width:48px;height:48px;margin-top:-24px;
+  display:flex;align-items:center;justify-content:center;
+  background:none;border:0;cursor:pointer;color:var(--text-faint);
+  transition:color 200ms ease,transform 300ms var(--ease-out);
+}
+.lr-preview__nav--prev{left:clamp(-8px,-1vw,0px)}
+.lr-preview__nav--next{right:clamp(-8px,-1vw,0px)}
+.lr-preview__nav:hover,.lr-preview__nav:focus-visible{color:var(--text)}
+.lr-preview__nav--prev:hover{transform:translateX(-3px)}
+.lr-preview__nav--next:hover{transform:translateX(3px)}
+.lr-preview button:focus{outline:none}
+.lr-preview button:focus-visible{outline:1px solid var(--accent-lite);outline-offset:2px}
+.lr-preview__nav svg{width:16px;height:18px;fill:none;stroke:currentColor;stroke-width:1.25}
+.lr-preview__caption{
+  min-height:44px;display:flex;align-items:center;justify-content:center;text-align:center;
+  color:var(--text-faint);font-size:var(--f-label);letter-spacing:.2em;text-transform:uppercase;
+}
+html.lr-preview-lock,html.lr-preview-lock body{overflow:hidden}
+@media (max-width:767px){
+  .lr-preview__stage{padding:12px 0}
+  .lr-preview__nav{display:none}      /* phones: swipe */
+}
+@media (prefers-reduced-motion:reduce){
+  .lr-preview,.lr-preview.is-open,.lr-preview__frame,.lr-preview__nav{transition:none}
+  .lr-preview__frame{transform:none}
+}
+

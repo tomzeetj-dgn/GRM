@@ -986,3 +986,11 @@ At rest there are no words. As soon as any panel is open, all three carry their 
 - `js/i18n.js` supports `data-i18n-args='{"title":"…"}'`, which fills `{title}` in the translated string (text and attribute hooks). Used for the Spotify link labels.
 - `scripts/sync-releases.mjs` renders the release type and link label with these keys, so new releases arrive translated.
 - Display words were kept short so they fit their layouts: Production strip tiles are Snimanje / Kompozicija / Bitovi / Mastering; the Label About headline is "Više / od izdavača."
+
+## 20. Liveroom "The room" · photo preview (2026-11-17)
+
+- Clicking a tile (or Enter / Space on it) opens a full-screen preview: the photo in the tiles' hairline frame on a near-black field, `01 / 04` counter top-left, close top-right, the photo description beneath, quiet arrows either side (hidden on phones).
+- Arrow keys, the arrows and a sideways swipe move between the four; Esc, the close button, a click outside the photo or a downward swipe closes. Focus stays inside while open and returns to the tile; the page doesn't scroll or shift underneath.
+- Labels are translated (`liveroom.preview.*`). Reduced motion: no fades.
+- `data-full="…"` on a tile's `<img>` shows a larger file in the preview than in the grid. The current Room photos are only 384–640px wide, so the preview shows them at their own size, not stretched.
+- Self-contained block at the end of js/main.js and css/style.css; the bento hover is untouched.
