@@ -977,3 +977,12 @@ At rest there are no words. As soon as any panel is open, all three carry their 
 - `.github/workflows/sync-releases.yml` runs `node scripts/sync-releases.mjs` every Monday (and on demand): it reads the GRM Spotify playlist; a track from a release that is not on the site yet puts that release at the top (several new ones keep their playlist order), and a new track from a release already there just joins it, saves their covers into `assets/img/releases/`, and commits to `main`, which deploys. It never removes a release; a track taken out of the playlist stays until removed from `data/releases.json`.
 - Each tile opens its release on Spotify in a new tab (`.label-releases__link`, a stretched link above the figure; the hover stroke + 1.035 zoom are unchanged).
 - The first nine tiles are present on load; the rest carry `.is-queued` and are released a row at a time as the end of the grid nears the screen (js/main.js, last block). Without JS all tiles show.
+
+## 19. Complete Serbian (2026-11-17)
+
+- Every visible string, page title, sharing description, image description and screen-reader label now has Serbian (Latin). Only names stay as they are: GRM / GRM HOUSE, **Label** and **Liveroom** (the user's rule), artist, release and people names, the address and email.
+- Generic "record label" is translated ("izdavačka kuća" / "izdavač"); the division name Label is not.
+- New keys for copy that had none: `label.about.p1/p2`, `release.type.*` (release grid captions), `release.plaque.*` (Production plaques), `release.open` and `release.listen` (Spotify link labels).
+- `js/i18n.js` supports `data-i18n-args='{"title":"…"}'`, which fills `{title}` in the translated string (text and attribute hooks). Used for the Spotify link labels.
+- `scripts/sync-releases.mjs` renders the release type and link label with these keys, so new releases arrive translated.
+- Display words were kept short so they fit their layouts: Production strip tiles are Snimanje / Kompozicija / Bitovi / Mastering; the Label About headline is "Više / od izdavača."

@@ -121,7 +121,8 @@ export function render(items) {
   const tiles = items.map((it, i) => {
     const src = /^https?:/.test(it.cover) ? it.cover : "../" + it.cover;
     const name = `${it.title} — ${it.artists}`;
-    const credit = [it.type, it.year].filter(Boolean).join(" · ");
+    const typeKey = it.type ? `release.type.${it.type.toLowerCase()}` : "";
+    const credit = (it.type ? `<span data-i18n="${esc(typeKey)}">${esc(it.type)}</span>` : "") + (it.type && it.year ? " · " : "") + esc(it.year || "");
     return `
           <figure class="label-releases__item reveal${i >= FIRST ? " is-queued" : ""}">
             <div class="label-releases__media">
@@ -129,9 +130,9 @@ export function render(items) {
             </div>
             <figcaption class="label-releases__meta">
               <span class="label-releases__t">${esc(name)}</span>
-              <span class="label-releases__c">${esc(credit)}</span>
+              <span class="label-releases__c">${credit}</span>
             </figcaption>
-            <a class="label-releases__link" href="https://open.spotify.com/album/${esc(it.album)}" target="_blank" rel="noopener noreferrer" aria-label="${esc(name)} (${esc(it.type || "release")}) — listen on Spotify"></a>
+            <a class="label-releases__link" href="https://open.spotify.com/album/${esc(it.album)}" target="_blank" rel="noopener noreferrer" aria-label="${esc(name)} — listen on Spotify" data-i18n-aria-label="release.listen" data-i18n-args="${esc(JSON.stringify({ name }))}"></a>
           </figure>
 `;
   }).join("");

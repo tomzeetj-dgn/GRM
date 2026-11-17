@@ -19,6 +19,7 @@
      data-i18n-placeholder="key"→ placeholder
      data-i18n-content="key"    → content
      data-i18n-value="key"      → value
+     data-i18n-args='{"k":"v"}' → fills {k} in any of the above
    Switcher: elements with [data-lang="en|sr"].
    ============================================================ */
 (function () {
@@ -89,12 +90,24 @@
     Array.prototype.forEach.call(nodes, function (el) {
       if (el.getAttribute("data-i18n-skip") !== null) return;
 
+      /* data-i18n-args='{"title":"Prizma"}' fills {title} in the looked-up
+         string (text and every attribute hook on the same element) */
+      var params = null, rawArgs = el.getAttribute("data-i18n-args");
+      if (rawArgs) { try { params = JSON.parse(rawArgs); } catch (e) { params = null; } }
+      function fill(v) {
+        v = String(v);
+        if (!params) return v;
+        return v.replace(/\{(\w+)\}/g, function (m, tok) {
+          return Object.prototype.hasOwnProperty.call(params, tok) ? String(params[tok]) : m;
+        });
+      }
+
       var textKey = el.getAttribute("data-i18n");
       if (textKey !== null && !ownsSplitWords(el)) {
         var textValue = lookup(current, textKey);
         if (textValue !== null) {
-          if (el.tagName === "META") el.setAttribute("content", String(textValue));
-          else el.textContent = String(textValue);
+          if (el.tagName === "META") el.setAttribute("content", fill(textValue));
+          else el.textContent = fill(textValue);
         }
       }
 
@@ -103,7 +116,7 @@
         var key = el.getAttribute(hook[0]);
         if (key === null) continue;
         var value = lookup(current, key);
-        if (value !== null) el.setAttribute(hook[1], String(value));
+        if (value !== null) el.setAttribute(hook[1], fill(value));
       }
     });
   }
