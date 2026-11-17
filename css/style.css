@@ -896,6 +896,13 @@ body.is-division-entering .division-minimal-hero__scroll {
   opacity: 0;
   transition: opacity 1400ms ease;
 }
+/* Home -> Label / Liveroom: the hand-off mark (painted pre-paint by the page's
+   inline script) stands in for the real logo until js/main.js swaps them. The
+   real logo must not show underneath it meanwhile: on slower machines the page
+   paints before main.js runs, and two glowing marks stacked read as a flash. */
+html.division-arrival-pending .division-minimal-hero__logo {
+  visibility: hidden;
+}
 html.division-arrival-pending .site-header,
 html.division-arrival-pending .division-minimal-hero__title,
 html.division-arrival-pending .division-minimal-hero__lockup h1,

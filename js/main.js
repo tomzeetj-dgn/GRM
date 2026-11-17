@@ -1329,7 +1329,14 @@ resize simply misses and falls back to the previous aim point. */
     sessionStorage.removeItem(cfg.startRectKey);
     logo.style.visibility = "hidden";
     var overlay = document.getElementById(cfg.overlayId);
-    if (!overlay) return;
+    if (!overlay) {
+      /* no hand-off mark to swap (no stored start rect): show the page at rest */
+      logo.style.visibility = "visible";
+      document.documentElement.classList.remove("division-arrival-pending");
+      document.body.classList.add("is-division-enter-header", "is-division-enter-title", "is-division-enter-descriptor", "is-division-enter-scroll");
+      document.body.classList.remove("is-division-entering");
+      return;
+    }
     overlay.style.transition = "none";
     overlay.getBoundingClientRect();
     document.fonts.ready.then(function () {
