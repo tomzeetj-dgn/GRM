@@ -998,4 +998,5 @@ At rest there are no words. As soon as any panel is open, all three carry their 
 ## 21. Showreel placeholder: spinning GRM mark (2026-11-17)
 
 `assets/img/GRM_Production_placeholder_showreel_v2.mp4` replaces v1. Made from the client's `GRM_2027INTRO_4K.mp4` (2s: fade in, one half-turn, fade out): the half-turn between the two edge-on frames (source frames 11–34) was cut out, the end of its fade-in evened out, and repeated ten times into a 10s, 2560×1440, silent, muted loop, so the mark spins continuously with no black gap and no visible seam. Aperture, frame geometry and the load-on-approach observer are unchanged. Swap the file (same name, or update the `src` in studio/index.html) when the real showreel arrives.
+- Update (same day): replaced by `GRM_Production_placeholder_showreel_v3.mp4`, the client's purpose-made `GRM_16x9_4K_Loop.mp4` (10s, one slow full turn, already seamless end to start), re-encoded to 2560×1440, silent.
 
