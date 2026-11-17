@@ -1000,3 +1000,11 @@ At rest there are no words. As soon as any panel is open, all three carry their 
 `assets/img/GRM_Production_placeholder_showreel_v2.mp4` replaces v1. Made from the client's `GRM_2027INTRO_4K.mp4` (2s: fade in, one half-turn, fade out): the half-turn between the two edge-on frames (source frames 11–34) was cut out, the end of its fade-in evened out, and repeated ten times into a 10s, 2560×1440, silent, muted loop, so the mark spins continuously with no black gap and no visible seam. Aperture, frame geometry and the load-on-approach observer are unchanged. Swap the file (same name, or update the `src` in studio/index.html) when the real showreel arrives.
 - Update (same day): replaced by `GRM_Production_placeholder_showreel_v3.mp4`, the client's purpose-made `GRM_16x9_4K_Loop.mp4` (10s, one slow full turn, already seamless end to start), re-encoded to 2560×1440, silent.
 
+
+## 22. Liveroom schedule: live bookings from Google Calendar (2026-11-17)
+
+- **Source of truth:** a calendar named **GRM Liveroom** in the `grmproductionstudio@gmail.com` Google account. A booking is an event; a weekly band is a repeating event; a cancellation is deleting the event. An all-day event marks the whole day taken.
+- **Bridge:** `scripts/liveroom-calendar-sync.gs` runs as a Google Apps Script in that account. A calendar trigger fires on every create/edit/delete (it waits 15s so quick edits publish together), plus an hourly safety run. It writes only start/end times (Belgrade time, split at midnight, next ~9 weeks) to `data/schedule.json` through the GitHub API, and commits only when the times changed. Its GitHub access key sits in the script's Script Properties (`GITHUB_TOKEN`), limited to this repository's contents.
+- **Page:** js/main.js fetches `data/schedule.json` fresh on every visit (`cache: "no-store"`), merges overlapping bookings per day, snaps to half-hours, clips to the 10:00–22:00 grid and draws them on 24 half-hour rows (`.liveroom-availability__slots.is-live`). Blocks under 1.5h show "TAKEN" without the time. Visitors see this week plus 7 ahead; the back arrow stops at this week.
+- The four authored sample blocks are gone from the HTML (their old `.is-taken--one…four` rules are now unused).
+- Delay from calendar edit to the site: the trigger (seconds) + 15s + GitHub Pages publish (~1 min).

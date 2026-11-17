@@ -1402,10 +1402,13 @@ resize simply misses and falls back to the previous aim point. */
     });
   });
 
-  /* ---------- LIVEROOM SCHEDULE: week navigation ----------
+  /* ---------- LIVEROOM SCHEDULE: week navigation + live bookings ----------
      One week state shared by every schedule instance. Only the heading
      word and date range transition; timetable geometry is untouched.
-     The authored "THIS WEEK" (Mon 21 SEP 2026) is the zero anchor. */
+     "THIS WEEK" is the real current week; the arrows go from it up to
+     MAX_AHEAD weeks ahead. Taken slots come from data/schedule.json, which
+     the GRM Liveroom Google Calendar keeps up to date (scripts/
+     liveroom-calendar-sync.gs): half-hour precision, 10:00–22:00 grid. */
   onReady(function () {
     if (document.body.getAttribute("data-page") !== "liveroom") return;
     var sections = Array.prototype.slice.call(document.querySelectorAll(".liveroom-availability"));
@@ -1414,10 +1417,13 @@ resize simply misses and falls back to the previous aim point. */
     var MONTHS = ["JAN", "FEB", "MAR", "APR", "MAY", "JUN", "JUL", "AUG", "SEP", "OCT", "NOV", "DEC"];
     var NUMBER_WORDS = ["ZERO", "ONE", "TWO", "THREE", "FOUR", "FIVE", "SIX", "SEVEN", "EIGHT", "NINE", "TEN", "ELEVEN", "TWELVE", "THIRTEEN", "FOURTEEN", "FIFTEEN", "SIXTEEN"];
     /* "THIS WEEK" is the real current week (Monday-first) and TODAY sits on
-       the real weekday. The TAKEN slots are still the authored sample week. */
+       the real weekday. */
     var NOW = new Date();
     var TODAY_INDEX = (NOW.getDay() + 6) % 7;   /* 0 = Monday … 6 = Sunday */
     var CURRENT = new Date(NOW.getFullYear(), NOW.getMonth(), NOW.getDate() - TODAY_INDEX);
+    var MAX_AHEAD = 7;                      /* this week + 7 = 8 weeks */
+    var GRID_START = 10 * 60, GRID_END = 22 * 60, STEP = 30;   /* minutes */
+    var booked = [];                        /* [{s:"YYYY-MM-DDTHH:mm", e:"…"}] */
     var offset = 0;
     var busy = false;
     var duration = 320;
@@ -1509,7 +1515,75 @@ resize simply misses and falls back to the previous aim point. */
       });
     }
 
+    function minutesOf(hm) { var p = hm.split(":"); return (+p[0]) * 60 + (+p[1]); }
+    function clock(m) { return pad(Math.floor(m / 60)) + ":" + pad(m % 60); }
+    function dayKey(d) { return d.getFullYear() + "-" + pad(d.getMonth() + 1) + "-" + pad(d.getDate()); }
+
+    /* Draw the shown week's bookings onto the 7 × 24 half-hour grid. Overlapping
+       or touching bookings on a day merge into one block; anything outside
+       10:00–22:00 is clipped to the grid. */
+    function renderTaken() {
+      var start = weekStart(), keys = [];
+      for (var i = 0; i < 7; i++) keys.push(dayKey(new Date(start.getFullYear(), start.getMonth(), start.getDate() + i)));
+      var perDay = [[], [], [], [], [], [], []];
+      booked.forEach(function (b) {
+        if (!b || typeof b.s !== "string" || typeof b.e !== "string") return;
+        var day = keys.indexOf(b.s.slice(0, 10));
+        if (day < 0) return;
+        var from = minutesOf(b.s.slice(11, 16));
+        var to = b.e.slice(0, 10) === b.s.slice(0, 10) ? minutesOf(b.e.slice(11, 16)) : 24 * 60;
+        from = Math.max(GRID_START, Math.floor(from / STEP) * STEP);
+        to = Math.min(GRID_END, Math.ceil(to / STEP) * STEP);
+        if (to > from) perDay[day].push([from, to]);
+      });
+      sections.forEach(function (section) {
+        var slots = section.querySelector(".liveroom-availability__slots");
+        if (!slots) return;
+        slots.classList.add("is-live");
+        Array.prototype.forEach.call(slots.querySelectorAll("i.is-taken"), function (el) { el.remove(); });
+        perDay.forEach(function (list, day) {
+          list.sort(function (a, b) { return a[0] - b[0]; });
+          var merged = [];
+          list.forEach(function (r) {
+            var last = merged[merged.length - 1];
+            if (last && r[0] <= last[1]) last[1] = Math.max(last[1], r[1]);
+            else merged.push([r[0], r[1]]);
+          });
+          merged.forEach(function (r) {
+            var el = document.createElement("i");
+            el.className = "is-taken" + (r[1] - r[0] < 90 ? " is-short" : "");
+            el.tabIndex = 0;
+            el.setAttribute("data-day", String(day));
+            el.setAttribute("data-from", clock(r[0]));
+            el.setAttribute("data-to", clock(r[1]));
+            el.style.setProperty("grid-column", (day + 1) + " / " + (day + 2), "important");
+            el.style.setProperty("grid-row", ((r[0] - GRID_START) / STEP + 1) + " / " + ((r[1] - GRID_START) / STEP + 1), "important");
+            var word = document.createElement("span");
+            word.setAttribute("data-i18n", "liveroom.schedule.taken");
+            word.textContent = tr("liveroom.schedule.taken", "TAKEN");
+            var time = document.createElement("small");
+            time.textContent = clock(r[0]) + "–" + clock(r[1]);
+            el.appendChild(word);
+            el.appendChild(document.createElement("br"));
+            el.appendChild(time);
+            slots.appendChild(el);
+          });
+        });
+      });
+    }
+
+    function syncArrows() {
+      sections.forEach(function (section) {
+        var prev = section.querySelector(".liveroom-availability__title-arrow--prev");
+        var next = section.querySelector(".liveroom-availability__title-arrow--next");
+        if (prev) prev.disabled = offset <= 0;
+        if (next) next.disabled = offset >= MAX_AHEAD;
+      });
+    }
+
     function swapText() {
+      renderTaken();
+      syncArrows();
       slotLabels();
       sections.forEach(function (section) {
         var label = section.querySelector("[data-week-label]");
@@ -1521,7 +1595,7 @@ resize simply misses and falls back to the previous aim point. */
     }
 
     function change(dir) {
-      if (busy) return;
+      if (busy || offset + dir < 0 || offset + dir > MAX_AHEAD) return;
       if (reduced()) {
         offset += dir;
         swapText();
@@ -1567,6 +1641,20 @@ resize simply misses and falls back to the previous aim point. */
     document.addEventListener("grm:languagechange", swapText);
     markToday();
     swapText();
+
+    /* bookings: fetched fresh on every visit (the file changes whenever the
+       calendar does; no-store skips the browser's copy of an older one) */
+    if (window.fetch) {
+      fetch("../data/schedule.json", { cache: "no-store" })
+        .then(function (r) { return r.ok ? r.json() : null; })
+        .then(function (data) {
+          if (!data || !Array.isArray(data.slots)) return;
+          booked = data.slots;
+          renderTaken();
+          slotLabels();
+        })
+        .catch(function () {});
+    }
   });
 
   /* ---------- LIVEROOM "The room": ghost materialise ----------

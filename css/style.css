@@ -5487,3 +5487,10 @@ html.lr-preview-lock,html.lr-preview-lock body{overflow:hidden}
   .lr-preview__frame{transform:none}
 }
 
+/* Liveroom schedule · live bookings (js/main.js renders them from
+   data/schedule.json). The grid gains half-hour rows; the hour lines stay. */
+.liveroom-availability__slots.is-live{grid-template-rows:repeat(24,minmax(0,1fr)) !important}
+.liveroom-availability__slots .is-taken.is-short br,
+.liveroom-availability__slots .is-taken.is-short small{display:none}
+.liveroom-availability__title-arrow:disabled{opacity:.2;cursor:default;pointer-events:none}
+
