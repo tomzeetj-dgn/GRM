@@ -273,7 +273,7 @@
             '<div class="mobile-menu__foot">' +
               '<span data-i18n="footer.city">Belgrade, Serbia</span>' +
               socialLinksMarkup("mobile-menu__social") +
-              '<a href="mailto:info@grmstudio.music" class="is-mail">info@grmstudio.music</a>' +
+              '<a href="mailto:info@grmhouse.com" class="is-mail">info@grmhouse.com</a>' +
             "</div>" +
           "</div>");
     }
@@ -310,7 +310,7 @@
               '<div class="site-footer__contact">' +
                 '<span class="site-footer__col-label" data-i18n="footer.col.contact">Contact</span>' +
                 '<p data-i18n="footer.city">Belgrade, Serbia</p>' +
-                '<a href="mailto:info@grmstudio.music">info@grmstudio.music</a>' +
+                '<a href="mailto:info@grmhouse.com">info@grmhouse.com</a>' +
               "</div>" +
               '<div class="site-footer__social">' +
                 '<span class="site-footer__col-label" data-i18n="footer.col.follow">Follow</span>' +
