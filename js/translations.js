@@ -133,7 +133,6 @@
     "label.releases.eyebrow": "03 / Selected releases",
     "label.releases.title": "Selected releases.",
     "label.releases.note": "Records from the house — real GRM covers, written, mixed & mastered in-house.",
-    "label.releases.footnote": "13 releases on the catalogue · 10 artists · written, mixed & mastered in-house.",
 
     /* ---- liveroom ---- */
     "meta.liveroom.title": "GRM Liveroom — rehearsal space for musicians and bands",
@@ -369,7 +368,6 @@
     "label.releases.eyebrow": "03 / Izabrana izdanja",
     "label.releases.title": "Izabrana izdanja.",
     "label.releases.note": "Izdanja iz kuće — originalni GRM omoti, pisano, miksovano i masterovano kod nas.",
-    "label.releases.footnote": "13 izdanja u katalogu · 10 izvođača · pisano, miksovano i masterovano kod nas.",
     "release.type.single": "Singl",
     "release.type.ep": "EP",
     "release.type.album": "Album",
