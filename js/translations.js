@@ -169,7 +169,7 @@
     "liveroom.util.location": "LOCATION",
     "liveroom.util.book": "BOOK A REHEARSAL",
     "liveroom.util.locationAria": "GRM Liveroom location: Blagoja Parovića 19a, Beograd",
-    "liveroom.util.bookAria": "Call GRM Liveroom to book a rehearsal: +381 63 646 5666",
+    "liveroom.util.bookAria": "Call GRM Liveroom to book a rehearsal: +381 64 229 4140",
 
     /* ---- dynamic: schedule week / month labels ---- */
     "schedule.thisWeek": "THIS WEEK",
@@ -250,7 +250,7 @@
     "liveroom.util.location": "LOKACIJA",
     "liveroom.util.locationAria": "Lokacija GRM Liveroom-a: Blagoja Parovića 19a, Beograd",
     "liveroom.util.book": "ZAKAŽI PROBU",
-    "liveroom.util.bookAria": "Pozovi GRM Liveroom i zakaži probu: +381 63 646 5666",
+    "liveroom.util.bookAria": "Pozovi GRM Liveroom i zakaži probu: +381 64 229 4140",
     "schedule.thisWeek": "OVE NEDELJE",
     "schedule.nextWeek": "SLEDEĆE NEDELJE",
     "schedule.lastWeek": "PROŠLE NEDELJE",
