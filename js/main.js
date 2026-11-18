@@ -1143,12 +1143,17 @@
       root.addEventListener("pointerdown", warmIntent, true);
       root.addEventListener("touchstart", warmIntent, { capture: true, passive: true });
 
-      // and warm all three quietly in the background (idle, with a hard
-      // fallback so it is never left un-scheduled)
-      if ("requestIdleCallback" in window) {
-        window.requestIdleCallback(function () { prefetchDestLogos(); }, { timeout: 1500 });
-      }
-      setTimeout(prefetchDestLogos, 1500);
+      // and warm all three quietly in the background — but only once the
+      // entrance has played (it ends at 4.3 s), so these background page loads
+      // never compete with the photographs coming in. A tap before then is
+      // covered by warmIntent above.
+      var WARM_AFTER = document.body.classList.contains("home-m-intro") ? 4600 : 1500;
+      setTimeout(function () {
+        if ("requestIdleCallback" in window) {
+          window.requestIdleCallback(function () { prefetchDestLogos(); }, { timeout: 1500 });
+        }
+        setTimeout(prefetchDestLogos, 1500);
+      }, WARM_AFTER - 1500);
     }
   });
 
