@@ -48,6 +48,9 @@
     "footer.col.follow": "Follow",
     "footer.city": "Belgrade, Serbia",
     "footer.rights": "GRM — All rights reserved",
+    "footer.privacy": "Privacy",
+    "meta.privacy.title": "Privacy — GRM",
+    "meta.privacy.desc": "How GRM handles personal data: no cookies, no tracking, and what happens when you contact or book with us.",
     "footer.backToTop": "Back to top",
 
     "contact.email": "Email",
@@ -273,6 +276,9 @@
     "footer.lede": "Krovna kuća u Beogradu — snimanje i produkcija, izdavačka kuća i prostor za probe, sve pod jednim GRM-om.",
     "footer.col.grm": "GRM",
     "footer.rights": "GRM — Sva prava zadržana",
+    "footer.privacy": "Privatnost",
+    "meta.privacy.title": "Privatnost — GRM",
+    "meta.privacy.desc": "Kako GRM postupa sa podacima o ličnosti: bez kolačića i praćenja, i šta se dešava kada nas kontaktirate ili zakažete termin.",
     "contact.phone": "Telefon",
     "contact.address": "Adresa",
 

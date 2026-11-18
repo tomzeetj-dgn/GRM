@@ -318,7 +318,8 @@
               "</div>" +
             "</div>" +
             '<div class="site-footer__bottom">' +
-              '<p>© <span id="year">2026</span> <span data-i18n="footer.rights">GRM — All rights reserved</span></p>' +
+              '<p>© <span id="year">2026</span> <span data-i18n="footer.rights">GRM — All rights reserved</span>' +
+                '<a href="' + root + 'privacy/" class="site-footer__legal" data-i18n="footer.privacy">Privacy</a></p>' +
               '<a href="#top" class="site-footer__top-link" data-i18n="footer.backToTop">Back to top</a>' +
             "</div>" +
           "</div>" +
