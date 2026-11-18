@@ -1013,3 +1013,11 @@ At rest there are no words. As soon as any panel is open, all three carry their 
 
 GitHub Pages tells browsers they may keep files for 10 minutes, and Safari can hold on to `js/main.js` / `css/style.css` longer, so a page could pair new HTML with an old script (seen: Safari showed the new empty schedule without the bookings). Every page now loads `css/style.css`, `js/translations.js`, `js/i18n.js` and `js/main.js` with a `?v=YYYYMMDD-HHMM` stamp. **Bump the stamp in all four HTML pages whenever any of those files changes.**
 
+## 24. Production · Sound — discipline galleries (2026-11-18)
+
+- Clicking, tapping or pressing Enter on a Sound tile opens a full-screen gallery for that discipline: the tile's photo grows from its exact place to fill the screen, then settles into the large lead cell of the grid while the title + sentence rise in and the other photos "develop" (blur/grey → sharp, staggered). Any photo opens from its cell to full view (arrows, ← →, swipe; counter `02 / 05`) and folds back into its cell. Esc / × steps back out of the single photo, then closes the gallery; focus returns to the tile.
+- Layouts: desktop and landscape tablets get a viewport-filling 2fr/1fr/1fr grid; phones and portrait tablets a scrolling gallery (lead photo full width, the rest in pairs) with single photos shown whole (`contain`).
+- Photo sets are `SETS` in the last block of js/main.js, files in `assets/img/placeholders/sound/` — **placeholders** (studio/room shots already on the site) until the client supplies 4–6 real photos per discipline.
+- The approved desktop hover strip (40/20/20/20) is untouched; the tiles only gained click/keyboard handling (`role="button"`, translated label `studio.gallery.open`).
+- Prototypes of two other directions (unfold in place, develop below) remain on the `sound-gallery-proto` branch for reference.
+

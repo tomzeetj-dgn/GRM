@@ -2686,3 +2686,192 @@ resize simply misses and falls back to the previous aim point. */
   });
 })();
 
+/* ---------- PRODUCTION · SOUND: discipline galleries ----------
+   Click (or tap, or Enter) on a Sound tile to see more photos of that
+   discipline, full screen:
+     1. the tile's photo grows from its exact place to fill the screen;
+     2. it settles into its own place in the gallery grid while the title
+        arrives and the other photos develop in around it;
+     3. any photo opens from its place to full view (arrows / keys / swipe)
+        and folds back into its place. Esc or × steps back, then closes.
+   Works on every layout (desktop strip, tablet frames, phone index); the
+   desktop hover strip is untouched. Photos: SETS below (placeholders in
+   assets/img/placeholders/sound/ until the real ones arrive). */
+(function () {
+  "use strict";
+  var strip = document.querySelector(".grm-photo-strip");
+  if (!strip) return;
+  var tiles = Array.prototype.slice.call(strip.querySelectorAll(".grm-photo"));
+  if (!tiles.length) return;
+  var reduce = window.matchMedia("(prefers-reduced-motion: reduce)");
+  var ROOT = "../assets/img/placeholders/sound/";
+  var SETS = [
+    ["recording-1", "recording-2", "recording-3", "recording-4", "recording-5"],
+    ["composition-1", "composition-2", "composition-3", "composition-4", "composition-5"],
+    ["beats-1", "beats-2", "beats-3", "beats-4", "beats-5"],
+    ["engineering-1", "engineering-2", "engineering-3", "engineering-4"]
+  ];
+  var open = -1, busy = false;
+  function tr(k, f) { var v = (window.GRMi18n && window.GRMi18n.t) ? window.GRMi18n.t(k) : k; return v === k ? f : v; }
+  function title(i) { return tiles[i].querySelector(".grm-photo__title").textContent; }
+  function desc(i) { var d = tiles[i].querySelector(".grm-photo__desc"); return d ? d.textContent : ""; }
+  function src(i, n) { return ROOT + SETS[i][n] + ".jpg"; }
+  function pad(n) { return n < 10 ? "0" + n : String(n); }
+  var chevL = '<svg viewBox="0 0 16 18" aria-hidden="true"><path d="M10 3 L4 9 L10 15"/></svg>';
+  var chevR = '<svg viewBox="0 0 16 18" aria-hidden="true"><path d="M6 3 L12 9 L6 15"/></svg>';
+  function warm(i) { SETS[i].forEach(function (_, n) { var im = new Image(); im.src = src(i, n); }); }
+
+  function labels() {
+    tiles.forEach(function (t, i) { t.setAttribute("aria-label", title(i) + " — " + tr("studio.gallery.open", "see more photos")); });
+  }
+  tiles.forEach(function (t, i) {
+    t.setAttribute("role", "button");
+    t.setAttribute("tabindex", "0");
+    t.addEventListener("pointerenter", function () { warm(i); }, { once: true });
+    t.addEventListener("touchstart", function () { warm(i); }, { once: true, passive: true });
+    t.addEventListener("click", function () { if (!busy && open < 0) { warm(i); gallery.open(i); } });
+    t.addEventListener("keydown", function (e) {
+      if ((e.key === "Enter" || e.key === " ") && !busy && open < 0) { e.preventDefault(); warm(i); gallery.open(i); }
+    });
+  });
+  labels();
+  document.addEventListener("grm:languagechange", labels);
+  document.addEventListener("keydown", function (e) {
+    if (open < 0) return;
+    if (e.key === "Escape") { e.preventDefault(); gallery.back(); }
+    else if (e.key === "ArrowRight") gallery.step(1);
+    else if (e.key === "ArrowLeft") gallery.step(-1);
+  });
+  window.addEventListener("pageshow", function (ev) { if (ev && ev.persisted && open >= 0) gallery.close(); });
+
+  /* ---------------- C · FULL-SCREEN GALLERY ----------------
+     1. the tile's photo grows from its exact place to fill the screen;
+     2. it then settles into its own place in the gallery grid while the
+        title arrives and the other photos develop in around it;
+     3. any photo opens from its place to full view (arrows / keys / swipe),
+        and folds back into its place; Esc or × steps back, then closes. */
+  var gallery = (function () {
+    var box = null, view = -1;
+    var EASE = "cubic-bezier(.76,0,.24,1)";
+    function rectOf(el) { var r = el.getBoundingClientRect(); return { left: r.left, top: r.top, width: r.width, height: r.height }; }
+    function place(el, r) { el.style.left = r.left + "px"; el.style.top = r.top + "px"; el.style.width = r.width + "px"; el.style.height = r.height + "px"; }
+    function flyer(srcUrl, from, pos) {
+      var f = document.createElement("div");
+      f.className = "sg-fly";
+      f.style.backgroundImage = "url('" + srcUrl + "')";
+      if (pos) f.style.backgroundPosition = pos;
+      place(f, from);
+      box.appendChild(f);
+      return f;
+    }
+    function fly(f, to, ms, done) {
+      f.getBoundingClientRect();
+      f.style.transition = ["left", "top", "width", "height"].map(function (p) { return p + " " + ms + "ms " + EASE; }).join(",");
+      place(f, to);
+      setTimeout(done, ms + 20);
+    }
+    var FULL = function () { return { left: 0, top: 0, width: innerWidth, height: innerHeight }; };
+
+    function openC(i) {
+      busy = true; open = i; view = -1;
+      var img = tiles[i].querySelector("img");
+      var from = rectOf(img);
+      box = document.createElement("div");
+      box.className = "sg-gal sg-ui";
+      box.setAttribute("role", "dialog");
+      box.setAttribute("aria-modal", "true");
+      box.setAttribute("aria-label", title(i));
+      box.innerHTML =
+        '<div class="sg-gal__head"><div><span class="sg-gal__kicker">' + pad(i + 1) + ' / ' + pad(tiles.length) + '</span>' +
+          '<p class="sg-gal__title"></p><p class="sg-gal__desc"></p></div>' +
+          '<button type="button" class="sg-close" aria-label="' + tr("liveroom.preview.close", "Close") + '"></button></div>' +
+        '<div class="sg-gal__grid" data-count="' + SETS[i].length + '">' + SETS[i].map(function (_, n) {
+          return '<button type="button" class="sg-gal__cell" style="--n:' + n + '" aria-label="' + title(i) + " " + (n + 1) + '"><img src="' + src(i, n) + '" alt=""></button>';
+        }).join("") + "</div>" +
+        '<div class="sg-view"><img class="sg-view__img" alt=""><div class="sg-view__bar"><span class="sg-view__count"></span>' +
+          '<button type="button" class="sg-nav sg-nav--prev" aria-label="' + tr("liveroom.preview.prev", "Previous photo") + '">' + chevL + "</button>" +
+          '<button type="button" class="sg-nav sg-nav--next" aria-label="' + tr("liveroom.preview.next", "Next photo") + '">' + chevR + "</button></div></div>";
+      box.querySelector(".sg-gal__title").textContent = title(i);
+      box.querySelector(".sg-gal__desc").textContent = desc(i);
+      document.body.appendChild(box);
+      document.documentElement.classList.add("sg-lock");
+      box.querySelector(".sg-close").addEventListener("click", function () { back(); });
+      Array.prototype.forEach.call(box.querySelectorAll(".sg-gal__cell"), function (c, n) { c.addEventListener("click", function () { openView(n); }); });
+      box.querySelector(".sg-view .sg-nav--prev").addEventListener("click", function () { go(view - 1); });
+      box.querySelector(".sg-view .sg-nav--next").addEventListener("click", function () { go(view + 1); });
+      swipe(box.querySelector(".sg-view"));
+
+      var first = box.querySelector(".sg-gal__cell");
+      if (reduce.matches) { box.classList.add("is-on", "is-ready"); busy = false; first.focus({ preventScroll: true }); return; }
+      var f = flyer(img.currentSrc || img.src, from, getComputedStyle(img).objectPosition);
+      requestAnimationFrame(function () {
+        box.classList.add("is-on");
+        fly(f, FULL(), 820, function () {                 /* 1 · fills the screen */
+          setTimeout(function () {
+            box.classList.add("is-ready");                /* title + other photos develop */
+            var target = rectOf(first);
+            f.style.backgroundImage = "url('" + src(i, 0) + "')";
+            f.style.backgroundPosition = "center";
+            fly(f, target, 760, function () {             /* 2 · settles into its place */
+              first.classList.add("is-here");
+              f.remove(); busy = false;
+              first.focus({ preventScroll: true });
+            });
+          }, 220);
+        });
+      });
+    }
+
+    /* single photo, opened from (and folded back into) its own cell */
+    function openView(n) {
+      if (busy) return;
+      var cell = box.querySelectorAll(".sg-gal__cell")[n];
+      view = n; paintView();
+      if (reduce.matches) { box.classList.add("is-viewing"); return; }
+      busy = true;
+      var f = flyer(src(open, n), rectOf(cell));
+      f.style.backgroundSize = "cover";
+      box.classList.add("is-flying");
+      fly(f, FULL(), 640, function () {
+        box.classList.add("is-viewing");
+        setTimeout(function () { f.remove(); box.classList.remove("is-flying"); busy = false; box.querySelector(".sg-view .sg-nav--next").focus({ preventScroll: true }); }, 60);
+      });
+    }
+    function closeView() {
+      var n = view, cell = box.querySelectorAll(".sg-gal__cell")[n];
+      view = -1;
+      if (reduce.matches) { box.classList.remove("is-viewing"); cell.focus({ preventScroll: true }); return; }
+      busy = true;
+      var f = flyer(src(open, n), FULL());
+      f.style.backgroundSize = "cover";
+      box.classList.add("is-flying");
+      box.classList.remove("is-viewing");
+      fly(f, rectOf(cell), 600, function () { f.remove(); box.classList.remove("is-flying"); busy = false; cell.focus({ preventScroll: true }); });
+    }
+    function go(n) { if (view < 0) return; view = Math.max(0, Math.min(SETS[open].length - 1, n)); paintView(); }
+    function paintView() {
+      var im = box.querySelector(".sg-view__img");
+      im.classList.remove("is-in"); void im.offsetWidth;
+      im.src = src(open, view); im.classList.add("is-in");
+      box.querySelector(".sg-view__count").textContent = pad(view + 1) + " / " + pad(SETS[open].length);
+      box.querySelector(".sg-view .sg-nav--prev").disabled = view === 0;
+      box.querySelector(".sg-view .sg-nav--next").disabled = view === SETS[open].length - 1;
+    }
+    function swipe(el) {
+      var x0 = 0, y0 = 0;
+      el.addEventListener("touchstart", function (e) { x0 = e.touches[0].clientX; y0 = e.touches[0].clientY; }, { passive: true });
+      el.addEventListener("touchend", function (e) { var t = e.changedTouches[0], dx = t.clientX - x0, dy = t.clientY - y0; if (Math.abs(dx) > 40 && Math.abs(dx) > Math.abs(dy)) go(view + (dx < 0 ? 1 : -1)); }, { passive: true });
+    }
+    /* Esc / × : out of the single photo first, then out of the gallery */
+    function back() { if (busy) return; if (view >= 0) closeView(); else close(); }
+    function close() {
+      var b = box, i = open;
+      b.classList.remove("is-ready"); b.classList.add("is-leaving");
+      setTimeout(function () { b.remove(); document.documentElement.classList.remove("sg-lock"); tiles[i].focus({ preventScroll: true }); }, reduce.matches ? 0 : 520);
+      open = -1; box = null; view = -1;
+    }
+    return { open: openC, close: function (instant) { if (box) { view = -1; close(); } }, back: back,
+             step: function (d) { if (view >= 0) go(view + d); } };
+  })();
+})();
+

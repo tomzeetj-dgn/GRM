@@ -111,6 +111,7 @@
     "studio.cta.eyebrow": "Sound meets visual —",
     "studio.cta.line1": "Ideas",
     "studio.cta.line2": "In good hands.",
+    "studio.gallery.open": "see more photos",
 
     /* ---- label ---- */
     "meta.label.title": "GRM Label — the label",
@@ -353,6 +354,7 @@
     "studio.cta.eyebrow": "Zvuk sreće sliku —",
     "studio.cta.line1": "Ideje",
     "studio.cta.line2": "U dobrim rukama.",
+    "studio.gallery.open": "pogledaj još fotografija",
     "meta.label.title": "GRM Label — izdavačka kuća",
     "meta.label.desc": "GRM Label je izdavačka strana GRM-a — izvođači, izdanja i muzika iz GRM kuće.",
     "meta.label.ogTitle": "GRM Label — izdavačka kuća",
