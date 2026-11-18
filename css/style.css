@@ -3219,7 +3219,7 @@ html:not(.js) .showreel-aperture__mask{display:none}
      lettering stays perfectly clean). No external asset, no
      dependency, no glass, no blur, no glow.
 
-   ASSET — assets/img/production/cta-turntable-placeholder.jpg
+   ASSET — assets/img/production/cta-turntable-placeholder.webp
    ---------------------------------------------------------------------------
    The approved turntable frame is STILL OUTSTANDING. What is installed now is
    a temporary stand-in, chosen for a dark, near-monochrome, CC0 licence so it
@@ -3319,7 +3319,7 @@ html:not(.js) .showreel-aperture__mask{display:none}
   width:57%;
   margin:0;
   background-color:#0a0908;
-  background-image:url("../assets/img/production/cta-turntable-placeholder.jpg");
+  background-image:url("../assets/img/production/cta-turntable-placeholder.webp");
   background-size:cover;
   background-position:78% center;
   background-repeat:no-repeat;
@@ -5086,15 +5086,15 @@ html.js .label-lineup__credits.reveal{ transition-delay:900ms; }
   /* division colour cues (background image is request-scoped to mobile) */
   #panelProduction {
     --zone-color: #f5cf6a;
-    --zone-bg: url("../assets/img/GRM-studio-landscape.jpg");
+    --zone-bg: url("../assets/img/GRM-studio-landscape.webp");
   }
   #panelHouse {
     --zone-color: #2ee6a8;
-    --zone-bg: url("../assets/img/production/cta-turntable-placeholder.jpg");
+    --zone-bg: url("../assets/img/production/cta-turntable-placeholder.webp");
   }
   #panelLive {
     --zone-color: #ff8f56;
-    --zone-bg: url("../assets/img/Liveroom 2.png");
+    --zone-bg: url("../assets/img/Liveroom 2.webp");
   }
 
 

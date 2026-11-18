@@ -251,8 +251,8 @@
         '<header class="site-header" id="siteHeader">' +
             '<div class="site-header__inner">' +
             '<a href="' + root + 'index.html" class="site-header__brand" aria-label="GRM — back to top" data-i18n-aria-label="a11y.headerBrand">' +
-              '<img src="' + root + 'assets/img/grm-mark.png" alt="" width="38" height="38" class="site-header__mark">' +
-              '<img src="' + root + 'assets/img/grm-mark-glow.png" alt="" aria-hidden="true" class="site-header__mark-glow">' +
+              '<img src="' + root + 'assets/img/grm-mark.webp" alt="" width="38" height="38" class="site-header__mark">' +
+              '<img src="' + root + 'assets/img/grm-mark-glow.webp" alt="" aria-hidden="true" class="site-header__mark-glow">' +
               '<span class="site-header__word" data-i18n="brand.home">GRM HOUSE</span>' +
             "</a>" +
             (isHome ? "" :
@@ -289,12 +289,12 @@
     if (footerMount) {
       footerMount.innerHTML =
         '<footer class="site-footer" id="siteFooter">' +
-          '<img class="site-footer__watermark" src="' + root + 'assets/img/grm-watermark.png"' +
+          '<img class="site-footer__watermark" src="' + root + 'assets/img/grm-watermark.webp"' +
                ' alt="" loading="lazy" width="1120" height="1120">' +
           '<div class="container">' +
             '<div class="site-footer__top">' +
               '<a href="' + root + 'index.html" class="site-footer__brand" aria-label="GRM — back to top" data-i18n-aria-label="a11y.headerBrand">' +
-                '<img src="' + root + 'assets/img/grm-mark.png" alt="" width="46" height="46">' +
+                '<img src="' + root + 'assets/img/grm-mark.webp" alt="" width="46" height="46">' +
                 '<span data-i18n="brand.footer">GRM</span>' +
               "</a>" +
               '<p class="site-footer__lede" data-i18n="footer.lede">' +
@@ -1239,18 +1239,18 @@ resize simply misses and falls back to the previous aim point. */
   var DIVISION_ARRIVAL = {
     studio: {
       logo: ".studio-minimal-hero__logo", scroll: ".studio-minimal-hero__scroll",
-      glow: "GRM Studio Glow.png", proxyClass: "studio-morph-logo",
+      glow: "GRM Studio Glow.webp", proxyClass: "studio-morph-logo",
       pending: "studio-morph-pending", uiPending: "studio-morph-ui-pending", enter: "is-studio-enter-"
     },
     label: {
       logo: ".division-minimal-hero__logo", scroll: ".division-minimal-hero__scroll",
-      glow: "GRM Label Glow.png", proxyClass: "division-morph-logo",
+      glow: "GRM Label Glow.webp", proxyClass: "division-morph-logo",
       pending: "division-morph-pending", uiPending: "division-morph-ui-pending", enter: "is-division-enter-",
       overlayId: "labelTransitionLogo", startRectKey: "grm-label-start-rect"
     },
     liveroom: {
       logo: ".division-minimal-hero__logo", scroll: ".division-minimal-hero__scroll",
-      glow: "GRM LiveRoom Glow.png", proxyClass: "division-morph-logo",
+      glow: "GRM LiveRoom Glow.webp", proxyClass: "division-morph-logo",
       pending: "division-morph-pending", uiPending: "division-morph-ui-pending", enter: "is-division-enter-",
       overlayId: "liveroomTransitionLogo", startRectKey: "grm-liveroom-start-rect"
     }
@@ -2716,7 +2716,7 @@ resize simply misses and falls back to the previous aim point. */
   function tr(k, f) { var v = (window.GRMi18n && window.GRMi18n.t) ? window.GRMi18n.t(k) : k; return v === k ? f : v; }
   function title(i) { return tiles[i].querySelector(".grm-photo__title").textContent; }
   function desc(i) { var d = tiles[i].querySelector(".grm-photo__desc"); return d ? d.textContent : ""; }
-  function src(i, n) { return ROOT + SETS[i][n] + ".jpg"; }
+  function src(i, n) { return ROOT + SETS[i][n] + ".webp"; }
   function pad(n) { return n < 10 ? "0" + n : String(n); }
   var chevL = '<svg viewBox="0 0 16 18" aria-hidden="true"><path d="M10 3 L4 9 L10 15"/></svg>';
   var chevR = '<svg viewBox="0 0 16 18" aria-hidden="true"><path d="M6 3 L12 9 L6 15"/></svg>';
