@@ -5541,7 +5541,7 @@ html.sg-lock,html.sg-lock body{overflow:hidden}
 .sg-view{position:fixed;inset:0;z-index:4;background:#050505;opacity:0;visibility:hidden}
 .sg-gal.is-viewing .sg-view{opacity:1;visibility:visible}
 .sg-gal.is-flying .sg-view{opacity:0;visibility:hidden}
-.sg-view__img{position:absolute;inset:0;width:100%;height:100%;object-fit:cover}
+.sg-view__img{position:absolute;inset:0;width:100%;height:100%;object-fit:contain}
 .sg-view__img.is-in{animation:sgIn .7s ease}
 @keyframes sgIn{from{opacity:.25}to{opacity:1}}
 .sg-view::after{content:"";position:absolute;inset:auto 0 0 0;height:30%;background:linear-gradient(to top,rgba(5,5,5,.75),rgba(5,5,5,0));pointer-events:none}
