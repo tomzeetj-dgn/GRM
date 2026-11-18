@@ -2719,7 +2719,8 @@ resize simply misses and falls back to the previous aim point. */
   function pad(n) { return n < 10 ? "0" + n : String(n); }
   var chevL = '<svg viewBox="0 0 16 18" aria-hidden="true"><path d="M10 3 L4 9 L10 15"/></svg>';
   var chevR = '<svg viewBox="0 0 16 18" aria-hidden="true"><path d="M6 3 L12 9 L6 15"/></svg>';
-  function warm(i) { SETS[i].forEach(function (_, n) { var im = new Image(); im.src = src(i, n); }); }
+  var cache = {};
+  function warm(i) { SETS[i].forEach(function (_, n) { var u = src(i, n); if (cache[u]) return; var im = new Image(); im.src = u; cache[u] = im; }); }
 
   function labels() {
     tiles.forEach(function (t, i) { t.setAttribute("aria-label", title(i) + " — " + tr("studio.gallery.open", "see more photos")); });
@@ -2810,8 +2811,12 @@ resize simply misses and falls back to the previous aim point. */
           setTimeout(function () {
             box.classList.add("is-ready");                /* title + other photos develop */
             var target = rectOf(first);
-            f.style.backgroundImage = "url('" + src(i, 0) + "')";
-            f.style.backgroundPosition = "center";
+            /* dissolve into the gallery's first photo while it travels (no hard swap) */
+            var nx = document.createElement("div");
+            nx.className = "sg-fly__next";
+            nx.style.backgroundImage = "url('" + src(i, 0) + "')";
+            f.appendChild(nx); nx.getBoundingClientRect();
+            nx.style.opacity = "1";
             fly(f, target, 760, function () {             /* 2 · settles into its place */
               first.classList.add("is-here");
               f.remove(); busy = false;
@@ -2823,18 +2828,39 @@ resize simply misses and falls back to the previous aim point. */
     }
 
     /* single photo, opened from (and folded back into) its own cell */
+    /* where the large photo will actually sit: full screen (cover), or the letterboxed
+       rect when the viewer uses "contain" (phones / portrait tablets) */
+    function viewRect(n) {
+      var im = box.querySelector(".sg-view__img"), full = FULL();
+      if (getComputedStyle(im).objectFit !== "contain") return full;
+      var pre = cache[src(open, n)], w = pre && pre.naturalWidth, h = pre && pre.naturalHeight;
+      if (!w || !h) return full;
+      var k = Math.min(full.width / w, full.height / h), rw = w * k, rh = h * k;
+      return { left: (full.width - rw) / 2, top: (full.height - rh) / 2, width: rw, height: rh };
+    }
+    function ready(im, cb) {
+      if (im.complete && im.naturalWidth && im.decode) { im.decode().then(cb, cb); return; }
+      if (im.complete && im.naturalWidth) { cb(); return; }
+      im.addEventListener("load", function () { (im.decode ? im.decode() : Promise.resolve()).then(cb, cb); }, { once: true });
+      im.addEventListener("error", cb, { once: true });
+    }
     function openView(n) {
       if (busy) return;
       var cell = box.querySelectorAll(".sg-gal__cell")[n];
-      view = n; paintView();
+      view = n; paintView(true);
       if (reduce.matches) { box.classList.add("is-viewing"); return; }
       busy = true;
       var f = flyer(src(open, n), rectOf(cell));
-      f.style.backgroundSize = "cover";
       box.classList.add("is-flying");
-      fly(f, FULL(), 640, function () {
-        box.classList.add("is-viewing");
-        setTimeout(function () { f.remove(); box.classList.remove("is-flying"); busy = false; box.querySelector(".sg-view .sg-nav--next").focus({ preventScroll: true }); }, 60);
+      fly(f, viewRect(n), 640, function () {
+        /* hand over only once the big image is decoded, in the same frame */
+        ready(box.querySelector(".sg-view__img"), function () {
+          box.classList.add("is-viewing");
+          box.classList.remove("is-flying");
+          requestAnimationFrame(function () { requestAnimationFrame(function () {
+            f.remove(); busy = false; box.querySelector(".sg-view .sg-nav--next").focus({ preventScroll: true });
+          }); });
+        });
       });
     }
     function closeView() {
@@ -2842,17 +2868,16 @@ resize simply misses and falls back to the previous aim point. */
       view = -1;
       if (reduce.matches) { box.classList.remove("is-viewing"); cell.focus({ preventScroll: true }); return; }
       busy = true;
-      var f = flyer(src(open, n), FULL());
-      f.style.backgroundSize = "cover";
+      var f = flyer(src(open, n), viewRect(n));
       box.classList.add("is-flying");
       box.classList.remove("is-viewing");
       fly(f, rectOf(cell), 600, function () { f.remove(); box.classList.remove("is-flying"); busy = false; cell.focus({ preventScroll: true }); });
     }
     function go(n) { if (view < 0) return; view = Math.max(0, Math.min(SETS[open].length - 1, n)); paintView(); }
-    function paintView() {
+    function paintView(still) {
       var im = box.querySelector(".sg-view__img");
       im.classList.remove("is-in"); void im.offsetWidth;
-      im.src = src(open, view); im.classList.add("is-in");
+      im.src = src(open, view); if (!still) im.classList.add("is-in");
       box.querySelector(".sg-view__count").textContent = pad(view + 1) + " / " + pad(SETS[open].length);
       box.querySelector(".sg-view .sg-nav--prev").disabled = view === 0;
       box.querySelector(".sg-view .sg-nav--next").disabled = view === SETS[open].length - 1;

@@ -5535,7 +5535,8 @@ html.sg-lock,html.sg-lock body{overflow:hidden}
 .sg-gal__cell.is-here img{opacity:1;filter:none;transform:none;transition:none}
 .sg-gal__cell:hover img{transform:scale(1.02);transition:transform .9s cubic-bezier(.22,1,.36,1)}
 .sg-gal__cell:focus-visible{outline:1px solid var(--accent-lite);outline-offset:2px}
-.sg-fly{position:fixed;z-index:5;background-size:cover;background-repeat:no-repeat;pointer-events:none}
+.sg-fly{position:fixed;z-index:5;background-size:cover;background-position:center;background-repeat:no-repeat;pointer-events:none}
+.sg-fly__next{position:absolute;inset:0;background-size:cover;background-position:center;background-repeat:no-repeat;opacity:0;transition:opacity .5s cubic-bezier(.33,0,.2,1)}
 .sg-gal .sg-close{margin:-8px -10px 0 0}
 .sg-view{position:fixed;inset:0;z-index:4;background:#050505;opacity:0;visibility:hidden}
 .sg-gal.is-viewing .sg-view{opacity:1;visibility:visible}
