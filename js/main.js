@@ -1428,7 +1428,7 @@ resize simply misses and falls back to the previous aim point. */
     var TODAY_INDEX = (NOW.getDay() + 6) % 7;   /* 0 = Monday … 6 = Sunday */
     var CURRENT = new Date(NOW.getFullYear(), NOW.getMonth(), NOW.getDate() - TODAY_INDEX);
     var MAX_AHEAD = 7;                      /* this week + 7 = 8 weeks */
-    var GRID_START = 10 * 60, GRID_END = 22 * 60, STEP = 30;   /* minutes */
+    var GRID_START = 10 * 60, GRID_END = 24 * 60, STEP = 30;   /* minutes */
     var booked = [];                        /* [{s:"YYYY-MM-DDTHH:mm", e:"…"}] */
     var offset = 0;
     var busy = false;
@@ -1522,12 +1522,12 @@ resize simply misses and falls back to the previous aim point. */
     }
 
     function minutesOf(hm) { var p = hm.split(":"); return (+p[0]) * 60 + (+p[1]); }
-    function clock(m) { return pad(Math.floor(m / 60)) + ":" + pad(m % 60); }
+    function clock(m) { return pad(Math.floor(m / 60) % 24) + ":" + pad(m % 60); }
     function dayKey(d) { return d.getFullYear() + "-" + pad(d.getMonth() + 1) + "-" + pad(d.getDate()); }
 
-    /* Draw the shown week's bookings onto the 7 × 24 half-hour grid. Overlapping
+    /* Draw the shown week's bookings onto the 7 × 28 half-hour grid. Overlapping
        or touching bookings on a day merge into one block; anything outside
-       10:00–22:00 is clipped to the grid. */
+       10:00–00:00 is clipped to the grid. */
     function renderTaken() {
       var start = weekStart(), keys = [];
       for (var i = 0; i < 7; i++) keys.push(dayKey(new Date(start.getFullYear(), start.getMonth(), start.getDate() + i)));

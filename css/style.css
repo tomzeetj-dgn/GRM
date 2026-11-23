@@ -5524,7 +5524,7 @@ html.lr-preview-lock,html.lr-preview-lock body{overflow:hidden}
 
 /* Liveroom schedule · live bookings (js/main.js renders them from
    data/schedule.json). The grid gains half-hour rows; the hour lines stay. */
-.liveroom-availability__slots.is-live{grid-template-rows:repeat(24,minmax(0,1fr)) !important}
+.liveroom-availability__slots.is-live{grid-template-rows:repeat(28,minmax(0,1fr)) !important}
 .liveroom-availability__slots .is-taken.is-short br,
 .liveroom-availability__slots .is-taken.is-short small{display:none}
 .liveroom-availability__title-arrow:disabled{opacity:.2;cursor:default;pointer-events:none}
@@ -5623,3 +5623,23 @@ html[lang^="sr"] .legal__doc[data-legal-lang="en"]{display:none}
 .legal a:hover{text-decoration-color:var(--accent-lite)}
 .site-footer__legal{color:inherit;text-decoration:none;margin-left:14px;padding-left:14px;border-left:1px solid var(--border)}
 .site-footer__legal:hover{color:var(--text)}
+
+/* Room schedule runs 10:00–00:00 (14 hours, 28 half-hour rows) */
+.liveroom-availability__board{min-height:650px !important}
+.liveroom-availability__hours{grid-template-rows:repeat(14,minmax(0,1fr)) !important}
+.liveroom-availability__slots{grid-template-rows:repeat(14,minmax(0,1fr)) !important;background:repeating-linear-gradient(to bottom,transparent 0,transparent calc(7.142857% - 1px),rgba(236,233,226,.09) calc(7.142857% - 1px),rgba(236,233,226,.09) 7.142857%) !important}
+.liveroom-availability__hours span:nth-child(1){top:0.000000%}
+.liveroom-availability__hours span:nth-child(2){top:7.142857%}
+.liveroom-availability__hours span:nth-child(3){top:14.285714%}
+.liveroom-availability__hours span:nth-child(4){top:21.428571%}
+.liveroom-availability__hours span:nth-child(5){top:28.571429%}
+.liveroom-availability__hours span:nth-child(6){top:35.714286%}
+.liveroom-availability__hours span:nth-child(7){top:42.857143%}
+.liveroom-availability__hours span:nth-child(8){top:50.000000%}
+.liveroom-availability__hours span:nth-child(9){top:57.142857%}
+.liveroom-availability__hours span:nth-child(10){top:64.285714%}
+.liveroom-availability__hours span:nth-child(11){top:71.428571%}
+.liveroom-availability__hours span:nth-child(12){top:78.571429%}
+.liveroom-availability__hours span:nth-child(13){top:85.714286%}
+.liveroom-availability__hours span:nth-child(14){top:92.857143%}
+.liveroom-availability__hours span:nth-child(15){top:100.000000%}
