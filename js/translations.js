@@ -131,7 +131,7 @@
     "label.about.titleC": "label.",
     "label.people.title": "Behind GRM.",
     "label.people.photoAlt": "Đorđe Grgurović – Grzi, Rajko Bogosavljević – Džu and Milan Subotić – Igla in white quarter-zips; Džu holds a small potted plant",
-    "label.people.bio.grzi": "Grzi came up through record shops, fanzines and freelance promotion, and now runs GRM’s day-to-day — schedules, artist relations, budgets and rights.",
+    "label.people.bio.grzi": "Grzi is a music producer and sound engineer, and one of the co-founders of GRM House. Everything sound goes through him, from recording and production to mixing and mastering.",
     "label.people.bio.dzu": "With 10 years of experience in the music industry, Džu transitioned from recording artist to distribution coordinator. He co-founded GRM in 2025. Today, he oversees music distribution and release operations.",
     "label.people.bio.igla": "A motion designer and video editor since 2014, Igla co-founded GRM House, where he leads video production and runs the Liveroom.",
     "label.releases.eyebrow": "03 / Selected releases",
@@ -321,7 +321,7 @@
     /* ---- label · Behind GRM — expertise credit labels (compact industry
        terms, kept short so no tag clips or wraps awkwardly in SR) ---- */
     "label.people.photoAlt": "Đorđe Grgurović – Grzi, Rajko Bogosavljević – Džu i Milan Subotić – Igla u belim duksevima; Džu drži malu saksiju sa biljkom",
-    "label.people.bio.grzi": "Grzi je stasao uz prodavnice ploča, fanzine i frilens promociju, a danas vodi svakodnevni rad GRM-a — rasporede, odnose sa izvođačima, budžete i prava.",
+    "label.people.bio.grzi": "Grzi je muzički producent, inženjer zvuka i jedan od suosnivača GRM House-a. Sve što se tiče zvuka prolazi kroz njegove ruke, od snimanja i produkcije do miksa i masteringa.",
     "label.people.bio.dzu": "Sa 10 godina iskustva u muzičkoj industriji, Džu je od izvođača postao koordinator distribucije. GRM je suosnovao 2025. godine. Danas vodi distribuciju muzike i organizaciju izdanja.",
     "label.people.bio.igla": "Motion dizajner i video montažer od 2014. godine, Igla je suosnivač GRM House-a, gde vodi video-produkciju i Liveroom.",
     /* ---- 2026-11-17: full Serbian pass (Production, Label, release copy) ---- */
