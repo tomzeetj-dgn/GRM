@@ -1414,7 +1414,7 @@ resize simply misses and falls back to the previous aim point. */
      "THIS WEEK" is the real current week; the arrows go from it up to
      MAX_AHEAD weeks ahead. Taken slots come from data/schedule.json, which
      the GRM Liveroom Google Calendar keeps up to date (scripts/
-     liveroom-calendar-sync.gs): half-hour precision, 10:00–22:00 grid. */
+     liveroom-calendar-sync.gs): half-hour precision, 10:00–00:00 grid. */
   onReady(function () {
     if (document.body.getAttribute("data-page") !== "liveroom") return;
     var sections = Array.prototype.slice.call(document.querySelectorAll(".liveroom-availability"));
@@ -1648,18 +1648,29 @@ resize simply misses and falls back to the previous aim point. */
     markToday();
     swapText();
 
-    /* bookings: fetched fresh on every visit (the file changes whenever the
-       calendar does; no-store skips the browser's copy of an older one) */
+    /* bookings: read straight from the repository (GitHub API, ~1 min fresh), so a
+       new booking never waits on a site rebuild; the deployed copy is read too, and
+       whichever file is newer wins (covers API limits or outages). */
     if (window.fetch) {
-      fetch("../data/schedule.json", { cache: "no-store" })
-        .then(function (r) { return r.ok ? r.json() : null; })
-        .then(function (data) {
-          if (!data || !Array.isArray(data.slots)) return;
+      var SOURCES = [
+        ["https://api.github.com/repos/tomzeetj-dgn/GRM/contents/data/schedule.json?ref=main",
+         { cache: "no-store", headers: { Accept: "application/vnd.github.raw+json" } }],
+        ["../data/schedule.json", { cache: "no-store" }]
+      ];
+      var best = null;
+      var take = function (data) {
+        if (data && Array.isArray(data.slots) && (!best || String(data.updated || "") > String(best.updated || ""))) {
+          best = data;
           booked = data.slots;
           renderTaken();
           slotLabels();
-        })
-        .catch(function () {});
+        }
+      };
+      SOURCES.forEach(function (src) {
+        fetch(src[0], src[1])
+          .then(function (r) { return r.ok ? r.json() : null; })
+          .then(take, function () {});
+      });
     }
   });
 
