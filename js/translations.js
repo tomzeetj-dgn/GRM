@@ -321,9 +321,9 @@
     /* ---- label · Behind GRM — expertise credit labels (compact industry
        terms, kept short so no tag clips or wraps awkwardly in SR) ---- */
     "label.people.photoAlt": "Đorđe Grgurović – Grzi, Rajko Bogosavljević – Džu i Milan Subotić – Igla u belim duksevima; Džu drži malu saksiju sa biljkom",
-    "label.people.bio.grzi": "Grzi je muzički producent, inženjer zvuka i jedan od suosnivača GRM House-a. Sve što se tiče zvuka prolazi kroz njegove ruke, od snimanja i produkcije do miksa i masteringa.",
+    "label.people.bio.grzi": "Grzi je muzički producent, inženjer zvuka i jedan od suosnivača GRM House⁠-⁠a. Sve što se tiče zvuka prolazi kroz njegove ruke, od snimanja i produkcije do miksa i masteringa.",
     "label.people.bio.dzu": "Sa 10 godina iskustva u muzičkoj industriji, Džu je od izvođača postao koordinator distribucije. GRM je suosnovao 2025. godine. Danas vodi distribuciju muzike i organizaciju izdanja.",
-    "label.people.bio.igla": "Motion dizajner i video montažer od 2014. godine, Igla je suosnivač GRM House-a, gde vodi video-produkciju i Liveroom.",
+    "label.people.bio.igla": "Motion dizajner i video montažer od 2014. godine, Igla je suosnivač GRM House⁠-⁠a, gde vodi video-produkciju i Liveroom.",
     /* ---- 2026-11-17: full Serbian pass (Production, Label, release copy) ---- */
     "a11y.panel.studio": "GRM Produkcija",
     "contact.email": "Imejl",
