@@ -1736,16 +1736,30 @@ resize simply misses and falls back to the previous aim point. */
       if (el.classList.contains("lr-split")) splitWords(el);
     });
 
+    /* Visibility is judged on the element's layout box, not its transformed box:
+       the hidden state is shifted 30px down, so judging the transformed box made
+       elements at a viewport edge flip in/out every frame (visible flicker). */
+    function shownRatio(el) {
+      var top = 0, n = el;
+      while (n) { top += n.offsetTop; n = n.offsetParent; }
+      top -= window.pageYOffset;
+      var h = el.offsetHeight || 1;
+      var vis = Math.min(top + h, window.innerHeight) - Math.max(top, 0);
+      return Math.max(0, vis) / h;
+    }
+    var steps = [];
+    for (var k = 0; k <= 20; k++) steps.push(k / 20);
     var io = new IntersectionObserver(function (entries) {
       entries.forEach(function (entry) {
-        if (entry.target.classList.contains("lr-re")) {
-          entry.target.classList.toggle("in", entry.isIntersecting);
-        } else if (entry.isIntersecting) {
-          entry.target.classList.add("in");
-          io.unobserve(entry.target);
+        var el = entry.target, on = shownRatio(el) >= 0.15;
+        if (el.classList.contains("lr-re")) {
+          if (on !== el.classList.contains("in")) el.classList.toggle("in", on);
+        } else if (on) {
+          el.classList.add("in");
+          io.unobserve(el);
         }
       });
-    }, { threshold: 0.15 });
+    }, { threshold: steps });
 
     triggers.forEach(function (el) { io.observe(el); });
   });
