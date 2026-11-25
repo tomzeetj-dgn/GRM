@@ -1747,11 +1747,17 @@ resize simply misses and falls back to the previous aim point. */
       var vis = Math.min(top + h, window.innerHeight) - Math.max(top, 0);
       return Math.max(0, vis) / h;
     }
+    /* "on screen" = 15% visible, capped at 40px, so a tall tile (the bento's left
+       image) appears and leaves together with its shorter neighbours */
+    function isShown(el) {
+      var h = el.offsetHeight || 1;
+      return shownRatio(el) * h >= Math.min(h * 0.15, 40);
+    }
     var steps = [];
-    for (var k = 0; k <= 20; k++) steps.push(k / 20);
+    for (var k = 0; k <= 80; k++) steps.push(k / 80);
     var io = new IntersectionObserver(function (entries) {
       entries.forEach(function (entry) {
-        var el = entry.target, on = shownRatio(el) >= 0.15;
+        var el = entry.target, on = isShown(el);
         if (el.classList.contains("lr-re")) {
           if (on !== el.classList.contains("in")) el.classList.toggle("in", on);
         } else if (on) {
